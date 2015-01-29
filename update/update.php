@@ -38,7 +38,12 @@ class update {
 	//	$output = str_replace("From $str","", $output);
 		$output = str_replace("* branch            ". $cfg['git']['branch'] ."     -> FETCH_HEAD","", $output);
 		$output .= "</hr>\n\n";
-		$output .= shell_exec('php composer.phar install');
+		
+		
+		
+		
+		shell_exec('composer self-update');
+		$output .= shell_exec('composer install');
 		
 		$return .= trim($output);
 

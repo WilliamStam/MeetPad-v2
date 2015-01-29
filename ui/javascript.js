@@ -50710,3 +50710,7 @@ Globally exposed namespace with the most frequently used public classes and hand
 
 }(jQuery));
 ;console.log("hello");
+console.info("test");
+$(document).ready(function(){
+	console.log("aaa")
+})
