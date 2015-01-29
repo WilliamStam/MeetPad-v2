@@ -17,7 +17,6 @@ vendor/*
 *.exe
 *.o
 *.so
-*.phar
 
 # Packages #
 ############
