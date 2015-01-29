@@ -1,0 +1,105 @@
+{
+  "name": "Impreshin/MeetPad",
+  "description": "Meetpad",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "William Stam",
+      "email": "william@impreshin.com.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "components/jquery-bbq",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/cowboy/jquery-bbq",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/jquery-hotkeys",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/jeresig/jquery.hotkeys",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/jquery-jScrollPane",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/vitch/jScrollPane",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/jquery-mousewheel",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/jquery/jquery-mousewheel/",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/Font-Awesome",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/FortAwesome/Font-Awesome",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/jQote2",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/aefxx/jQote2",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "components/jquery": "2.1.3",
+    "components/jqueryui": "1.11.2",
+    "components/bootstrap": "3.3.2",
+    "components/bootstrap-datetimepicker": "dev-master",
+    "twig/twig": "1.6.5",
+    "moxiecode/plupload": "v2.1.2",
+    "components/modernizr": "2.8.3",
+    "bcosca/fatfree": "3.4.0",
+    "components/jquery-bbq": "dev-master",
+    "components/jquery-hotkeys": "dev-master",
+    "components/jquery-jScrollPane": "dev-master",
+    "components/jquery-mousewheel": "dev-master",
+    "components/Font-Awesome": "dev-master",
+    "components/jQote2": "dev-master",
+    "ivaynberg/select2": "3.5.2",
+    "components/jquery-cookie": "1.4.1.2",
+    "timrwood/moment": "2.9.0"
+  }
+}
