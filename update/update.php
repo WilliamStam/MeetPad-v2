@@ -34,10 +34,10 @@ class update {
 		}
 
 		
-		$str = str_replace(".git","",$cfg['git']['path']);
-		$output = str_replace("From $str","", $output);
+	//	$str = str_replace(".git","",$cfg['git']['path']);
+	//	$output = str_replace("From $str","", $output);
 		$output = str_replace("* branch            ". $cfg['git']['branch'] ."     -> FETCH_HEAD","", $output);
-
+		$output .= "</hr>";
 		$output .= shell_exec('php composer.phar update');
 		
 		$return .= trim($output);
