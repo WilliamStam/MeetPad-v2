@@ -7,14 +7,15 @@
 
 #left-area.affix-top {
 	position: static;
-	width:395px;
+	max-width:395px;
 }
 
 #left-area.affix {
 	position: fixed;
 	top:40px;
 	bottom:0;
-	width:395px;
+	max-width:395px;
+	width:100%;
 }
 
 
@@ -22,5 +23,57 @@
 	background-color: #0000ff;
 	
 }
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+html,
+body {
+	overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
 
 
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 992px) {
+	.row-offcanvas {
+		position: relative;
+		-webkit-transition: all .25s ease-out;
+		-o-transition: all .25s ease-out;
+		transition: all .25s ease-out;
+	}
+
+	.row-offcanvas-right {
+		right: 0;
+	}
+
+	.row-offcanvas-left {
+		left: 0;
+	}
+
+	.row-offcanvas-right
+	.sidebar-offcanvas {
+		right: -395px; /* 6 columns */
+	}
+
+	.row-offcanvas-left
+	.sidebar-offcanvas {
+		left: -395px; /* 6 columns */
+	}
+
+	.row-offcanvas-right.active {
+		right: 395px; /* 6 columns */
+	}
+
+	.row-offcanvas-left.active {
+		left: 395px; /* 6 columns */
+	}
+
+	.sidebar-offcanvas {
+		position: absolute;
+		top: 0;
+		max-width: 395px; /* 6 columns */
+	}
+}
