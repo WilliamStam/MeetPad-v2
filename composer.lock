@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d4e16fd680930dd599dadab2396f819f",
+    "hash": "d99f7befddf241748117a3bd101cf026",
     "packages": [
         {
             "name": "bcosca/fatfree",
@@ -47,6 +47,17 @@
             },
             "type": "library",
             "time": "2015-01-22 18:09:42"
+        },
+        {
+            "name": "components/TouchSwipe-Jquery-Plugin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mattbryson/TouchSwipe-Jquery-Plugin",
+                "reference": "origin/master"
+            },
+            "type": "library",
+            "time": "2015-01-24 20:17:34"
         },
         {
             "name": "components/bootstrap",
@@ -822,7 +833,8 @@
         "components/jquery-jscrollpane": 20,
         "components/jquery-mousewheel": 20,
         "components/font-awesome": 20,
-        "components/jqote2": 20
+        "components/jqote2": 20,
+        "components/touchswipe-jquery-plugin": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

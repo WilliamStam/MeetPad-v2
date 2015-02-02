@@ -17,6 +17,7 @@ module.exports = function(grunt) {
 					'vendor/components/jquery-cookie/jquery.cookie.js',
 					'vendor/components/jquery-jScrollPane/script/jquery.jScrollPane.js',
 					'vendor/components/jquery-mousewheel/jquery.mousewheel.js',
+					'vendor/components/TouchSwipe-Jquery-Plugin/jquery.touchSwipe.js',
 					'vendor/components/jQote2/jquery.jqote2.js',
 					'vendor/timrwood/moment/moment.js',
 					'vendor/moxiecode/plupload/js/moxie.js',

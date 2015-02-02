@@ -81,6 +81,18 @@
           "reference": "origin/master"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/TouchSwipe-Jquery-Plugin",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/mattbryson/TouchSwipe-Jquery-Plugin",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
     }
   ],
   "require": {
@@ -98,6 +110,7 @@
     "components/jquery-mousewheel": "dev-master",
     "components/Font-Awesome": "dev-master",
     "components/jQote2": "dev-master",
+    "components/TouchSwipe-Jquery-Plugin": "dev-master",
     "ivaynberg/select2": "3.5.2",
     "components/jquery-cookie": "1.4.1.2",
     "timrwood/moment": "2.9.0"
