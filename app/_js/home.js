@@ -40,7 +40,7 @@ $(document).ready(function () {
 			switch(direction){
 				
 				case "left":
-					$("#right-area").addClass("active");
+					$("#right-area").removeClass("active");
 					break;
 			}
 			
