@@ -1,9 +1,4 @@
 <?php
-/**
- * User: William
- * Date: 2012/07/24 - 10:43 AM
- */
-
 class update {
 	function __construct($cfg){
 
@@ -58,22 +53,31 @@ class update {
 			printf("Connect failed: %s\n", mysqli_connect_error());
 			exit();
 		}
-		$sql = 'SELECT `value` FROM system WHERE `system`="db_version" LIMIT 1';
 
-		$version = "";
-		if ($result=mysqli_query($link,$sql)){
-			// Fetch one and one row
+		$sql = 'SELECT ID, system, value FROM system WHERE `system`="db_version" LIMIT 1';
+		$result = mysqli_query($link,$sql);
 
-			$version = $result->fetch_array();
-			// Free result set
-			mysqli_free_result($result);
-		}
+		//mysqli_free_result($result);
+		if(empty($result)) {
+			$query = mysqli_query($link,"CREATE TABLE IF NOT EXISTS `system` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `system` varchar(100) DEFAULT NULL,  `value` varchar(100) DEFAULT NULL,  PRIMARY KEY (`ID`))");
+			
+			$query = mysqli_query($link,"INSERT INTO `system` (`system`,`value`) values ('db_version','0')");
 
+			$sql = 'SELECT * FROM system WHERE `system`="db_version" LIMIT 1';
+			$result = mysqli_query($link,$sql);
+			
+		} 
+		$version = $result->fetch_array();
+		
+		
+		
+		
+
+		
+		
 		if (isset($version['value'])){
 			$version = $version['value'];
-		} else {
-			$version = "0";
-		}
+		} 
 
 
 		
@@ -82,68 +86,52 @@ class update {
 		
 
 		$v = $version*1;
+		
+	
 
 		include_once("db_update.php");
 
-		$uv = key(array_slice($sql, -1, 1, TRUE));
+		
 		$updates = 0;
 		$result = "";
 		$return = "";
-		$filename = "backup_cv" . $v;
+		$filename = "backup_" . $v;
+		$result = self::db_backup($cfg, $filename);
+	
 
-
-
-		if ($uv != $v) {
+		if (count($sql) != $v) {
 
 			$nsql = array();
+			$i = 0;
+			foreach ($sql as $exec) {
+				$i = $i+ 1;
+				if ($i > $v) {
+					
 
-			foreach ($sql as $version=> $exec) {
-				$version = $version * 1;
-				if ($version > $v) {
-					foreach ($exec as $t) {
+						$nsql[] = $exec;
 
-						$nsql[] = $t;
-					}
-
-				}
+				}	
+				
 			}
 			$sql = array_values($nsql);
-
-			if (count($nsql) > 0) $filename = "update_cv" . $v;
-			$result = self::db_backup($cfg, $filename);
-
+			
 
 			foreach ($sql as $e) {
 				//echo $e . "<br>";
 				if ($e) {
-					//echo substr($e, 0, 5);
-					$updates = $updates + 1;
-					if (substr($e, 0, 5) == "file:") {
-						$file = str_replace("file:","",$e);
-						$e= @file_get_contents($file);
-
-
-					}
+					$updates++;
 					self::db_execute($cfg,$e);
-				//	mysql_query($e, $link) or die(mysql_error());
-
-					
-
 				}
 			}
 
 
-			if ($v){
-				mysqli_query($link,"UPDATE system SET `value`='$uv' WHERE `system`='db_version'") or die(mysqli_error($link));
-			} else {
-				mysqli_query($link, "INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')") or die(mysqli_error($link));
+			if ($updates>0){
+				mysqli_query($link,"UPDATE system SET `value`='{$i}' WHERE `system`='db_version'") or die(mysqli_error($link));
 			}
+			
 
 
-		} else {
-
-			$result = self::db_backup($cfg, $filename);
-		}
+		} 
 
 		if ($result){
 			$return .= "Backup name: " . $result."<br>";
@@ -158,13 +146,12 @@ class update {
 	}
 	static function db_backup($cfg,$append_file_name){
 
-		$filename = $cfg['backup'] . date("Y_m_d_H_i_s") . "_". $append_file_name. "_" . $cfg['git']['branch'] . ".sql";
+		$filename = $cfg['backup'] . date("Y_m_d_H_i_s") . "_". $append_file_name . ".sql";
 
 		$dbhost = $cfg['DB']['host'];
 		$dbuser = $cfg['DB']['username'];
 		$dbpwd = $cfg['DB']['password'];
 		$dbname = $cfg['DB']['database'];
-		$gzip = $cfg['gzip'];
 
 		if (!file_exists($cfg['backup'])) @mkdir($cfg['backup'], 0777, true);
 		
@@ -202,7 +189,7 @@ class update {
 				if (mysqli_more_results($link)) {
 					//printf("-----------------\n");
 				}
-			} while (mysqli_next_result($link));
+			} while (@mysqli_next_result($link));
 		}
 
 		/* close connection */

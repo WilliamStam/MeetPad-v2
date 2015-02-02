@@ -12,3 +12,5 @@ $cfg['git'] = array(
 	"path"=>"github.com/WilliamStam/MeetPad-v2.git",
 	"branch"=>"master"
 );
+
+$cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/media/backups/";

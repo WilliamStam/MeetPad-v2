@@ -17,9 +17,11 @@ require_once('update.php');
 if (!isLocal()) {
 	echo "Updates...<hr>";
 	echo "<h3>Files</h3>";
-	echo "<pre>" . update::code($cfg) . "</pre>";
+	//echo "<pre>" . update::code($cfg) . "</pre>";
+
+	
 }
 
-
+echo "<pre>" . update::db($cfg) . "</pre>";
  
  ?>

@@ -21,9 +21,10 @@ module.exports = function(grunt) {
 					'vendor/timrwood/moment/moment.js',
 					'vendor/moxiecode/plupload/js/moxie.js',
 					'vendor/ivaynberg/select2/select2.js',
-					'ui/js/script.js'
+					'app/_js/plugins/jquery.getData.js',
+					'app/_js/script.js'
 				],
-				dest: 'ui/javascript.js',
+				dest: 'app/javascript.js',
 				nonull: true
 			}
 		},
@@ -34,14 +35,14 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: {
-					'ui/javascript.js': ['ui/javascript.js']
+					'app/javascript.js': ['app/javascript.js']
 				}
 			}
 		},
 		less: {
 			style: {
 				files: {
-					"ui/style.css": "ui/less/style.less"
+					"app/style.css": "app/less/style.less"
 				}
 			}
 		},
@@ -52,7 +53,7 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
-					'ui/style.css': 'ui/style.css'
+					'app/style.css': 'app/style.css'
 				}
 			}
 		},
