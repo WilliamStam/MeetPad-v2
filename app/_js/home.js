@@ -6,6 +6,7 @@ $(document).ready(function () {
 	$('[data-toggle="offcanvas"]').click(function () {
 		$('#right-area').toggleClass('active')
 	});
+	
 	resize()
 	$( window ).resize(function() {
 		resize()
@@ -47,7 +48,7 @@ $(document).ready(function () {
 		},
 		//Default is 75px, set to 0 for demo so any distance triggers swipe
 		threshold:0
-	});
+	}).addClass("affix-bottom");
 	
 	
 });

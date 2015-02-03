@@ -8508,6 +8508,163 @@ button.close {
 .fa-medium:before {
   content: "\f23a";
 }
+.c {
+  text-align: center !important;
+}
+.l {
+  text-align: left !important;
+}
+.r {
+  text-align: right !important;
+}
+.s {
+  font-size: 10px !important;
+}
+.g {
+  color: #afafaf !important;
+}
+.dg {
+  color: #828282 !important;
+}
+.f8 {
+  font-size: 8px !important;
+}
+.f9 {
+  font-size: 9px !important;
+}
+.f10 {
+  font-size: 10px !important;
+}
+.f11 {
+  font-size: 11px !important;
+}
+.f12 {
+  font-size: 12px !important;
+}
+.f13 {
+  font-size: 13px !important;
+}
+.em {
+  font-style: italic;
+}
+.bold {
+  font-weight: bold;
+}
+h1,
+h2,
+h3,
+h4 {
+  color: #404040;
+  font-weight: bold;
+}
+body {
+  color: #404040;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+}
+table.records .heading th {
+  padding-top: 10px;
+  border-bottom: 1px solid #eeeeee;
+  border-left: transparent;
+  border-right: transparent;
+}
+table.records thead tr.colheading,
+table.records tbody.thead tr.colheading {
+  border: 1px solid #e1e1e1;
+  -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
+  box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
+}
+table.records thead tr.colheading th,
+table.records tbody.thead tr.colheading th {
+  padding-top: 0;
+  padding-bottom: 0;
+  color: #999;
+}
+table.records thead tr.colheading th.order-btn,
+table.records tbody.thead tr.colheading th.order-btn {
+  font-weight: bold;
+  cursor: pointer;
+}
+table.records thead tr.colheading th.order-btn:hover,
+table.records tbody.thead tr.colheading th.order-btn:hover {
+  color: #000;
+}
+table.records thead tr.colheading th.order-btn .indicator,
+table.records tbody.thead tr.colheading th.order-btn .indicator {
+  display: none;
+}
+table.records tbody:not(.thead) {
+  border: 1px solid #e1e1e1;
+  -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
+  box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
+}
+table.records tbody:not(.thead) tr td:first-child {
+  padding-left: 10px;
+}
+table.records h3 small {
+  margin-left: 20px;
+}
+table.records .label {
+  font-size: 8px;
+  margin-right: 3px;
+}
+table.records .size {
+  color: #999;
+  margin-left: 10px;
+  float: right;
+}
+table.records .record-tick {
+  text-align: center;
+}
+html.ie9 table.records thead tr.colheading,
+html.ie9 table.records tbody.thead tr.colheading {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+html.ie9 table.records tbody:not(.thead) {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.record,
+.checkbox-record {
+  background-color: #fff;
+}
+.record.highlight,
+.checkbox-record.highlight {
+  background-color: #ccffff;
+}
+.record.error,
+.checkbox-record.error {
+  background-color: #ffe6e6;
+}
+.record.active,
+.checkbox-record.active {
+  background-color: #DEEBFF;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(250, 250, 250, 0.25);
+  color: #444;
+}
+.record:hover,
+.checkbox-record:hover {
+  background-color: #DEEBFF;
+  color: #000;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+.record.active td,
+.checkbox-record.active td,
+.record:hover td,
+.checkbox-record:hover td {
+  text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.75);
+}
+.no-records {
+  padding: 30px !important;
+  text-align: center !important;
+  margin-right: 20px !important;
+  border: none !important;
+}
 body {
   background-color: #ccc;
   background-image: -webkit-linear-gradient(top, #e1e1e1 0%, #ffffff 100%);
