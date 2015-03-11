@@ -31,7 +31,7 @@ function mobileview(){
 	$(".navbar-collapse").css({ maxHeight: maxH + "px" });
 	
 	//$("#mobile-selector-menu ").css({width:($(window).width()-300) + "px" })
-	$("#mobile-selector-menu").css({width:($(window).width()-300) + "px" });
+	$("#mobile-selector-menu").css({width:($(window).width()-200) + "px" });
 		
 		$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
 	

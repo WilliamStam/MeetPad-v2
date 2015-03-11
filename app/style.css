@@ -7683,7 +7683,6 @@ button.close {
   background-color: #e1e1e1;
 }
 #mobile-selector-menu .dropdown-menu {
-  margin-left: -100px;
   margin-right: -200px;
 }
 #mobile-selector-menu.open .dropdown-menu {
