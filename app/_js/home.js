@@ -32,7 +32,8 @@ $(document).ready(function () {
 			
 		},
 		//Default is 75px, set to 0 for demo so any distance triggers swipe
-		threshold:0
+		threshold:0,
+		allowPageScroll:"auto"
 	});
 	$("#left-area").swipe( {
 		//Generic swipe handler for all directions
