@@ -63,6 +63,33 @@ if (file_exists("./.git/refs/heads/" . $cfg['git']['branch'])) {
 
 $minVersion = preg_replace("/[^0-9]/", "", $version);
 $f3->set('version', $version);
+
+
+
+$uID = isset($_SESSION['uID']) ? $_SESSION['uID'] : "";
+$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
+$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
+
+$userO = new \models\user();
+//$uID = "2";
+
+
+
+if ($username && $password) {
+	$uID = $userO->login($username, $password);
+}
+$user = $userO->get($uID);
+if (isset($_GET['auID']) && $user['su']=='1'){
+	$_SESSION['uID'] = $_GET['auID'];
+	$user = $userO->get($_GET['auID']);
+}
+
+
+
+
+$f3->set('user', $user);
+
+
 $f3->set('v', $minVersion);
 
 $f3->route('GET /txt', function ($f3) {
@@ -70,36 +97,38 @@ $f3->route('GET /txt', function ($f3) {
 
 }
 );
-$f3->route('GET /', function ($f3) {
-	$page = array(
-		"template" => "home.twig", 
-		"title" => "Testing", "description" => "",
-	);
 
+$f3->route('GET|POST /login', 'controllers\login->page');
+$f3->route('GET|POST /', 'controllers\home->page');
 
-	$tmpl = new \template("index.twig", "app");
-	$tmpl->page = $page;
-
-	$tmpl->output();
-
-
-}
-);
-$f3->route('GET /500', function ($f3) {
-	$this->f3->get("get");
-
-}
-);
-$f3->route('GET /json', function ($f3) {
-	$t = new \timer();
-	$f3->set("__runJSON", true);
-	$result = Array(
-		"test" => "this"
-	);
-	$t->stop("test");
-	return $GLOBALS["output"]['data'] = $result;
-
+$f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
+	session_unset();
+	//session_destroy();
+	$f3->reroute("/login");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $f3->route('GET /php', function () {
 	phpinfo();
@@ -140,11 +169,15 @@ if (($f3->get("AJAX") && ($f3->get("__runTemplate")==false) || $f3->get("__runJS
 	echo json_encode($GLOBALS["output"]);
 } else {
 
+	//test_array($GLOBALS["output"]); 
 
 	echo '
 					<script type="text/javascript">
-				       updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
+				      updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
 					</script>
+					</body>
+</html>
+
 				';
 
 }

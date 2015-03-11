@@ -1,0 +1,26 @@
+#home-page-stats {
+  padding-right: 5px;
+}
+#home-page-stats table {
+  margin-bottom: 0;
+  border-top: none;
+  border-bottom: 1px solid #ccc;
+}
+.stats-nr {
+  color: #404040;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+.stats-h {
+  color: #BFBFBF;
+  font-size: 14px;
+}
+.stats-nr.sub {
+  color: #595959;
+  font-size: 14px;
+  border-left: 1px dotted #e1e1e1;
+}
+.stats-h.sub {
+  font-size: 14px;
+}

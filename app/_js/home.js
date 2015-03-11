@@ -55,6 +55,6 @@ $(document).ready(function () {
 });
 
 function resize(){
-	console.log($("#left-area").height())
+	//console.log($("#left-area").height())
 	$("#right-area").css({ minHeight: $("#left-area").height() + "px" });
 }

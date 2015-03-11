@@ -27,7 +27,14 @@ $(document).ready(function(){
 	});
 });
 function mobileview(){
-	$(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
+	var maxH = $(window).height() - $(".navbar-header").height()
+	$(".navbar-collapse").css({ maxHeight: maxH + "px" });
+	
+	//$("#mobile-selector-menu ").css({width:($(window).width()-300) + "px" })
+	$("#mobile-selector-menu").css({width:($(window).width()-300) + "px" });
+		
+		$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
+	
 }
 
 function updatetimerlist(d, page_size) {

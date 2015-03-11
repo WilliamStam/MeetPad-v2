@@ -4,7 +4,7 @@ Twig_Autoloader::register();
 class template {
 	private $config = array(), $vars = array();
 
-	function __construct($template, $folder = "", $strictfolder = false) {
+	function __construct($template, $folder = "app/", $strictfolder = false) {
 		$this->f3 = Base::instance();
 		$this->config['cache_dir'] = $this->f3->get('TEMP');
 		//$this->config['cache_dir'] = false;
@@ -87,7 +87,7 @@ class template {
 			$folder = $this->vars['folder'];
 		} else {
 			$folder = array(
-				"app/", $this->vars['folder']
+				$this->vars['folder']
 			);
 		}
 
@@ -116,20 +116,16 @@ class template {
 
 
 					}
-
-
-
-
-
-
-
-
 				}
+
+
+				$this->vars['page']['template'] = $this->vars['page']['template'] . ".twig";
+				
 			}
 			//test_array($this->vars['page']);
 		}
 
-
+//test_array($this->vars['page']); 
 
 		if ($this->config['strictfolder']) {
 			$folder = $this->vars['folder'];
