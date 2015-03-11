@@ -1,14 +1,34 @@
-
-<div class="navbar navbar-inverse navbar-fixed-top " id="main-nav-bar" >
+<div class="navbar navbar-inverse navbar-fixed-top " id="main-nav-bar">
 	<div class="container">
 		<div class="navbar-header">
 			<a href="/" class="navbar-brand">MeetPad</a>
-			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+			
+			<button class="navbar-toggle pull-right" type="button" data-toggle="collapse" data-target="#navbar-main">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			<ul class="nav navbar-nav navbar-right pull-right visible-xs-inline" style="margin: 0 10px;">
+				<li style="display: inline-block;">
+					<a  href="?c=3"><i class="fa fa-envelope-o"></i></a>
+					
+				</li>
+				<li style="display: inline-block;">
+					<a href="?c=3"><i class="fa fa-comments-o"></i></a>
+					
+				</li>
+
+				<li style="display: inline-block;">
+					<a href="?c=3"><i class="fa fa-question"></i></a>
+				</li>
+
+
+				
+			</ul>
+			
 		</div>
+		
+		
 		<div class="navbar-collapse collapse" id="navbar-main">
 			<ul class="nav navbar-nav">
 
@@ -21,39 +41,64 @@
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
+				<li class="dropdown hidden-xs">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="?c=3"><i class="fa fa-envelope-o"></i><span class="visible-xs-inline"> Messages</span></a>
 					<ul class="dropdown-menu" aria-labelledby="download">
-						
+
 					</ul>
 				</li>
-				<li class="dropdown">
+				<li class="dropdown hidden-xs">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="?c=3"><i class="fa fa-comments-o"></i><span class="visible-xs-inline"> Comments</span></a>
 					<ul class="dropdown-menu" aria-labelledby="download">
-						
+
 					</ul>
 				</li>
-				
-				<li class="dropdown">
+
+				<li class="dropdown hidden-xs">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="?c=3"><i class="fa fa-question"></i><span class="visible-xs-inline"> Polls</span></a>
 					<ul class="dropdown-menu" aria-labelledby="download">
+
+					</ul>
+				</li>
+
+
+				<li class="dropdown el">
+					<a class="dropdown-toggle el" data-toggle="dropdown" href="?c=3">
+						Impreshin
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="download" style="width:150px;" >
+						<li>
+							<a href="?c=1"><span class="badge pull-right">2</span>Zoutnet </a>
 						
-					</ul>
-				</li>
-				
-				
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="?c=3">Impreshin <span class="caret"></span></a>
-					<ul class="dropdown-menu" aria-labelledby="download">
-						<li><a href="?c=1">Zoutnet</a></li>
+						</li>
 						<li><a href="?c=2">Kathorus</a></li>
+						<li class="active"><a href="?c=3">Impreshin</a></li>
 					</ul>
 				</li>
-		
-				<li><a href="/settings"><span class="fa fa-gears"></span><span class="visible-xs-inline"> Settings</span></a></li>
-				<li><a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out"></span></a></li>
+
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="/settings">
+						<span class="fa fa-gears"></span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="download" style="width:150px;" >
+						<li>
+							<a href="/settings/profile">Profile </a>
+
+						</li>
+						<li>
+							<a href="/settings/company">Company</a>
+						</li>
+					</ul>
+				</li>
+				
+				
+				
+				<li><a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out"></span></a>
+				</li>
 			</ul>
 
 		</div>
+		
 	</div>
 </div>

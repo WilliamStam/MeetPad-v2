@@ -12,7 +12,7 @@ $(document).ready(function () {
 		resize()
 	});
 	
-	$(".test-nav").on("click",function(){
+	$("#left-area .table .record").on("click",function(){
 		$('#right-area').removeClass("active");
 	});
 
@@ -50,6 +50,7 @@ $(document).ready(function () {
 		threshold:0
 	}).addClass("affix-bottom");
 	
+	$("#loading-mask").fadeOut();
 	
 });
 

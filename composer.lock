@@ -133,17 +133,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabinus52/bootstrap-datetimepicker.git",
-                "reference": "3db122b1b5e9ab1dd475efb0af7d22a82daac997"
+                "reference": "f62292c328e58d93af0fe7acf6a61bbcc8786ceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabinus52/bootstrap-datetimepicker/zipball/3db122b1b5e9ab1dd475efb0af7d22a82daac997",
-                "reference": "3db122b1b5e9ab1dd475efb0af7d22a82daac997",
+                "url": "https://api.github.com/repos/sabinus52/bootstrap-datetimepicker/zipball/f62292c328e58d93af0fe7acf6a61bbcc8786ceb",
+                "reference": "f62292c328e58d93af0fe7acf6a61bbcc8786ceb",
                 "shasum": ""
             },
             "require": {
-                "components/bootstrap": ">=2.0, <4.0",
-                "robloach/component-installer": "*"
+                "components/bootstrap": ">=2.0, <4.0"
+            },
+            "suggest": {
+                "robloach/component-installer": "Allows installation of Components via Composer"
             },
             "type": "component",
             "extra": {
@@ -181,7 +183,7 @@
                 "time",
                 "timepicker"
             ],
-            "time": "2015-01-02 10:14:17"
+            "time": "2015-02-06 13:15:03"
         },
         {
             "name": "components/jQote2",
@@ -679,17 +681,17 @@
         },
         {
             "name": "symfony/process",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Process",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "319794f611bd8bdefbac72beb3f05e847f8ebc92"
+                "reference": "ecfc23e89d9967999fa5f60a1e9af7384396e9ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/319794f611bd8bdefbac72beb3f05e847f8ebc92",
-                "reference": "319794f611bd8bdefbac72beb3f05e847f8ebc92",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/ecfc23e89d9967999fa5f60a1e9af7384396e9ae",
+                "reference": "ecfc23e89d9967999fa5f60a1e9af7384396e9ae",
                 "shasum": ""
             },
             "require": {
@@ -722,7 +724,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-06 22:47:52"
+            "time": "2015-01-25 04:39:26"
         },
         {
             "name": "timrwood/moment",

@@ -28,10 +28,6 @@ body {
 .row-offcanvas-left.active .offcanvas-btn-show {
   display: none!important;
 }
-/*
- * Style tweaks
- * --------------------------------------------------
- */
 html,
 body {
   overflow-x: hidden;
@@ -55,7 +51,7 @@ body {
 .offcanvas i.fa {
   margin-top: -5px;
   top: 50%;
-  position: absolute;
+  position: fixed;
   margin-left: 2px;
 }
 /*
@@ -77,25 +73,20 @@ body {
   }
   .row-offcanvas-right .sidebar-offcanvas {
     right: -395px;
-    /* 6 columns */
   }
   .row-offcanvas-left .sidebar-offcanvas {
     left: -395px;
-    /* 6 columns */
   }
   .row-offcanvas-right.active {
     right: 395px;
-    /* 6 columns */
   }
   .row-offcanvas-left.active {
     left: 395px;
-    /* 6 columns */
   }
   .sidebar-offcanvas {
     position: absolute;
     top: 0;
     max-width: 395px;
-    /* 6 columns */
   }
 }
 #left-area h1 {
@@ -104,7 +95,7 @@ body {
 #left-area .table th {
   font-weight: bold;
   font-size: 16px;
-  padding-top: 20px;
+  padding-top: 15px;
 }
 #meeting-date-line {
   border-bottom: 1px solid #ddd;

@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				spawn: false,
-				banner: '/*! <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+				banner: '/*! Build date: <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 			},
 			js: {
 				files: {
