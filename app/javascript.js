@@ -28131,7 +28131,7 @@ if (typeof jQuery === 'undefined') {
 		this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
 		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
-		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove .fa-times').parent() : this.element.find('.add-on .icon-remove .fa-times').parent()) : false;
+		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find(".input-group-addon .glyphicon-remove, .input-group-addon .fa-times").parent():this.element.find(".add-on .icon-remove, .add-on .fa-times").parent()) : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -28571,8 +28571,8 @@ if (typeof jQuery === 'undefined') {
 
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
-			
-			top = top + document.body.scrollTop
+
+			if(this.container != 'body') top = top + document.body.scrollTop
 
 			this.picker.css({
 				top:    top,
@@ -51325,7 +51325,7 @@ Globally exposed namespace with the most frequently used public classes and hand
 
 })(jQuery);
 
-;$(document).ready(function(){
+;$(document).ready(function () {
 
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
@@ -51349,19 +51349,19 @@ Globally exposed namespace with the most frequently used public classes and hand
 
 	});
 	mobileview()
-	$( window ).resize(function() {
+	$(window).resize(function () {
 		mobileview()
 	});
 });
-function mobileview(){
+function mobileview() {
 	var maxH = $(window).height() - $(".navbar-header").height()
-	$(".navbar-collapse").css({ maxHeight: maxH + "px" });
-	
+	$(".navbar-collapse").css({maxHeight: maxH + "px"});
+
 	//$("#mobile-selector-menu ").css({width:($(window).width()-300) + "px" })
-	$("#mobile-selector-menu").css({width:($(window).width()-200) + "px" });
-		
-		$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
-	
+	$("#mobile-selector-menu").css({width: ($(window).width() - 200) + "px"});
+
+	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
+
 }
 
 function updatetimerlist(d, page_size) {
@@ -51370,7 +51370,7 @@ function updatetimerlist(d, page_size) {
 	if (!d || !typeof d == 'object') {
 		return false;
 	}
-console.log(d);
+	console.log(d);
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];
@@ -51384,13 +51384,16 @@ console.log(d);
 
 		var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + '</td><td class="s g"' + highlight + '>' + page['time'] + '</td></tr>', thm;
 		if (models) {
-			thm = $("#template-timers-tr-models").jqote(models, "*");
+			thm = $("#template-timers-tr-models").jqote(models);
 		} else {
 			thm = "";
 		}
-		//console.log(thm)
+		console.log(thm)
+		var timers = $("#template-timers-tr").jqote(data);
+		console.log(timers)
 
-		$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*") + thm);
+		//console.log($("#template-timers-tr"))
+		$("#systemTimers").prepend(th + timers + thm);
 
 		// console.log($("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")));
 	}

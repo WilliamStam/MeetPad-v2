@@ -7676,11 +7676,19 @@ button.close {
   min-height: 20px;
 }
 .selector-dropdown .dropdown-menu li a {
+  color: #333!important;
   border-bottom: 1px dotted #ccc;
+}
+.selector-dropdown .dropdown-menu li a:hover {
+  background-color: #446e9b!important;
+  color: #ffffff!important;
 }
 .selector-dropdown .dropdown-menu li.dropdown-header {
   margin-top: 10px;
   background-color: #e1e1e1;
+}
+.selector-dropdown .dropdown-menu li.active a {
+  color: #fff!important;
 }
 #mobile-selector-menu .dropdown-menu {
   margin-right: -200px;
@@ -7689,6 +7697,8 @@ button.close {
   display: block;
   max-height: 100px;
   overflow-y: auto;
+  background: none;
+  background-color: #fff;
 }
 #web-selector-menu .dropdown-menu {
   width: 280px;
