@@ -86,8 +86,8 @@ function getData(){
 			autohidemode:'leave'
 		};
 
-		$("#right-area").niceScroll("#right-area-content",scrollbarOptions);
-		$("#left-area").niceScroll("#left-area-content",scrollbarOptions);
+		//$("#right-area").niceScroll("#right-area-content",scrollbarOptions);
+		//$("#left-area").niceScroll("#left-area-content",scrollbarOptions);
 		
 		$("#loading-mask").fadeOut();
 		resize();
