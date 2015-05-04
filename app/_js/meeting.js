@@ -81,13 +81,15 @@ function getData(){
 		$("#left-area-content").jqotesub($("#template-agenda"),data);
 		
 		
-		var scrollbarOptions = {
-			cursorcolor:"#00F",
-			autohidemode:'leave'
+		var settings = {
+			showArrows: true,
+			autoReinitialise: true
 		};
+		
+		
 
-		//$("#right-area").niceScroll("#right-area-content",scrollbarOptions);
-		//$("#left-area").niceScroll("#left-area-content",scrollbarOptions);
+		$("#right-area .scroll-pane").jScrollPane(settings);
+		$("#left-area .scroll-pane").jScrollPane(settings);
 		
 		$("#loading-mask").fadeOut();
 		resize();

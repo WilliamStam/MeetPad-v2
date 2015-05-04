@@ -1,8 +1,8 @@
 #left-area {
   background-color: #fff;
-  overflow-y: auto;
   border-right: 1px solid #ccc;
-  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
 }
 #left-area.affix-top {
   position: static;
@@ -11,7 +11,7 @@
 #left-area.affix {
   position: fixed;
   top: 40px;
-  bottom: 0;
+  bottom: 20px;
   max-width: 395px;
   width: 100%;
 }
@@ -98,4 +98,15 @@
 }
 #item-area h3 {
   margin-top: 25px;
+}
+#left-area {
+  overflow: hidden;
+}
+.scroll-pane {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow: auto;
 }
