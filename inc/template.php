@@ -141,8 +141,7 @@ class template {
 		$options['debug'] = true;
 		//$options['cache'] = false;
 
-	
-		
+
 
 
 	//	test_array($this->vars); 
@@ -152,6 +151,11 @@ class template {
 		$twig = new Twig_Environment($loader, $options);
 		$twig->addExtension(new Twig_Extension_Debug());
 
+		$twig->addFilter(new Twig_SimpleFilter('toAscii', function ($string) {
+			$string = toAscii($string);
+			return ($string);
+		}
+		));
 
 
 		//test_array(array("template"=>$this->template,"vars"=>$this->vars));

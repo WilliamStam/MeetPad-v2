@@ -1,41 +1,35 @@
-<a class="dropdown-toggle el" data-toggle="dropdown" href="?m=1">
-	64th Annual General Meeting of shareholders of Capro (Pty) Ltd
+<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
+	{{ dropdownLabel|default("Meeting / Company") }}
 	<span class="caret"></span>
 </a>
 <ul class="dropdown-menu " style="" >
 	<li role="presentation" class="dropdown-header" style="margin-top:0;">Active Meetings</li>
-	<li>
-		<a href="?m=1">
-			<div>Special Exco Meeting</div>
+	{% for row in menu['meetings'] %}
+	<li {% if row['ID'] == data['ID'] and page['section'] == 'meeting' %}class="active"{% endif %}>
+		<a href="/content/{{ row['ID'] }}/{{ row['company']|toAscii() }}/{{ row['url'] }}">
+			<div>{{ row['meeting'] }}</div>
 			<div class="s r g">
-				<div>
-					<em>05 Feb (Thu) 10:00 AM - 05 Feb (Thu) 10:00 AM</em>
-				</div>
-				<div>
-					<strong>SACD Ladies Hockey</strong>
-				</div>
-
+				<strong>{{ row['company'] }}</strong>
 			</div>
+			
+			<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
+				<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"  style="width:{{ row['percent'] }}%; opacity: 0.2"></div>
+
+				<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
+					<em>{{ row['timeStart']['short']['disp'] }} - {{ row['timeEnd']['short']['disp'] }}</em>
+				</div>
+			</div>
+			
+			
+			
 		</a>
 	</li>
-	<li class="active">
-		<a href="?m=2">
-			<div>64th Annual General Meeting of shareholders of Capro (Pty) Ltd</div>
-			<div class="s r g">
-				<div>
-					<em>05 Feb (Thu) 10:00 AM - 05 Feb (Thu) 10:00 AM</em>
-				</div>
-				<div>
-					<strong>Capro</strong>
-				</div>
-
-			</div>
-		</a>
-	</li>
+	{% endfor %}
+	
 	<li role="presentation" class="dropdown-header">Companies / Organizations</li>
-	<li><a href="?c=1">Zoutnet <span class="badge pull-right">1</span></a></li>
-	<li><a href="?c=2">Kathorus</a></li>
-	<li><a href="?c=3">Impreshin</a></li>
+	{% for row in menu['companies'] %}
+	<li {% if row['ID'] == data['ID'] and page['section'] == "company" %}class="active"{% endif %}><a href="/content/{{ row['ID'] }}/{{ row['url'] }}">{{ row['company'] }} {% if row['activeMeetings'] %}<span class="badge pull-right">{{ row['activeMeetings'] }}</span>{% endif %}</a></li>
+	{% endfor %}
 
 
 </ul>

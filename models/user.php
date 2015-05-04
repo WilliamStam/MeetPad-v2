@@ -3,9 +3,19 @@ namespace models;
 use \timer as timer;
 
 class user extends _ {
+	private static $instance;
+	//private $method;
 	function __construct() {
 		parent::__construct();
 	}
+	public static function getInstance(){
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+	
+	
 	function get($ID){
 		$timer = new timer();
 		$where = "ID = '$ID'";
@@ -33,10 +43,12 @@ class user extends _ {
 		}
 		//test_array($return);
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $return;
+		$this->return = $return;
+		$this->method = __FUNCTION__;
+		
+		return $this;
 	}
 	function login($username, $password) {
-		$f3 = \Base::instance();
 		$timer = new timer();
 
 		$ID = "";
@@ -49,7 +61,7 @@ class user extends _ {
 
 		$password_hash = md5(md5("meet").$password.md5("pad"));
 
-		$result = $f3->get("DB")->exec("
+		$result = $this->f3->get("DB")->exec("
 			SELECT ID, email FROM mp_users WHERE email ='$username' AND password = '$password_hash'
 		");
 
@@ -67,6 +79,62 @@ class user extends _ {
 
 		$return = $ID;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $return;
+		$this->return = $return;
+		return $this;
+	}
+	
+	function menu(){
+		$timer = new timer();
+		$return = array();
+		$user = $this->f3->get("user");
+		
+		if ($user['global_admin']=='1'){
+			$whereC = "1";
+			$whereM = "1";
+		} else {
+			$whereC = "userID='{$user['ID']}'";
+			$whereM = "mp_users_group.userID='{$user['ID']}'";
+		}
+		$meetings = meeting::getInstance()->getUser($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC")->format()->show();
+		$am = array();
+		foreach ($meetings as $item){
+			$item['activeMeetings'] = 0;
+			if (!isset($am[$item['companyID']]))$am[$item['companyID']] = 0;
+			
+			$am[$item['companyID']] = $am[$item['companyID']] + 1;
+		}
+		
+		
+		
+		$companies = company::getInstance()->getUser($whereC,"company ASC")->format()->show();
+		
+		//test_array($whereC); 
+		$n = array();
+		foreach ($companies as $item){
+			$item['activeMeetings'] = isset($am[$item['ID']])?$am[$item['ID']] : 0;
+			$n[] = $item;
+		}
+		$companies = $n;
+		
+		
+		
+		
+		
+		$return = array(
+			"companies"=>$companies,
+			"meetings"=>$meetings
+		);
+		
+		
+		
+	//	test_array($return); 
+		
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		$this->return = $return;
+		return $this;
+	}
+	function show(){
+		return $this->return;
 	}
 }

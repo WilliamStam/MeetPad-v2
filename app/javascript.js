@@ -9203,10 +9203,10 @@ if ( typeof noGlobal === strundefined ) {
 return jQuery;
 
 }));
-;/*! jQuery UI - v1.11.2 - 2014-10-16
+;/*! jQuery UI - v1.11.4 - 2015-03-11
 * http://jqueryui.com
 * Includes: core.js, widget.js, mouse.js, position.js, accordion.js, autocomplete.js, button.js, datepicker.js, dialog.js, draggable.js, droppable.js, effect.js, effect-blind.js, effect-bounce.js, effect-clip.js, effect-drop.js, effect-explode.js, effect-fade.js, effect-fold.js, effect-highlight.js, effect-puff.js, effect-pulsate.js, effect-scale.js, effect-shake.js, effect-size.js, effect-slide.js, effect-transfer.js, menu.js, progressbar.js, resizable.js, selectable.js, selectmenu.js, slider.js, sortable.js, spinner.js, tabs.js, tooltip.js
-* Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
+* Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
@@ -9220,10 +9220,10 @@ return jQuery;
 	}
 }(function( $ ) {
 /*!
- * jQuery UI Core 1.11.2
+ * jQuery UI Core 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -9235,7 +9235,7 @@ return jQuery;
 $.ui = $.ui || {};
 
 $.extend( $.ui, {
-	version: "1.11.2",
+	version: "1.11.4",
 
 	keyCode: {
 		BACKSPACE: 8,
@@ -9308,7 +9308,7 @@ function focusable( element, isTabIndexNotNaN ) {
 		img = $( "img[usemap='#" + mapName + "']" )[ 0 ];
 		return !!img && visible( img );
 	}
-	return ( /input|select|textarea|button|object/.test( nodeName ) ?
+	return ( /^(input|select|textarea|button|object)$/.test( nodeName ) ?
 		!element.disabled :
 		"a" === nodeName ?
 			element.href || isTabIndexNotNaN :
@@ -9514,10 +9514,10 @@ $.ui.plugin = {
 
 
 /*!
- * jQuery UI Widget 1.11.2
+ * jQuery UI Widget 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -9695,11 +9695,6 @@ $.widget.bridge = function( name, object ) {
 			args = widget_slice.call( arguments, 1 ),
 			returnValue = this;
 
-		// allow multiple hashes to be passed on init
-		options = !isMethodCall && args.length ?
-			$.widget.extend.apply( null, [ options ].concat(args) ) :
-			options;
-
 		if ( isMethodCall ) {
 			this.each(function() {
 				var methodValue,
@@ -9724,6 +9719,12 @@ $.widget.bridge = function( name, object ) {
 				}
 			});
 		} else {
+
+			// Allow multiple hashes to be passed on init
+			if ( args.length ) {
+				options = $.widget.extend.apply( null, [ options ].concat(args) );
+			}
+
 			this.each(function() {
 				var instance = $.data( this, fullName );
 				if ( instance ) {
@@ -10061,10 +10062,10 @@ var widget = $.widget;
 
 
 /*!
- * jQuery UI Mouse 1.11.2
+ * jQuery UI Mouse 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -10078,7 +10079,7 @@ $( document ).mouseup( function() {
 });
 
 var mouse = $.widget("ui.mouse", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		cancel: "input,textarea,button,select,option",
 		distance: 1,
@@ -10247,10 +10248,10 @@ var mouse = $.widget("ui.mouse", {
 
 
 /*!
- * jQuery UI Position 1.11.2
+ * jQuery UI Position 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -10686,12 +10687,12 @@ $.ui.position = {
 				newOverBottom;
 			if ( overTop < 0 ) {
 				newOverBottom = position.top + myOffset + atOffset + offset + data.collisionHeight - outerHeight - withinOffset;
-				if ( ( position.top + myOffset + atOffset + offset) > overTop && ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) ) {
+				if ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) {
 					position.top += myOffset + atOffset + offset;
 				}
 			} else if ( overBottom > 0 ) {
 				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset + offset - offsetTop;
-				if ( ( position.top + myOffset + atOffset + offset) > overBottom && ( newOverTop > 0 || abs( newOverTop ) < overBottom ) ) {
+				if ( newOverTop > 0 || abs( newOverTop ) < overBottom ) {
 					position.top += myOffset + atOffset + offset;
 				}
 			}
@@ -10754,10 +10755,10 @@ var position = $.ui.position;
 
 
 /*!
- * jQuery UI Accordion 1.11.2
+ * jQuery UI Accordion 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -10766,7 +10767,7 @@ var position = $.ui.position;
 
 
 var accordion = $.widget( "ui.accordion", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		active: 0,
 		animate: {},
@@ -11224,7 +11225,10 @@ var accordion = $.widget( "ui.accordion", {
 		toHide.attr({
 			"aria-hidden": "true"
 		});
-		toHide.prev().attr( "aria-selected", "false" );
+		toHide.prev().attr({
+			"aria-selected": "false",
+			"aria-expanded": "false"
+		});
 		// if we're switching panels, remove the old header from the tab order
 		// if we're opening from collapsed state, remove the previous header from the tab order
 		// if we're collapsing, then keep the collapsing header in the tab order
@@ -11235,7 +11239,7 @@ var accordion = $.widget( "ui.accordion", {
 			});
 		} else if ( toShow.length ) {
 			this.headers.filter(function() {
-				return $( this ).attr( "tabIndex" ) === 0;
+				return parseInt( $( this ).attr( "tabIndex" ), 10 ) === 0;
 			})
 			.attr( "tabIndex", -1 );
 		}
@@ -11245,8 +11249,8 @@ var accordion = $.widget( "ui.accordion", {
 			.prev()
 				.attr({
 					"aria-selected": "true",
-					tabIndex: 0,
-					"aria-expanded": "true"
+					"aria-expanded": "true",
+					tabIndex: 0
 				});
 	},
 
@@ -11254,6 +11258,7 @@ var accordion = $.widget( "ui.accordion", {
 		var total, easing, duration,
 			that = this,
 			adjust = 0,
+			boxSizing = toShow.css( "box-sizing" ),
 			down = toShow.length &&
 				( !toHide.length || ( toShow.index() < toHide.index() ) ),
 			animate = this.options.animate || {},
@@ -11296,7 +11301,9 @@ var accordion = $.widget( "ui.accordion", {
 				step: function( now, fx ) {
 					fx.now = Math.round( now );
 					if ( fx.prop !== "height" ) {
-						adjust += fx.now;
+						if ( boxSizing === "content-box" ) {
+							adjust += fx.now;
+						}
 					} else if ( that.options.heightStyle !== "content" ) {
 						fx.now = Math.round( total - toHide.outerHeight() - adjust );
 						adjust = 0;
@@ -11324,10 +11331,10 @@ var accordion = $.widget( "ui.accordion", {
 
 
 /*!
- * jQuery UI Menu 1.11.2
+ * jQuery UI Menu 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -11336,7 +11343,7 @@ var accordion = $.widget( "ui.accordion", {
 
 
 var menu = $.widget( "ui.menu", {
-	version: "1.11.2",
+	version: "1.11.4",
 	defaultElement: "<ul>",
 	delay: 300,
 	options: {
@@ -11955,10 +11962,10 @@ var menu = $.widget( "ui.menu", {
 
 
 /*!
- * jQuery UI Autocomplete 1.11.2
+ * jQuery UI Autocomplete 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -11967,7 +11974,7 @@ var menu = $.widget( "ui.menu", {
 
 
 $.widget( "ui.autocomplete", {
-	version: "1.11.2",
+	version: "1.11.4",
 	defaultElement: "<input>",
 	options: {
 		appendTo: null,
@@ -12567,10 +12574,10 @@ var autocomplete = $.ui.autocomplete;
 
 
 /*!
- * jQuery UI Button 1.11.2
+ * jQuery UI Button 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -12606,7 +12613,7 @@ var lastActive,
 	};
 
 $.widget( "ui.button", {
-	version: "1.11.2",
+	version: "1.11.4",
 	defaultElement: "<button>",
 	options: {
 		disabled: null,
@@ -12902,7 +12909,7 @@ $.widget( "ui.button", {
 });
 
 $.widget( "ui.buttonset", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		items: "button, input[type=button], input[type=submit], input[type=reset], input[type=checkbox], input[type=radio], a, :data(ui-button)"
 	},
@@ -12964,10 +12971,10 @@ var button = $.ui.button;
 
 
 /*!
- * jQuery UI Datepicker 1.11.2
+ * jQuery UI Datepicker 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -12975,7 +12982,7 @@ var button = $.ui.button;
  */
 
 
-$.extend($.ui, { datepicker: { version: "1.11.2" } });
+$.extend($.ui, { datepicker: { version: "1.11.4" } });
 
 var datepicker_instActive;
 
@@ -13340,6 +13347,10 @@ $.extend(Datepicker.prototype, {
 				unbind("keyup", this._doKeyUp);
 		} else if (nodeName === "div" || nodeName === "span") {
 			$target.removeClass(this.markerClassName).empty();
+		}
+
+		if ( datepicker_instActive === inst ) {
+			datepicker_instActive = null;
 		}
 	},
 
@@ -15025,16 +15036,16 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.11.2";
+$.datepicker.version = "1.11.4";
 
 var datepicker = $.datepicker;
 
 
 /*!
- * jQuery UI Draggable 1.11.2
+ * jQuery UI Draggable 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -15043,7 +15054,7 @@ var datepicker = $.datepicker;
 
 
 $.widget("ui.draggable", $.ui.mouse, {
-	version: "1.11.2",
+	version: "1.11.4",
 	widgetEventPrefix: "drag",
 	options: {
 		addClasses: true,
@@ -15817,6 +15828,9 @@ $.ui.plugin.add( "draggable", "connectToSortable", {
 				if ( !sortable.isOver ) {
 					sortable.isOver = 1;
 
+					// Store draggable's parent in case we need to reappend to it later.
+					draggable._parent = ui.helper.parent();
+
 					sortable.currentItem = ui.helper
 						.appendTo( sortable.element )
 						.data( "ui-sortable-item", true );
@@ -15893,8 +15907,9 @@ $.ui.plugin.add( "draggable", "connectToSortable", {
 						sortable.placeholder.remove();
 					}
 
-					// Recalculate the draggable's offset considering the sortable
-					// may have modified them in unexpected ways (#8809)
+					// Restore and recalculate the draggable's offset considering the sortable
+					// may have modified them in unexpected ways. (#8809, #10669)
+					ui.helper.appendTo( draggable._parent );
 					draggable._refreshOffsets( event );
 					ui.position = draggable._generatePosition( event, true );
 
@@ -16144,10 +16159,10 @@ var draggable = $.ui.draggable;
 
 
 /*!
- * jQuery UI Resizable 1.11.2
+ * jQuery UI Resizable 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -16156,7 +16171,7 @@ var draggable = $.ui.draggable;
 
 
 $.widget("ui.resizable", $.ui.mouse, {
-	version: "1.11.2",
+	version: "1.11.4",
 	widgetEventPrefix: "resize",
 	options: {
 		alsoResize: false,
@@ -16229,7 +16244,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 		});
 
 		// Wrap the element if it cannot hold child nodes
-		if (this.element[0].nodeName.match(/canvas|textarea|input|select|button|img/i)) {
+		if (this.element[0].nodeName.match(/^(canvas|textarea|input|select|button|img)$/i)) {
 
 			this.element.wrap(
 				$("<div class='ui-wrapper' style='overflow: hidden;'></div>").css({
@@ -16290,7 +16305,8 @@ $.widget("ui.resizable", $.ui.mouse, {
 					nw: ".ui-resizable-nw"
 				} );
 
-		if (this.handles.constructor === String) {
+		this._handles = $();
+		if ( this.handles.constructor === String ) {
 
 			if ( this.handles === "all") {
 				this.handles = "n,e,s,w,se,sw,ne,nw";
@@ -16328,9 +16344,12 @@ $.widget("ui.resizable", $.ui.mouse, {
 
 				if (this.handles[i].constructor === String) {
 					this.handles[i] = this.element.children( this.handles[ i ] ).first().show();
+				} else if ( this.handles[ i ].jquery || this.handles[ i ].nodeType ) {
+					this.handles[ i ] = $( this.handles[ i ] );
+					this._on( this.handles[ i ], { "mousedown": that._mouseDown });
 				}
 
-				if (this.elementIsWrapper && this.originalElement[0].nodeName.match(/textarea|input|select|button/i)) {
+				if (this.elementIsWrapper && this.originalElement[0].nodeName.match(/^(textarea|input|select|button)$/i)) {
 
 					axis = $(this.handles[i], this.element);
 
@@ -16344,21 +16363,17 @@ $.widget("ui.resizable", $.ui.mouse, {
 					target.css(padPos, padWrapper);
 
 					this._proportionallyResize();
-
 				}
 
-				// TODO: What's that good for? There's not anything to be executed left
-				if (!$(this.handles[i]).length) {
-					continue;
-				}
+				this._handles = this._handles.add( this.handles[ i ] );
 			}
 		};
 
 		// TODO: make renderAxis a prototype function
 		this._renderAxis(this.element);
 
-		this._handles = $(".ui-resizable-handle", this.element)
-			.disableSelection();
+		this._handles = this._handles.add( this.element.find( ".ui-resizable-handle" ) );
+		this._handles.disableSelection();
 
 		this._handles.mouseover(function() {
 			if (!that.resizing) {
@@ -16392,7 +16407,6 @@ $.widget("ui.resizable", $.ui.mouse, {
 		}
 
 		this._mouseInit();
-
 	},
 
 	_destroy: function() {
@@ -17073,7 +17087,7 @@ $.ui.plugin.add( "resizable", "containment", {
 			}
 		}
 
-		if ( !continueResize ){
+		if ( !continueResize ) {
 			that.position.left = that.prevPosition.left;
 			that.position.top = that.prevPosition.top;
 			that.size.width = that.prevSize.width;
@@ -17114,29 +17128,15 @@ $.ui.plugin.add("resizable", "alsoResize", {
 
 	start: function() {
 		var that = $(this).resizable( "instance" ),
-			o = that.options,
-			_store = function(exp) {
-				$(exp).each(function() {
-					var el = $(this);
-					el.data("ui-resizable-alsoresize", {
-						width: parseInt(el.width(), 10), height: parseInt(el.height(), 10),
-						left: parseInt(el.css("left"), 10), top: parseInt(el.css("top"), 10)
-					});
-				});
-			};
+			o = that.options;
 
-		if (typeof(o.alsoResize) === "object" && !o.alsoResize.parentNode) {
-			if (o.alsoResize.length) {
-				o.alsoResize = o.alsoResize[0];
-				_store(o.alsoResize);
-			} else {
-				$.each(o.alsoResize, function(exp) {
-					_store(exp);
-				});
-			}
-		} else {
-			_store(o.alsoResize);
-		}
+		$(o.alsoResize).each(function() {
+			var el = $(this);
+			el.data("ui-resizable-alsoresize", {
+				width: parseInt(el.width(), 10), height: parseInt(el.height(), 10),
+				left: parseInt(el.css("left"), 10), top: parseInt(el.css("top"), 10)
+			});
+		});
 	},
 
 	resize: function(event, ui) {
@@ -17149,35 +17149,23 @@ $.ui.plugin.add("resizable", "alsoResize", {
 				width: (that.size.width - os.width) || 0,
 				top: (that.position.top - op.top) || 0,
 				left: (that.position.left - op.left) || 0
-			},
-
-			_alsoResize = function(exp, c) {
-				$(exp).each(function() {
-					var el = $(this), start = $(this).data("ui-resizable-alsoresize"), style = {},
-						css = c && c.length ?
-							c :
-							el.parents(ui.originalElement[0]).length ?
-								[ "width", "height" ] :
-								[ "width", "height", "top", "left" ];
-
-					$.each(css, function(i, prop) {
-						var sum = (start[prop] || 0) + (delta[prop] || 0);
-						if (sum && sum >= 0) {
-							style[prop] = sum || null;
-						}
-					});
-
-					el.css(style);
-				});
 			};
 
-		if (typeof(o.alsoResize) === "object" && !o.alsoResize.nodeType) {
-			$.each(o.alsoResize, function(exp, c) {
-				_alsoResize(exp, c);
+			$(o.alsoResize).each(function() {
+				var el = $(this), start = $(this).data("ui-resizable-alsoresize"), style = {},
+					css = el.parents(ui.originalElement[0]).length ?
+							[ "width", "height" ] :
+							[ "width", "height", "top", "left" ];
+
+				$.each(css, function(i, prop) {
+					var sum = (start[prop] || 0) + (delta[prop] || 0);
+					if (sum && sum >= 0) {
+						style[prop] = sum || null;
+					}
+				});
+
+				el.css(style);
 			});
-		} else {
-			_alsoResize(o.alsoResize);
-		}
 	},
 
 	stop: function() {
@@ -17295,7 +17283,7 @@ $.ui.plugin.add("resizable", "grid", {
 				that.size.width = newWidth;
 				that.position.left = op.left - ox;
 			} else {
-				newWidth = gridY - outerDimensions.height;
+				newWidth = gridX - outerDimensions.width;
 				that.size.width = newWidth;
 				that.position.left = op.left + os.width - newWidth;
 			}
@@ -17308,10 +17296,10 @@ var resizable = $.ui.resizable;
 
 
 /*!
- * jQuery UI Dialog 1.11.2
+ * jQuery UI Dialog 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -17320,7 +17308,7 @@ var resizable = $.ui.resizable;
 
 
 var dialog = $.widget( "ui.dialog", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		appendTo: "body",
 		autoOpen: true,
@@ -17440,6 +17428,7 @@ var dialog = $.widget( "ui.dialog", {
 		var next,
 			originalPosition = this.originalPosition;
 
+		this._untrackInstance();
 		this._destroyOverlay();
 
 		this.element
@@ -17518,10 +17507,10 @@ var dialog = $.widget( "ui.dialog", {
 
 	_moveToTop: function( event, silent ) {
 		var moved = false,
-			zIndicies = this.uiDialog.siblings( ".ui-front:visible" ).map(function() {
+			zIndices = this.uiDialog.siblings( ".ui-front:visible" ).map(function() {
 				return +$( this ).css( "z-index" );
 			}).get(),
-			zIndexMax = Math.max.apply( null, zIndicies );
+			zIndexMax = Math.max.apply( null, zIndices );
 
 		if ( zIndexMax >= +this.uiDialog.css( "z-index" ) ) {
 			this.uiDialog.css( "z-index", zIndexMax + 1 );
@@ -18164,10 +18153,10 @@ var dialog = $.widget( "ui.dialog", {
 
 
 /*!
- * jQuery UI Droppable 1.11.2
+ * jQuery UI Droppable 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -18176,7 +18165,7 @@ var dialog = $.widget( "ui.dialog", {
 
 
 $.widget( "ui.droppable", {
-	version: "1.11.2",
+	version: "1.11.4",
 	widgetEventPrefix: "drop",
 	options: {
 		accept: "*",
@@ -18561,10 +18550,10 @@ var droppable = $.ui.droppable;
 
 
 /*!
- * jQuery UI Effects 1.11.2
+ * jQuery UI Effects 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -19456,7 +19445,7 @@ $.fn.extend({
 (function() {
 
 $.extend( $.effects, {
-	version: "1.11.2",
+	version: "1.11.4",
 
 	// Saves a set of properties in a data storage
 	save: function( element, set ) {
@@ -19852,10 +19841,10 @@ var effect = $.effects;
 
 
 /*!
- * jQuery UI Effects Blind 1.11.2
+ * jQuery UI Effects Blind 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -19929,10 +19918,10 @@ var effectBlind = $.effects.effect.blind = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Bounce 1.11.2
+ * jQuery UI Effects Bounce 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20039,10 +20028,10 @@ var effectBounce = $.effects.effect.bounce = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Clip 1.11.2
+ * jQuery UI Effects Clip 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20103,10 +20092,10 @@ var effectClip = $.effects.effect.clip = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Drop 1.11.2
+ * jQuery UI Effects Drop 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20165,10 +20154,10 @@ var effectDrop = $.effects.effect.drop = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Explode 1.11.2
+ * jQuery UI Effects Explode 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20259,10 +20248,10 @@ var effectExplode = $.effects.effect.explode = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Fade 1.11.2
+ * jQuery UI Effects Fade 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20286,10 +20275,10 @@ var effectFade = $.effects.effect.fade = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Fold 1.11.2
+ * jQuery UI Effects Fold 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20359,10 +20348,10 @@ var effectFold = $.effects.effect.fold = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Highlight 1.11.2
+ * jQuery UI Effects Highlight 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20406,10 +20395,10 @@ var effectHighlight = $.effects.effect.highlight = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Size 1.11.2
+ * jQuery UI Effects Size 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20626,10 +20615,10 @@ var effectSize = $.effects.effect.size = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Scale 1.11.2
+ * jQuery UI Effects Scale 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20701,10 +20690,10 @@ var effectScale = $.effects.effect.scale = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Puff 1.11.2
+ * jQuery UI Effects Puff 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20747,10 +20736,10 @@ var effectPuff = $.effects.effect.puff = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Pulsate 1.11.2
+ * jQuery UI Effects Pulsate 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20807,10 +20796,10 @@ var effectPulsate = $.effects.effect.pulsate = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Shake 1.11.2
+ * jQuery UI Effects Shake 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20878,10 +20867,10 @@ var effectShake = $.effects.effect.shake = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Slide 1.11.2
+ * jQuery UI Effects Slide 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20939,10 +20928,10 @@ var effectSlide = $.effects.effect.slide = function( o, done ) {
 
 
 /*!
- * jQuery UI Effects Transfer 1.11.2
+ * jQuery UI Effects Transfer 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20983,10 +20972,10 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 
 /*!
- * jQuery UI Progressbar 1.11.2
+ * jQuery UI Progressbar 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -20995,7 +20984,7 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 
 
 var progressbar = $.widget( "ui.progressbar", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		max: 100,
 		value: 0,
@@ -21128,10 +21117,10 @@ var progressbar = $.widget( "ui.progressbar", {
 
 
 /*!
- * jQuery UI Selectable 1.11.2
+ * jQuery UI Selectable 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -21140,7 +21129,7 @@ var progressbar = $.widget( "ui.progressbar", {
 
 
 var selectable = $.widget("ui.selectable", $.ui.mouse, {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		appendTo: "body",
 		autoRefresh: true,
@@ -21400,10 +21389,10 @@ var selectable = $.widget("ui.selectable", $.ui.mouse, {
 
 
 /*!
- * jQuery UI Selectmenu 1.11.2
+ * jQuery UI Selectmenu 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -21412,7 +21401,7 @@ var selectable = $.widget("ui.selectable", $.ui.mouse, {
 
 
 var selectmenu = $.widget( "ui.selectmenu", {
-	version: "1.11.2",
+	version: "1.11.4",
 	defaultElement: "<select>",
 	options: {
 		appendTo: null,
@@ -21452,8 +21441,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 	},
 
 	_drawButton: function() {
-		var that = this,
-			tabindex = this.element.attr( "tabindex" );
+		var that = this;
 
 		// Associate existing label with the new button
 		this.label = $( "label[for='" + this.ids.element + "']" ).attr( "for", this.ids.button );
@@ -21470,7 +21458,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 		// Create button
 		this.button = $( "<span>", {
 			"class": "ui-selectmenu-button ui-widget ui-state-default ui-corner-all",
-			tabindex: tabindex || this.options.disabled ? -1 : 0,
+			tabindex: this.options.disabled ? -1 : 0,
 			id: this.ids.button,
 			role: "combobox",
 			"aria-expanded": "false",
@@ -21980,7 +21968,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 			data.push({
 				element: option,
 				index: index,
-				value: option.attr( "value" ),
+				value: option.val(),
 				label: option.text(),
 				optgroup: optgroup.attr( "label" ) || "",
 				disabled: optgroup.prop( "disabled" ) || option.prop( "disabled" )
@@ -22000,10 +21988,10 @@ var selectmenu = $.widget( "ui.selectmenu", {
 
 
 /*!
- * jQuery UI Slider 1.11.2
+ * jQuery UI Slider 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -22012,7 +22000,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 
 
 var slider = $.widget( "ui.slider", $.ui.mouse, {
-	version: "1.11.2",
+	version: "1.11.4",
 	widgetEventPrefix: "slide",
 
 	options: {
@@ -22533,8 +22521,26 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 	},
 
 	_calculateNewMax: function() {
-		var remainder = ( this.options.max - this._valueMin() ) % this.options.step;
-		this.max = this.options.max - remainder;
+		var max = this.options.max,
+			min = this._valueMin(),
+			step = this.options.step,
+			aboveMin = Math.floor( ( +( max - min ).toFixed( this._precision() ) ) / step ) * step;
+		max = aboveMin + min;
+		this.max = parseFloat( max.toFixed( this._precision() ) );
+	},
+
+	_precision: function() {
+		var precision = this._precisionOf( this.options.step );
+		if ( this.options.min !== null ) {
+			precision = Math.max( precision, this._precisionOf( this.options.min ) );
+		}
+		return precision;
+	},
+
+	_precisionOf: function( num ) {
+		var str = num.toString(),
+			decimal = str.indexOf( "." );
+		return decimal === -1 ? 0 : str.length - decimal - 1;
 	},
 
 	_valueMin: function() {
@@ -22684,10 +22690,10 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 
 
 /*!
- * jQuery UI Sortable 1.11.2
+ * jQuery UI Sortable 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -22696,7 +22702,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 
 
 var sortable = $.widget("ui.sortable", $.ui.mouse, {
-	version: "1.11.2",
+	version: "1.11.4",
 	widgetEventPrefix: "sort",
 	ready: false,
 	options: {
@@ -22747,16 +22753,11 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 	},
 
 	_create: function() {
-
-		var o = this.options;
 		this.containerCache = {};
 		this.element.addClass("ui-sortable");
 
 		//Get the items
 		this.refresh();
-
-		//Let's determine if the items are being displayed horizontally
-		this.floating = this.items.length ? o.axis === "x" || this._isFloating(this.items[0].item) : false;
 
 		//Let's determine the parent's offset
 		this.offset = this.element.offset();
@@ -22946,7 +22947,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 		}
 
 		//Prepare scrolling
-		if(this.scrollParent[0] !== document && this.scrollParent[0].tagName !== "HTML") {
+		if(this.scrollParent[0] !== this.document[0] && this.scrollParent[0].tagName !== "HTML") {
 			this.overflowOffset = this.scrollParent.offset();
 		}
 
@@ -22998,7 +22999,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 
 		//Do scrolling
 		if(this.options.scroll) {
-			if(this.scrollParent[0] !== document && this.scrollParent[0].tagName !== "HTML") {
+			if(this.scrollParent[0] !== this.document[0] && this.scrollParent[0].tagName !== "HTML") {
 
 				if((this.overflowOffset.top + this.scrollParent[0].offsetHeight) - event.pageY < o.scrollSensitivity) {
 					this.scrollParent[0].scrollTop = scrolled = this.scrollParent[0].scrollTop + o.scrollSpeed;
@@ -23014,16 +23015,16 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 
 			} else {
 
-				if(event.pageY - $(document).scrollTop() < o.scrollSensitivity) {
-					scrolled = $(document).scrollTop($(document).scrollTop() - o.scrollSpeed);
-				} else if($(window).height() - (event.pageY - $(document).scrollTop()) < o.scrollSensitivity) {
-					scrolled = $(document).scrollTop($(document).scrollTop() + o.scrollSpeed);
+				if(event.pageY - this.document.scrollTop() < o.scrollSensitivity) {
+					scrolled = this.document.scrollTop(this.document.scrollTop() - o.scrollSpeed);
+				} else if(this.window.height() - (event.pageY - this.document.scrollTop()) < o.scrollSensitivity) {
+					scrolled = this.document.scrollTop(this.document.scrollTop() + o.scrollSpeed);
 				}
 
-				if(event.pageX - $(document).scrollLeft() < o.scrollSensitivity) {
-					scrolled = $(document).scrollLeft($(document).scrollLeft() - o.scrollSpeed);
-				} else if($(window).width() - (event.pageX - $(document).scrollLeft()) < o.scrollSensitivity) {
-					scrolled = $(document).scrollLeft($(document).scrollLeft() + o.scrollSpeed);
+				if(event.pageX - this.document.scrollLeft() < o.scrollSensitivity) {
+					scrolled = this.document.scrollLeft(this.document.scrollLeft() - o.scrollSpeed);
+				} else if(this.window.width() - (event.pageX - this.document.scrollLeft()) < o.scrollSensitivity) {
+					scrolled = this.document.scrollLeft(this.document.scrollLeft() + o.scrollSpeed);
 				}
 
 			}
@@ -23122,10 +23123,10 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 				animation = {};
 
 			if ( !axis || axis === "x" ) {
-				animation.left = cur.left - this.offset.parent.left - this.margins.left + (this.offsetParent[0] === document.body ? 0 : this.offsetParent[0].scrollLeft);
+				animation.left = cur.left - this.offset.parent.left - this.margins.left + (this.offsetParent[0] === this.document[0].body ? 0 : this.offsetParent[0].scrollLeft);
 			}
 			if ( !axis || axis === "y" ) {
-				animation.top = cur.top - this.offset.parent.top - this.margins.top + (this.offsetParent[0] === document.body ? 0 : this.offsetParent[0].scrollTop);
+				animation.top = cur.top - this.offset.parent.top - this.margins.top + (this.offsetParent[0] === this.document[0].body ? 0 : this.offsetParent[0].scrollTop);
 			}
 			this.reverting = true;
 			$(this.helper).animate( animation, parseInt(this.options.revert, 10) || 500, function() {
@@ -23318,7 +23319,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 
 		if(connectWith && connected) {
 			for (i = connectWith.length - 1; i >= 0; i--){
-				cur = $(connectWith[i]);
+				cur = $(connectWith[i], this.document[0]);
 				for ( j = cur.length - 1; j >= 0; j--){
 					inst = $.data(cur[j], this.widgetFullName);
 					if(inst && inst !== this && !inst.options.disabled) {
@@ -23368,7 +23369,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 
 		if(connectWith && this.ready) { //Shouldn't be run the first time through due to massive slow-down
 			for (i = connectWith.length - 1; i >= 0; i--){
-				cur = $(connectWith[i]);
+				cur = $(connectWith[i], this.document[0]);
 				for (j = cur.length - 1; j >= 0; j--){
 					inst = $.data(cur[j], this.widgetFullName);
 					if(inst && inst !== this && !inst.options.disabled) {
@@ -23400,6 +23401,11 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 	},
 
 	refreshPositions: function(fast) {
+
+		// Determine whether items are being displayed horizontally
+		this.floating = this.items.length ?
+			this.options.axis === "x" || this._isFloating( this.items[ 0 ].item ) :
+			false;
 
 		//This has to be redone because due to the item being moved out/into the offsetParent, the offsetParent's position will change
 		if(this.offsetParent && this.helper) {
@@ -23458,12 +23464,13 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 							.addClass(className || that.currentItem[0].className+" ui-sortable-placeholder")
 							.removeClass("ui-sortable-helper");
 
-					if ( nodeName === "tr" ) {
-						that.currentItem.children().each(function() {
-							$( "<td>&#160;</td>", that.document[0] )
-								.attr( "colspan", $( this ).attr( "colspan" ) || 1 )
-								.appendTo( element );
-						});
+					if ( nodeName === "tbody" ) {
+						that._createTrPlaceholder(
+							that.currentItem.find( "tr" ).eq( 0 ),
+							$( "<tr>", that.document[ 0 ] ).appendTo( element )
+						);
+					} else if ( nodeName === "tr" ) {
+						that._createTrPlaceholder( that.currentItem, element );
 					} else if ( nodeName === "img" ) {
 						element.attr( "src", that.currentItem.attr( "src" ) );
 					}
@@ -23498,6 +23505,16 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 		//Update the size of the placeholder (TODO: Logic to fuzzy, see line 316/317)
 		o.placeholder.update(that, that.placeholder);
 
+	},
+
+	_createTrPlaceholder: function( sourceTr, targetTr ) {
+		var that = this;
+
+		sourceTr.children().each(function() {
+			$( "<td>&#160;</td>", that.document[ 0 ] )
+				.attr( "colspan", $( this ).attr( "colspan" ) || 1 )
+				.appendTo( targetTr );
+		});
 	},
 
 	_contactContainers: function(event) {
@@ -23660,14 +23677,14 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 		// 1. The position of the helper is absolute, so it's position is calculated based on the next positioned parent
 		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't the document, which means that
 		//    the scroll is included in the initial calculation of the offset of the parent, and never recalculated upon drag
-		if(this.cssPosition === "absolute" && this.scrollParent[0] !== document && $.contains(this.scrollParent[0], this.offsetParent[0])) {
+		if(this.cssPosition === "absolute" && this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) {
 			po.left += this.scrollParent.scrollLeft();
 			po.top += this.scrollParent.scrollTop();
 		}
 
 		// This needs to be actually done for all browsers, since pageX/pageY includes this information
 		// with an ugly IE fix
-		if( this.offsetParent[0] === document.body || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() === "html" && $.ui.ie)) {
+		if( this.offsetParent[0] === this.document[0].body || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() === "html" && $.ui.ie)) {
 			po = { top: 0, left: 0 };
 		}
 
@@ -23717,8 +23734,8 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 			this.containment = [
 				0 - this.offset.relative.left - this.offset.parent.left,
 				0 - this.offset.relative.top - this.offset.parent.top,
-				$(o.containment === "document" ? document : window).width() - this.helperProportions.width - this.margins.left,
-				($(o.containment === "document" ? document : window).height() || document.body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top
+				o.containment === "document" ? this.document.width() : this.window.width() - this.helperProportions.width - this.margins.left,
+				(o.containment === "document" ? this.document.width() : this.window.height() || this.document[0].body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top
 			];
 		}
 
@@ -23743,7 +23760,7 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 			pos = this.position;
 		}
 		var mod = d === "absolute" ? 1 : -1,
-			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== document && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent,
+			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent,
 			scrollIsRootNode = (/(html|body)/i).test(scroll[0].tagName);
 
 		return {
@@ -23769,13 +23786,13 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 			o = this.options,
 			pageX = event.pageX,
 			pageY = event.pageY,
-			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== document && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent, scrollIsRootNode = (/(html|body)/i).test(scroll[0].tagName);
+			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent, scrollIsRootNode = (/(html|body)/i).test(scroll[0].tagName);
 
 		// This is another very weird special case that only happens for relative elements:
 		// 1. If the css position is relative
 		// 2. and the scroll parent is the document or similar to the offset parent
 		// we have to refresh the relative offset during the scroll so there are no jumps
-		if(this.cssPosition === "relative" && !(this.scrollParent[0] !== document && this.scrollParent[0] !== this.offsetParent[0])) {
+		if(this.cssPosition === "relative" && !(this.scrollParent[0] !== this.document[0] && this.scrollParent[0] !== this.offsetParent[0])) {
 			this.offset.relative = this._getRelativeOffset();
 		}
 
@@ -23973,10 +23990,10 @@ var sortable = $.widget("ui.sortable", $.ui.mouse, {
 
 
 /*!
- * jQuery UI Spinner 1.11.2
+ * jQuery UI Spinner 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -23996,7 +24013,7 @@ function spinner_modifier( fn ) {
 }
 
 var spinner = $.widget( "ui.spinner", {
-	version: "1.11.2",
+	version: "1.11.4",
 	defaultElement: "<input>",
 	widgetEventPrefix: "spin",
 	options: {
@@ -24472,10 +24489,10 @@ var spinner = $.widget( "ui.spinner", {
 
 
 /*!
- * jQuery UI Tabs 1.11.2
+ * jQuery UI Tabs 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -24484,7 +24501,7 @@ var spinner = $.widget( "ui.spinner", {
 
 
 var tabs = $.widget( "ui.tabs", {
-	version: "1.11.2",
+	version: "1.11.4",
 	delay: 300,
 	options: {
 		active: null,
@@ -24660,8 +24677,9 @@ var tabs = $.widget( "ui.tabs", {
 		clearTimeout( this.activating );
 		selectedIndex = this._focusNextTab( selectedIndex, goingForward );
 
-		// Navigating with control key will prevent automatic activation
-		if ( !event.ctrlKey ) {
+		// Navigating with control/command key will prevent automatic activation
+		if ( !event.ctrlKey && !event.metaKey ) {
+
 			// Update aria-selected immediately so that AT think the tab is already selected.
 			// Otherwise AT may confuse the user by stating that they need to activate the tab,
 			// but the tab will already be activated by the time the announcement finishes.
@@ -25275,6 +25293,18 @@ var tabs = $.widget( "ui.tabs", {
 			eventData = {
 				tab: tab,
 				panel: panel
+			},
+			complete = function( jqXHR, status ) {
+				if ( status === "abort" ) {
+					that.panels.stop( false, true );
+				}
+
+				tab.removeClass( "ui-tabs-loading" );
+				panel.removeAttr( "aria-busy" );
+
+				if ( jqXHR === that.xhr ) {
+					delete that.xhr;
+				}
 			};
 
 		// not remote
@@ -25292,28 +25322,21 @@ var tabs = $.widget( "ui.tabs", {
 			panel.attr( "aria-busy", "true" );
 
 			this.xhr
-				.success(function( response ) {
+				.done(function( response, status, jqXHR ) {
 					// support: jQuery <1.8
 					// http://bugs.jquery.com/ticket/11778
 					setTimeout(function() {
 						panel.html( response );
 						that._trigger( "load", event, eventData );
+
+						complete( jqXHR, status );
 					}, 1 );
 				})
-				.complete(function( jqXHR, status ) {
+				.fail(function( jqXHR, status ) {
 					// support: jQuery <1.8
 					// http://bugs.jquery.com/ticket/11778
 					setTimeout(function() {
-						if ( status === "abort" ) {
-							that.panels.stop( false, true );
-						}
-
-						tab.removeClass( "ui-tabs-loading" );
-						panel.removeAttr( "aria-busy" );
-
-						if ( jqXHR === that.xhr ) {
-							delete that.xhr;
-						}
+						complete( jqXHR, status );
 					}, 1 );
 				});
 		}
@@ -25338,10 +25361,10 @@ var tabs = $.widget( "ui.tabs", {
 
 
 /*!
- * jQuery UI Tooltip 1.11.2
+ * jQuery UI Tooltip 1.11.4
  * http://jqueryui.com
  *
- * Copyright 2014 jQuery Foundation and other contributors
+ * Copyright jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -25350,7 +25373,7 @@ var tabs = $.widget( "ui.tabs", {
 
 
 var tooltip = $.widget( "ui.tooltip", {
-	version: "1.11.2",
+	version: "1.11.4",
 	options: {
 		content: function() {
 			// support: IE<9, Opera in jQuery <1.7
@@ -25518,6 +25541,7 @@ var tooltip = $.widget( "ui.tooltip", {
 			});
 		}
 
+		this._registerCloseHandlers( event, target );
 		this._updateContent( target, event );
 	},
 
@@ -25532,13 +25556,16 @@ var tooltip = $.widget( "ui.tooltip", {
 		}
 
 		content = contentOption.call( target[0], function( response ) {
-			// ignore async response if tooltip was closed already
-			if ( !target.data( "ui-tooltip-open" ) ) {
-				return;
-			}
+
 			// IE may instantly serve a cached response for ajax requests
 			// delay this call to _open so the other call to _open runs first
 			that._delay(function() {
+
+				// Ignore async response if tooltip was closed already
+				if ( !target.data( "ui-tooltip-open" ) ) {
+					return;
+				}
+
 				// jQuery creates a special event for focusin when it doesn't
 				// exist natively. To improve performance, the native event
 				// object is reused and the type is changed. Therefore, we can't
@@ -25556,7 +25583,7 @@ var tooltip = $.widget( "ui.tooltip", {
 	},
 
 	_open: function( event, target, content ) {
-		var tooltipData, tooltip, events, delayedShow, a11yContent,
+		var tooltipData, tooltip, delayedShow, a11yContent,
 			positionOption = $.extend( {}, this.options.position );
 
 		if ( !content ) {
@@ -25638,8 +25665,10 @@ var tooltip = $.widget( "ui.tooltip", {
 		}
 
 		this._trigger( "open", event, { tooltip: tooltip } );
+	},
 
-		events = {
+	_registerCloseHandlers: function( event, target ) {
+		var events = {
 			keyup: function( event ) {
 				if ( event.keyCode === $.ui.keyCode.ESCAPE ) {
 					var fakeEvent = $.Event(event);
@@ -25653,7 +25682,7 @@ var tooltip = $.widget( "ui.tooltip", {
 		// tooltips will handle this in destroy.
 		if ( target[ 0 ] !== this.element[ 0 ] ) {
 			events.remove = function() {
-				this._removeTooltip( tooltip );
+				this._removeTooltip( this._find( target ).tooltip );
 			};
 		}
 
@@ -25674,6 +25703,12 @@ var tooltip = $.widget( "ui.tooltip", {
 
 		// The tooltip may already be closed
 		if ( !tooltipData ) {
+
+			// We set ui-tooltip-open immediately upon open (in open()), but only set the
+			// additional data once there's actually content to show (in _open()). So even if the
+			// tooltip doesn't have full data, we always remove ui-tooltip-open in case we're in
+			// the period between open() and _open().
+			target.removeData( "ui-tooltip-open" );
 			return;
 		}
 
@@ -25785,7 +25820,7 @@ var tooltip = $.widget( "ui.tooltip", {
 
 
 }));;/*!
- * Bootstrap v3.3.2 (http://getbootstrap.com)
+ * Bootstrap v3.3.4 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
@@ -25803,7 +25838,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: transition.js v3.3.2
+ * Bootstrap: transition.js v3.3.4
  * http://getbootstrap.com/javascript/#transitions
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -25863,7 +25898,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: alert.js v3.3.2
+ * Bootstrap: alert.js v3.3.4
  * http://getbootstrap.com/javascript/#alerts
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -25882,7 +25917,7 @@ if (typeof jQuery === 'undefined') {
     $(el).on('click', dismiss, this.close)
   }
 
-  Alert.VERSION = '3.3.2'
+  Alert.VERSION = '3.3.4'
 
   Alert.TRANSITION_DURATION = 150
 
@@ -25958,7 +25993,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: button.js v3.3.2
+ * Bootstrap: button.js v3.3.4
  * http://getbootstrap.com/javascript/#buttons
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -25978,7 +26013,7 @@ if (typeof jQuery === 'undefined') {
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.3.2'
+  Button.VERSION  = '3.3.4'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -26075,7 +26110,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.2
+ * Bootstrap: carousel.js v3.3.4
  * http://getbootstrap.com/javascript/#carousel
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -26093,10 +26128,10 @@ if (typeof jQuery === 'undefined') {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
     this.options     = options
-    this.paused      =
-    this.sliding     =
-    this.interval    =
-    this.$active     =
+    this.paused      = null
+    this.sliding     = null
+    this.interval    = null
+    this.$active     = null
     this.$items      = null
 
     this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
@@ -26106,7 +26141,7 @@ if (typeof jQuery === 'undefined') {
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.2'
+  Carousel.VERSION  = '3.3.4'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -26313,7 +26348,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.2
+ * Bootstrap: collapse.js v3.3.4
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -26330,7 +26365,8 @@ if (typeof jQuery === 'undefined') {
   var Collapse = function (element, options) {
     this.$element      = $(element)
     this.options       = $.extend({}, Collapse.DEFAULTS, options)
-    this.$trigger      = $(this.options.trigger).filter('[href="#' + element.id + '"], [data-target="#' + element.id + '"]')
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
     this.transitioning = null
 
     if (this.options.parent) {
@@ -26342,13 +26378,12 @@ if (typeof jQuery === 'undefined') {
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.2'
+  Collapse.VERSION  = '3.3.4'
 
   Collapse.TRANSITION_DURATION = 350
 
   Collapse.DEFAULTS = {
-    toggle: true,
-    trigger: '[data-toggle="collapse"]'
+    toggle: true
   }
 
   Collapse.prototype.dimension = function () {
@@ -26486,7 +26521,7 @@ if (typeof jQuery === 'undefined') {
       var data    = $this.data('bs.collapse')
       var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
-      if (!data && options.toggle && option == 'show') options.toggle = false
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
       if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
       if (typeof option == 'string') data[option]()
     })
@@ -26517,7 +26552,7 @@ if (typeof jQuery === 'undefined') {
 
     var $target = getTargetFromTrigger($this)
     var data    = $target.data('bs.collapse')
-    var option  = data ? 'toggle' : $.extend({}, $this.data(), { trigger: this })
+    var option  = data ? 'toggle' : $this.data()
 
     Plugin.call($target, option)
   })
@@ -26525,7 +26560,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.2
+ * Bootstrap: dropdown.js v3.3.4
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -26545,7 +26580,7 @@ if (typeof jQuery === 'undefined') {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.2'
+  Dropdown.VERSION = '3.3.4'
 
   Dropdown.prototype.toggle = function (e) {
     var $this = $(this)
@@ -26598,7 +26633,7 @@ if (typeof jQuery === 'undefined') {
       return $this.trigger('click')
     }
 
-    var desc = ' li:not(.divider):visible a'
+    var desc = ' li:not(.disabled):visible a'
     var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
 
     if (!$items.length) return
@@ -26687,7 +26722,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: modal.js v3.3.2
+ * Bootstrap: modal.js v3.3.4
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -26702,12 +26737,15 @@ if (typeof jQuery === 'undefined') {
   // ======================
 
   var Modal = function (element, options) {
-    this.options        = options
-    this.$body          = $(document.body)
-    this.$element       = $(element)
-    this.$backdrop      =
-    this.isShown        = null
-    this.scrollbarWidth = 0
+    this.options             = options
+    this.$body               = $(document.body)
+    this.$element            = $(element)
+    this.$dialog             = this.$element.find('.modal-dialog')
+    this.$backdrop           = null
+    this.isShown             = null
+    this.originalBodyPad     = null
+    this.scrollbarWidth      = 0
+    this.ignoreBackdropClick = false
 
     if (this.options.remote) {
       this.$element
@@ -26718,7 +26756,7 @@ if (typeof jQuery === 'undefined') {
     }
   }
 
-  Modal.VERSION  = '3.3.2'
+  Modal.VERSION  = '3.3.4'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -26752,6 +26790,12 @@ if (typeof jQuery === 'undefined') {
 
     this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
 
+    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
+      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
+        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true
+      })
+    })
+
     this.backdrop(function () {
       var transition = $.support.transition && that.$element.hasClass('fade')
 
@@ -26763,7 +26807,6 @@ if (typeof jQuery === 'undefined') {
         .show()
         .scrollTop(0)
 
-      if (that.options.backdrop) that.adjustBackdrop()
       that.adjustDialog()
 
       if (transition) {
@@ -26779,7 +26822,7 @@ if (typeof jQuery === 'undefined') {
       var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
 
       transition ?
-        that.$element.find('.modal-dialog') // wait for modal to slide in
+        that.$dialog // wait for modal to slide in
           .one('bsTransitionEnd', function () {
             that.$element.trigger('focus').trigger(e)
           })
@@ -26808,6 +26851,9 @@ if (typeof jQuery === 'undefined') {
       .removeClass('in')
       .attr('aria-hidden', true)
       .off('click.dismiss.bs.modal')
+      .off('mouseup.dismiss.bs.modal')
+
+    this.$dialog.off('mousedown.dismiss.bs.modal')
 
     $.support.transition && this.$element.hasClass('fade') ?
       this.$element
@@ -26868,13 +26914,18 @@ if (typeof jQuery === 'undefined') {
       var doAnimate = $.support.transition && animate
 
       this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
-        .prependTo(this.$element)
-        .on('click.dismiss.bs.modal', $.proxy(function (e) {
-          if (e.target !== e.currentTarget) return
-          this.options.backdrop == 'static'
-            ? this.$element[0].focus.call(this.$element[0])
-            : this.hide.call(this)
-        }, this))
+        .appendTo(this.$body)
+
+      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
+        if (this.ignoreBackdropClick) {
+          this.ignoreBackdropClick = false
+          return
+        }
+        if (e.target !== e.currentTarget) return
+        this.options.backdrop == 'static'
+          ? this.$element[0].focus()
+          : this.hide()
+      }, this))
 
       if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
 
@@ -26909,14 +26960,7 @@ if (typeof jQuery === 'undefined') {
   // these following methods are used to handle overflowing modals
 
   Modal.prototype.handleUpdate = function () {
-    if (this.options.backdrop) this.adjustBackdrop()
     this.adjustDialog()
-  }
-
-  Modal.prototype.adjustBackdrop = function () {
-    this.$backdrop
-      .css('height', 0)
-      .css('height', this.$element[0].scrollHeight)
   }
 
   Modal.prototype.adjustDialog = function () {
@@ -26936,17 +26980,23 @@ if (typeof jQuery === 'undefined') {
   }
 
   Modal.prototype.checkScrollbar = function () {
-    this.bodyIsOverflowing = document.body.scrollHeight > document.documentElement.clientHeight
+    var fullWindowWidth = window.innerWidth
+    if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
+      var documentElementRect = document.documentElement.getBoundingClientRect()
+      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
+    }
+    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
     this.scrollbarWidth = this.measureScrollbar()
   }
 
   Modal.prototype.setScrollbar = function () {
     var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
+    this.originalBodyPad = document.body.style.paddingRight || ''
     if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
   }
 
   Modal.prototype.resetScrollbar = function () {
-    this.$body.css('padding-right', '')
+    this.$body.css('padding-right', this.originalBodyPad)
   }
 
   Modal.prototype.measureScrollbar = function () { // thx walsh
@@ -27012,7 +27062,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.2
+ * Bootstrap: tooltip.js v3.3.4
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
@@ -27028,17 +27078,17 @@ if (typeof jQuery === 'undefined') {
   // ===============================
 
   var Tooltip = function (element, options) {
-    this.type       =
-    this.options    =
-    this.enabled    =
-    this.timeout    =
-    this.hoverState =
+    this.type       = null
+    this.options    = null
+    this.enabled    = null
+    this.timeout    = null
+    this.hoverState = null
     this.$element   = null
 
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.2'
+  Tooltip.VERSION  = '3.3.4'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -27064,6 +27114,10 @@ if (typeof jQuery === 'undefined') {
     this.$element  = $(element)
     this.options   = this.getOptions(options)
     this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
+      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
+    }
 
     var triggers = this.options.trigger.split(' ')
 
@@ -27285,10 +27339,10 @@ if (typeof jQuery === 'undefined') {
     this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
   }
 
-  Tooltip.prototype.replaceArrow = function (delta, dimension, isHorizontal) {
+  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
     this.arrow()
-      .css(isHorizontal ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
-      .css(isHorizontal ? 'top' : 'left', '')
+      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
+      .css(isVertical ? 'top' : 'left', '')
   }
 
   Tooltip.prototype.setContent = function () {
@@ -27301,7 +27355,7 @@ if (typeof jQuery === 'undefined') {
 
   Tooltip.prototype.hide = function (callback) {
     var that = this
-    var $tip = this.tip()
+    var $tip = $(this.$tip)
     var e    = $.Event('hide.bs.' + this.type)
 
     function complete() {
@@ -27318,7 +27372,7 @@ if (typeof jQuery === 'undefined') {
 
     $tip.removeClass('in')
 
-    $.support.transition && this.$tip.hasClass('fade') ?
+    $.support.transition && $tip.hasClass('fade') ?
       $tip
         .one('bsTransitionEnd', complete)
         .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
@@ -27462,7 +27516,7 @@ if (typeof jQuery === 'undefined') {
       var data    = $this.data('bs.tooltip')
       var options = typeof option == 'object' && option
 
-      if (!data && option == 'destroy') return
+      if (!data && /destroy|hide/.test(option)) return
       if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
       if (typeof option == 'string') data[option]()
     })
@@ -27485,7 +27539,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: popover.js v3.3.2
+ * Bootstrap: popover.js v3.3.4
  * http://getbootstrap.com/javascript/#popovers
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -27505,7 +27559,7 @@ if (typeof jQuery === 'undefined') {
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
 
-  Popover.VERSION  = '3.3.2'
+  Popover.VERSION  = '3.3.4'
 
   Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
     placement: 'right',
@@ -27561,11 +27615,6 @@ if (typeof jQuery === 'undefined') {
     return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
   }
 
-  Popover.prototype.tip = function () {
-    if (!this.$tip) this.$tip = $(this.options.template)
-    return this.$tip
-  }
-
 
   // POPOVER PLUGIN DEFINITION
   // =========================
@@ -27576,7 +27625,7 @@ if (typeof jQuery === 'undefined') {
       var data    = $this.data('bs.popover')
       var options = typeof option == 'object' && option
 
-      if (!data && option == 'destroy') return
+      if (!data && /destroy|hide/.test(option)) return
       if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
       if (typeof option == 'string') data[option]()
     })
@@ -27599,7 +27648,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: scrollspy.js v3.3.2
+ * Bootstrap: scrollspy.js v3.3.4
  * http://getbootstrap.com/javascript/#scrollspy
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -27614,10 +27663,8 @@ if (typeof jQuery === 'undefined') {
   // ==========================
 
   function ScrollSpy(element, options) {
-    var process  = $.proxy(this.process, this)
-
-    this.$body          = $('body')
-    this.$scrollElement = $(element).is('body') ? $(window) : $(element)
+    this.$body          = $(document.body)
+    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
     this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
     this.selector       = (this.options.target || '') + ' .nav li > a'
     this.offsets        = []
@@ -27625,12 +27672,12 @@ if (typeof jQuery === 'undefined') {
     this.activeTarget   = null
     this.scrollHeight   = 0
 
-    this.$scrollElement.on('scroll.bs.scrollspy', process)
+    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
     this.refresh()
     this.process()
   }
 
-  ScrollSpy.VERSION  = '3.3.2'
+  ScrollSpy.VERSION  = '3.3.4'
 
   ScrollSpy.DEFAULTS = {
     offset: 10
@@ -27641,19 +27688,18 @@ if (typeof jQuery === 'undefined') {
   }
 
   ScrollSpy.prototype.refresh = function () {
-    var offsetMethod = 'offset'
-    var offsetBase   = 0
+    var that          = this
+    var offsetMethod  = 'offset'
+    var offsetBase    = 0
+
+    this.offsets      = []
+    this.targets      = []
+    this.scrollHeight = this.getScrollHeight()
 
     if (!$.isWindow(this.$scrollElement[0])) {
       offsetMethod = 'position'
       offsetBase   = this.$scrollElement.scrollTop()
     }
-
-    this.offsets = []
-    this.targets = []
-    this.scrollHeight = this.getScrollHeight()
-
-    var self     = this
 
     this.$body
       .find(this.selector)
@@ -27669,8 +27715,8 @@ if (typeof jQuery === 'undefined') {
       })
       .sort(function (a, b) { return a[0] - b[0] })
       .each(function () {
-        self.offsets.push(this[0])
-        self.targets.push(this[1])
+        that.offsets.push(this[0])
+        that.targets.push(this[1])
       })
   }
 
@@ -27699,7 +27745,7 @@ if (typeof jQuery === 'undefined') {
     for (i = offsets.length; i--;) {
       activeTarget != targets[i]
         && scrollTop >= offsets[i]
-        && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+        && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
         && this.activate(targets[i])
     }
   }
@@ -27710,8 +27756,8 @@ if (typeof jQuery === 'undefined') {
     this.clear()
 
     var selector = this.selector +
-        '[data-target="' + target + '"],' +
-        this.selector + '[href="' + target + '"]'
+      '[data-target="' + target + '"],' +
+      this.selector + '[href="' + target + '"]'
 
     var active = $(selector)
       .parents('li')
@@ -27775,7 +27821,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: tab.js v3.3.2
+ * Bootstrap: tab.js v3.3.4
  * http://getbootstrap.com/javascript/#tabs
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -27793,7 +27839,7 @@ if (typeof jQuery === 'undefined') {
     this.element = $(element)
   }
 
-  Tab.VERSION = '3.3.2'
+  Tab.VERSION = '3.3.4'
 
   Tab.TRANSITION_DURATION = 150
 
@@ -27864,7 +27910,7 @@ if (typeof jQuery === 'undefined') {
         element.removeClass('fade')
       }
 
-      if (element.parent('.dropdown-menu')) {
+      if (element.parent('.dropdown-menu').length) {
         element
           .closest('li.dropdown')
             .addClass('active')
@@ -27929,7 +27975,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: affix.js v3.3.2
+ * Bootstrap: affix.js v3.3.4
  * http://getbootstrap.com/javascript/#affix
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -27951,14 +27997,14 @@ if (typeof jQuery === 'undefined') {
       .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
 
     this.$element     = $(element)
-    this.affixed      =
-    this.unpin        =
+    this.affixed      = null
+    this.unpin        = null
     this.pinnedOffset = null
 
     this.checkPosition()
   }
 
-  Affix.VERSION  = '3.3.2'
+  Affix.VERSION  = '3.3.4'
 
   Affix.RESET    = 'affix affix-top affix-bottom'
 
@@ -28008,7 +28054,7 @@ if (typeof jQuery === 'undefined') {
     var offset       = this.options.offset
     var offsetTop    = offset.top
     var offsetBottom = offset.bottom
-    var scrollHeight = $('body').height()
+    var scrollHeight = $(document.body).height()
 
     if (typeof offset != 'object')         offsetBottom = offsetTop = offset
     if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
@@ -33989,482 +34035,64 @@ if (typeof jQuery === 'undefined') {
     };
 })(jQuery);
 ;//! moment.js
-//! version : 2.9.0
+//! version : 2.10.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
 
-(function (undefined) {
-    /************************************
-        Constants
-    ************************************/
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.moment = factory()
+}(this, function () { 'use strict';
 
-    var moment,
-        VERSION = '2.9.0',
-        // the global-scope this is NOT the global object in Node.js
-        globalScope = (typeof global !== 'undefined' && (typeof window === 'undefined' || window === global.window)) ? global : this,
-        oldGlobalMoment,
-        round = Math.round,
-        hasOwnProperty = Object.prototype.hasOwnProperty,
-        i,
+    var hookCallback;
 
-        YEAR = 0,
-        MONTH = 1,
-        DATE = 2,
-        HOUR = 3,
-        MINUTE = 4,
-        SECOND = 5,
-        MILLISECOND = 6,
-
-        // internal storage for locale config files
-        locales = {},
-
-        // extra moment internal properties (plugins register props here)
-        momentProperties = [],
-
-        // check for nodeJS
-        hasModule = (typeof module !== 'undefined' && module && module.exports),
-
-        // ASP.NET json date format regex
-        aspNetJsonRegex = /^\/?Date\((\-?\d+)/i,
-        aspNetTimeSpanJsonRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/,
-
-        // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
-        // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
-        isoDurationRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/,
-
-        // format tokens
-        formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g,
-        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
-
-        // parsing token regexes
-        parseTokenOneOrTwoDigits = /\d\d?/, // 0 - 99
-        parseTokenOneToThreeDigits = /\d{1,3}/, // 0 - 999
-        parseTokenOneToFourDigits = /\d{1,4}/, // 0 - 9999
-        parseTokenOneToSixDigits = /[+\-]?\d{1,6}/, // -999,999 - 999,999
-        parseTokenDigits = /\d+/, // nonzero number of digits
-        parseTokenWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i, // any word (or two) characters or numbers including two/three word month in arabic.
-        parseTokenTimezone = /Z|[\+\-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
-        parseTokenT = /T/i, // T (ISO separator)
-        parseTokenOffsetMs = /[\+\-]?\d+/, // 1234567890123
-        parseTokenTimestampMs = /[\+\-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
-
-        //strict parsing regexes
-        parseTokenOneDigit = /\d/, // 0 - 9
-        parseTokenTwoDigits = /\d\d/, // 00 - 99
-        parseTokenThreeDigits = /\d{3}/, // 000 - 999
-        parseTokenFourDigits = /\d{4}/, // 0000 - 9999
-        parseTokenSixDigits = /[+-]?\d{6}/, // -999,999 - 999,999
-        parseTokenSignedNumber = /[+-]?\d+/, // -inf - inf
-
-        // iso 8601 regex
-        // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
-        isoRegex = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
-
-        isoFormat = 'YYYY-MM-DDTHH:mm:ssZ',
-
-        isoDates = [
-            ['YYYYYY-MM-DD', /[+-]\d{6}-\d{2}-\d{2}/],
-            ['YYYY-MM-DD', /\d{4}-\d{2}-\d{2}/],
-            ['GGGG-[W]WW-E', /\d{4}-W\d{2}-\d/],
-            ['GGGG-[W]WW', /\d{4}-W\d{2}/],
-            ['YYYY-DDD', /\d{4}-\d{3}/]
-        ],
-
-        // iso time formats and regexes
-        isoTimes = [
-            ['HH:mm:ss.SSSS', /(T| )\d\d:\d\d:\d\d\.\d+/],
-            ['HH:mm:ss', /(T| )\d\d:\d\d:\d\d/],
-            ['HH:mm', /(T| )\d\d:\d\d/],
-            ['HH', /(T| )\d\d/]
-        ],
-
-        // timezone chunker '+10:00' > ['10', '00'] or '-1530' > ['-', '15', '30']
-        parseTimezoneChunker = /([\+\-]|\d\d)/gi,
-
-        // getter and setter names
-        proxyGettersAndSetters = 'Date|Hours|Minutes|Seconds|Milliseconds'.split('|'),
-        unitMillisecondFactors = {
-            'Milliseconds' : 1,
-            'Seconds' : 1e3,
-            'Minutes' : 6e4,
-            'Hours' : 36e5,
-            'Days' : 864e5,
-            'Months' : 2592e6,
-            'Years' : 31536e6
-        },
-
-        unitAliases = {
-            ms : 'millisecond',
-            s : 'second',
-            m : 'minute',
-            h : 'hour',
-            d : 'day',
-            D : 'date',
-            w : 'week',
-            W : 'isoWeek',
-            M : 'month',
-            Q : 'quarter',
-            y : 'year',
-            DDD : 'dayOfYear',
-            e : 'weekday',
-            E : 'isoWeekday',
-            gg: 'weekYear',
-            GG: 'isoWeekYear'
-        },
-
-        camelFunctions = {
-            dayofyear : 'dayOfYear',
-            isoweekday : 'isoWeekday',
-            isoweek : 'isoWeek',
-            weekyear : 'weekYear',
-            isoweekyear : 'isoWeekYear'
-        },
-
-        // format function strings
-        formatFunctions = {},
-
-        // default relative time thresholds
-        relativeTimeThresholds = {
-            s: 45,  // seconds to minute
-            m: 45,  // minutes to hour
-            h: 22,  // hours to day
-            d: 26,  // days to month
-            M: 11   // months to year
-        },
-
-        // tokens to ordinalize and pad
-        ordinalizeTokens = 'DDD w W M D d'.split(' '),
-        paddedTokens = 'M D H h m s w W'.split(' '),
-
-        formatTokenFunctions = {
-            M    : function () {
-                return this.month() + 1;
-            },
-            MMM  : function (format) {
-                return this.localeData().monthsShort(this, format);
-            },
-            MMMM : function (format) {
-                return this.localeData().months(this, format);
-            },
-            D    : function () {
-                return this.date();
-            },
-            DDD  : function () {
-                return this.dayOfYear();
-            },
-            d    : function () {
-                return this.day();
-            },
-            dd   : function (format) {
-                return this.localeData().weekdaysMin(this, format);
-            },
-            ddd  : function (format) {
-                return this.localeData().weekdaysShort(this, format);
-            },
-            dddd : function (format) {
-                return this.localeData().weekdays(this, format);
-            },
-            w    : function () {
-                return this.week();
-            },
-            W    : function () {
-                return this.isoWeek();
-            },
-            YY   : function () {
-                return leftZeroFill(this.year() % 100, 2);
-            },
-            YYYY : function () {
-                return leftZeroFill(this.year(), 4);
-            },
-            YYYYY : function () {
-                return leftZeroFill(this.year(), 5);
-            },
-            YYYYYY : function () {
-                var y = this.year(), sign = y >= 0 ? '+' : '-';
-                return sign + leftZeroFill(Math.abs(y), 6);
-            },
-            gg   : function () {
-                return leftZeroFill(this.weekYear() % 100, 2);
-            },
-            gggg : function () {
-                return leftZeroFill(this.weekYear(), 4);
-            },
-            ggggg : function () {
-                return leftZeroFill(this.weekYear(), 5);
-            },
-            GG   : function () {
-                return leftZeroFill(this.isoWeekYear() % 100, 2);
-            },
-            GGGG : function () {
-                return leftZeroFill(this.isoWeekYear(), 4);
-            },
-            GGGGG : function () {
-                return leftZeroFill(this.isoWeekYear(), 5);
-            },
-            e : function () {
-                return this.weekday();
-            },
-            E : function () {
-                return this.isoWeekday();
-            },
-            a    : function () {
-                return this.localeData().meridiem(this.hours(), this.minutes(), true);
-            },
-            A    : function () {
-                return this.localeData().meridiem(this.hours(), this.minutes(), false);
-            },
-            H    : function () {
-                return this.hours();
-            },
-            h    : function () {
-                return this.hours() % 12 || 12;
-            },
-            m    : function () {
-                return this.minutes();
-            },
-            s    : function () {
-                return this.seconds();
-            },
-            S    : function () {
-                return toInt(this.milliseconds() / 100);
-            },
-            SS   : function () {
-                return leftZeroFill(toInt(this.milliseconds() / 10), 2);
-            },
-            SSS  : function () {
-                return leftZeroFill(this.milliseconds(), 3);
-            },
-            SSSS : function () {
-                return leftZeroFill(this.milliseconds(), 3);
-            },
-            Z    : function () {
-                var a = this.utcOffset(),
-                    b = '+';
-                if (a < 0) {
-                    a = -a;
-                    b = '-';
-                }
-                return b + leftZeroFill(toInt(a / 60), 2) + ':' + leftZeroFill(toInt(a) % 60, 2);
-            },
-            ZZ   : function () {
-                var a = this.utcOffset(),
-                    b = '+';
-                if (a < 0) {
-                    a = -a;
-                    b = '-';
-                }
-                return b + leftZeroFill(toInt(a / 60), 2) + leftZeroFill(toInt(a) % 60, 2);
-            },
-            z : function () {
-                return this.zoneAbbr();
-            },
-            zz : function () {
-                return this.zoneName();
-            },
-            x    : function () {
-                return this.valueOf();
-            },
-            X    : function () {
-                return this.unix();
-            },
-            Q : function () {
-                return this.quarter();
-            }
-        },
-
-        deprecations = {},
-
-        lists = ['months', 'monthsShort', 'weekdays', 'weekdaysShort', 'weekdaysMin'],
-
-        updateInProgress = false;
-
-    // Pick the first defined of two or three arguments. dfl comes from
-    // default.
-    function dfl(a, b, c) {
-        switch (arguments.length) {
-            case 2: return a != null ? a : b;
-            case 3: return a != null ? a : b != null ? b : c;
-            default: throw new Error('Implement me');
-        }
+    function utils_hooks__hooks () {
+        return hookCallback.apply(null, arguments);
     }
 
-    function hasOwnProp(a, b) {
-        return hasOwnProperty.call(a, b);
+    // This is done to register the method called with moment()
+    // without creating circular dependencies.
+    function setHookCallback (callback) {
+        hookCallback = callback;
     }
 
     function defaultParsingFlags() {
-        // We need to deep clone this object, and es5 standard is not very
-        // helpful.
+        // We need to deep clone this object.
         return {
-            empty : false,
-            unusedTokens : [],
-            unusedInput : [],
-            overflow : -2,
-            charsLeftOver : 0,
-            nullInput : false,
-            invalidMonth : null,
-            invalidFormat : false,
+            empty           : false,
+            unusedTokens    : [],
+            unusedInput     : [],
+            overflow        : -2,
+            charsLeftOver   : 0,
+            nullInput       : false,
+            invalidMonth    : null,
+            invalidFormat   : false,
             userInvalidated : false,
-            iso: false
+            iso             : false
         };
     }
 
-    function printMsg(msg) {
-        if (moment.suppressDeprecationWarnings === false &&
-                typeof console !== 'undefined' && console.warn) {
-            console.warn('Deprecation warning: ' + msg);
+    function isArray(input) {
+        return Object.prototype.toString.call(input) === '[object Array]';
+    }
+
+    function isDate(input) {
+        return Object.prototype.toString.call(input) === '[object Date]' || input instanceof Date;
+    }
+
+    function map(arr, fn) {
+        var res = [], i;
+        for (i = 0; i < arr.length; ++i) {
+            res.push(fn(arr[i], i));
         }
+        return res;
     }
 
-    function deprecate(msg, fn) {
-        var firstTime = true;
-        return extend(function () {
-            if (firstTime) {
-                printMsg(msg);
-                firstTime = false;
-            }
-            return fn.apply(this, arguments);
-        }, fn);
+    function hasOwnProp(a, b) {
+        return Object.prototype.hasOwnProperty.call(a, b);
     }
-
-    function deprecateSimple(name, msg) {
-        if (!deprecations[name]) {
-            printMsg(msg);
-            deprecations[name] = true;
-        }
-    }
-
-    function padToken(func, count) {
-        return function (a) {
-            return leftZeroFill(func.call(this, a), count);
-        };
-    }
-    function ordinalizeToken(func, period) {
-        return function (a) {
-            return this.localeData().ordinal(func.call(this, a), period);
-        };
-    }
-
-    function monthDiff(a, b) {
-        // difference in months
-        var wholeMonthDiff = ((b.year() - a.year()) * 12) + (b.month() - a.month()),
-            // b is in (anchor - 1 month, anchor + 1 month)
-            anchor = a.clone().add(wholeMonthDiff, 'months'),
-            anchor2, adjust;
-
-        if (b - anchor < 0) {
-            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
-            // linear across the month
-            adjust = (b - anchor) / (anchor - anchor2);
-        } else {
-            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
-            // linear across the month
-            adjust = (b - anchor) / (anchor2 - anchor);
-        }
-
-        return -(wholeMonthDiff + adjust);
-    }
-
-    while (ordinalizeTokens.length) {
-        i = ordinalizeTokens.pop();
-        formatTokenFunctions[i + 'o'] = ordinalizeToken(formatTokenFunctions[i], i);
-    }
-    while (paddedTokens.length) {
-        i = paddedTokens.pop();
-        formatTokenFunctions[i + i] = padToken(formatTokenFunctions[i], 2);
-    }
-    formatTokenFunctions.DDDD = padToken(formatTokenFunctions.DDD, 3);
-
-
-    function meridiemFixWrap(locale, hour, meridiem) {
-        var isPm;
-
-        if (meridiem == null) {
-            // nothing to do
-            return hour;
-        }
-        if (locale.meridiemHour != null) {
-            return locale.meridiemHour(hour, meridiem);
-        } else if (locale.isPM != null) {
-            // Fallback
-            isPm = locale.isPM(meridiem);
-            if (isPm && hour < 12) {
-                hour += 12;
-            }
-            if (!isPm && hour === 12) {
-                hour = 0;
-            }
-            return hour;
-        } else {
-            // thie is not supposed to happen
-            return hour;
-        }
-    }
-
-    /************************************
-        Constructors
-    ************************************/
-
-    function Locale() {
-    }
-
-    // Moment prototype object
-    function Moment(config, skipOverflow) {
-        if (skipOverflow !== false) {
-            checkOverflow(config);
-        }
-        copyConfig(this, config);
-        this._d = new Date(+config._d);
-        // Prevent infinite loop in case updateOffset creates new moment
-        // objects.
-        if (updateInProgress === false) {
-            updateInProgress = true;
-            moment.updateOffset(this);
-            updateInProgress = false;
-        }
-    }
-
-    // Duration Constructor
-    function Duration(duration) {
-        var normalizedInput = normalizeObjectUnits(duration),
-            years = normalizedInput.year || 0,
-            quarters = normalizedInput.quarter || 0,
-            months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
-            days = normalizedInput.day || 0,
-            hours = normalizedInput.hour || 0,
-            minutes = normalizedInput.minute || 0,
-            seconds = normalizedInput.second || 0,
-            milliseconds = normalizedInput.millisecond || 0;
-
-        // representation for dateAddRemove
-        this._milliseconds = +milliseconds +
-            seconds * 1e3 + // 1000
-            minutes * 6e4 + // 1000 * 60
-            hours * 36e5; // 1000 * 60 * 60
-        // Because of dateAddRemove treats 24 hours as different from a
-        // day when working around DST, we need to store them separately
-        this._days = +days +
-            weeks * 7;
-        // It is impossible translate months into days without knowing
-        // which months you are are talking about, so we have to store
-        // it separately.
-        this._months = +months +
-            quarters * 3 +
-            years * 12;
-
-        this._data = {};
-
-        this._locale = moment.localeData();
-
-        this._bubble();
-    }
-
-    /************************************
-        Helpers
-    ************************************/
-
 
     function extend(a, b) {
         for (var i in b) {
@@ -34483,6 +34111,44 @@ if (typeof jQuery === 'undefined') {
 
         return a;
     }
+
+    function create_utc__createUTC (input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, true).utc();
+    }
+
+    function valid__isValid(m) {
+        if (m._isValid == null) {
+            m._isValid = !isNaN(m._d.getTime()) &&
+                m._pf.overflow < 0 &&
+                !m._pf.empty &&
+                !m._pf.invalidMonth &&
+                !m._pf.nullInput &&
+                !m._pf.invalidFormat &&
+                !m._pf.userInvalidated;
+
+            if (m._strict) {
+                m._isValid = m._isValid &&
+                    m._pf.charsLeftOver === 0 &&
+                    m._pf.unusedTokens.length === 0 &&
+                    m._pf.bigHour === undefined;
+            }
+        }
+        return m._isValid;
+    }
+
+    function valid__createInvalid (flags) {
+        var m = create_utc__createUTC(NaN);
+        if (flags != null) {
+            extend(m._pf, flags);
+        }
+        else {
+            m._pf.userInvalidated = true;
+        }
+
+        return m;
+    }
+
+    var momentProperties = utils_hooks__hooks.momentProperties = [];
 
     function copyConfig(to, from) {
         var i, prop, val;
@@ -34531,181 +34197,23 @@ if (typeof jQuery === 'undefined') {
         return to;
     }
 
-    function absRound(number) {
-        if (number < 0) {
-            return Math.ceil(number);
-        } else {
-            return Math.floor(number);
+    var updateInProgress = false;
+
+    // Moment prototype object
+    function Moment(config) {
+        copyConfig(this, config);
+        this._d = new Date(+config._d);
+        // Prevent infinite loop in case updateOffset creates new moment
+        // objects.
+        if (updateInProgress === false) {
+            updateInProgress = true;
+            utils_hooks__hooks.updateOffset(this);
+            updateInProgress = false;
         }
     }
 
-    // left zero fill a number
-    // see http://jsperf.com/left-zero-filling for performance comparison
-    function leftZeroFill(number, targetLength, forceSign) {
-        var output = '' + Math.abs(number),
-            sign = number >= 0;
-
-        while (output.length < targetLength) {
-            output = '0' + output;
-        }
-        return (sign ? (forceSign ? '+' : '') : '-') + output;
-    }
-
-    function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
-
-        res.months = other.month() - base.month() +
-            (other.year() - base.year()) * 12;
-        if (base.clone().add(res.months, 'M').isAfter(other)) {
-            --res.months;
-        }
-
-        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
-
-        return res;
-    }
-
-    function momentsDifference(base, other) {
-        var res;
-        other = makeAs(other, base);
-        if (base.isBefore(other)) {
-            res = positiveMomentsDifference(base, other);
-        } else {
-            res = positiveMomentsDifference(other, base);
-            res.milliseconds = -res.milliseconds;
-            res.months = -res.months;
-        }
-
-        return res;
-    }
-
-    // TODO: remove 'name' arg after deprecation is removed
-    function createAdder(direction, name) {
-        return function (val, period) {
-            var dur, tmp;
-            //invert the arguments, but complain about it
-            if (period !== null && !isNaN(+period)) {
-                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period).');
-                tmp = val; val = period; period = tmp;
-            }
-
-            val = typeof val === 'string' ? +val : val;
-            dur = moment.duration(val, period);
-            addOrSubtractDurationFromMoment(this, dur, direction);
-            return this;
-        };
-    }
-
-    function addOrSubtractDurationFromMoment(mom, duration, isAdding, updateOffset) {
-        var milliseconds = duration._milliseconds,
-            days = duration._days,
-            months = duration._months;
-        updateOffset = updateOffset == null ? true : updateOffset;
-
-        if (milliseconds) {
-            mom._d.setTime(+mom._d + milliseconds * isAdding);
-        }
-        if (days) {
-            rawSetter(mom, 'Date', rawGetter(mom, 'Date') + days * isAdding);
-        }
-        if (months) {
-            rawMonthSetter(mom, rawGetter(mom, 'Month') + months * isAdding);
-        }
-        if (updateOffset) {
-            moment.updateOffset(mom, days || months);
-        }
-    }
-
-    // check if is an array
-    function isArray(input) {
-        return Object.prototype.toString.call(input) === '[object Array]';
-    }
-
-    function isDate(input) {
-        return Object.prototype.toString.call(input) === '[object Date]' ||
-            input instanceof Date;
-    }
-
-    // compare two arrays, return the number of differences
-    function compareArrays(array1, array2, dontConvert) {
-        var len = Math.min(array1.length, array2.length),
-            lengthDiff = Math.abs(array1.length - array2.length),
-            diffs = 0,
-            i;
-        for (i = 0; i < len; i++) {
-            if ((dontConvert && array1[i] !== array2[i]) ||
-                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
-                diffs++;
-            }
-        }
-        return diffs + lengthDiff;
-    }
-
-    function normalizeUnits(units) {
-        if (units) {
-            var lowered = units.toLowerCase().replace(/(.)s$/, '$1');
-            units = unitAliases[units] || camelFunctions[lowered] || lowered;
-        }
-        return units;
-    }
-
-    function normalizeObjectUnits(inputObject) {
-        var normalizedInput = {},
-            normalizedProp,
-            prop;
-
-        for (prop in inputObject) {
-            if (hasOwnProp(inputObject, prop)) {
-                normalizedProp = normalizeUnits(prop);
-                if (normalizedProp) {
-                    normalizedInput[normalizedProp] = inputObject[prop];
-                }
-            }
-        }
-
-        return normalizedInput;
-    }
-
-    function makeList(field) {
-        var count, setter;
-
-        if (field.indexOf('week') === 0) {
-            count = 7;
-            setter = 'day';
-        }
-        else if (field.indexOf('month') === 0) {
-            count = 12;
-            setter = 'month';
-        }
-        else {
-            return;
-        }
-
-        moment[field] = function (format, index) {
-            var i, getter,
-                method = moment._locale[field],
-                results = [];
-
-            if (typeof format === 'number') {
-                index = format;
-                format = undefined;
-            }
-
-            getter = function (i) {
-                var m = moment().utc().set(setter, i);
-                return method.call(moment._locale, m, format || '');
-            };
-
-            if (index != null) {
-                return getter(index);
-            }
-            else {
-                for (i = 0; i < count; i++) {
-                    results.push(getter(i));
-                }
-                return results;
-            }
-        };
+    function isMoment (obj) {
+        return obj instanceof Moment || (obj != null && hasOwnProp(obj, '_isAMomentObject'));
     }
 
     function toInt(argumentForCoercion) {
@@ -34723,64 +34231,25 @@ if (typeof jQuery === 'undefined') {
         return value;
     }
 
-    function daysInMonth(year, month) {
-        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-    }
-
-    function weeksInYear(year, dow, doy) {
-        return weekOfYear(moment([year, 11, 31 + dow - doy]), dow, doy).week;
-    }
-
-    function daysInYear(year) {
-        return isLeapYear(year) ? 366 : 365;
-    }
-
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-    }
-
-    function checkOverflow(m) {
-        var overflow;
-        if (m._a && m._pf.overflow === -2) {
-            overflow =
-                m._a[MONTH] < 0 || m._a[MONTH] > 11 ? MONTH :
-                m._a[DATE] < 1 || m._a[DATE] > daysInMonth(m._a[YEAR], m._a[MONTH]) ? DATE :
-                m._a[HOUR] < 0 || m._a[HOUR] > 24 ||
-                    (m._a[HOUR] === 24 && (m._a[MINUTE] !== 0 ||
-                                           m._a[SECOND] !== 0 ||
-                                           m._a[MILLISECOND] !== 0)) ? HOUR :
-                m._a[MINUTE] < 0 || m._a[MINUTE] > 59 ? MINUTE :
-                m._a[SECOND] < 0 || m._a[SECOND] > 59 ? SECOND :
-                m._a[MILLISECOND] < 0 || m._a[MILLISECOND] > 999 ? MILLISECOND :
-                -1;
-
-            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
-                overflow = DATE;
-            }
-
-            m._pf.overflow = overflow;
-        }
-    }
-
-    function isValid(m) {
-        if (m._isValid == null) {
-            m._isValid = !isNaN(m._d.getTime()) &&
-                m._pf.overflow < 0 &&
-                !m._pf.empty &&
-                !m._pf.invalidMonth &&
-                !m._pf.nullInput &&
-                !m._pf.invalidFormat &&
-                !m._pf.userInvalidated;
-
-            if (m._strict) {
-                m._isValid = m._isValid &&
-                    m._pf.charsLeftOver === 0 &&
-                    m._pf.unusedTokens.length === 0 &&
-                    m._pf.bigHour === undefined;
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if ((dontConvert && array1[i] !== array2[i]) ||
+                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
+                diffs++;
             }
         }
-        return m._isValid;
+        return diffs + lengthDiff;
     }
+
+    function Locale() {
+    }
+
+    var locales = {};
+    var globalLocale;
 
     function normalizeLocale(key) {
         return key ? key.toLowerCase().replace('_', '-') : key;
@@ -34815,250 +34284,193 @@ if (typeof jQuery === 'undefined') {
 
     function loadLocale(name) {
         var oldLocale = null;
-        if (!locales[name] && hasModule) {
+        // TODO: Find a better way to register and load all the locales in Node
+        if (!locales[name] && typeof module !== 'undefined' &&
+                module && module.exports) {
             try {
-                oldLocale = moment.locale();
+                oldLocale = globalLocale._abbr;
                 require('./locale/' + name);
-                // because defineLocale currently also sets the global locale, we want to undo that for lazy loaded locales
-                moment.locale(oldLocale);
+                // because defineLocale currently also sets the global locale, we
+                // want to undo that for lazy loaded locales
+                locale_locales__getSetGlobalLocale(oldLocale);
             } catch (e) { }
         }
         return locales[name];
     }
 
-    // Return a moment from input, that is local/utc/utcOffset equivalent to
-    // model.
-    function makeAs(input, model) {
-        var res, diff;
-        if (model._isUTC) {
-            res = model.clone();
-            diff = (moment.isMoment(input) || isDate(input) ?
-                    +input : +moment(input)) - (+res);
-            // Use low-level api, because this fn is low-level api.
-            res._d.setTime(+res._d + diff);
-            moment.updateOffset(res, false);
-            return res;
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    function locale_locales__getSetGlobalLocale (key, values) {
+        var data;
+        if (key) {
+            if (typeof values === 'undefined') {
+                data = locale_locales__getLocale(key);
+            }
+            else {
+                data = defineLocale(key, values);
+            }
+
+            if (data) {
+                // moment.duration._locale = moment._locale = data;
+                globalLocale = data;
+            }
+        }
+
+        return globalLocale._abbr;
+    }
+
+    function defineLocale (name, values) {
+        if (values !== null) {
+            values.abbr = name;
+            if (!locales[name]) {
+                locales[name] = new Locale();
+            }
+            locales[name].set(values);
+
+            // backwards compat for now: also set the locale
+            locale_locales__getSetGlobalLocale(name);
+
+            return locales[name];
         } else {
-            return moment(input).local();
+            // useful for testing
+            delete locales[name];
+            return null;
         }
     }
 
-    /************************************
-        Locale
-    ************************************/
+    // returns locale data
+    function locale_locales__getLocale (key) {
+        var locale;
 
-
-    extend(Locale.prototype, {
-
-        set : function (config) {
-            var prop, i;
-            for (i in config) {
-                prop = config[i];
-                if (typeof prop === 'function') {
-                    this[i] = prop;
-                } else {
-                    this['_' + i] = prop;
-                }
-            }
-            // Lenient ordinal parsing accepts just a number in addition to
-            // number + (possibly) stuff coming from _ordinalParseLenient.
-            this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
-        },
-
-        _months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
-        months : function (m) {
-            return this._months[m.month()];
-        },
-
-        _monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
-        monthsShort : function (m) {
-            return this._monthsShort[m.month()];
-        },
-
-        monthsParse : function (monthName, format, strict) {
-            var i, mom, regex;
-
-            if (!this._monthsParse) {
-                this._monthsParse = [];
-                this._longMonthsParse = [];
-                this._shortMonthsParse = [];
-            }
-
-            for (i = 0; i < 12; i++) {
-                // make the regex if we don't have it already
-                mom = moment.utc([2000, i]);
-                if (strict && !this._longMonthsParse[i]) {
-                    this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
-                    this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
-                }
-                if (!strict && !this._monthsParse[i]) {
-                    regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
-                    this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
-                }
-                // test the regex
-                if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
-                    return i;
-                } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
-                    return i;
-                } else if (!strict && this._monthsParse[i].test(monthName)) {
-                    return i;
-                }
-            }
-        },
-
-        _weekdays : 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
-        weekdays : function (m) {
-            return this._weekdays[m.day()];
-        },
-
-        _weekdaysShort : 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
-        weekdaysShort : function (m) {
-            return this._weekdaysShort[m.day()];
-        },
-
-        _weekdaysMin : 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
-        weekdaysMin : function (m) {
-            return this._weekdaysMin[m.day()];
-        },
-
-        weekdaysParse : function (weekdayName) {
-            var i, mom, regex;
-
-            if (!this._weekdaysParse) {
-                this._weekdaysParse = [];
-            }
-
-            for (i = 0; i < 7; i++) {
-                // make the regex if we don't have it already
-                if (!this._weekdaysParse[i]) {
-                    mom = moment([2000, 1]).day(i);
-                    regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
-                    this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
-                }
-                // test the regex
-                if (this._weekdaysParse[i].test(weekdayName)) {
-                    return i;
-                }
-            }
-        },
-
-        _longDateFormat : {
-            LTS : 'h:mm:ss A',
-            LT : 'h:mm A',
-            L : 'MM/DD/YYYY',
-            LL : 'MMMM D, YYYY',
-            LLL : 'MMMM D, YYYY LT',
-            LLLL : 'dddd, MMMM D, YYYY LT'
-        },
-        longDateFormat : function (key) {
-            var output = this._longDateFormat[key];
-            if (!output && this._longDateFormat[key.toUpperCase()]) {
-                output = this._longDateFormat[key.toUpperCase()].replace(/MMMM|MM|DD|dddd/g, function (val) {
-                    return val.slice(1);
-                });
-                this._longDateFormat[key] = output;
-            }
-            return output;
-        },
-
-        isPM : function (input) {
-            // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
-            // Using charAt should be more compatible.
-            return ((input + '').toLowerCase().charAt(0) === 'p');
-        },
-
-        _meridiemParse : /[ap]\.?m?\.?/i,
-        meridiem : function (hours, minutes, isLower) {
-            if (hours > 11) {
-                return isLower ? 'pm' : 'PM';
-            } else {
-                return isLower ? 'am' : 'AM';
-            }
-        },
-
-
-        _calendar : {
-            sameDay : '[Today at] LT',
-            nextDay : '[Tomorrow at] LT',
-            nextWeek : 'dddd [at] LT',
-            lastDay : '[Yesterday at] LT',
-            lastWeek : '[Last] dddd [at] LT',
-            sameElse : 'L'
-        },
-        calendar : function (key, mom, now) {
-            var output = this._calendar[key];
-            return typeof output === 'function' ? output.apply(mom, [now]) : output;
-        },
-
-        _relativeTime : {
-            future : 'in %s',
-            past : '%s ago',
-            s : 'a few seconds',
-            m : 'a minute',
-            mm : '%d minutes',
-            h : 'an hour',
-            hh : '%d hours',
-            d : 'a day',
-            dd : '%d days',
-            M : 'a month',
-            MM : '%d months',
-            y : 'a year',
-            yy : '%d years'
-        },
-
-        relativeTime : function (number, withoutSuffix, string, isFuture) {
-            var output = this._relativeTime[string];
-            return (typeof output === 'function') ?
-                output(number, withoutSuffix, string, isFuture) :
-                output.replace(/%d/i, number);
-        },
-
-        pastFuture : function (diff, output) {
-            var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
-            return typeof format === 'function' ? format(output) : format.replace(/%s/i, output);
-        },
-
-        ordinal : function (number) {
-            return this._ordinal.replace('%d', number);
-        },
-        _ordinal : '%d',
-        _ordinalParse : /\d{1,2}/,
-
-        preparse : function (string) {
-            return string;
-        },
-
-        postformat : function (string) {
-            return string;
-        },
-
-        week : function (mom) {
-            return weekOfYear(mom, this._week.dow, this._week.doy).week;
-        },
-
-        _week : {
-            dow : 0, // Sunday is the first day of the week.
-            doy : 6  // The week that contains Jan 1st is the first week of the year.
-        },
-
-        firstDayOfWeek : function () {
-            return this._week.dow;
-        },
-
-        firstDayOfYear : function () {
-            return this._week.doy;
-        },
-
-        _invalidDate: 'Invalid date',
-        invalidDate: function () {
-            return this._invalidDate;
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
         }
-    });
 
-    /************************************
-        Formatting
-    ************************************/
+        if (!key) {
+            return globalLocale;
+        }
 
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
+    }
+
+    var aliases = {};
+
+    function addUnitAlias (unit, shorthand) {
+        var lowerCase = unit.toLowerCase();
+        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+    }
+
+    function normalizeUnits(units) {
+        return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (hasOwnProp(inputObject, prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    function makeGetSet (unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                get_set__set(this, unit, value);
+                utils_hooks__hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get_set__get(this, unit);
+            }
+        };
+    }
+
+    function get_set__get (mom, unit) {
+        return mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]();
+    }
+
+    function get_set__set (mom, unit, value) {
+        return mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+    }
+
+    // MOMENTS
+
+    function getSet (units, value) {
+        var unit;
+        if (typeof units === 'object') {
+            for (unit in units) {
+                this.set(unit, units[unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (typeof this[units] === 'function') {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
+
+    function zeroFill(number, targetLength, forceSign) {
+        var output = '' + Math.abs(number),
+            sign = number >= 0;
+
+        while (output.length < targetLength) {
+            output = '0' + output;
+        }
+        return (sign ? (forceSign ? '+' : '') : '-') + output;
+    }
+
+    var formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g;
+
+    var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+
+    var formatFunctions = {};
+
+    var formatTokenFunctions = {};
+
+    // token:    'M'
+    // padded:   ['MM', 2]
+    // ordinal:  'Mo'
+    // callback: function () { this.month() + 1 }
+    function addFormatToken (token, padded, ordinal, callback) {
+        var func = callback;
+        if (typeof callback === 'string') {
+            func = function () {
+                return this[callback]();
+            };
+        }
+        if (token) {
+            formatTokenFunctions[token] = func;
+        }
+        if (padded) {
+            formatTokenFunctions[padded[0]] = function () {
+                return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+            };
+        }
+        if (ordinal) {
+            formatTokenFunctions[ordinal] = function () {
+                return this.localeData().ordinal(func.apply(this, arguments), token);
+            };
+        }
+    }
 
     function removeFormattingTokens(input) {
         if (input.match(/\[[\s\S]/)) {
@@ -35119,302 +34531,547 @@ if (typeof jQuery === 'undefined') {
         return format;
     }
 
+    var match1         = /\d/;            //       0 - 9
+    var match2         = /\d\d/;          //      00 - 99
+    var match3         = /\d{3}/;         //     000 - 999
+    var match4         = /\d{4}/;         //    0000 - 9999
+    var match6         = /[+-]?\d{6}/;    // -999999 - 999999
+    var match1to2      = /\d\d?/;         //       0 - 99
+    var match1to3      = /\d{1,3}/;       //       0 - 999
+    var match1to4      = /\d{1,4}/;       //       0 - 9999
+    var match1to6      = /[+-]?\d{1,6}/;  // -999999 - 999999
 
-    /************************************
-        Parsing
-    ************************************/
+    var matchUnsigned  = /\d+/;           //       0 - inf
+    var matchSigned    = /[+-]?\d+/;      //    -inf - inf
+
+    var matchOffset    = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+
+    var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+
+    // any word (or two) characters or numbers including two/three word month in arabic.
+    var matchWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i;
+
+    var regexes = {};
+
+    function addRegexToken (token, regex, strictRegex) {
+        regexes[token] = typeof regex === 'function' ? regex : function (isStrict) {
+            return (isStrict && strictRegex) ? strictRegex : regex;
+        };
+    }
+
+    function getParseRegexForToken (token, config) {
+        if (!hasOwnProp(regexes, token)) {
+            return new RegExp(unescapeFormat(token));
+        }
+
+        return regexes[token](config._strict, config._locale);
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function unescapeFormat(s) {
+        return s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+            return p1 || p2 || p3 || p4;
+        }).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    var tokens = {};
+
+    function addParseToken (token, callback) {
+        var i, func = callback;
+        if (typeof token === 'string') {
+            token = [token];
+        }
+        if (typeof callback === 'number') {
+            func = function (input, array) {
+                array[callback] = toInt(input);
+            };
+        }
+        for (i = 0; i < token.length; i++) {
+            tokens[token[i]] = func;
+        }
+    }
+
+    function addWeekParseToken (token, callback) {
+        addParseToken(token, function (input, array, config, token) {
+            config._w = config._w || {};
+            callback(input, config._w, config, token);
+        });
+    }
+
+    function addTimeToArrayFromToken(token, input, config) {
+        if (input != null && hasOwnProp(tokens, token)) {
+            tokens[token](input, config._a, config, token);
+        }
+    }
+
+    var YEAR = 0;
+    var MONTH = 1;
+    var DATE = 2;
+    var HOUR = 3;
+    var MINUTE = 4;
+    var SECOND = 5;
+    var MILLISECOND = 6;
+
+    function daysInMonth(year, month) {
+        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    }
+
+    // FORMATTING
+
+    addFormatToken('M', ['MM', 2], 'Mo', function () {
+        return this.month() + 1;
+    });
+
+    addFormatToken('MMM', 0, 0, function (format) {
+        return this.localeData().monthsShort(this, format);
+    });
+
+    addFormatToken('MMMM', 0, 0, function (format) {
+        return this.localeData().months(this, format);
+    });
+
+    // ALIASES
+
+    addUnitAlias('month', 'M');
+
+    // PARSING
+
+    addRegexToken('M',    match1to2);
+    addRegexToken('MM',   match1to2, match2);
+    addRegexToken('MMM',  matchWord);
+    addRegexToken('MMMM', matchWord);
+
+    addParseToken(['M', 'MM'], function (input, array) {
+        array[MONTH] = toInt(input) - 1;
+    });
+
+    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+        var month = config._locale.monthsParse(input, token, config._strict);
+        // if we didn't find a month name, mark the date as invalid.
+        if (month != null) {
+            array[MONTH] = month;
+        } else {
+            config._pf.invalidMonth = input;
+        }
+    });
+
+    // LOCALES
+
+    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+    function localeMonths (m) {
+        return this._months[m.month()];
+    }
+
+    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+    function localeMonthsShort (m) {
+        return this._monthsShort[m.month()];
+    }
+
+    function localeMonthsParse (monthName, format, strict) {
+        var i, mom, regex;
+
+        if (!this._monthsParse) {
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+        }
+
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = create_utc__createUTC([2000, i]);
+            if (strict && !this._longMonthsParse[i]) {
+                this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+                this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+            }
+            if (!strict && !this._monthsParse[i]) {
+                regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (!strict && this._monthsParse[i].test(monthName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function setMonth (mom, value) {
+        var dayOfMonth;
+
+        // TODO: Move this out of here!
+        if (typeof value === 'string') {
+            value = mom.localeData().monthsParse(value);
+            // TODO: Another silent failure?
+            if (typeof value !== 'number') {
+                return mom;
+            }
+        }
+
+        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        return mom;
+    }
+
+    function getSetMonth (value) {
+        if (value != null) {
+            setMonth(this, value);
+            utils_hooks__hooks.updateOffset(this, true);
+            return this;
+        } else {
+            return get_set__get(this, 'Month');
+        }
+    }
+
+    function getDaysInMonth () {
+        return daysInMonth(this.year(), this.month());
+    }
+
+    function checkOverflow (m) {
+        var overflow;
+        var a = m._a;
+
+        if (a && m._pf.overflow === -2) {
+            overflow =
+                a[MONTH]       < 0 || a[MONTH]       > 11  ? MONTH :
+                a[DATE]        < 1 || a[DATE]        > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
+                a[HOUR]        < 0 || a[HOUR]        > 24 || (a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0)) ? HOUR :
+                a[MINUTE]      < 0 || a[MINUTE]      > 59  ? MINUTE :
+                a[SECOND]      < 0 || a[SECOND]      > 59  ? SECOND :
+                a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
+                -1;
+
+            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+                overflow = DATE;
+            }
+
+            m._pf.overflow = overflow;
+        }
+
+        return m;
+    }
+
+    function warn(msg) {
+        if (utils_hooks__hooks.suppressDeprecationWarnings === false && typeof console !== 'undefined' && console.warn) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
+    function deprecate(msg, fn) {
+        var firstTime = true;
+        return extend(function () {
+            if (firstTime) {
+                warn(msg);
+                firstTime = false;
+            }
+            return fn.apply(this, arguments);
+        }, fn);
+    }
+
+    var deprecations = {};
+
+    function deprecateSimple(name, msg) {
+        if (!deprecations[name]) {
+            warn(msg);
+            deprecations[name] = true;
+        }
+    }
+
+    utils_hooks__hooks.suppressDeprecationWarnings = false;
+
+    var from_string__isoRegex = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+
+    var isoDates = [
+        ['YYYYYY-MM-DD', /[+-]\d{6}-\d{2}-\d{2}/],
+        ['YYYY-MM-DD', /\d{4}-\d{2}-\d{2}/],
+        ['GGGG-[W]WW-E', /\d{4}-W\d{2}-\d/],
+        ['GGGG-[W]WW', /\d{4}-W\d{2}/],
+        ['YYYY-DDD', /\d{4}-\d{3}/]
+    ];
+
+    // iso time formats and regexes
+    var isoTimes = [
+        ['HH:mm:ss.SSSS', /(T| )\d\d:\d\d:\d\d\.\d+/],
+        ['HH:mm:ss', /(T| )\d\d:\d\d:\d\d/],
+        ['HH:mm', /(T| )\d\d:\d\d/],
+        ['HH', /(T| )\d\d/]
+    ];
+
+    var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
+
+    // date from iso format
+    function configFromISO(config) {
+        var i, l,
+            string = config._i,
+            match = from_string__isoRegex.exec(string);
+
+        if (match) {
+            config._pf.iso = true;
+            for (i = 0, l = isoDates.length; i < l; i++) {
+                if (isoDates[i][1].exec(string)) {
+                    // match[5] should be 'T' or undefined
+                    config._f = isoDates[i][0] + (match[6] || ' ');
+                    break;
+                }
+            }
+            for (i = 0, l = isoTimes.length; i < l; i++) {
+                if (isoTimes[i][1].exec(string)) {
+                    config._f += isoTimes[i][0];
+                    break;
+                }
+            }
+            if (string.match(matchOffset)) {
+                config._f += 'Z';
+            }
+            configFromStringAndFormat(config);
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // date from iso format or fallback
+    function configFromString(config) {
+        var matched = aspNetJsonRegex.exec(config._i);
+
+        if (matched !== null) {
+            config._d = new Date(+matched[1]);
+            return;
+        }
+
+        configFromISO(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+            utils_hooks__hooks.createFromInputFallback(config);
+        }
+    }
+
+    utils_hooks__hooks.createFromInputFallback = deprecate(
+        'moment construction falls back to js Date. This is ' +
+        'discouraged and will be removed in upcoming major ' +
+        'release. Please refer to ' +
+        'https://github.com/moment/moment/issues/1407 for more info.',
+        function (config) {
+            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+        }
+    );
+
+    function createDate (y, m, d, h, M, s, ms) {
+        //can't just apply() to create a date:
+        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+        var date = new Date(y, m, d, h, M, s, ms);
+
+        //the date constructor doesn't accept years < 1970
+        if (y < 1970) {
+            date.setFullYear(y);
+        }
+        return date;
+    }
+
+    function createUTCDate (y) {
+        var date = new Date(Date.UTC.apply(null, arguments));
+        if (y < 1970) {
+            date.setUTCFullYear(y);
+        }
+        return date;
+    }
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY',   4],       0, 'year');
+    addFormatToken(0, ['YYYYY',  5],       0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // ALIASES
+
+    addUnitAlias('year', 'y');
+
+    // PARSING
+
+    addRegexToken('Y',      matchSigned);
+    addRegexToken('YY',     match1to2, match2);
+    addRegexToken('YYYY',   match1to4, match4);
+    addRegexToken('YYYYY',  match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYY', 'YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = utils_hooks__hooks.parseTwoDigitYear(input);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    // HOOKS
+
+    utils_hooks__hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', false);
+
+    function getIsLeapYear () {
+        return isLeapYear(this.year());
+    }
+
+    addFormatToken('w', ['ww', 2], 'wo', 'week');
+    addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
+
+    // ALIASES
+
+    addUnitAlias('week', 'w');
+    addUnitAlias('isoWeek', 'W');
+
+    // PARSING
+
+    addRegexToken('w',  match1to2);
+    addRegexToken('ww', match1to2, match2);
+    addRegexToken('W',  match1to2);
+    addRegexToken('WW', match1to2, match2);
+
+    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+        week[token.substr(0, 1)] = toInt(input);
+    });
+
+    // HELPERS
+
+    // firstDayOfWeek       0 = sun, 6 = sat
+    //                      the day of the week that starts the week
+    //                      (usually sunday or monday)
+    // firstDayOfWeekOfYear 0 = sun, 6 = sat
+    //                      the first week is the week that contains the first
+    //                      of this day of the week
+    //                      (eg. ISO weeks use thursday (4))
+    function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
+        var end = firstDayOfWeekOfYear - firstDayOfWeek,
+            daysToDayOfWeek = firstDayOfWeekOfYear - mom.day(),
+            adjustedMoment;
 
 
-    // get the regex to find the next token
-    function getParseRegexForToken(token, config) {
-        var a, strict = config._strict;
-        switch (token) {
-        case 'Q':
-            return parseTokenOneDigit;
-        case 'DDDD':
-            return parseTokenThreeDigits;
-        case 'YYYY':
-        case 'GGGG':
-        case 'gggg':
-            return strict ? parseTokenFourDigits : parseTokenOneToFourDigits;
-        case 'Y':
-        case 'G':
-        case 'g':
-            return parseTokenSignedNumber;
-        case 'YYYYYY':
-        case 'YYYYY':
-        case 'GGGGG':
-        case 'ggggg':
-            return strict ? parseTokenSixDigits : parseTokenOneToSixDigits;
-        case 'S':
-            if (strict) {
-                return parseTokenOneDigit;
-            }
-            /* falls through */
-        case 'SS':
-            if (strict) {
-                return parseTokenTwoDigits;
-            }
-            /* falls through */
-        case 'SSS':
-            if (strict) {
-                return parseTokenThreeDigits;
-            }
-            /* falls through */
-        case 'DDD':
-            return parseTokenOneToThreeDigits;
-        case 'MMM':
-        case 'MMMM':
-        case 'dd':
-        case 'ddd':
-        case 'dddd':
-            return parseTokenWord;
-        case 'a':
-        case 'A':
-            return config._locale._meridiemParse;
-        case 'x':
-            return parseTokenOffsetMs;
-        case 'X':
-            return parseTokenTimestampMs;
-        case 'Z':
-        case 'ZZ':
-            return parseTokenTimezone;
-        case 'T':
-            return parseTokenT;
-        case 'SSSS':
-            return parseTokenDigits;
-        case 'MM':
-        case 'DD':
-        case 'YY':
-        case 'GG':
-        case 'gg':
-        case 'HH':
-        case 'hh':
-        case 'mm':
-        case 'ss':
-        case 'ww':
-        case 'WW':
-            return strict ? parseTokenTwoDigits : parseTokenOneOrTwoDigits;
-        case 'M':
-        case 'D':
-        case 'd':
-        case 'H':
-        case 'h':
-        case 'm':
-        case 's':
-        case 'w':
-        case 'W':
-        case 'e':
-        case 'E':
-            return parseTokenOneOrTwoDigits;
-        case 'Do':
-            return strict ? config._locale._ordinalParse : config._locale._ordinalParseLenient;
-        default :
-            a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), 'i'));
+        if (daysToDayOfWeek > end) {
+            daysToDayOfWeek -= 7;
+        }
+
+        if (daysToDayOfWeek < end - 7) {
+            daysToDayOfWeek += 7;
+        }
+
+        adjustedMoment = local__createLocal(mom).add(daysToDayOfWeek, 'd');
+        return {
+            week: Math.ceil(adjustedMoment.dayOfYear() / 7),
+            year: adjustedMoment.year()
+        };
+    }
+
+    // LOCALES
+
+    function localeWeek (mom) {
+        return weekOfYear(mom, this._week.dow, this._week.doy).week;
+    }
+
+    var defaultLocaleWeek = {
+        dow : 0, // Sunday is the first day of the week.
+        doy : 6  // The week that contains Jan 1st is the first week of the year.
+    };
+
+    function localeFirstDayOfWeek () {
+        return this._week.dow;
+    }
+
+    function localeFirstDayOfYear () {
+        return this._week.doy;
+    }
+
+    // MOMENTS
+
+    function getSetWeek (input) {
+        var week = this.localeData().week(this);
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    function getSetISOWeek (input) {
+        var week = weekOfYear(this, 1, 4).week;
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
+
+    // ALIASES
+
+    addUnitAlias('dayOfYear', 'DDD');
+
+    // PARSING
+
+    addRegexToken('DDD',  match1to3);
+    addRegexToken('DDDD', match3);
+    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+        config._dayOfYear = toInt(input);
+    });
+
+    // HELPERS
+
+    //http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, firstDayOfWeekOfYear, firstDayOfWeek) {
+        var d = createUTCDate(year, 0, 1).getUTCDay();
+        var daysToAdd;
+        var dayOfYear;
+
+        d = d === 0 ? 7 : d;
+        weekday = weekday != null ? weekday : firstDayOfWeek;
+        daysToAdd = firstDayOfWeek - d + (d > firstDayOfWeekOfYear ? 7 : 0) - (d < firstDayOfWeek ? 7 : 0);
+        dayOfYear = 7 * (week - 1) + (weekday - firstDayOfWeek) + daysToAdd + 1;
+
+        return {
+            year      : dayOfYear > 0 ? year      : year - 1,
+            dayOfYear : dayOfYear > 0 ? dayOfYear : daysInYear(year - 1) + dayOfYear
+        };
+    }
+
+    // MOMENTS
+
+    function getSetDayOfYear (input) {
+        var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
+        return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
+    }
+
+    // Pick the first defined of two or three arguments.
+    function defaults(a, b, c) {
+        if (a != null) {
             return a;
         }
-    }
-
-    function utcOffsetFromString(string) {
-        string = string || '';
-        var possibleTzMatches = (string.match(parseTokenTimezone) || []),
-            tzChunk = possibleTzMatches[possibleTzMatches.length - 1] || [],
-            parts = (tzChunk + '').match(parseTimezoneChunker) || ['-', 0, 0],
-            minutes = +(parts[1] * 60) + toInt(parts[2]);
-
-        return parts[0] === '+' ? minutes : -minutes;
-    }
-
-    // function to convert string input to date
-    function addTimeToArrayFromToken(token, input, config) {
-        var a, datePartArray = config._a;
-
-        switch (token) {
-        // QUARTER
-        case 'Q':
-            if (input != null) {
-                datePartArray[MONTH] = (toInt(input) - 1) * 3;
-            }
-            break;
-        // MONTH
-        case 'M' : // fall through to MM
-        case 'MM' :
-            if (input != null) {
-                datePartArray[MONTH] = toInt(input) - 1;
-            }
-            break;
-        case 'MMM' : // fall through to MMMM
-        case 'MMMM' :
-            a = config._locale.monthsParse(input, token, config._strict);
-            // if we didn't find a month name, mark the date as invalid.
-            if (a != null) {
-                datePartArray[MONTH] = a;
-            } else {
-                config._pf.invalidMonth = input;
-            }
-            break;
-        // DAY OF MONTH
-        case 'D' : // fall through to DD
-        case 'DD' :
-            if (input != null) {
-                datePartArray[DATE] = toInt(input);
-            }
-            break;
-        case 'Do' :
-            if (input != null) {
-                datePartArray[DATE] = toInt(parseInt(
-                            input.match(/\d{1,2}/)[0], 10));
-            }
-            break;
-        // DAY OF YEAR
-        case 'DDD' : // fall through to DDDD
-        case 'DDDD' :
-            if (input != null) {
-                config._dayOfYear = toInt(input);
-            }
-
-            break;
-        // YEAR
-        case 'YY' :
-            datePartArray[YEAR] = moment.parseTwoDigitYear(input);
-            break;
-        case 'YYYY' :
-        case 'YYYYY' :
-        case 'YYYYYY' :
-            datePartArray[YEAR] = toInt(input);
-            break;
-        // AM / PM
-        case 'a' : // fall through to A
-        case 'A' :
-            config._meridiem = input;
-            // config._isPm = config._locale.isPM(input);
-            break;
-        // HOUR
-        case 'h' : // fall through to hh
-        case 'hh' :
-            config._pf.bigHour = true;
-            /* falls through */
-        case 'H' : // fall through to HH
-        case 'HH' :
-            datePartArray[HOUR] = toInt(input);
-            break;
-        // MINUTE
-        case 'm' : // fall through to mm
-        case 'mm' :
-            datePartArray[MINUTE] = toInt(input);
-            break;
-        // SECOND
-        case 's' : // fall through to ss
-        case 'ss' :
-            datePartArray[SECOND] = toInt(input);
-            break;
-        // MILLISECOND
-        case 'S' :
-        case 'SS' :
-        case 'SSS' :
-        case 'SSSS' :
-            datePartArray[MILLISECOND] = toInt(('0.' + input) * 1000);
-            break;
-        // UNIX OFFSET (MILLISECONDS)
-        case 'x':
-            config._d = new Date(toInt(input));
-            break;
-        // UNIX TIMESTAMP WITH MS
-        case 'X':
-            config._d = new Date(parseFloat(input) * 1000);
-            break;
-        // TIMEZONE
-        case 'Z' : // fall through to ZZ
-        case 'ZZ' :
-            config._useUTC = true;
-            config._tzm = utcOffsetFromString(input);
-            break;
-        // WEEKDAY - human
-        case 'dd':
-        case 'ddd':
-        case 'dddd':
-            a = config._locale.weekdaysParse(input);
-            // if we didn't get a weekday name, mark the date as invalid
-            if (a != null) {
-                config._w = config._w || {};
-                config._w['d'] = a;
-            } else {
-                config._pf.invalidWeekday = input;
-            }
-            break;
-        // WEEK, WEEK DAY - numeric
-        case 'w':
-        case 'ww':
-        case 'W':
-        case 'WW':
-        case 'd':
-        case 'e':
-        case 'E':
-            token = token.substr(0, 1);
-            /* falls through */
-        case 'gggg':
-        case 'GGGG':
-        case 'GGGGG':
-            token = token.substr(0, 2);
-            if (input) {
-                config._w = config._w || {};
-                config._w[token] = toInt(input);
-            }
-            break;
-        case 'gg':
-        case 'GG':
-            config._w = config._w || {};
-            config._w[token] = moment.parseTwoDigitYear(input);
+        if (b != null) {
+            return b;
         }
+        return c;
     }
 
-    function dayOfYearFromWeekInfo(config) {
-        var w, weekYear, week, weekday, dow, doy, temp;
-
-        w = config._w;
-        if (w.GG != null || w.W != null || w.E != null) {
-            dow = 1;
-            doy = 4;
-
-            // TODO: We need to take the current isoWeekYear, but that depends on
-            // how we interpret now (local, utc, fixed offset). So create
-            // a now version of current config (take local/utc/offset flags, and
-            // create now).
-            weekYear = dfl(w.GG, config._a[YEAR], weekOfYear(moment(), 1, 4).year);
-            week = dfl(w.W, 1);
-            weekday = dfl(w.E, 1);
-        } else {
-            dow = config._locale._week.dow;
-            doy = config._locale._week.doy;
-
-            weekYear = dfl(w.gg, config._a[YEAR], weekOfYear(moment(), dow, doy).year);
-            week = dfl(w.w, 1);
-
-            if (w.d != null) {
-                // weekday -- low day numbers are considered next week
-                weekday = w.d;
-                if (weekday < dow) {
-                    ++week;
-                }
-            } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
-                weekday = w.e + dow;
-            } else {
-                // default to begining of week
-                weekday = dow;
-            }
+    function currentDateArray(config) {
+        var now = new Date();
+        if (config._useUTC) {
+            return [now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()];
         }
-        temp = dayOfYearFromWeeks(weekYear, week, weekday, doy, dow);
-
-        config._a[YEAR] = temp.year;
-        config._dayOfYear = temp.dayOfYear;
+        return [now.getFullYear(), now.getMonth(), now.getDate()];
     }
 
     // convert an array to a date.
     // the array should mirror the parameters below
     // note: all values past the year are optional and will default to the lowest possible value.
     // [year, month, day , hour, minute, second, millisecond]
-    function dateFromConfig(config) {
+    function configFromArray (config) {
         var i, date, input = [], currentDate, yearToUse;
 
         if (config._d) {
@@ -35430,13 +35087,13 @@ if (typeof jQuery === 'undefined') {
 
         //if the day of the year is set, figure out what it is
         if (config._dayOfYear) {
-            yearToUse = dfl(config._a[YEAR], currentDate[YEAR]);
+            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
 
             if (config._dayOfYear > daysInYear(yearToUse)) {
                 config._pf._overflowDayOfYear = true;
             }
 
-            date = makeUTCDate(yearToUse, 0, config._dayOfYear);
+            date = createUTCDate(yearToUse, 0, config._dayOfYear);
             config._a[MONTH] = date.getUTCMonth();
             config._a[DATE] = date.getUTCDate();
         }
@@ -35464,7 +35121,7 @@ if (typeof jQuery === 'undefined') {
             config._a[HOUR] = 0;
         }
 
-        config._d = (config._useUTC ? makeUTCDate : makeDate).apply(null, input);
+        config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
         // Apply timezone offset from input. The actual utcOffset can be changed
         // with parseZone.
         if (config._tzm != null) {
@@ -35476,44 +35133,55 @@ if (typeof jQuery === 'undefined') {
         }
     }
 
-    function dateFromObject(config) {
-        var normalizedInput;
+    function dayOfYearFromWeekInfo(config) {
+        var w, weekYear, week, weekday, dow, doy, temp;
 
-        if (config._d) {
-            return;
-        }
+        w = config._w;
+        if (w.GG != null || w.W != null || w.E != null) {
+            dow = 1;
+            doy = 4;
 
-        normalizedInput = normalizeObjectUnits(config._i);
-        config._a = [
-            normalizedInput.year,
-            normalizedInput.month,
-            normalizedInput.day || normalizedInput.date,
-            normalizedInput.hour,
-            normalizedInput.minute,
-            normalizedInput.second,
-            normalizedInput.millisecond
-        ];
-
-        dateFromConfig(config);
-    }
-
-    function currentDateArray(config) {
-        var now = new Date();
-        if (config._useUTC) {
-            return [
-                now.getUTCFullYear(),
-                now.getUTCMonth(),
-                now.getUTCDate()
-            ];
+            // TODO: We need to take the current isoWeekYear, but that depends on
+            // how we interpret now (local, utc, fixed offset). So create
+            // a now version of current config (take local/utc/offset flags, and
+            // create now).
+            weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(local__createLocal(), 1, 4).year);
+            week = defaults(w.W, 1);
+            weekday = defaults(w.E, 1);
         } else {
-            return [now.getFullYear(), now.getMonth(), now.getDate()];
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
+
+            weekYear = defaults(w.gg, config._a[YEAR], weekOfYear(local__createLocal(), dow, doy).year);
+            week = defaults(w.w, 1);
+
+            if (w.d != null) {
+                // weekday -- low day numbers are considered next week
+                weekday = w.d;
+                if (weekday < dow) {
+                    ++week;
+                }
+            } else if (w.e != null) {
+                // local weekday -- counting starts from begining of week
+                weekday = w.e + dow;
+            } else {
+                // default to begining of week
+                weekday = dow;
+            }
         }
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, doy, dow);
+
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
     }
+
+    utils_hooks__hooks.ISO_8601 = function () {};
 
     // date from string and format string
-    function makeDateFromStringAndFormat(config) {
-        if (config._f === moment.ISO_8601) {
-            parseISO(config);
+    function configFromStringAndFormat(config) {
+        // TODO: Move this to another part of the creation flow to prevent circular deps
+        if (config._f === utils_hooks__hooks.ISO_8601) {
+            configFromISO(config);
             return;
         }
 
@@ -35565,25 +35233,39 @@ if (typeof jQuery === 'undefined') {
             config._pf.bigHour = undefined;
         }
         // handle meridiem
-        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR],
-                config._meridiem);
-        dateFromConfig(config);
+        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+
+        configFromArray(config);
         checkOverflow(config);
     }
 
-    function unescapeFormat(s) {
-        return s.replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
-            return p1 || p2 || p3 || p4;
-        });
+
+    function meridiemFixWrap (locale, hour, meridiem) {
+        var isPm;
+
+        if (meridiem == null) {
+            // nothing to do
+            return hour;
+        }
+        if (locale.meridiemHour != null) {
+            return locale.meridiemHour(hour, meridiem);
+        } else if (locale.isPM != null) {
+            // Fallback
+            isPm = locale.isPM(meridiem);
+            if (isPm && hour < 12) {
+                hour += 12;
+            }
+            if (!isPm && hour === 12) {
+                hour = 0;
+            }
+            return hour;
+        } else {
+            // this is not supposed to happen
+            return hour;
+        }
     }
 
-    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
-    function regexpEscape(s) {
-        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    }
-
-    // date from string and array of format strings
-    function makeDateFromStringAndArray(config) {
+    function configFromStringAndArray(config) {
         var tempConfig,
             bestMoment,
 
@@ -35605,9 +35287,9 @@ if (typeof jQuery === 'undefined') {
             }
             tempConfig._pf = defaultParsingFlags();
             tempConfig._f = config._f[i];
-            makeDateFromStringAndFormat(tempConfig);
+            configFromStringAndFormat(tempConfig);
 
-            if (!isValid(tempConfig)) {
+            if (!valid__isValid(tempConfig)) {
                 continue;
             }
 
@@ -35628,97 +35310,937 @@ if (typeof jQuery === 'undefined') {
         extend(config, bestMoment || tempConfig);
     }
 
-    // date from iso format
-    function parseISO(config) {
-        var i, l,
-            string = config._i,
-            match = isoRegex.exec(string);
+    function configFromObject(config) {
+        if (config._d) {
+            return;
+        }
 
-        if (match) {
-            config._pf.iso = true;
-            for (i = 0, l = isoDates.length; i < l; i++) {
-                if (isoDates[i][1].exec(string)) {
-                    // match[5] should be 'T' or undefined
-                    config._f = isoDates[i][0] + (match[6] || ' ');
-                    break;
-                }
-            }
-            for (i = 0, l = isoTimes.length; i < l; i++) {
-                if (isoTimes[i][1].exec(string)) {
-                    config._f += isoTimes[i][0];
-                    break;
-                }
-            }
-            if (string.match(parseTokenTimezone)) {
-                config._f += 'Z';
-            }
-            makeDateFromStringAndFormat(config);
+        var i = normalizeObjectUnits(config._i);
+        config._a = [i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond];
+
+        configFromArray(config);
+    }
+
+    function createFromConfig (config) {
+        var input = config._i,
+            format = config._f,
+            res;
+
+        config._locale = config._locale || locale_locales__getLocale(config._l);
+
+        if (input === null || (format === undefined && input === '')) {
+            return valid__createInvalid({nullInput: true});
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = config._locale.preparse(input);
+        }
+
+        if (isMoment(input)) {
+            return new Moment(checkOverflow(input));
+        } else if (isArray(format)) {
+            configFromStringAndArray(config);
+        } else if (format) {
+            configFromStringAndFormat(config);
         } else {
-            config._isValid = false;
+            configFromInput(config);
         }
-    }
 
-    // date from iso format or fallback
-    function makeDateFromString(config) {
-        parseISO(config);
-        if (config._isValid === false) {
-            delete config._isValid;
-            moment.createFromInputFallback(config);
+        res = new Moment(checkOverflow(config));
+        if (res._nextDay) {
+            // Adding is smart enough around DST
+            res.add(1, 'd');
+            res._nextDay = undefined;
         }
-    }
 
-    function map(arr, fn) {
-        var res = [], i;
-        for (i = 0; i < arr.length; ++i) {
-            res.push(fn(arr[i], i));
-        }
         return res;
     }
 
-    function makeDateFromInput(config) {
-        var input = config._i, matched;
+    function configFromInput(config) {
+        var input = config._i;
         if (input === undefined) {
             config._d = new Date();
         } else if (isDate(input)) {
             config._d = new Date(+input);
-        } else if ((matched = aspNetJsonRegex.exec(input)) !== null) {
-            config._d = new Date(+matched[1]);
         } else if (typeof input === 'string') {
-            makeDateFromString(config);
+            configFromString(config);
         } else if (isArray(input)) {
             config._a = map(input.slice(0), function (obj) {
                 return parseInt(obj, 10);
             });
-            dateFromConfig(config);
+            configFromArray(config);
         } else if (typeof(input) === 'object') {
-            dateFromObject(config);
+            configFromObject(config);
         } else if (typeof(input) === 'number') {
             // from milliseconds
             config._d = new Date(input);
         } else {
-            moment.createFromInputFallback(config);
+            utils_hooks__hooks.createFromInputFallback(config);
         }
     }
 
-    function makeDate(y, m, d, h, M, s, ms) {
-        //can't just apply() to create a date:
-        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
-        var date = new Date(y, m, d, h, M, s, ms);
+    function createLocalOrUTC (input, format, locale, strict, isUTC) {
+        var c = {};
 
-        //the date constructor doesn't accept years < 1970
-        if (y < 1970) {
-            date.setFullYear(y);
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
         }
-        return date;
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c._isAMomentObject = true;
+        c._useUTC = c._isUTC = isUTC;
+        c._l = locale;
+        c._i = input;
+        c._f = format;
+        c._strict = strict;
+        c._pf = defaultParsingFlags();
+
+        return createFromConfig(c);
     }
 
-    function makeUTCDate(y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-        if (y < 1970) {
-            date.setUTCFullYear(y);
-        }
-        return date;
+    function local__createLocal (input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, false);
     }
+
+    var prototypeMin = deprecate(
+         'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
+         function () {
+             var other = local__createLocal.apply(null, arguments);
+             return other < this ? this : other;
+         }
+     );
+
+    var prototypeMax = deprecate(
+        'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
+        function () {
+            var other = local__createLocal.apply(null, arguments);
+            return other > this ? this : other;
+        }
+    );
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+        var res, i;
+        if (moments.length === 1 && isArray(moments[0])) {
+            moments = moments[0];
+        }
+        if (!moments.length) {
+            return local__createLocal();
+        }
+        res = moments[0];
+        for (i = 1; i < moments.length; ++i) {
+            if (moments[i][fn](res)) {
+                res = moments[i];
+            }
+        }
+        return res;
+    }
+
+    // TODO: Use [].sort instead?
+    function min () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isBefore', args);
+    }
+
+    function max () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isAfter', args);
+    }
+
+    function Duration (duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            quarters = normalizedInput.quarter || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        // representation for dateAddRemove
+        this._milliseconds = +milliseconds +
+            seconds * 1e3 + // 1000
+            minutes * 6e4 + // 1000 * 60
+            hours * 36e5; // 1000 * 60 * 60
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days +
+            weeks * 7;
+        // It is impossible translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months +
+            quarters * 3 +
+            years * 12;
+
+        this._data = {};
+
+        this._locale = locale_locales__getLocale();
+
+        this._bubble();
+    }
+
+    function isDuration (obj) {
+        return obj instanceof Duration;
+    }
+
+    function offset (token, separator) {
+        addFormatToken(token, 0, 0, function () {
+            var offset = this.utcOffset();
+            var sign = '+';
+            if (offset < 0) {
+                offset = -offset;
+                sign = '-';
+            }
+            return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~(offset) % 60, 2);
+        });
+    }
+
+    offset('Z', ':');
+    offset('ZZ', '');
+
+    // PARSING
+
+    addRegexToken('Z',  matchOffset);
+    addRegexToken('ZZ', matchOffset);
+    addParseToken(['Z', 'ZZ'], function (input, array, config) {
+        config._useUTC = true;
+        config._tzm = offsetFromString(input);
+    });
+
+    // HELPERS
+
+    // timezone chunker
+    // '+10:00' > ['10',  '00']
+    // '-1530'  > ['-15', '30']
+    var chunkOffset = /([\+\-]|\d\d)/gi;
+
+    function offsetFromString(string) {
+        var matches = ((string || '').match(matchOffset) || []);
+        var chunk   = matches[matches.length - 1] || [];
+        var parts   = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+        var minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return parts[0] === '+' ? minutes : -minutes;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function cloneWithOffset(input, model) {
+        var res, diff;
+        if (model._isUTC) {
+            res = model.clone();
+            diff = (isMoment(input) || isDate(input) ? +input : +local__createLocal(input)) - (+res);
+            // Use low-level api, because this fn is low-level api.
+            res._d.setTime(+res._d + diff);
+            utils_hooks__hooks.updateOffset(res, false);
+            return res;
+        } else {
+            return local__createLocal(input).local();
+        }
+        return model._isUTC ? local__createLocal(input).zone(model._offset || 0) : local__createLocal(input).local();
+    }
+
+    function getDateOffset (m) {
+        // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+        // https://github.com/moment/moment/pull/1871
+        return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+    }
+
+    // HOOKS
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    utils_hooks__hooks.updateOffset = function () {};
+
+    // MOMENTS
+
+    // keepLocalTime = true means only change the timezone, without
+    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+    // +0200, so we adjust the time as needed, to be valid.
+    //
+    // Keeping the time actually adds/subtracts (one hour)
+    // from the actual represented time. That is why we call updateOffset
+    // a second time. In case it wants us to change the offset again
+    // _changeInProgress == true case, then we have to adjust, because
+    // there is no such time in the given timezone.
+    function getSetOffset (input, keepLocalTime) {
+        var offset = this._offset || 0,
+            localAdjust;
+        if (input != null) {
+            if (typeof input === 'string') {
+                input = offsetFromString(input);
+            }
+            if (Math.abs(input) < 16) {
+                input = input * 60;
+            }
+            if (!this._isUTC && keepLocalTime) {
+                localAdjust = getDateOffset(this);
+            }
+            this._offset = input;
+            this._isUTC = true;
+            if (localAdjust != null) {
+                this.add(localAdjust, 'm');
+            }
+            if (offset !== input) {
+                if (!keepLocalTime || this._changeInProgress) {
+                    add_subtract__addSubtract(this, create__createDuration(input - offset, 'm'), 1, false);
+                } else if (!this._changeInProgress) {
+                    this._changeInProgress = true;
+                    utils_hooks__hooks.updateOffset(this, true);
+                    this._changeInProgress = null;
+                }
+            }
+            return this;
+        } else {
+            return this._isUTC ? offset : getDateOffset(this);
+        }
+    }
+
+    function getSetZone (input, keepLocalTime) {
+        if (input != null) {
+            if (typeof input !== 'string') {
+                input = -input;
+            }
+
+            this.utcOffset(input, keepLocalTime);
+
+            return this;
+        } else {
+            return -this.utcOffset();
+        }
+    }
+
+    function setOffsetToUTC (keepLocalTime) {
+        return this.utcOffset(0, keepLocalTime);
+    }
+
+    function setOffsetToLocal (keepLocalTime) {
+        if (this._isUTC) {
+            this.utcOffset(0, keepLocalTime);
+            this._isUTC = false;
+
+            if (keepLocalTime) {
+                this.subtract(getDateOffset(this), 'm');
+            }
+        }
+        return this;
+    }
+
+    function setOffsetToParsedOffset () {
+        if (this._tzm) {
+            this.utcOffset(this._tzm);
+        } else if (typeof this._i === 'string') {
+            this.utcOffset(offsetFromString(this._i));
+        }
+        return this;
+    }
+
+    function hasAlignedHourOffset (input) {
+        if (!input) {
+            input = 0;
+        }
+        else {
+            input = local__createLocal(input).utcOffset();
+        }
+
+        return (this.utcOffset() - input) % 60 === 0;
+    }
+
+    function isDaylightSavingTime () {
+        return (
+            this.utcOffset() > this.clone().month(0).utcOffset() ||
+            this.utcOffset() > this.clone().month(5).utcOffset()
+        );
+    }
+
+    function isDaylightSavingTimeShifted () {
+        if (this._a) {
+            var other = this._isUTC ? create_utc__createUTC(this._a) : local__createLocal(this._a);
+            return this.isValid() && compareArrays(this._a, other.toArray()) > 0;
+        }
+
+        return false;
+    }
+
+    function isLocal () {
+        return !this._isUTC;
+    }
+
+    function isUtcOffset () {
+        return this._isUTC;
+    }
+
+    function isUtc () {
+        return this._isUTC && this._offset === 0;
+    }
+
+    var aspNetRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/;
+
+    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+    // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+    var create__isoRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/;
+
+    function create__createDuration (input, key) {
+        var duration = input,
+            // matching against regexp is expensive, do it on demand
+            match = null,
+            sign,
+            ret,
+            diffRes;
+
+        if (isDuration(input)) {
+            duration = {
+                ms : input._milliseconds,
+                d  : input._days,
+                M  : input._months
+            };
+        } else if (typeof input === 'number') {
+            duration = {};
+            if (key) {
+                duration[key] = input;
+            } else {
+                duration.milliseconds = input;
+            }
+        } else if (!!(match = aspNetRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            duration = {
+                y  : 0,
+                d  : toInt(match[DATE])        * sign,
+                h  : toInt(match[HOUR])        * sign,
+                m  : toInt(match[MINUTE])      * sign,
+                s  : toInt(match[SECOND])      * sign,
+                ms : toInt(match[MILLISECOND]) * sign
+            };
+        } else if (!!(match = create__isoRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            duration = {
+                y : parseIso(match[2], sign),
+                M : parseIso(match[3], sign),
+                d : parseIso(match[4], sign),
+                h : parseIso(match[5], sign),
+                m : parseIso(match[6], sign),
+                s : parseIso(match[7], sign),
+                w : parseIso(match[8], sign)
+            };
+        } else if (duration == null) {// checks for null or undefined
+            duration = {};
+        } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
+            diffRes = momentsDifference(local__createLocal(duration.from), local__createLocal(duration.to));
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
+        }
+
+        ret = new Duration(duration);
+
+        if (isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
+        }
+
+        return ret;
+    }
+
+    create__createDuration.fn = Duration.prototype;
+
+    function parseIso (inp, sign) {
+        // We'd normally use ~~inp for this, but unfortunately it also
+        // converts floats to ints.
+        // inp may be undefined, so careful calling replace on it.
+        var res = inp && parseFloat(inp.replace(',', '.'));
+        // apply sign while we're at it
+        return (isNaN(res) ? 0 : res) * sign;
+    }
+
+    function positiveMomentsDifference(base, other) {
+        var res = {milliseconds: 0, months: 0};
+
+        res.months = other.month() - base.month() +
+            (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        other = cloneWithOffset(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period).');
+                tmp = val; val = period; period = tmp;
+            }
+
+            val = typeof val === 'string' ? +val : val;
+            dur = create__createDuration(val, period);
+            add_subtract__addSubtract(this, dur, direction);
+            return this;
+        };
+    }
+
+    function add_subtract__addSubtract (mom, duration, isAdding, updateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = duration._days,
+            months = duration._months;
+        updateOffset = updateOffset == null ? true : updateOffset;
+
+        if (milliseconds) {
+            mom._d.setTime(+mom._d + milliseconds * isAdding);
+        }
+        if (days) {
+            get_set__set(mom, 'Date', get_set__get(mom, 'Date') + days * isAdding);
+        }
+        if (months) {
+            setMonth(mom, get_set__get(mom, 'Month') + months * isAdding);
+        }
+        if (updateOffset) {
+            utils_hooks__hooks.updateOffset(mom, days || months);
+        }
+    }
+
+    var add_subtract__add      = createAdder(1, 'add');
+    var add_subtract__subtract = createAdder(-1, 'subtract');
+
+    function moment_calendar__calendar (time) {
+        // We want to compare the start of today, vs this.
+        // Getting start-of-today depends on whether we're local/utc/offset or not.
+        var now = time || local__createLocal(),
+            sod = cloneWithOffset(now, this).startOf('day'),
+            diff = this.diff(sod, 'days', true),
+            format = diff < -6 ? 'sameElse' :
+                diff < -1 ? 'lastWeek' :
+                diff < 0 ? 'lastDay' :
+                diff < 1 ? 'sameDay' :
+                diff < 2 ? 'nextDay' :
+                diff < 7 ? 'nextWeek' : 'sameElse';
+        return this.format(this.localeData().calendar(format, this, local__createLocal(now)));
+    }
+
+    function clone () {
+        return new Moment(this);
+    }
+
+    function isAfter (input, units) {
+        var inputMs;
+        units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
+        if (units === 'millisecond') {
+            input = isMoment(input) ? input : local__createLocal(input);
+            return +this > +input;
+        } else {
+            inputMs = isMoment(input) ? +input : +local__createLocal(input);
+            return inputMs < +this.clone().startOf(units);
+        }
+    }
+
+    function isBefore (input, units) {
+        var inputMs;
+        units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
+        if (units === 'millisecond') {
+            input = isMoment(input) ? input : local__createLocal(input);
+            return +this < +input;
+        } else {
+            inputMs = isMoment(input) ? +input : +local__createLocal(input);
+            return +this.clone().endOf(units) < inputMs;
+        }
+    }
+
+    function isBetween (from, to, units) {
+        return this.isAfter(from, units) && this.isBefore(to, units);
+    }
+
+    function isSame (input, units) {
+        var inputMs;
+        units = normalizeUnits(units || 'millisecond');
+        if (units === 'millisecond') {
+            input = isMoment(input) ? input : local__createLocal(input);
+            return +this === +input;
+        } else {
+            inputMs = +local__createLocal(input);
+            return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
+        }
+    }
+
+    function absFloor (number) {
+        if (number < 0) {
+            return Math.ceil(number);
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function diff (input, units, asFloat) {
+        var that = cloneWithOffset(input, this),
+            zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4,
+            delta, output;
+
+        units = normalizeUnits(units);
+
+        if (units === 'year' || units === 'month' || units === 'quarter') {
+            output = monthDiff(this, that);
+            if (units === 'quarter') {
+                output = output / 3;
+            } else if (units === 'year') {
+                output = output / 12;
+            }
+        } else {
+            delta = this - that;
+            output = units === 'second' ? delta / 1e3 : // 1000
+                units === 'minute' ? delta / 6e4 : // 1000 * 60
+                units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
+                units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
+                units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
+                delta;
+        }
+        return asFloat ? output : absFloor(output);
+    }
+
+    function monthDiff (a, b) {
+        // difference in months
+        var wholeMonthDiff = ((b.year() - a.year()) * 12) + (b.month() - a.month()),
+            // b is in (anchor - 1 month, anchor + 1 month)
+            anchor = a.clone().add(wholeMonthDiff, 'months'),
+            anchor2, adjust;
+
+        if (b - anchor < 0) {
+            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor - anchor2);
+        } else {
+            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor2 - anchor);
+        }
+
+        return -(wholeMonthDiff + adjust);
+    }
+
+    utils_hooks__hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+
+    function toString () {
+        return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+    }
+
+    function moment_format__toISOString () {
+        var m = this.clone().utc();
+        if (0 < m.year() && m.year() <= 9999) {
+            if ('function' === typeof Date.prototype.toISOString) {
+                // native implementation is ~50x faster, use it when we can
+                return this.toDate().toISOString();
+            } else {
+                return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+        } else {
+            return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+        }
+    }
+
+    function format (inputString) {
+        var output = formatMoment(this, inputString || utils_hooks__hooks.defaultFormat);
+        return this.localeData().postformat(output);
+    }
+
+    function from (time, withoutSuffix) {
+        return create__createDuration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
+    }
+
+    function fromNow (withoutSuffix) {
+        return this.from(local__createLocal(), withoutSuffix);
+    }
+
+    function locale (key) {
+        var newLocaleData;
+
+        if (key === undefined) {
+            return this._locale._abbr;
+        } else {
+            newLocaleData = locale_locales__getLocale(key);
+            if (newLocaleData != null) {
+                this._locale = newLocaleData;
+            }
+            return this;
+        }
+    }
+
+    var lang = deprecate(
+        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+        function (key) {
+            if (key === undefined) {
+                return this.localeData();
+            } else {
+                return this.locale(key);
+            }
+        }
+    );
+
+    function localeData () {
+        return this._locale;
+    }
+
+    function startOf (units) {
+        units = normalizeUnits(units);
+        // the following switch intentionally omits break keywords
+        // to utilize falling through the cases.
+        switch (units) {
+        case 'year':
+            this.month(0);
+            /* falls through */
+        case 'quarter':
+        case 'month':
+            this.date(1);
+            /* falls through */
+        case 'week':
+        case 'isoWeek':
+        case 'day':
+            this.hours(0);
+            /* falls through */
+        case 'hour':
+            this.minutes(0);
+            /* falls through */
+        case 'minute':
+            this.seconds(0);
+            /* falls through */
+        case 'second':
+            this.milliseconds(0);
+        }
+
+        // weeks are a special case
+        if (units === 'week') {
+            this.weekday(0);
+        }
+        if (units === 'isoWeek') {
+            this.isoWeekday(1);
+        }
+
+        // quarters are also special
+        if (units === 'quarter') {
+            this.month(Math.floor(this.month() / 3) * 3);
+        }
+
+        return this;
+    }
+
+    function endOf (units) {
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond') {
+            return this;
+        }
+        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+    }
+
+    function to_type__valueOf () {
+        return +this._d - ((this._offset || 0) * 60000);
+    }
+
+    function unix () {
+        return Math.floor(+this / 1000);
+    }
+
+    function toDate () {
+        return this._offset ? new Date(+this) : this._d;
+    }
+
+    function toArray () {
+        var m = this;
+        return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
+    }
+
+    function moment_valid__isValid () {
+        return valid__isValid(this);
+    }
+
+    function parsingFlags () {
+        return extend({}, this._pf);
+    }
+
+    function invalidAt () {
+        return this._pf.overflow;
+    }
+
+    addFormatToken(0, ['gg', 2], 0, function () {
+        return this.weekYear() % 100;
+    });
+
+    addFormatToken(0, ['GG', 2], 0, function () {
+        return this.isoWeekYear() % 100;
+    });
+
+    function addWeekYearFormatToken (token, getter) {
+        addFormatToken(0, [token, token.length], 0, getter);
+    }
+
+    addWeekYearFormatToken('gggg',     'weekYear');
+    addWeekYearFormatToken('ggggg',    'weekYear');
+    addWeekYearFormatToken('GGGG',  'isoWeekYear');
+    addWeekYearFormatToken('GGGGG', 'isoWeekYear');
+
+    // ALIASES
+
+    addUnitAlias('weekYear', 'gg');
+    addUnitAlias('isoWeekYear', 'GG');
+
+    // PARSING
+
+    addRegexToken('G',      matchSigned);
+    addRegexToken('g',      matchSigned);
+    addRegexToken('GG',     match1to2, match2);
+    addRegexToken('gg',     match1to2, match2);
+    addRegexToken('GGGG',   match1to4, match4);
+    addRegexToken('gggg',   match1to4, match4);
+    addRegexToken('GGGGG',  match1to6, match6);
+    addRegexToken('ggggg',  match1to6, match6);
+
+    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+        week[token.substr(0, 2)] = toInt(input);
+    });
+
+    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+        week[token] = utils_hooks__hooks.parseTwoDigitYear(input);
+    });
+
+    // HELPERS
+
+    function weeksInYear(year, dow, doy) {
+        return weekOfYear(local__createLocal([year, 11, 31 + dow - doy]), dow, doy).week;
+    }
+
+    // MOMENTS
+
+    function getSetWeekYear (input) {
+        var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;
+        return input == null ? year : this.add((input - year), 'y');
+    }
+
+    function getSetISOWeekYear (input) {
+        var year = weekOfYear(this, 1, 4).year;
+        return input == null ? year : this.add((input - year), 'y');
+    }
+
+    function getISOWeeksInYear () {
+        return weeksInYear(this.year(), 1, 4);
+    }
+
+    function getWeeksInYear () {
+        var weekInfo = this.localeData()._week;
+        return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+    }
+
+    addFormatToken('Q', 0, 0, 'quarter');
+
+    // ALIASES
+
+    addUnitAlias('quarter', 'Q');
+
+    // PARSING
+
+    addRegexToken('Q', match1);
+    addParseToken('Q', function (input, array) {
+        array[MONTH] = (toInt(input) - 1) * 3;
+    });
+
+    // MOMENTS
+
+    function getSetQuarter (input) {
+        return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+    }
+
+    addFormatToken('D', ['DD', 2], 'Do', 'date');
+
+    // ALIASES
+
+    addUnitAlias('date', 'D');
+
+    // PARSING
+
+    addRegexToken('D',  match1to2);
+    addRegexToken('DD', match1to2, match2);
+    addRegexToken('Do', function (isStrict, locale) {
+        return isStrict ? locale._ordinalParse : locale._ordinalParseLenient;
+    });
+
+    addParseToken(['D', 'DD'], DATE);
+    addParseToken('Do', function (input, array) {
+        array[DATE] = toInt(input.match(match1to2)[0], 10);
+    });
+
+    // MOMENTS
+
+    var getSetDayOfMonth = makeGetSet('Date', true);
+
+    addFormatToken('d', 0, 'do', 'day');
+
+    addFormatToken('dd', 0, 0, function (format) {
+        return this.localeData().weekdaysMin(this, format);
+    });
+
+    addFormatToken('ddd', 0, 0, function (format) {
+        return this.localeData().weekdaysShort(this, format);
+    });
+
+    addFormatToken('dddd', 0, 0, function (format) {
+        return this.localeData().weekdays(this, format);
+    });
+
+    addFormatToken('e', 0, 0, 'weekday');
+    addFormatToken('E', 0, 0, 'isoWeekday');
+
+    // ALIASES
+
+    addUnitAlias('day', 'd');
+    addUnitAlias('weekday', 'e');
+    addUnitAlias('isoWeekday', 'E');
+
+    // PARSING
+
+    addRegexToken('d',    match1to2);
+    addRegexToken('e',    match1to2);
+    addRegexToken('E',    match1to2);
+    addRegexToken('dd',   matchWord);
+    addRegexToken('ddd',  matchWord);
+    addRegexToken('dddd', matchWord);
+
+    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config) {
+        var weekday = config._locale.weekdaysParse(input);
+        // if we didn't get a weekday name, mark the date as invalid
+        if (weekday != null) {
+            week.d = weekday;
+        } else {
+            config._pf.invalidWeekday = input;
+        }
+    });
+
+    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+        week[token] = toInt(input);
+    });
+
+    // HELPERS
 
     function parseWeekday(input, locale) {
         if (typeof input === 'string') {
@@ -35735,1251 +36257,506 @@ if (typeof jQuery === 'undefined') {
         return input;
     }
 
-    /************************************
-        Relative Time
-    ************************************/
+    // LOCALES
 
-
-    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
-    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
-        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+    function localeWeekdays (m) {
+        return this._weekdays[m.day()];
     }
 
-    function relativeTime(posNegDuration, withoutSuffix, locale) {
-        var duration = moment.duration(posNegDuration).abs(),
-            seconds = round(duration.as('s')),
-            minutes = round(duration.as('m')),
-            hours = round(duration.as('h')),
-            days = round(duration.as('d')),
-            months = round(duration.as('M')),
-            years = round(duration.as('y')),
-
-            args = seconds < relativeTimeThresholds.s && ['s', seconds] ||
-                minutes === 1 && ['m'] ||
-                minutes < relativeTimeThresholds.m && ['mm', minutes] ||
-                hours === 1 && ['h'] ||
-                hours < relativeTimeThresholds.h && ['hh', hours] ||
-                days === 1 && ['d'] ||
-                days < relativeTimeThresholds.d && ['dd', days] ||
-                months === 1 && ['M'] ||
-                months < relativeTimeThresholds.M && ['MM', months] ||
-                years === 1 && ['y'] || ['yy', years];
-
-        args[2] = withoutSuffix;
-        args[3] = +posNegDuration > 0;
-        args[4] = locale;
-        return substituteTimeAgo.apply({}, args);
+    var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+    function localeWeekdaysShort (m) {
+        return this._weekdaysShort[m.day()];
     }
 
-
-    /************************************
-        Week of Year
-    ************************************/
-
-
-    // firstDayOfWeek       0 = sun, 6 = sat
-    //                      the day of the week that starts the week
-    //                      (usually sunday or monday)
-    // firstDayOfWeekOfYear 0 = sun, 6 = sat
-    //                      the first week is the week that contains the first
-    //                      of this day of the week
-    //                      (eg. ISO weeks use thursday (4))
-    function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
-        var end = firstDayOfWeekOfYear - firstDayOfWeek,
-            daysToDayOfWeek = firstDayOfWeekOfYear - mom.day(),
-            adjustedMoment;
-
-
-        if (daysToDayOfWeek > end) {
-            daysToDayOfWeek -= 7;
-        }
-
-        if (daysToDayOfWeek < end - 7) {
-            daysToDayOfWeek += 7;
-        }
-
-        adjustedMoment = moment(mom).add(daysToDayOfWeek, 'd');
-        return {
-            week: Math.ceil(adjustedMoment.dayOfYear() / 7),
-            year: adjustedMoment.year()
-        };
+    var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+    function localeWeekdaysMin (m) {
+        return this._weekdaysMin[m.day()];
     }
 
-    //http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
-    function dayOfYearFromWeeks(year, week, weekday, firstDayOfWeekOfYear, firstDayOfWeek) {
-        var d = makeUTCDate(year, 0, 1).getUTCDay(), daysToAdd, dayOfYear;
+    function localeWeekdaysParse (weekdayName) {
+        var i, mom, regex;
 
-        d = d === 0 ? 7 : d;
-        weekday = weekday != null ? weekday : firstDayOfWeek;
-        daysToAdd = firstDayOfWeek - d + (d > firstDayOfWeekOfYear ? 7 : 0) - (d < firstDayOfWeek ? 7 : 0);
-        dayOfYear = 7 * (week - 1) + (weekday - firstDayOfWeek) + daysToAdd + 1;
-
-        return {
-            year: dayOfYear > 0 ? year : year - 1,
-            dayOfYear: dayOfYear > 0 ?  dayOfYear : daysInYear(year - 1) + dayOfYear
-        };
-    }
-
-    /************************************
-        Top Level Functions
-    ************************************/
-
-    function makeMoment(config) {
-        var input = config._i,
-            format = config._f,
-            res;
-
-        config._locale = config._locale || moment.localeData(config._l);
-
-        if (input === null || (format === undefined && input === '')) {
-            return moment.invalid({nullInput: true});
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
         }
 
-        if (typeof input === 'string') {
-            config._i = input = config._locale.preparse(input);
-        }
-
-        if (moment.isMoment(input)) {
-            return new Moment(input, true);
-        } else if (format) {
-            if (isArray(format)) {
-                makeDateFromStringAndArray(config);
-            } else {
-                makeDateFromStringAndFormat(config);
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+            if (!this._weekdaysParse[i]) {
+                mom = local__createLocal([2000, 1]).day(i);
+                regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+                this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
             }
+            // test the regex
+            if (this._weekdaysParse[i].test(weekdayName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function getSetDayOfWeek (input) {
+        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+        if (input != null) {
+            input = parseWeekday(input, this.localeData());
+            return this.add(input - day, 'd');
         } else {
-            makeDateFromInput(config);
+            return day;
         }
-
-        res = new Moment(config);
-        if (res._nextDay) {
-            // Adding is smart enough around DST
-            res.add(1, 'd');
-            res._nextDay = undefined;
-        }
-
-        return res;
     }
 
-    moment = function (input, format, locale, strict) {
-        var c;
-
-        if (typeof(locale) === 'boolean') {
-            strict = locale;
-            locale = undefined;
-        }
-        // object construction must be done this way.
-        // https://github.com/moment/moment/issues/1423
-        c = {};
-        c._isAMomentObject = true;
-        c._i = input;
-        c._f = format;
-        c._l = locale;
-        c._strict = strict;
-        c._isUTC = false;
-        c._pf = defaultParsingFlags();
-
-        return makeMoment(c);
-    };
-
-    moment.suppressDeprecationWarnings = false;
-
-    moment.createFromInputFallback = deprecate(
-        'moment construction falls back to js Date. This is ' +
-        'discouraged and will be removed in upcoming major ' +
-        'release. Please refer to ' +
-        'https://github.com/moment/moment/issues/1407 for more info.',
-        function (config) {
-            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-        }
-    );
-
-    // Pick a moment m from moments so that m[fn](other) is true for all
-    // other. This relies on the function fn to be transitive.
-    //
-    // moments should either be an array of moment objects or an array, whose
-    // first element is an array of moment objects.
-    function pickBy(fn, moments) {
-        var res, i;
-        if (moments.length === 1 && isArray(moments[0])) {
-            moments = moments[0];
-        }
-        if (!moments.length) {
-            return moment();
-        }
-        res = moments[0];
-        for (i = 1; i < moments.length; ++i) {
-            if (moments[i][fn](res)) {
-                res = moments[i];
-            }
-        }
-        return res;
+    function getSetLocaleDayOfWeek (input) {
+        var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+        return input == null ? weekday : this.add(input - weekday, 'd');
     }
 
-    moment.min = function () {
-        var args = [].slice.call(arguments, 0);
-
-        return pickBy('isBefore', args);
-    };
-
-    moment.max = function () {
-        var args = [].slice.call(arguments, 0);
-
-        return pickBy('isAfter', args);
-    };
-
-    // creating with utc
-    moment.utc = function (input, format, locale, strict) {
-        var c;
-
-        if (typeof(locale) === 'boolean') {
-            strict = locale;
-            locale = undefined;
-        }
-        // object construction must be done this way.
-        // https://github.com/moment/moment/issues/1423
-        c = {};
-        c._isAMomentObject = true;
-        c._useUTC = true;
-        c._isUTC = true;
-        c._l = locale;
-        c._i = input;
-        c._f = format;
-        c._strict = strict;
-        c._pf = defaultParsingFlags();
-
-        return makeMoment(c).utc();
-    };
-
-    // creating with unix timestamp (in seconds)
-    moment.unix = function (input) {
-        return moment(input * 1000);
-    };
-
-    // duration
-    moment.duration = function (input, key) {
-        var duration = input,
-            // matching against regexp is expensive, do it on demand
-            match = null,
-            sign,
-            ret,
-            parseIso,
-            diffRes;
-
-        if (moment.isDuration(input)) {
-            duration = {
-                ms: input._milliseconds,
-                d: input._days,
-                M: input._months
-            };
-        } else if (typeof input === 'number') {
-            duration = {};
-            if (key) {
-                duration[key] = input;
-            } else {
-                duration.milliseconds = input;
-            }
-        } else if (!!(match = aspNetTimeSpanJsonRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : 1;
-            duration = {
-                y: 0,
-                d: toInt(match[DATE]) * sign,
-                h: toInt(match[HOUR]) * sign,
-                m: toInt(match[MINUTE]) * sign,
-                s: toInt(match[SECOND]) * sign,
-                ms: toInt(match[MILLISECOND]) * sign
-            };
-        } else if (!!(match = isoDurationRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : 1;
-            parseIso = function (inp) {
-                // We'd normally use ~~inp for this, but unfortunately it also
-                // converts floats to ints.
-                // inp may be undefined, so careful calling replace on it.
-                var res = inp && parseFloat(inp.replace(',', '.'));
-                // apply sign while we're at it
-                return (isNaN(res) ? 0 : res) * sign;
-            };
-            duration = {
-                y: parseIso(match[2]),
-                M: parseIso(match[3]),
-                d: parseIso(match[4]),
-                h: parseIso(match[5]),
-                m: parseIso(match[6]),
-                s: parseIso(match[7]),
-                w: parseIso(match[8])
-            };
-        } else if (duration == null) {// checks for null or undefined
-            duration = {};
-        } else if (typeof duration === 'object' &&
-                ('from' in duration || 'to' in duration)) {
-            diffRes = momentsDifference(moment(duration.from), moment(duration.to));
-
-            duration = {};
-            duration.ms = diffRes.milliseconds;
-            duration.M = diffRes.months;
-        }
-
-        ret = new Duration(duration);
-
-        if (moment.isDuration(input) && hasOwnProp(input, '_locale')) {
-            ret._locale = input._locale;
-        }
-
-        return ret;
-    };
-
-    // version number
-    moment.version = VERSION;
-
-    // default format
-    moment.defaultFormat = isoFormat;
-
-    // constant that refers to the ISO standard
-    moment.ISO_8601 = function () {};
-
-    // Plugins that add properties should also add the key here (null value),
-    // so we can properly clone ourselves.
-    moment.momentProperties = momentProperties;
-
-    // This function will be called whenever a moment is mutated.
-    // It is intended to keep the offset in sync with the timezone.
-    moment.updateOffset = function () {};
-
-    // This function allows you to set a threshold for relative time strings
-    moment.relativeTimeThreshold = function (threshold, limit) {
-        if (relativeTimeThresholds[threshold] === undefined) {
-            return false;
-        }
-        if (limit === undefined) {
-            return relativeTimeThresholds[threshold];
-        }
-        relativeTimeThresholds[threshold] = limit;
-        return true;
-    };
-
-    moment.lang = deprecate(
-        'moment.lang is deprecated. Use moment.locale instead.',
-        function (key, value) {
-            return moment.locale(key, value);
-        }
-    );
-
-    // This function will load locale and then set the global locale.  If
-    // no arguments are passed in, it will simply return the current global
-    // locale key.
-    moment.locale = function (key, values) {
-        var data;
-        if (key) {
-            if (typeof(values) !== 'undefined') {
-                data = moment.defineLocale(key, values);
-            }
-            else {
-                data = moment.localeData(key);
-            }
-
-            if (data) {
-                moment.duration._locale = moment._locale = data;
-            }
-        }
-
-        return moment._locale._abbr;
-    };
-
-    moment.defineLocale = function (name, values) {
-        if (values !== null) {
-            values.abbr = name;
-            if (!locales[name]) {
-                locales[name] = new Locale();
-            }
-            locales[name].set(values);
-
-            // backwards compat for now: also set the locale
-            moment.locale(name);
-
-            return locales[name];
-        } else {
-            // useful for testing
-            delete locales[name];
-            return null;
-        }
-    };
-
-    moment.langData = deprecate(
-        'moment.langData is deprecated. Use moment.localeData instead.',
-        function (key) {
-            return moment.localeData(key);
-        }
-    );
-
-    // returns locale data
-    moment.localeData = function (key) {
-        var locale;
-
-        if (key && key._locale && key._locale._abbr) {
-            key = key._locale._abbr;
-        }
-
-        if (!key) {
-            return moment._locale;
-        }
-
-        if (!isArray(key)) {
-            //short-circuit everything else
-            locale = loadLocale(key);
-            if (locale) {
-                return locale;
-            }
-            key = [key];
-        }
-
-        return chooseLocale(key);
-    };
-
-    // compare moment object
-    moment.isMoment = function (obj) {
-        return obj instanceof Moment ||
-            (obj != null && hasOwnProp(obj, '_isAMomentObject'));
-    };
-
-    // for typechecking Duration objects
-    moment.isDuration = function (obj) {
-        return obj instanceof Duration;
-    };
-
-    for (i = lists.length - 1; i >= 0; --i) {
-        makeList(lists[i]);
+    function getSetISODayOfWeek (input) {
+        // behaves the same as moment#day except
+        // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+        // as a setter, sunday should belong to the previous week.
+        return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
     }
 
-    moment.normalizeUnits = function (units) {
-        return normalizeUnits(units);
-    };
-
-    moment.invalid = function (flags) {
-        var m = moment.utc(NaN);
-        if (flags != null) {
-            extend(m._pf, flags);
-        }
-        else {
-            m._pf.userInvalidated = true;
-        }
-
-        return m;
-    };
-
-    moment.parseZone = function () {
-        return moment.apply(null, arguments).parseZone();
-    };
-
-    moment.parseTwoDigitYear = function (input) {
-        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-    };
-
-    moment.isDate = isDate;
-
-    /************************************
-        Moment Prototype
-    ************************************/
-
-
-    extend(moment.fn = Moment.prototype, {
-
-        clone : function () {
-            return moment(this);
-        },
-
-        valueOf : function () {
-            return +this._d - ((this._offset || 0) * 60000);
-        },
-
-        unix : function () {
-            return Math.floor(+this / 1000);
-        },
-
-        toString : function () {
-            return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
-        },
-
-        toDate : function () {
-            return this._offset ? new Date(+this) : this._d;
-        },
-
-        toISOString : function () {
-            var m = moment(this).utc();
-            if (0 < m.year() && m.year() <= 9999) {
-                if ('function' === typeof Date.prototype.toISOString) {
-                    // native implementation is ~50x faster, use it when we can
-                    return this.toDate().toISOString();
-                } else {
-                    return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-                }
-            } else {
-                return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-            }
-        },
-
-        toArray : function () {
-            var m = this;
-            return [
-                m.year(),
-                m.month(),
-                m.date(),
-                m.hours(),
-                m.minutes(),
-                m.seconds(),
-                m.milliseconds()
-            ];
-        },
-
-        isValid : function () {
-            return isValid(this);
-        },
-
-        isDSTShifted : function () {
-            if (this._a) {
-                return this.isValid() && compareArrays(this._a, (this._isUTC ? moment.utc(this._a) : moment(this._a)).toArray()) > 0;
-            }
-
-            return false;
-        },
-
-        parsingFlags : function () {
-            return extend({}, this._pf);
-        },
-
-        invalidAt: function () {
-            return this._pf.overflow;
-        },
-
-        utc : function (keepLocalTime) {
-            return this.utcOffset(0, keepLocalTime);
-        },
-
-        local : function (keepLocalTime) {
-            if (this._isUTC) {
-                this.utcOffset(0, keepLocalTime);
-                this._isUTC = false;
-
-                if (keepLocalTime) {
-                    this.subtract(this._dateUtcOffset(), 'm');
-                }
-            }
-            return this;
-        },
-
-        format : function (inputString) {
-            var output = formatMoment(this, inputString || moment.defaultFormat);
-            return this.localeData().postformat(output);
-        },
-
-        add : createAdder(1, 'add'),
-
-        subtract : createAdder(-1, 'subtract'),
-
-        diff : function (input, units, asFloat) {
-            var that = makeAs(input, this),
-                zoneDiff = (that.utcOffset() - this.utcOffset()) * 6e4,
-                anchor, diff, output, daysAdjust;
-
-            units = normalizeUnits(units);
-
-            if (units === 'year' || units === 'month' || units === 'quarter') {
-                output = monthDiff(this, that);
-                if (units === 'quarter') {
-                    output = output / 3;
-                } else if (units === 'year') {
-                    output = output / 12;
-                }
-            } else {
-                diff = this - that;
-                output = units === 'second' ? diff / 1e3 : // 1000
-                    units === 'minute' ? diff / 6e4 : // 1000 * 60
-                    units === 'hour' ? diff / 36e5 : // 1000 * 60 * 60
-                    units === 'day' ? (diff - zoneDiff) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
-                    units === 'week' ? (diff - zoneDiff) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
-                    diff;
-            }
-            return asFloat ? output : absRound(output);
-        },
-
-        from : function (time, withoutSuffix) {
-            return moment.duration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
-        },
-
-        fromNow : function (withoutSuffix) {
-            return this.from(moment(), withoutSuffix);
-        },
-
-        calendar : function (time) {
-            // We want to compare the start of today, vs this.
-            // Getting start-of-today depends on whether we're locat/utc/offset
-            // or not.
-            var now = time || moment(),
-                sod = makeAs(now, this).startOf('day'),
-                diff = this.diff(sod, 'days', true),
-                format = diff < -6 ? 'sameElse' :
-                    diff < -1 ? 'lastWeek' :
-                    diff < 0 ? 'lastDay' :
-                    diff < 1 ? 'sameDay' :
-                    diff < 2 ? 'nextDay' :
-                    diff < 7 ? 'nextWeek' : 'sameElse';
-            return this.format(this.localeData().calendar(format, this, moment(now)));
-        },
-
-        isLeapYear : function () {
-            return isLeapYear(this.year());
-        },
-
-        isDST : function () {
-            return (this.utcOffset() > this.clone().month(0).utcOffset() ||
-                this.utcOffset() > this.clone().month(5).utcOffset());
-        },
-
-        day : function (input) {
-            var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
-            if (input != null) {
-                input = parseWeekday(input, this.localeData());
-                return this.add(input - day, 'd');
-            } else {
-                return day;
-            }
-        },
-
-        month : makeAccessor('Month', true),
-
-        startOf : function (units) {
-            units = normalizeUnits(units);
-            // the following switch intentionally omits break keywords
-            // to utilize falling through the cases.
-            switch (units) {
-            case 'year':
-                this.month(0);
-                /* falls through */
-            case 'quarter':
-            case 'month':
-                this.date(1);
-                /* falls through */
-            case 'week':
-            case 'isoWeek':
-            case 'day':
-                this.hours(0);
-                /* falls through */
-            case 'hour':
-                this.minutes(0);
-                /* falls through */
-            case 'minute':
-                this.seconds(0);
-                /* falls through */
-            case 'second':
-                this.milliseconds(0);
-                /* falls through */
-            }
-
-            // weeks are a special case
-            if (units === 'week') {
-                this.weekday(0);
-            } else if (units === 'isoWeek') {
-                this.isoWeekday(1);
-            }
-
-            // quarters are also special
-            if (units === 'quarter') {
-                this.month(Math.floor(this.month() / 3) * 3);
-            }
-
-            return this;
-        },
-
-        endOf: function (units) {
-            units = normalizeUnits(units);
-            if (units === undefined || units === 'millisecond') {
-                return this;
-            }
-            return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
-        },
-
-        isAfter: function (input, units) {
-            var inputMs;
-            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this > +input;
-            } else {
-                inputMs = moment.isMoment(input) ? +input : +moment(input);
-                return inputMs < +this.clone().startOf(units);
-            }
-        },
-
-        isBefore: function (input, units) {
-            var inputMs;
-            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this < +input;
-            } else {
-                inputMs = moment.isMoment(input) ? +input : +moment(input);
-                return +this.clone().endOf(units) < inputMs;
-            }
-        },
-
-        isBetween: function (from, to, units) {
-            return this.isAfter(from, units) && this.isBefore(to, units);
-        },
-
-        isSame: function (input, units) {
-            var inputMs;
-            units = normalizeUnits(units || 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this === +input;
-            } else {
-                inputMs = +moment(input);
-                return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
-            }
-        },
-
-        min: deprecate(
-                 'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
-                 function (other) {
-                     other = moment.apply(null, arguments);
-                     return other < this ? this : other;
-                 }
-         ),
-
-        max: deprecate(
-                'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
-                function (other) {
-                    other = moment.apply(null, arguments);
-                    return other > this ? this : other;
-                }
-        ),
-
-        zone : deprecate(
-                'moment().zone is deprecated, use moment().utcOffset instead. ' +
-                'https://github.com/moment/moment/issues/1779',
-                function (input, keepLocalTime) {
-                    if (input != null) {
-                        if (typeof input !== 'string') {
-                            input = -input;
-                        }
-
-                        this.utcOffset(input, keepLocalTime);
-
-                        return this;
-                    } else {
-                        return -this.utcOffset();
-                    }
-                }
-        ),
-
-        // keepLocalTime = true means only change the timezone, without
-        // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
-        // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
-        // +0200, so we adjust the time as needed, to be valid.
-        //
-        // Keeping the time actually adds/subtracts (one hour)
-        // from the actual represented time. That is why we call updateOffset
-        // a second time. In case it wants us to change the offset again
-        // _changeInProgress == true case, then we have to adjust, because
-        // there is no such time in the given timezone.
-        utcOffset : function (input, keepLocalTime) {
-            var offset = this._offset || 0,
-                localAdjust;
-            if (input != null) {
-                if (typeof input === 'string') {
-                    input = utcOffsetFromString(input);
-                }
-                if (Math.abs(input) < 16) {
-                    input = input * 60;
-                }
-                if (!this._isUTC && keepLocalTime) {
-                    localAdjust = this._dateUtcOffset();
-                }
-                this._offset = input;
-                this._isUTC = true;
-                if (localAdjust != null) {
-                    this.add(localAdjust, 'm');
-                }
-                if (offset !== input) {
-                    if (!keepLocalTime || this._changeInProgress) {
-                        addOrSubtractDurationFromMoment(this,
-                                moment.duration(input - offset, 'm'), 1, false);
-                    } else if (!this._changeInProgress) {
-                        this._changeInProgress = true;
-                        moment.updateOffset(this, true);
-                        this._changeInProgress = null;
-                    }
-                }
-
-                return this;
-            } else {
-                return this._isUTC ? offset : this._dateUtcOffset();
-            }
-        },
-
-        isLocal : function () {
-            return !this._isUTC;
-        },
-
-        isUtcOffset : function () {
-            return this._isUTC;
-        },
-
-        isUtc : function () {
-            return this._isUTC && this._offset === 0;
-        },
-
-        zoneAbbr : function () {
-            return this._isUTC ? 'UTC' : '';
-        },
-
-        zoneName : function () {
-            return this._isUTC ? 'Coordinated Universal Time' : '';
-        },
-
-        parseZone : function () {
-            if (this._tzm) {
-                this.utcOffset(this._tzm);
-            } else if (typeof this._i === 'string') {
-                this.utcOffset(utcOffsetFromString(this._i));
-            }
-            return this;
-        },
-
-        hasAlignedHourOffset : function (input) {
-            if (!input) {
-                input = 0;
-            }
-            else {
-                input = moment(input).utcOffset();
-            }
-
-            return (this.utcOffset() - input) % 60 === 0;
-        },
-
-        daysInMonth : function () {
-            return daysInMonth(this.year(), this.month());
-        },
-
-        dayOfYear : function (input) {
-            var dayOfYear = round((moment(this).startOf('day') - moment(this).startOf('year')) / 864e5) + 1;
-            return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
-        },
-
-        quarter : function (input) {
-            return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
-        },
-
-        weekYear : function (input) {
-            var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;
-            return input == null ? year : this.add((input - year), 'y');
-        },
-
-        isoWeekYear : function (input) {
-            var year = weekOfYear(this, 1, 4).year;
-            return input == null ? year : this.add((input - year), 'y');
-        },
-
-        week : function (input) {
-            var week = this.localeData().week(this);
-            return input == null ? week : this.add((input - week) * 7, 'd');
-        },
-
-        isoWeek : function (input) {
-            var week = weekOfYear(this, 1, 4).week;
-            return input == null ? week : this.add((input - week) * 7, 'd');
-        },
-
-        weekday : function (input) {
-            var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
-            return input == null ? weekday : this.add(input - weekday, 'd');
-        },
-
-        isoWeekday : function (input) {
-            // behaves the same as moment#day except
-            // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
-            // as a setter, sunday should belong to the previous week.
-            return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
-        },
-
-        isoWeeksInYear : function () {
-            return weeksInYear(this.year(), 1, 4);
-        },
-
-        weeksInYear : function () {
-            var weekInfo = this.localeData()._week;
-            return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
-        },
-
-        get : function (units) {
-            units = normalizeUnits(units);
-            return this[units]();
-        },
-
-        set : function (units, value) {
-            var unit;
-            if (typeof units === 'object') {
-                for (unit in units) {
-                    this.set(unit, units[unit]);
-                }
-            }
-            else {
-                units = normalizeUnits(units);
-                if (typeof this[units] === 'function') {
-                    this[units](value);
-                }
-            }
-            return this;
-        },
-
-        // If passed a locale key, it will set the locale for this
-        // instance.  Otherwise, it will return the locale configuration
-        // variables for this instance.
-        locale : function (key) {
-            var newLocaleData;
-
-            if (key === undefined) {
-                return this._locale._abbr;
-            } else {
-                newLocaleData = moment.localeData(key);
-                if (newLocaleData != null) {
-                    this._locale = newLocaleData;
-                }
-                return this;
-            }
-        },
-
-        lang : deprecate(
-            'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
-            function (key) {
-                if (key === undefined) {
-                    return this.localeData();
-                } else {
-                    return this.locale(key);
-                }
-            }
-        ),
-
-        localeData : function () {
-            return this._locale;
-        },
-
-        _dateUtcOffset : function () {
-            // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-            // https://github.com/moment/moment/pull/1871
-            return -Math.round(this._d.getTimezoneOffset() / 15) * 15;
-        }
-
+    addFormatToken('H', ['HH', 2], 0, 'hour');
+    addFormatToken('h', ['hh', 2], 0, function () {
+        return this.hours() % 12 || 12;
     });
 
-    function rawMonthSetter(mom, value) {
-        var dayOfMonth;
-
-        // TODO: Move this out of here!
-        if (typeof value === 'string') {
-            value = mom.localeData().monthsParse(value);
-            // TODO: Another silent failure?
-            if (typeof value !== 'number') {
-                return mom;
-            }
-        }
-
-        dayOfMonth = Math.min(mom.date(),
-                daysInMonth(mom.year(), value));
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
-        return mom;
+    function meridiem (token, lowercase) {
+        addFormatToken(token, 0, 0, function () {
+            return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
+        });
     }
 
-    function rawGetter(mom, unit) {
-        return mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]();
+    meridiem('a', true);
+    meridiem('A', false);
+
+    // ALIASES
+
+    addUnitAlias('hour', 'h');
+
+    // PARSING
+
+    function matchMeridiem (isStrict, locale) {
+        return locale._meridiemParse;
     }
 
-    function rawSetter(mom, unit, value) {
-        if (unit === 'Month') {
-            return rawMonthSetter(mom, value);
+    addRegexToken('a',  matchMeridiem);
+    addRegexToken('A',  matchMeridiem);
+    addRegexToken('H',  match1to2);
+    addRegexToken('h',  match1to2);
+    addRegexToken('HH', match1to2, match2);
+    addRegexToken('hh', match1to2, match2);
+
+    addParseToken(['H', 'HH'], HOUR);
+    addParseToken(['a', 'A'], function (input, array, config) {
+        config._isPm = config._locale.isPM(input);
+        config._meridiem = input;
+    });
+    addParseToken(['h', 'hh'], function (input, array, config) {
+        array[HOUR] = toInt(input);
+        config._pf.bigHour = true;
+    });
+
+    // LOCALES
+
+    function localeIsPM (input) {
+        // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+        // Using charAt should be more compatible.
+        return ((input + '').toLowerCase().charAt(0) === 'p');
+    }
+
+    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+    function localeMeridiem (hours, minutes, isLower) {
+        if (hours > 11) {
+            return isLower ? 'pm' : 'PM';
         } else {
-            return mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+            return isLower ? 'am' : 'AM';
         }
     }
 
-    function makeAccessor(unit, keepTime) {
-        return function (value) {
-            if (value != null) {
-                rawSetter(this, unit, value);
-                moment.updateOffset(this, keepTime);
-                return this;
-            } else {
-                return rawGetter(this, unit);
-            }
-        };
-    }
 
-    moment.fn.millisecond = moment.fn.milliseconds = makeAccessor('Milliseconds', false);
-    moment.fn.second = moment.fn.seconds = makeAccessor('Seconds', false);
-    moment.fn.minute = moment.fn.minutes = makeAccessor('Minutes', false);
+    // MOMENTS
+
     // Setting the hour should keep the time, because the user explicitly
     // specified which hour he wants. So trying to maintain the same hour (in
     // a new timezone) makes sense. Adding/subtracting hours does not follow
     // this rule.
-    moment.fn.hour = moment.fn.hours = makeAccessor('Hours', true);
-    // moment.fn.month is defined separately
-    moment.fn.date = makeAccessor('Date', true);
-    moment.fn.dates = deprecate('dates accessor is deprecated. Use date instead.', makeAccessor('Date', true));
-    moment.fn.year = makeAccessor('FullYear', true);
-    moment.fn.years = deprecate('years accessor is deprecated. Use year instead.', makeAccessor('FullYear', true));
+    var getSetHour = makeGetSet('Hours', true);
 
-    // add plural methods
-    moment.fn.days = moment.fn.day;
-    moment.fn.months = moment.fn.month;
-    moment.fn.weeks = moment.fn.week;
-    moment.fn.isoWeeks = moment.fn.isoWeek;
-    moment.fn.quarters = moment.fn.quarter;
+    addFormatToken('m', ['mm', 2], 0, 'minute');
 
-    // add aliased format methods
-    moment.fn.toJSON = moment.fn.toISOString;
+    // ALIASES
 
-    // alias isUtc for dev-friendliness
-    moment.fn.isUTC = moment.fn.isUtc;
+    addUnitAlias('minute', 'm');
 
-    /************************************
-        Duration Prototype
-    ************************************/
+    // PARSING
 
+    addRegexToken('m',  match1to2);
+    addRegexToken('mm', match1to2, match2);
+    addParseToken(['m', 'mm'], MINUTE);
 
-    function daysToYears (days) {
-        // 400 years have 146097 days (taking into account leap year rules)
-        return days * 400 / 146097;
-    }
+    // MOMENTS
 
-    function yearsToDays (years) {
-        // years * 365 + absRound(years / 4) -
-        //     absRound(years / 100) + absRound(years / 400);
-        return years * 146097 / 400;
-    }
+    var getSetMinute = makeGetSet('Minutes', false);
 
-    extend(moment.duration.fn = Duration.prototype, {
+    addFormatToken('s', ['ss', 2], 0, 'second');
 
-        _bubble : function () {
-            var milliseconds = this._milliseconds,
-                days = this._days,
-                months = this._months,
-                data = this._data,
-                seconds, minutes, hours, years = 0;
+    // ALIASES
 
-            // The following code bubbles up values, see the tests for
-            // examples of what that means.
-            data.milliseconds = milliseconds % 1000;
+    addUnitAlias('second', 's');
 
-            seconds = absRound(milliseconds / 1000);
-            data.seconds = seconds % 60;
+    // PARSING
 
-            minutes = absRound(seconds / 60);
-            data.minutes = minutes % 60;
+    addRegexToken('s',  match1to2);
+    addRegexToken('ss', match1to2, match2);
+    addParseToken(['s', 'ss'], SECOND);
 
-            hours = absRound(minutes / 60);
-            data.hours = hours % 24;
+    // MOMENTS
 
-            days += absRound(hours / 24);
+    var getSetSecond = makeGetSet('Seconds', false);
 
-            // Accurately convert days to years, assume start from year 0.
-            years = absRound(daysToYears(days));
-            days -= absRound(yearsToDays(years));
-
-            // 30 days to a month
-            // TODO (iskren): Use anchor date (like 1st Jan) to compute this.
-            months += absRound(days / 30);
-            days %= 30;
-
-            // 12 months -> 1 year
-            years += absRound(months / 12);
-            months %= 12;
-
-            data.days = days;
-            data.months = months;
-            data.years = years;
-        },
-
-        abs : function () {
-            this._milliseconds = Math.abs(this._milliseconds);
-            this._days = Math.abs(this._days);
-            this._months = Math.abs(this._months);
-
-            this._data.milliseconds = Math.abs(this._data.milliseconds);
-            this._data.seconds = Math.abs(this._data.seconds);
-            this._data.minutes = Math.abs(this._data.minutes);
-            this._data.hours = Math.abs(this._data.hours);
-            this._data.months = Math.abs(this._data.months);
-            this._data.years = Math.abs(this._data.years);
-
-            return this;
-        },
-
-        weeks : function () {
-            return absRound(this.days() / 7);
-        },
-
-        valueOf : function () {
-            return this._milliseconds +
-              this._days * 864e5 +
-              (this._months % 12) * 2592e6 +
-              toInt(this._months / 12) * 31536e6;
-        },
-
-        humanize : function (withSuffix) {
-            var output = relativeTime(this, !withSuffix, this.localeData());
-
-            if (withSuffix) {
-                output = this.localeData().pastFuture(+this, output);
-            }
-
-            return this.localeData().postformat(output);
-        },
-
-        add : function (input, val) {
-            // supports only 2.0-style add(1, 's') or add(moment)
-            var dur = moment.duration(input, val);
-
-            this._milliseconds += dur._milliseconds;
-            this._days += dur._days;
-            this._months += dur._months;
-
-            this._bubble();
-
-            return this;
-        },
-
-        subtract : function (input, val) {
-            var dur = moment.duration(input, val);
-
-            this._milliseconds -= dur._milliseconds;
-            this._days -= dur._days;
-            this._months -= dur._months;
-
-            this._bubble();
-
-            return this;
-        },
-
-        get : function (units) {
-            units = normalizeUnits(units);
-            return this[units.toLowerCase() + 's']();
-        },
-
-        as : function (units) {
-            var days, months;
-            units = normalizeUnits(units);
-
-            if (units === 'month' || units === 'year') {
-                days = this._days + this._milliseconds / 864e5;
-                months = this._months + daysToYears(days) * 12;
-                return units === 'month' ? months : months / 12;
-            } else {
-                // handle milliseconds separately because of floating point math errors (issue #1867)
-                days = this._days + Math.round(yearsToDays(this._months / 12));
-                switch (units) {
-                    case 'week': return days / 7 + this._milliseconds / 6048e5;
-                    case 'day': return days + this._milliseconds / 864e5;
-                    case 'hour': return days * 24 + this._milliseconds / 36e5;
-                    case 'minute': return days * 24 * 60 + this._milliseconds / 6e4;
-                    case 'second': return days * 24 * 60 * 60 + this._milliseconds / 1000;
-                    // Math.floor prevents floating point math errors here
-                    case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + this._milliseconds;
-                    default: throw new Error('Unknown unit ' + units);
-                }
-            }
-        },
-
-        lang : moment.fn.lang,
-        locale : moment.fn.locale,
-
-        toIsoString : deprecate(
-            'toIsoString() is deprecated. Please use toISOString() instead ' +
-            '(notice the capitals)',
-            function () {
-                return this.toISOString();
-            }
-        ),
-
-        toISOString : function () {
-            // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
-            var years = Math.abs(this.years()),
-                months = Math.abs(this.months()),
-                days = Math.abs(this.days()),
-                hours = Math.abs(this.hours()),
-                minutes = Math.abs(this.minutes()),
-                seconds = Math.abs(this.seconds() + this.milliseconds() / 1000);
-
-            if (!this.asSeconds()) {
-                // this is the same as C#'s (Noda) and python (isodate)...
-                // but not other JS (goog.date)
-                return 'P0D';
-            }
-
-            return (this.asSeconds() < 0 ? '-' : '') +
-                'P' +
-                (years ? years + 'Y' : '') +
-                (months ? months + 'M' : '') +
-                (days ? days + 'D' : '') +
-                ((hours || minutes || seconds) ? 'T' : '') +
-                (hours ? hours + 'H' : '') +
-                (minutes ? minutes + 'M' : '') +
-                (seconds ? seconds + 'S' : '');
-        },
-
-        localeData : function () {
-            return this._locale;
-        },
-
-        toJSON : function () {
-            return this.toISOString();
-        }
+    addFormatToken('S', 0, 0, function () {
+        return ~~(this.millisecond() / 100);
     });
 
-    moment.duration.fn.toString = moment.duration.fn.toISOString;
+    addFormatToken(0, ['SS', 2], 0, function () {
+        return ~~(this.millisecond() / 10);
+    });
 
-    function makeDurationGetter(name) {
-        moment.duration.fn[name] = function () {
-            return this._data[name];
-        };
+    function millisecond__milliseconds (token) {
+        addFormatToken(0, [token, 3], 0, 'millisecond');
     }
 
-    for (i in unitMillisecondFactors) {
-        if (hasOwnProp(unitMillisecondFactors, i)) {
-            makeDurationGetter(i.toLowerCase());
+    millisecond__milliseconds('SSS');
+    millisecond__milliseconds('SSSS');
+
+    // ALIASES
+
+    addUnitAlias('millisecond', 'ms');
+
+    // PARSING
+
+    addRegexToken('S',    match1to3, match1);
+    addRegexToken('SS',   match1to3, match2);
+    addRegexToken('SSS',  match1to3, match3);
+    addRegexToken('SSSS', matchUnsigned);
+    addParseToken(['S', 'SS', 'SSS', 'SSSS'], function (input, array) {
+        array[MILLISECOND] = toInt(('0.' + input) * 1000);
+    });
+
+    // MOMENTS
+
+    var getSetMillisecond = makeGetSet('Milliseconds', false);
+
+    addFormatToken('z',  0, 0, 'zoneAbbr');
+    addFormatToken('zz', 0, 0, 'zoneName');
+
+    // MOMENTS
+
+    function getZoneAbbr () {
+        return this._isUTC ? 'UTC' : '';
+    }
+
+    function getZoneName () {
+        return this._isUTC ? 'Coordinated Universal Time' : '';
+    }
+
+    var momentPrototype__proto = Moment.prototype;
+
+    momentPrototype__proto.add          = add_subtract__add;
+    momentPrototype__proto.calendar     = moment_calendar__calendar;
+    momentPrototype__proto.clone        = clone;
+    momentPrototype__proto.diff         = diff;
+    momentPrototype__proto.endOf        = endOf;
+    momentPrototype__proto.format       = format;
+    momentPrototype__proto.from         = from;
+    momentPrototype__proto.fromNow      = fromNow;
+    momentPrototype__proto.get          = getSet;
+    momentPrototype__proto.invalidAt    = invalidAt;
+    momentPrototype__proto.isAfter      = isAfter;
+    momentPrototype__proto.isBefore     = isBefore;
+    momentPrototype__proto.isBetween    = isBetween;
+    momentPrototype__proto.isSame       = isSame;
+    momentPrototype__proto.isValid      = moment_valid__isValid;
+    momentPrototype__proto.lang         = lang;
+    momentPrototype__proto.locale       = locale;
+    momentPrototype__proto.localeData   = localeData;
+    momentPrototype__proto.max          = prototypeMax;
+    momentPrototype__proto.min          = prototypeMin;
+    momentPrototype__proto.parsingFlags = parsingFlags;
+    momentPrototype__proto.set          = getSet;
+    momentPrototype__proto.startOf      = startOf;
+    momentPrototype__proto.subtract     = add_subtract__subtract;
+    momentPrototype__proto.toArray      = toArray;
+    momentPrototype__proto.toDate       = toDate;
+    momentPrototype__proto.toISOString  = moment_format__toISOString;
+    momentPrototype__proto.toJSON       = moment_format__toISOString;
+    momentPrototype__proto.toString     = toString;
+    momentPrototype__proto.unix         = unix;
+    momentPrototype__proto.valueOf      = to_type__valueOf;
+
+    // Year
+    momentPrototype__proto.year       = getSetYear;
+    momentPrototype__proto.isLeapYear = getIsLeapYear;
+
+    // Week Year
+    momentPrototype__proto.weekYear    = getSetWeekYear;
+    momentPrototype__proto.isoWeekYear = getSetISOWeekYear;
+
+    // Quarter
+    momentPrototype__proto.quarter = momentPrototype__proto.quarters = getSetQuarter;
+
+    // Month
+    momentPrototype__proto.month       = getSetMonth;
+    momentPrototype__proto.daysInMonth = getDaysInMonth;
+
+    // Week
+    momentPrototype__proto.week           = momentPrototype__proto.weeks        = getSetWeek;
+    momentPrototype__proto.isoWeek        = momentPrototype__proto.isoWeeks     = getSetISOWeek;
+    momentPrototype__proto.weeksInYear    = getWeeksInYear;
+    momentPrototype__proto.isoWeeksInYear = getISOWeeksInYear;
+
+    // Day
+    momentPrototype__proto.date       = getSetDayOfMonth;
+    momentPrototype__proto.day        = momentPrototype__proto.days             = getSetDayOfWeek;
+    momentPrototype__proto.weekday    = getSetLocaleDayOfWeek;
+    momentPrototype__proto.isoWeekday = getSetISODayOfWeek;
+    momentPrototype__proto.dayOfYear  = getSetDayOfYear;
+
+    // Hour
+    momentPrototype__proto.hour = momentPrototype__proto.hours = getSetHour;
+
+    // Minute
+    momentPrototype__proto.minute = momentPrototype__proto.minutes = getSetMinute;
+
+    // Second
+    momentPrototype__proto.second = momentPrototype__proto.seconds = getSetSecond;
+
+    // Millisecond
+    momentPrototype__proto.millisecond = momentPrototype__proto.milliseconds = getSetMillisecond;
+
+    // Offset
+    momentPrototype__proto.utcOffset            = getSetOffset;
+    momentPrototype__proto.utc                  = setOffsetToUTC;
+    momentPrototype__proto.local                = setOffsetToLocal;
+    momentPrototype__proto.parseZone            = setOffsetToParsedOffset;
+    momentPrototype__proto.hasAlignedHourOffset = hasAlignedHourOffset;
+    momentPrototype__proto.isDST                = isDaylightSavingTime;
+    momentPrototype__proto.isDSTShifted         = isDaylightSavingTimeShifted;
+    momentPrototype__proto.isLocal              = isLocal;
+    momentPrototype__proto.isUtcOffset          = isUtcOffset;
+    momentPrototype__proto.isUtc                = isUtc;
+    momentPrototype__proto.isUTC                = isUtc;
+
+    // Timezone
+    momentPrototype__proto.zoneAbbr = getZoneAbbr;
+    momentPrototype__proto.zoneName = getZoneName;
+
+    // Deprecations
+    momentPrototype__proto.dates  = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
+    momentPrototype__proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
+    momentPrototype__proto.years  = deprecate('years accessor is deprecated. Use year instead', getSetYear);
+    momentPrototype__proto.zone   = deprecate('moment().zone is deprecated, use moment().utcOffset instead. https://github.com/moment/moment/issues/1779', getSetZone);
+
+    var momentPrototype = momentPrototype__proto;
+
+    function moment__createUnix (input) {
+        return local__createLocal(input * 1000);
+    }
+
+    function moment__createInZone () {
+        return local__createLocal.apply(null, arguments).parseZone();
+    }
+
+    var defaultCalendar = {
+        sameDay : '[Today at] LT',
+        nextDay : '[Tomorrow at] LT',
+        nextWeek : 'dddd [at] LT',
+        lastDay : '[Yesterday at] LT',
+        lastWeek : '[Last] dddd [at] LT',
+        sameElse : 'L'
+    };
+
+    function locale_calendar__calendar (key, mom, now) {
+        var output = this._calendar[key];
+        return typeof output === 'function' ? output.call(mom, now) : output;
+    }
+
+    var defaultLongDateFormat = {
+        LTS  : 'h:mm:ss A',
+        LT   : 'h:mm A',
+        L    : 'MM/DD/YYYY',
+        LL   : 'MMMM D, YYYY',
+        LLL  : 'MMMM D, YYYY LT',
+        LLLL : 'dddd, MMMM D, YYYY LT'
+    };
+
+    function longDateFormat (key) {
+        var output = this._longDateFormat[key];
+        if (!output && this._longDateFormat[key.toUpperCase()]) {
+            output = this._longDateFormat[key.toUpperCase()].replace(/MMMM|MM|DD|dddd/g, function (val) {
+                return val.slice(1);
+            });
+            this._longDateFormat[key] = output;
         }
+        return output;
     }
 
-    moment.duration.fn.asMilliseconds = function () {
-        return this.as('ms');
-    };
-    moment.duration.fn.asSeconds = function () {
-        return this.as('s');
-    };
-    moment.duration.fn.asMinutes = function () {
-        return this.as('m');
-    };
-    moment.duration.fn.asHours = function () {
-        return this.as('h');
-    };
-    moment.duration.fn.asDays = function () {
-        return this.as('d');
-    };
-    moment.duration.fn.asWeeks = function () {
-        return this.as('weeks');
-    };
-    moment.duration.fn.asMonths = function () {
-        return this.as('M');
-    };
-    moment.duration.fn.asYears = function () {
-        return this.as('y');
+    var defaultInvalidDate = 'Invalid date';
+
+    function invalidDate () {
+        return this._invalidDate;
+    }
+
+    var defaultOrdinal = '%d';
+    var defaultOrdinalParse = /\d{1,2}/;
+
+    function ordinal (number) {
+        return this._ordinal.replace('%d', number);
+    }
+
+    function preParsePostFormat (string) {
+        return string;
+    }
+
+    var defaultRelativeTime = {
+        future : 'in %s',
+        past   : '%s ago',
+        s  : 'a few seconds',
+        m  : 'a minute',
+        mm : '%d minutes',
+        h  : 'an hour',
+        hh : '%d hours',
+        d  : 'a day',
+        dd : '%d days',
+        M  : 'a month',
+        MM : '%d months',
+        y  : 'a year',
+        yy : '%d years'
     };
 
-    /************************************
-        Default Locale
-    ************************************/
+    function relative__relativeTime (number, withoutSuffix, string, isFuture) {
+        var output = this._relativeTime[string];
+        return (typeof output === 'function') ?
+            output(number, withoutSuffix, string, isFuture) :
+            output.replace(/%d/i, number);
+    }
 
+    function pastFuture (diff, output) {
+        var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+        return typeof format === 'function' ? format(output) : format.replace(/%s/i, output);
+    }
 
-    // Set default locale, other locale will inherit from English.
-    moment.locale('en', {
+    function locale_set__set (config) {
+        var prop, i;
+        for (i in config) {
+            prop = config[i];
+            if (typeof prop === 'function') {
+                this[i] = prop;
+            } else {
+                this['_' + i] = prop;
+            }
+        }
+        // Lenient ordinal parsing accepts just a number in addition to
+        // number + (possibly) stuff coming from _ordinalParseLenient.
+        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
+    }
+
+    var prototype__proto = Locale.prototype;
+
+    prototype__proto._calendar       = defaultCalendar;
+    prototype__proto.calendar        = locale_calendar__calendar;
+    prototype__proto._longDateFormat = defaultLongDateFormat;
+    prototype__proto.longDateFormat  = longDateFormat;
+    prototype__proto._invalidDate    = defaultInvalidDate;
+    prototype__proto.invalidDate     = invalidDate;
+    prototype__proto._ordinal        = defaultOrdinal;
+    prototype__proto.ordinal         = ordinal;
+    prototype__proto._ordinalParse   = defaultOrdinalParse;
+    prototype__proto.preparse        = preParsePostFormat;
+    prototype__proto.postformat      = preParsePostFormat;
+    prototype__proto._relativeTime   = defaultRelativeTime;
+    prototype__proto.relativeTime    = relative__relativeTime;
+    prototype__proto.pastFuture      = pastFuture;
+    prototype__proto.set             = locale_set__set;
+
+    // Month
+    prototype__proto.months       =        localeMonths;
+    prototype__proto._months      = defaultLocaleMonths;
+    prototype__proto.monthsShort  =        localeMonthsShort;
+    prototype__proto._monthsShort = defaultLocaleMonthsShort;
+    prototype__proto.monthsParse  =        localeMonthsParse;
+
+    // Week
+    prototype__proto.week = localeWeek;
+    prototype__proto._week = defaultLocaleWeek;
+    prototype__proto.firstDayOfYear = localeFirstDayOfYear;
+    prototype__proto.firstDayOfWeek = localeFirstDayOfWeek;
+
+    // Day of Week
+    prototype__proto.weekdays       =        localeWeekdays;
+    prototype__proto._weekdays      = defaultLocaleWeekdays;
+    prototype__proto.weekdaysMin    =        localeWeekdaysMin;
+    prototype__proto._weekdaysMin   = defaultLocaleWeekdaysMin;
+    prototype__proto.weekdaysShort  =        localeWeekdaysShort;
+    prototype__proto._weekdaysShort = defaultLocaleWeekdaysShort;
+    prototype__proto.weekdaysParse  =        localeWeekdaysParse;
+
+    // Hours
+    prototype__proto.isPM = localeIsPM;
+    prototype__proto._meridiemParse = defaultLocaleMeridiemParse;
+    prototype__proto.meridiem = localeMeridiem;
+
+    function lists__get (format, index, field, setter) {
+        var locale = locale_locales__getLocale();
+        var utc = create_utc__createUTC().set(setter, index);
+        return locale[field](utc, format);
+    }
+
+    function list (format, index, field, count, setter) {
+        if (typeof format === 'number') {
+            index = format;
+            format = undefined;
+        }
+
+        format = format || '';
+
+        if (index != null) {
+            return lists__get(format, index, field, setter);
+        }
+
+        var i;
+        var out = [];
+        for (i = 0; i < count; i++) {
+            out[i] = lists__get(format, i, field, setter);
+        }
+        return out;
+    }
+
+    function lists__listMonths (format, index) {
+        return list(format, index, 'months', 12, 'month');
+    }
+
+    function lists__listMonthsShort (format, index) {
+        return list(format, index, 'monthsShort', 12, 'month');
+    }
+
+    function lists__listWeekdays (format, index) {
+        return list(format, index, 'weekdays', 7, 'day');
+    }
+
+    function lists__listWeekdaysShort (format, index) {
+        return list(format, index, 'weekdaysShort', 7, 'day');
+    }
+
+    function lists__listWeekdaysMin (format, index) {
+        return list(format, index, 'weekdaysMin', 7, 'day');
+    }
+
+    locale_locales__getSetGlobalLocale('en', {
         ordinalParse: /\d{1,2}(th|st|nd|rd)/,
         ordinal : function (number) {
             var b = number % 10,
@@ -36991,47 +36768,355 @@ if (typeof jQuery === 'undefined') {
         }
     });
 
-    /* EMBED_LOCALES */
+    // Side effect imports
+    utils_hooks__hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', locale_locales__getSetGlobalLocale);
+    utils_hooks__hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', locale_locales__getLocale);
 
-    /************************************
-        Exposing Moment
-    ************************************/
+    var mathAbs = Math.abs;
 
-    function makeGlobal(shouldDeprecate) {
-        /*global ender:false */
-        if (typeof ender !== 'undefined') {
-            return;
-        }
-        oldGlobalMoment = globalScope.moment;
-        if (shouldDeprecate) {
-            globalScope.moment = deprecate(
-                    'Accessing Moment through the global scope is ' +
-                    'deprecated, and will be removed in an upcoming ' +
-                    'release.',
-                    moment);
+    function duration_abs__abs () {
+        var data           = this._data;
+
+        this._milliseconds = mathAbs(this._milliseconds);
+        this._days         = mathAbs(this._days);
+        this._months       = mathAbs(this._months);
+
+        data.milliseconds  = mathAbs(data.milliseconds);
+        data.seconds       = mathAbs(data.seconds);
+        data.minutes       = mathAbs(data.minutes);
+        data.hours         = mathAbs(data.hours);
+        data.months        = mathAbs(data.months);
+        data.years         = mathAbs(data.years);
+
+        return this;
+    }
+
+    function duration_add_subtract__addSubtract (duration, input, value, direction) {
+        var other = create__createDuration(input, value);
+
+        duration._milliseconds += direction * other._milliseconds;
+        duration._days         += direction * other._days;
+        duration._months       += direction * other._months;
+
+        return duration._bubble();
+    }
+
+    // supports only 2.0-style add(1, 's') or add(duration)
+    function duration_add_subtract__add (input, value) {
+        return duration_add_subtract__addSubtract(this, input, value, 1);
+    }
+
+    // supports only 2.0-style subtract(1, 's') or subtract(duration)
+    function duration_add_subtract__subtract (input, value) {
+        return duration_add_subtract__addSubtract(this, input, value, -1);
+    }
+
+    function bubble () {
+        var milliseconds = this._milliseconds;
+        var days         = this._days;
+        var months       = this._months;
+        var data         = this._data;
+        var seconds, minutes, hours, years = 0;
+
+        // The following code bubbles up values, see the tests for
+        // examples of what that means.
+        data.milliseconds = milliseconds % 1000;
+
+        seconds           = absFloor(milliseconds / 1000);
+        data.seconds      = seconds % 60;
+
+        minutes           = absFloor(seconds / 60);
+        data.minutes      = minutes % 60;
+
+        hours             = absFloor(minutes / 60);
+        data.hours        = hours % 24;
+
+        days += absFloor(hours / 24);
+
+        // Accurately convert days to years, assume start from year 0.
+        years = absFloor(daysToYears(days));
+        days -= absFloor(yearsToDays(years));
+
+        // 30 days to a month
+        // TODO (iskren): Use anchor date (like 1st Jan) to compute this.
+        months += absFloor(days / 30);
+        days   %= 30;
+
+        // 12 months -> 1 year
+        years  += absFloor(months / 12);
+        months %= 12;
+
+        data.days   = days;
+        data.months = months;
+        data.years  = years;
+
+        return this;
+    }
+
+    function daysToYears (days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        return days * 400 / 146097;
+    }
+
+    function yearsToDays (years) {
+        // years * 365 + absFloor(years / 4) -
+        //     absFloor(years / 100) + absFloor(years / 400);
+        return years * 146097 / 400;
+    }
+
+    function as (units) {
+        var days;
+        var months;
+        var milliseconds = this._milliseconds;
+
+        units = normalizeUnits(units);
+
+        if (units === 'month' || units === 'year') {
+            days   = this._days   + milliseconds / 864e5;
+            months = this._months + daysToYears(days) * 12;
+            return units === 'month' ? months : months / 12;
         } else {
-            globalScope.moment = moment;
+            // handle milliseconds separately because of floating point math errors (issue #1867)
+            days = this._days + Math.round(yearsToDays(this._months / 12));
+            switch (units) {
+                case 'week'   : return days / 7            + milliseconds / 6048e5;
+                case 'day'    : return days                + milliseconds / 864e5;
+                case 'hour'   : return days * 24           + milliseconds / 36e5;
+                case 'minute' : return days * 24 * 60      + milliseconds / 6e4;
+                case 'second' : return days * 24 * 60 * 60 + milliseconds / 1000;
+                // Math.floor prevents floating point math errors here
+                case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + milliseconds;
+                default: throw new Error('Unknown unit ' + units);
+            }
         }
     }
 
-    // CommonJS module is defined
-    if (hasModule) {
-        module.exports = moment;
-    } else if (typeof define === 'function' && define.amd) {
-        define(function (require, exports, module) {
-            if (module.config && module.config() && module.config().noGlobal === true) {
-                // release the global variable
-                globalScope.moment = oldGlobalMoment;
-            }
-
-            return moment;
-        });
-        makeGlobal(true);
-    } else {
-        makeGlobal();
+    // TODO: Use this.as('ms')?
+    function duration_as__valueOf () {
+        return (
+            this._milliseconds +
+            this._days * 864e5 +
+            (this._months % 12) * 2592e6 +
+            toInt(this._months / 12) * 31536e6
+        );
     }
-}).call(this);
-;/**
+
+    function makeAs (alias) {
+        return function () {
+            return this.as(alias);
+        };
+    }
+
+    var asMilliseconds = makeAs('ms');
+    var asSeconds      = makeAs('s');
+    var asMinutes      = makeAs('m');
+    var asHours        = makeAs('h');
+    var asDays         = makeAs('d');
+    var asWeeks        = makeAs('w');
+    var asMonths       = makeAs('M');
+    var asYears        = makeAs('y');
+
+    function duration_get__get (units) {
+        units = normalizeUnits(units);
+        return this[units + 's']();
+    }
+
+    function makeGetter(name) {
+        return function () {
+            return this._data[name];
+        };
+    }
+
+    var duration_get__milliseconds = makeGetter('milliseconds');
+    var seconds      = makeGetter('seconds');
+    var minutes      = makeGetter('minutes');
+    var hours        = makeGetter('hours');
+    var days         = makeGetter('days');
+    var months       = makeGetter('months');
+    var years        = makeGetter('years');
+
+    function weeks () {
+        return absFloor(this.days() / 7);
+    }
+
+    var round = Math.round;
+    var thresholds = {
+        s: 45,  // seconds to minute
+        m: 45,  // minutes to hour
+        h: 22,  // hours to day
+        d: 26,  // days to month
+        M: 11   // months to year
+    };
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function duration_humanize__relativeTime (posNegDuration, withoutSuffix, locale) {
+        var duration = create__createDuration(posNegDuration).abs();
+        var seconds  = round(duration.as('s'));
+        var minutes  = round(duration.as('m'));
+        var hours    = round(duration.as('h'));
+        var days     = round(duration.as('d'));
+        var months   = round(duration.as('M'));
+        var years    = round(duration.as('y'));
+
+        var a = seconds < thresholds.s && ['s', seconds]  ||
+                minutes === 1          && ['m']           ||
+                minutes < thresholds.m && ['mm', minutes] ||
+                hours   === 1          && ['h']           ||
+                hours   < thresholds.h && ['hh', hours]   ||
+                days    === 1          && ['d']           ||
+                days    < thresholds.d && ['dd', days]    ||
+                months  === 1          && ['M']           ||
+                months  < thresholds.M && ['MM', months]  ||
+                years   === 1          && ['y']           || ['yy', years];
+
+        a[2] = withoutSuffix;
+        a[3] = +posNegDuration > 0;
+        a[4] = locale;
+        return substituteTimeAgo.apply(null, a);
+    }
+
+    // This function allows you to set a threshold for relative time strings
+    function duration_humanize__getSetRelativeTimeThreshold (threshold, limit) {
+        if (thresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return thresholds[threshold];
+        }
+        thresholds[threshold] = limit;
+        return true;
+    }
+
+    function humanize (withSuffix) {
+        var locale = this.localeData();
+        var output = duration_humanize__relativeTime(this, !withSuffix, locale);
+
+        if (withSuffix) {
+            output = locale.pastFuture(+this, output);
+        }
+
+        return locale.postformat(output);
+    }
+
+    var iso_string__abs = Math.abs;
+
+    function iso_string__toISOString() {
+        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+        var Y = iso_string__abs(this.years());
+        var M = iso_string__abs(this.months());
+        var D = iso_string__abs(this.days());
+        var h = iso_string__abs(this.hours());
+        var m = iso_string__abs(this.minutes());
+        var s = iso_string__abs(this.seconds() + this.milliseconds() / 1000);
+        var total = this.asSeconds();
+
+        if (!total) {
+            // this is the same as C#'s (Noda) and python (isodate)...
+            // but not other JS (goog.date)
+            return 'P0D';
+        }
+
+        return (total < 0 ? '-' : '') +
+            'P' +
+            (Y ? Y + 'Y' : '') +
+            (M ? M + 'M' : '') +
+            (D ? D + 'D' : '') +
+            ((h || m || s) ? 'T' : '') +
+            (h ? h + 'H' : '') +
+            (m ? m + 'M' : '') +
+            (s ? s + 'S' : '');
+    }
+
+    var duration_prototype__proto = Duration.prototype;
+
+    duration_prototype__proto.abs            = duration_abs__abs;
+    duration_prototype__proto.add            = duration_add_subtract__add;
+    duration_prototype__proto.subtract       = duration_add_subtract__subtract;
+    duration_prototype__proto.as             = as;
+    duration_prototype__proto.asMilliseconds = asMilliseconds;
+    duration_prototype__proto.asSeconds      = asSeconds;
+    duration_prototype__proto.asMinutes      = asMinutes;
+    duration_prototype__proto.asHours        = asHours;
+    duration_prototype__proto.asDays         = asDays;
+    duration_prototype__proto.asWeeks        = asWeeks;
+    duration_prototype__proto.asMonths       = asMonths;
+    duration_prototype__proto.asYears        = asYears;
+    duration_prototype__proto.valueOf        = duration_as__valueOf;
+    duration_prototype__proto._bubble        = bubble;
+    duration_prototype__proto.get            = duration_get__get;
+    duration_prototype__proto.milliseconds   = duration_get__milliseconds;
+    duration_prototype__proto.seconds        = seconds;
+    duration_prototype__proto.minutes        = minutes;
+    duration_prototype__proto.hours          = hours;
+    duration_prototype__proto.days           = days;
+    duration_prototype__proto.weeks          = weeks;
+    duration_prototype__proto.months         = months;
+    duration_prototype__proto.years          = years;
+    duration_prototype__proto.humanize       = humanize;
+    duration_prototype__proto.toISOString    = iso_string__toISOString;
+    duration_prototype__proto.toString       = iso_string__toISOString;
+    duration_prototype__proto.toJSON         = iso_string__toISOString;
+    duration_prototype__proto.locale         = locale;
+    duration_prototype__proto.localeData     = localeData;
+
+    // Deprecations
+    duration_prototype__proto.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', iso_string__toISOString);
+    duration_prototype__proto.lang = lang;
+
+    // Side effect imports
+
+    addFormatToken('X', 0, 0, 'unix');
+    addFormatToken('x', 0, 0, 'valueOf');
+
+    // PARSING
+
+    addRegexToken('x', matchSigned);
+    addRegexToken('X', matchTimestamp);
+    addParseToken('X', function (input, array, config) {
+        config._d = new Date(parseFloat(input, 10) * 1000);
+    });
+    addParseToken('x', function (input, array, config) {
+        config._d = new Date(toInt(input));
+    });
+
+    // Side effect imports
+
+
+    utils_hooks__hooks.version = '2.10.2';
+
+    setHookCallback(local__createLocal);
+
+    utils_hooks__hooks.fn                    = momentPrototype;
+    utils_hooks__hooks.min                   = min;
+    utils_hooks__hooks.max                   = max;
+    utils_hooks__hooks.utc                   = create_utc__createUTC;
+    utils_hooks__hooks.unix                  = moment__createUnix;
+    utils_hooks__hooks.months                = lists__listMonths;
+    utils_hooks__hooks.isDate                = isDate;
+    utils_hooks__hooks.locale                = locale_locales__getSetGlobalLocale;
+    utils_hooks__hooks.invalid               = valid__createInvalid;
+    utils_hooks__hooks.duration              = create__createDuration;
+    utils_hooks__hooks.isMoment              = isMoment;
+    utils_hooks__hooks.weekdays              = lists__listWeekdays;
+    utils_hooks__hooks.parseZone             = moment__createInZone;
+    utils_hooks__hooks.localeData            = locale_locales__getLocale;
+    utils_hooks__hooks.isDuration            = isDuration;
+    utils_hooks__hooks.monthsShort           = lists__listMonthsShort;
+    utils_hooks__hooks.weekdaysMin           = lists__listWeekdaysMin;
+    utils_hooks__hooks.defineLocale          = defineLocale;
+    utils_hooks__hooks.weekdaysShort         = lists__listWeekdaysShort;
+    utils_hooks__hooks.normalizeUnits        = normalizeUnits;
+    utils_hooks__hooks.relativeTimeThreshold = duration_humanize__getSetRelativeTimeThreshold;
+
+    var _moment = utils_hooks__hooks;
+
+    return _moment;
+
+}));;/**
  * Compiled inline version. (Library mode)
  */
 
@@ -51325,7 +51410,3630 @@ Globally exposed namespace with the most frequently used public classes and hand
 
 })(jQuery);
 
-;$(document).ready(function () {
+;(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as anonymous module.
+    define(['jquery'], factory);
+  } else {
+    // Browser globals.
+    factory(jQuery);
+  }
+}(function(jQuery) {
+  "use strict";
+
+  // globals
+  var domfocus = false;
+  var mousefocus = false;
+  var tabindexcounter = 0;
+  var ascrailcounter = 2000;
+  var globalmaxzindex = 0;
+
+  var $ = jQuery; // sandbox
+
+  // http://stackoverflow.com/questions/2161159/get-script-path
+  function getScriptPath() {
+    var scripts = document.getElementsByTagName('script');
+    var path = scripts[scripts.length - 1].src.split('?')[0];
+    return (path.split('/').length > 0) ? path.split('/').slice(0, -1).join('/') + '/' : '';
+  }
+
+  var vendors = ['webkit','ms','moz','o'];
+
+  var setAnimationFrame = window.requestAnimationFrame || false;
+  var clearAnimationFrame = window.cancelAnimationFrame || false;
+
+  if (!setAnimationFrame) {  // legacy detection
+    for (var vx in vendors) {
+      var v = vendors[vx];
+      if (!setAnimationFrame) setAnimationFrame = window[v + 'RequestAnimationFrame'];
+      if (!clearAnimationFrame) clearAnimationFrame = window[v + 'CancelAnimationFrame'] || window[v + 'CancelRequestAnimationFrame'];
+    }
+  }
+
+  var ClsMutationObserver = window.MutationObserver || window.WebKitMutationObserver || false;
+
+  var _globaloptions = {
+    zindex: "auto",
+    cursoropacitymin: 0,
+    cursoropacitymax: 1,
+    cursorcolor: "#424242",
+    cursorwidth: "5px",
+    cursorborder: "1px solid #fff",
+    cursorborderradius: "5px",
+    scrollspeed: 60,
+    mousescrollstep: 8 * 3,
+    touchbehavior: false,
+    hwacceleration: true,
+    usetransition: true,
+    boxzoom: false,
+    dblclickzoom: true,
+    gesturezoom: true,
+    grabcursorenabled: true,
+    autohidemode: true,
+    background: "",
+    iframeautoresize: true,
+    cursorminheight: 32,
+    preservenativescrolling: true,
+    railoffset: false,
+    railhoffset: false,
+    bouncescroll: true,
+    spacebarenabled: true,
+    railpadding: {
+      top: 0,
+      right: 0,
+      left: 0,
+      bottom: 0
+    },
+    disableoutline: true,
+    horizrailenabled: true,
+    railalign: "right",
+    railvalign: "bottom",
+    enabletranslate3d: true,
+    enablemousewheel: true,
+    enablekeyboard: true,
+    smoothscroll: true,
+    sensitiverail: true,
+    enablemouselockapi: true,
+    //      cursormaxheight:false,
+    cursorfixedheight: false,
+    directionlockdeadzone: 6,
+    hidecursordelay: 400,
+    nativeparentscrolling: true,
+    enablescrollonselection: true,
+    overflowx: true,
+    overflowy: true,
+    cursordragspeed: 0.3,
+    rtlmode: "auto",
+    cursordragontouch: false,
+    oneaxismousemode: "auto",
+    scriptpath: getScriptPath(),
+    preventmultitouchscrolling: true
+  };
+
+  var browserdetected = false;
+
+  var getBrowserDetection = function() {
+
+    if (browserdetected) return browserdetected;
+
+    var _el = document.createElement('DIV'),
+        _style = _el.style,
+        _agent = navigator.userAgent,
+        _platform = navigator.platform,
+        d = {};
+
+    d.haspointerlock = "pointerLockElement" in document || "webkitPointerLockElement" in document || "mozPointerLockElement" in document;
+
+    d.isopera = ("opera" in window); // 12-
+    d.isopera12 = (d.isopera && ("getUserMedia" in navigator));
+    d.isoperamini = (Object.prototype.toString.call(window.operamini) === "[object OperaMini]");
+
+    d.isie = (("all" in document) && ("attachEvent" in _el) && !d.isopera); //IE10-
+    d.isieold = (d.isie && !("msInterpolationMode" in _style)); // IE6 and older
+    d.isie7 = d.isie && !d.isieold && (!("documentMode" in document) || (document.documentMode == 7));
+    d.isie8 = d.isie && ("documentMode" in document) && (document.documentMode == 8);
+    d.isie9 = d.isie && ("performance" in window) && (document.documentMode >= 9);
+    d.isie10 = d.isie && ("performance" in window) && (document.documentMode == 10);
+    d.isie11 = ("msRequestFullscreen" in _el) && (document.documentMode >= 11); // IE11+
+
+    d.isie9mobile = /iemobile.9/i.test(_agent); //wp 7.1 mango
+    if (d.isie9mobile) d.isie9 = false;
+    d.isie7mobile = (!d.isie9mobile && d.isie7) && /iemobile/i.test(_agent); //wp 7.0
+
+    d.ismozilla = ("MozAppearance" in _style);
+
+    d.iswebkit = ("WebkitAppearance" in _style);
+
+    d.ischrome = ("chrome" in window);
+    d.ischrome22 = (d.ischrome && d.haspointerlock);
+    d.ischrome26 = (d.ischrome && ("transition" in _style)); // issue with transform detection (maintain prefix)
+
+    d.cantouch = ("ontouchstart" in document.documentElement) || ("ontouchstart" in window); // detection for Chrome Touch Emulation
+    d.hasmstouch = (window.MSPointerEvent || false); // IE10 pointer events
+    d.hasw3ctouch = (window.PointerEvent || false); //IE11 pointer events, following W3C Pointer Events spec
+
+    d.ismac = /^mac$/i.test(_platform);
+
+    d.isios = (d.cantouch && /iphone|ipad|ipod/i.test(_platform));
+    d.isios4 = ((d.isios) && !("seal" in Object));
+    d.isios7 = ((d.isios)&&("webkitHidden" in document));  //iOS 7+
+
+    d.isandroid = (/android/i.test(_agent));
+
+    d.haseventlistener = ("addEventListener" in _el);
+    
+    d.trstyle = false;
+    d.hastransform = false;
+    d.hastranslate3d = false;
+    d.transitionstyle = false;
+    d.hastransition = false;
+    d.transitionend = false;
+
+    var a;
+    var check = ['transform', 'msTransform', 'webkitTransform', 'MozTransform', 'OTransform'];    
+    for (a = 0; a < check.length; a++) {
+      if (typeof _style[check[a]] != "undefined") {
+        d.trstyle = check[a];
+        break;
+      }
+    }
+    d.hastransform = (!!d.trstyle);
+    if (d.hastransform) {
+      _style[d.trstyle] = "translate3d(1px,2px,3px)";
+      d.hastranslate3d = /translate3d/.test(_style[d.trstyle]);
+    }
+
+    d.transitionstyle = false;
+    d.prefixstyle = '';
+    d.transitionend = false;
+    check = ['transition', 'webkitTransition', 'msTransition', 'MozTransition', 'OTransition', 'OTransition', 'KhtmlTransition'];
+    var prefix = ['', '-webkit-', '-ms-', '-moz-', '-o-', '-o', '-khtml-'];
+    var evs = ['transitionend', 'webkitTransitionEnd', 'msTransitionEnd',  'transitionend', 'otransitionend', 'oTransitionEnd', 'KhtmlTransitionEnd'];
+    for (a = 0; a < check.length; a++) {
+      if (check[a] in _style) {
+        d.transitionstyle = check[a];
+        d.prefixstyle = prefix[a];
+        d.transitionend = evs[a];
+        break;
+      }
+    }
+    if (d.ischrome26) {  // always use prefix
+      d.prefixstyle = prefix[1];
+    }
+
+    d.hastransition = (d.transitionstyle);
+
+    function detectCursorGrab() {
+      var lst = ['-webkit-grab', '-moz-grab', 'grab'];
+      if ((d.ischrome && !d.ischrome22) || d.isie) lst = []; // force setting for IE returns false positive and chrome cursor bug
+      for (var a = 0; a < lst.length; a++) {
+        var p = lst[a];
+        _style.cursor = p;
+        if (_style.cursor == p) return p;
+      }
+      return 'url(//mail.google.com/mail/images/2/openhand.cur),n-resize'; // thank you google for custom cursor!
+    }
+    d.cursorgrabvalue = detectCursorGrab();
+
+    d.hasmousecapture = ("setCapture" in _el);
+
+    d.hasMutationObserver = (ClsMutationObserver !== false);
+
+    _el = null; //memory released
+
+    browserdetected = d;
+
+    return d;
+  };
+
+  var NiceScrollClass = function(myopt, me) {
+
+    var self = this;
+
+    this.version = '3.6.0';
+    this.name = 'nicescroll';
+
+    this.me = me;
+
+    this.opt = {
+      doc: $("body"),
+      win: false
+    };
+
+    $.extend(this.opt, _globaloptions);  // clone opts
+
+    // Options for internal use
+    this.opt.snapbackspeed = 80;
+
+    if (myopt || false) {
+      for (var a in self.opt) {
+        if (typeof myopt[a] != "undefined") self.opt[a] = myopt[a];
+      }
+    }
+
+    this.doc = self.opt.doc;
+    this.iddoc = (this.doc && this.doc[0]) ? this.doc[0].id || '' : '';
+    this.ispage = /^BODY|HTML/.test((self.opt.win) ? self.opt.win[0].nodeName : this.doc[0].nodeName);
+    this.haswrapper = (self.opt.win !== false);
+    this.win = self.opt.win || (this.ispage ? $(window) : this.doc);
+    this.docscroll = (this.ispage && !this.haswrapper) ? $(window) : this.win;
+    this.body = $("body");
+    this.viewport = false;
+
+    this.isfixed = false;
+
+    this.iframe = false;
+    this.isiframe = ((this.doc[0].nodeName == 'IFRAME') && (this.win[0].nodeName == 'IFRAME'));
+
+    this.istextarea = (this.win[0].nodeName == 'TEXTAREA');
+
+    this.forcescreen = false; //force to use screen position on events
+
+    this.canshowonmouseevent = (self.opt.autohidemode != "scroll");
+
+    // Events jump table    
+    this.onmousedown = false;
+    this.onmouseup = false;
+    this.onmousemove = false;
+    this.onmousewheel = false;
+    this.onkeypress = false;
+    this.ongesturezoom = false;
+    this.onclick = false;
+
+    // Nicescroll custom events
+    this.onscrollstart = false;
+    this.onscrollend = false;
+    this.onscrollcancel = false;
+
+    this.onzoomin = false;
+    this.onzoomout = false;
+
+    // Let's start!  
+    this.view = false;
+    this.page = false;
+
+    this.scroll = {
+      x: 0,
+      y: 0
+    };
+    this.scrollratio = {
+      x: 0,
+      y: 0
+    };
+    this.cursorheight = 20;
+    this.scrollvaluemax = 0;
+
+    this.isrtlmode = (this.opt.rtlmode == "auto") ? ((this.win[0] == window ? this.body : this.win).css("direction") == "rtl") : (this.opt.rtlmode === true);
+    //    this.checkrtlmode = false;
+    
+    this.scrollrunning = false;
+
+    this.scrollmom = false;
+
+    this.observer        = false;  // observer div changes
+    this.observerremover = false;  // observer on parent for remove detection
+    this.observerbody    = false;  // observer on body for position change
+
+    do {
+      this.id = "ascrail" + (ascrailcounter++);
+    } while (document.getElementById(this.id));
+
+    this.rail = false;
+    this.cursor = false;
+    this.cursorfreezed = false;
+    this.selectiondrag = false;
+
+    this.zoom = false;
+    this.zoomactive = false;
+
+    this.hasfocus = false;
+    this.hasmousefocus = false;
+
+    this.visibility = true;
+    this.railslocked = false;  // locked by resize
+    this.locked = false;  // prevent lost of locked status sets by user
+    this.hidden = false; // rails always hidden
+    this.cursoractive = true; // user can interact with cursors
+
+    this.wheelprevented = false; //prevent mousewheel event
+
+    this.overflowx = self.opt.overflowx;
+    this.overflowy = self.opt.overflowy;
+
+    this.nativescrollingarea = false;
+    this.checkarea = 0;
+
+    this.events = []; // event list for unbind
+
+    this.saved = {};  // style saved
+
+    this.delaylist = {};
+    this.synclist = {};
+
+    this.lastdeltax = 0;
+    this.lastdeltay = 0;
+
+    this.detected = getBrowserDetection();
+
+    var cap = $.extend({}, this.detected);
+
+    this.canhwscroll = (cap.hastransform && self.opt.hwacceleration);
+    this.ishwscroll = (this.canhwscroll && self.haswrapper);
+
+    this.hasreversehr = (this.isrtlmode&&!cap.iswebkit);  //RTL mode with reverse horizontal axis
+    
+    this.istouchcapable = false; // desktop devices with touch screen support
+
+    //## Check WebKit-based desktop with touch support
+    //## + Firefox 18 nightly build (desktop) false positive (or desktop with touch support)
+    if (cap.cantouch && !cap.isios && !cap.isandroid && (cap.iswebkit || cap.ismozilla)) {
+      this.istouchcapable = true;
+      cap.cantouch = false; // parse normal desktop events
+    }
+
+    //## disable MouseLock API on user request
+    if (!self.opt.enablemouselockapi) {
+      cap.hasmousecapture = false;
+      cap.haspointerlock = false;
+    }
+
+/* deprecated
+    this.delayed = function(name, fn, tm, lazy) {
+    };
+*/    
+
+    this.debounced = function(name, fn, tm) {
+      var dd = self.delaylist[name];
+      self.delaylist[name] = fn;
+      if (!dd) {
+        setTimeout(function() {
+          var fn = self.delaylist[name];
+          self.delaylist[name] = false;
+          fn.call(self);
+        }, tm);
+      }
+    };
+
+    var _onsync = false;
+
+    this.synched = function(name, fn) {
+
+      function requestSync() {
+        if (_onsync) return;
+        setAnimationFrame(function() {
+          _onsync = false;
+          for (var nn in self.synclist) {
+            var fn = self.synclist[nn];
+            if (fn) fn.call(self);
+            self.synclist[nn] = false;
+          }
+        });
+        _onsync = true;
+      }
+
+      self.synclist[name] = fn;
+      requestSync();
+      return name;
+    };
+
+    this.unsynched = function(name) {
+      if (self.synclist[name]) self.synclist[name] = false;
+    };
+
+    this.css = function(el, pars) { // save & set
+      for (var n in pars) {
+        self.saved.css.push([el, n, el.css(n)]);
+        el.css(n, pars[n]);
+      }
+    };
+
+    this.scrollTop = function(val) {
+      return (typeof val == "undefined") ? self.getScrollTop() : self.setScrollTop(val);
+    };
+
+    this.scrollLeft = function(val) {
+      return (typeof val == "undefined") ? self.getScrollLeft() : self.setScrollLeft(val);
+    };
+
+    // derived by by Dan Pupius www.pupius.net
+    var BezierClass = function(st, ed, spd, p1, p2, p3, p4) {
+    
+      this.st = st;
+      this.ed = ed;
+      this.spd = spd;
+
+      this.p1 = p1 || 0;
+      this.p2 = p2 || 1;
+      this.p3 = p3 || 0;
+      this.p4 = p4 || 1;
+
+      this.ts = (new Date()).getTime();
+      this.df = this.ed - this.st;
+    };
+    BezierClass.prototype = {
+      B2: function(t) {
+        return 3 * t * t * (1 - t);
+      },
+      B3: function(t) {
+        return 3 * t * (1 - t) * (1 - t);
+      },
+      B4: function(t) {
+        return (1 - t) * (1 - t) * (1 - t);
+      },
+      getNow: function() {
+        var nw = (new Date()).getTime();
+        var pc = 1 - ((nw - this.ts) / this.spd);
+        var bz = this.B2(pc) + this.B3(pc) + this.B4(pc);
+        return (pc < 0) ? this.ed : this.st + Math.round(this.df * bz);
+      },
+      update: function(ed, spd) {
+        this.st = this.getNow();
+        this.ed = ed;
+        this.spd = spd;
+        this.ts = (new Date()).getTime();
+        this.df = this.ed - this.st;
+        return this;
+      }
+    };
+
+    //derived from http://stackoverflow.com/questions/11236090/
+    function getMatrixValues() {
+      var tr = self.doc.css(cap.trstyle);
+      if (tr && (tr.substr(0, 6) == "matrix")) {
+        return tr.replace(/^.*\((.*)\)$/g, "$1").replace(/px/g, '').split(/, +/);
+      }
+      return false;
+    }
+
+    if (this.ishwscroll) {
+      // hw accelerated scroll
+      this.doc.translate = {
+        x: 0,
+        y: 0,
+        tx: "0px",
+        ty: "0px"
+      };
+
+      //this one can help to enable hw accel on ios6 http://indiegamr.com/ios6-html-hardware-acceleration-changes-and-how-to-fix-them/
+      if (cap.hastranslate3d && cap.isios) this.doc.css("-webkit-backface-visibility", "hidden"); // prevent flickering http://stackoverflow.com/questions/3461441/      
+
+      this.getScrollTop = function(last) {
+        if (!last) {
+          var mtx = getMatrixValues();
+          if (mtx) return (mtx.length == 16) ? -mtx[13] : -mtx[5]; //matrix3d 16 on IE10
+          if (self.timerscroll && self.timerscroll.bz) return self.timerscroll.bz.getNow();
+        }
+        return self.doc.translate.y;
+      };
+
+      this.getScrollLeft = function(last) {
+        if (!last) {
+          var mtx = getMatrixValues();
+          if (mtx) return (mtx.length == 16) ? -mtx[12] : -mtx[4]; //matrix3d 16 on IE10
+          if (self.timerscroll && self.timerscroll.bh) return self.timerscroll.bh.getNow();
+        }
+        return self.doc.translate.x;
+      };
+
+      this.notifyScrollEvent = function(el) {
+        var e = document.createEvent("UIEvents");
+        e.initUIEvent("scroll", false, true, window, 1);
+        e.niceevent = true;
+        el.dispatchEvent(e);
+      };
+
+      var cxscrollleft = (this.isrtlmode) ? 1 : -1;
+
+      if (cap.hastranslate3d && self.opt.enabletranslate3d) {
+        this.setScrollTop = function(val, silent) {
+          self.doc.translate.y = val;
+          self.doc.translate.ty = (val * -1) + "px";
+          self.doc.css(cap.trstyle, "translate3d(" + self.doc.translate.tx + "," + self.doc.translate.ty + ",0px)");
+          if (!silent) self.notifyScrollEvent(self.win[0]);
+        };
+        this.setScrollLeft = function(val, silent) {
+          self.doc.translate.x = val;
+          self.doc.translate.tx = (val * cxscrollleft) + "px";
+          self.doc.css(cap.trstyle, "translate3d(" + self.doc.translate.tx + "," + self.doc.translate.ty + ",0px)");
+          if (!silent) self.notifyScrollEvent(self.win[0]);
+        };
+      } else {
+        this.setScrollTop = function(val, silent) {
+          self.doc.translate.y = val;
+          self.doc.translate.ty = (val * -1) + "px";
+          self.doc.css(cap.trstyle, "translate(" + self.doc.translate.tx + "," + self.doc.translate.ty + ")");
+          if (!silent) self.notifyScrollEvent(self.win[0]);
+        };
+        this.setScrollLeft = function(val, silent) {
+          self.doc.translate.x = val;
+          self.doc.translate.tx = (val * cxscrollleft) + "px";
+          self.doc.css(cap.trstyle, "translate(" + self.doc.translate.tx + "," + self.doc.translate.ty + ")");
+          if (!silent) self.notifyScrollEvent(self.win[0]);
+        };
+      }
+    } else {
+      // native scroll
+      this.getScrollTop = function() {
+        return self.docscroll.scrollTop();
+      };
+      this.setScrollTop = function(val) {
+        return self.docscroll.scrollTop(val);
+      };
+      this.getScrollLeft = function() {
+        if (self.detected.ismozilla && self.isrtlmode)
+          return Math.abs(self.docscroll.scrollLeft());
+        return self.docscroll.scrollLeft();
+      };
+      this.setScrollLeft = function(val) {
+        return self.docscroll.scrollLeft((self.detected.ismozilla && self.isrtlmode) ? -val : val);
+      };
+    }
+
+    this.getTarget = function(e) {
+      if (!e) return false;
+      if (e.target) return e.target;
+      if (e.srcElement) return e.srcElement;
+      return false;
+    };
+
+    this.hasParent = function(e, id) {
+      if (!e) return false;
+      var el = e.target || e.srcElement || e || false;
+      while (el && el.id != id) {
+        el = el.parentNode || false;
+      }
+      return (el !== false);
+    };
+
+    function getZIndex() {
+      var dom = self.win;
+      if ("zIndex" in dom) return dom.zIndex(); // use jQuery UI method when available
+      while (dom.length > 0) {
+        if (dom[0].nodeType == 9) return false;
+        var zi = dom.css('zIndex');
+        if (!isNaN(zi) && zi != 0) return parseInt(zi);
+        dom = dom.parent();
+      }
+      return false;
+    }
+
+    //inspired by http://forum.jquery.com/topic/width-includes-border-width-when-set-to-thin-medium-thick-in-ie
+    var _convertBorderWidth = {
+      "thin": 1,
+      "medium": 3,
+      "thick": 5
+    };
+
+    function getWidthToPixel(dom, prop, chkheight) {
+      var wd = dom.css(prop);
+      var px = parseFloat(wd);
+      if (isNaN(px)) {
+        px = _convertBorderWidth[wd] || 0;
+        var brd = (px == 3) ? ((chkheight) ? (self.win.outerHeight() - self.win.innerHeight()) : (self.win.outerWidth() - self.win.innerWidth())) : 1; //DON'T TRUST CSS
+        if (self.isie8 && px) px += 1;
+        return (brd) ? px : 0;
+      }
+      return px;
+    }
+
+    this.getDocumentScrollOffset = function() {
+      return {top:window.pageYOffset||document.documentElement.scrollTop,
+              left:window.pageXOffset||document.documentElement.scrollLeft};
+    }
+    
+    this.getOffset = function() {
+      if (self.isfixed) {
+        var ofs = self.win.offset();  // fix Chrome auto issue (when right/bottom props only)
+        var scrl = self.getDocumentScrollOffset();
+        ofs.top-=scrl.top;
+        ofs.left-=scrl.left;
+        return ofs;  
+      }
+      var ww = self.win.offset();
+      if (!self.viewport) return ww;      
+      var vp = self.viewport.offset();
+      return {
+        top: ww.top - vp.top,// + self.viewport.scrollTop(),
+        left: ww.left - vp.left // + self.viewport.scrollLeft()
+      };
+    };
+
+    this.updateScrollBar = function(len) {
+      if (self.ishwscroll) {
+        self.rail.css({  //**
+          height: self.win.innerHeight() - (self.opt.railpadding.top + self.opt.railpadding.bottom)
+        });
+        if (self.railh) self.railh.css({  //**
+          width: self.win.innerWidth() - (self.opt.railpadding.left + self.opt.railpadding.right)
+        });
+        
+      } else {
+        var wpos = self.getOffset();
+        var pos = {
+          top: wpos.top,
+          left: wpos.left  - (self.opt.railpadding.left + self.opt.railpadding.right)
+        };
+        pos.top += getWidthToPixel(self.win, 'border-top-width', true);
+        pos.left += (self.rail.align) ? self.win.outerWidth() - getWidthToPixel(self.win, 'border-right-width') - self.rail.width : getWidthToPixel(self.win, 'border-left-width');
+
+        var off = self.opt.railoffset;
+        if (off) {
+          if (off.top) pos.top += off.top;
+          if (self.rail.align && off.left) pos.left += off.left;
+        }
+        
+        if (!self.railslocked) self.rail.css({
+          top: pos.top,
+          left: pos.left,
+          height: ((len) ? len.h : self.win.innerHeight()) - (self.opt.railpadding.top + self.opt.railpadding.bottom)
+        });
+
+        if (self.zoom) {
+          self.zoom.css({
+            top: pos.top + 1,
+            left: (self.rail.align == 1) ? pos.left - 20 : pos.left + self.rail.width + 4
+          });
+        }
+
+        if (self.railh && !self.railslocked) {
+          var pos = {
+            top: wpos.top,
+            left: wpos.left
+          };
+          var off = self.opt.railhoffset;
+          if (!!off) {
+            if (!!off.top) pos.top += off.top;
+            if (!!off.left) pos.left += off.left;
+          }
+          var y = (self.railh.align) ? pos.top + getWidthToPixel(self.win, 'border-top-width', true) + self.win.innerHeight() - self.railh.height : pos.top + getWidthToPixel(self.win, 'border-top-width', true);
+          var x = pos.left + getWidthToPixel(self.win, 'border-left-width');
+          self.railh.css({
+            top: y  - (self.opt.railpadding.top + self.opt.railpadding.bottom),
+            left: x,
+            width: self.railh.width
+          });
+        }
+
+
+      }
+    };
+
+    this.doRailClick = function(e, dbl, hr) {
+      var fn, pg, cur, pos;
+
+      if (self.railslocked) return;
+      self.cancelEvent(e);
+
+      if (dbl) {
+        fn = (hr) ? self.doScrollLeft : self.doScrollTop;
+        cur = (hr) ? ((e.pageX - self.railh.offset().left - (self.cursorwidth / 2)) * self.scrollratio.x) : ((e.pageY - self.rail.offset().top - (self.cursorheight / 2)) * self.scrollratio.y);
+        fn(cur);
+      } else {
+        fn = (hr) ? self.doScrollLeftBy : self.doScrollBy;
+        cur = (hr) ? self.scroll.x : self.scroll.y;
+        pos = (hr) ? e.pageX - self.railh.offset().left : e.pageY - self.rail.offset().top;
+        pg = (hr) ? self.view.w : self.view.h;
+        fn((cur >= pos) ? pg: -pg);//   (cur >= pos) ? fn(pg): fn(-pg);
+      }
+
+    };
+
+    self.hasanimationframe = (setAnimationFrame);
+    self.hascancelanimationframe = (clearAnimationFrame);
+
+    if (!self.hasanimationframe) {
+      setAnimationFrame = function(fn) {
+        return setTimeout(fn, 15 - Math.floor((+new Date()) / 1000) % 16);
+      }; // 1000/60)};
+      clearAnimationFrame = clearInterval;
+    } else if (!self.hascancelanimationframe) clearAnimationFrame = function() {
+      self.cancelAnimationFrame = true;
+    };
+
+    this.init = function() {
+
+      self.saved.css = [];
+
+      if (cap.isie7mobile) return true; // SORRY, DO NOT WORK!
+      if (cap.isoperamini) return true; // SORRY, DO NOT WORK!
+
+      if (cap.hasmstouch) self.css((self.ispage) ? $("html") : self.win, {
+        '-ms-touch-action': 'none'
+      });
+
+      self.zindex = "auto";
+      if (!self.ispage && self.opt.zindex == "auto") {
+        self.zindex = getZIndex() || "auto";
+      } else {
+        self.zindex = self.opt.zindex;
+      }
+
+      if (!self.ispage && self.zindex != "auto") {
+        if (self.zindex > globalmaxzindex) globalmaxzindex = self.zindex;
+      }
+
+      if (self.isie && self.zindex == 0 && self.opt.zindex == "auto") { // fix IE auto == 0
+        self.zindex = "auto";
+      }
+
+      if (!self.ispage || (!cap.cantouch && !cap.isieold && !cap.isie9mobile)) {
+
+        var cont = self.docscroll;
+        if (self.ispage) cont = (self.haswrapper) ? self.win : self.doc;
+
+        if (!cap.isie9mobile) self.css(cont, {
+          'overflow-y': 'hidden'
+        });
+
+        if (self.ispage && cap.isie7) {
+          if (self.doc[0].nodeName == 'BODY') self.css($("html"), {
+            'overflow-y': 'hidden'
+          }); //IE7 double scrollbar issue
+          else if (self.doc[0].nodeName == 'HTML') self.css($("body"), {
+            'overflow-y': 'hidden'
+          }); //IE7 double scrollbar issue
+        }
+
+        if (cap.isios && !self.ispage && !self.haswrapper) self.css($("body"), {
+          "-webkit-overflow-scrolling": "touch"
+        }); //force hw acceleration
+
+        var cursor = $(document.createElement('div'));
+        cursor.css({
+          position: "relative",
+          top: 0,
+          "float": "right",
+          width: self.opt.cursorwidth,
+          height: "0px",
+          'background-color': self.opt.cursorcolor,
+          border: self.opt.cursorborder,
+          'background-clip': 'padding-box',
+          '-webkit-border-radius': self.opt.cursorborderradius,
+          '-moz-border-radius': self.opt.cursorborderradius,
+          'border-radius': self.opt.cursorborderradius
+        });
+
+        cursor.hborder = parseFloat(cursor.outerHeight() - cursor.innerHeight());
+        
+        cursor.addClass('nicescroll-cursors');
+        
+        self.cursor = cursor;
+
+        var rail = $(document.createElement('div'));
+        rail.attr('id', self.id);
+        rail.addClass('nicescroll-rails nicescroll-rails-vr');
+
+        var v, a, kp = ["left","right","top","bottom"];  //**
+        for (var n in kp) {
+          a = kp[n];
+          v = self.opt.railpadding[a];
+          (v) ? rail.css("padding-"+a,v+"px") : self.opt.railpadding[a] = 0;
+        }
+
+        rail.append(cursor);
+
+        rail.width = Math.max(parseFloat(self.opt.cursorwidth), cursor.outerWidth());
+        rail.css({
+          width: rail.width + "px",
+          'zIndex': self.zindex,
+          "background": self.opt.background,
+          cursor: "default"
+        });
+
+        rail.visibility = true;
+        rail.scrollable = true;
+
+        rail.align = (self.opt.railalign == "left") ? 0 : 1;
+
+        self.rail = rail;
+
+        self.rail.drag = false;
+
+        var zoom = false;
+        if (self.opt.boxzoom && !self.ispage && !cap.isieold) {
+          zoom = document.createElement('div');
+
+          self.bind(zoom, "click", self.doZoom);
+          self.bind(zoom, "mouseenter", function() {
+            self.zoom.css('opacity', self.opt.cursoropacitymax);
+          });
+          self.bind(zoom, "mouseleave", function() {
+            self.zoom.css('opacity', self.opt.cursoropacitymin);
+          });
+
+          self.zoom = $(zoom);
+          self.zoom.css({
+            "cursor": "pointer",
+            'z-index': self.zindex,
+            'backgroundImage': 'url(' + self.opt.scriptpath + 'zoomico.png)',
+            'height': 18,
+            'width': 18,
+            'backgroundPosition': '0px 0px'
+          });
+          if (self.opt.dblclickzoom) self.bind(self.win, "dblclick", self.doZoom);
+          if (cap.cantouch && self.opt.gesturezoom) {
+            self.ongesturezoom = function(e) {
+              if (e.scale > 1.5) self.doZoomIn(e);
+              if (e.scale < 0.8) self.doZoomOut(e);
+              return self.cancelEvent(e);
+            };
+            self.bind(self.win, "gestureend", self.ongesturezoom);
+          }
+        }
+
+        // init HORIZ
+
+        self.railh = false;
+        var railh;
+
+        if (self.opt.horizrailenabled) {
+
+          self.css(cont, {
+            'overflow-x': 'hidden'
+          });
+
+          var cursor = $(document.createElement('div'));
+          cursor.css({
+            position: "absolute",
+            top: 0,
+            height: self.opt.cursorwidth,
+            width: "0px",
+            'background-color': self.opt.cursorcolor,
+            border: self.opt.cursorborder,
+            'background-clip': 'padding-box',
+            '-webkit-border-radius': self.opt.cursorborderradius,
+            '-moz-border-radius': self.opt.cursorborderradius,
+            'border-radius': self.opt.cursorborderradius
+          });
+
+          if (cap.isieold) cursor.css({'overflow':'hidden'});  //IE6 horiz scrollbar issue
+          
+          cursor.wborder = parseFloat(cursor.outerWidth() - cursor.innerWidth());
+          
+          cursor.addClass('nicescroll-cursors');
+          
+          self.cursorh = cursor;
+
+          railh = $(document.createElement('div'));
+          railh.attr('id', self.id + '-hr');
+          railh.addClass('nicescroll-rails nicescroll-rails-hr');
+          railh.height = Math.max(parseFloat(self.opt.cursorwidth), cursor.outerHeight());
+          railh.css({
+            height: railh.height + "px",
+            'zIndex': self.zindex,
+            "background": self.opt.background
+          });
+
+          railh.append(cursor);
+
+          railh.visibility = true;
+          railh.scrollable = true;
+
+          railh.align = (self.opt.railvalign == "top") ? 0 : 1;
+
+          self.railh = railh;
+
+          self.railh.drag = false;
+
+        }
+
+        //        
+
+        if (self.ispage) {
+          rail.css({
+            position: "fixed",
+            top: "0px",
+            height: "100%"
+          });
+          (rail.align) ? rail.css({
+            right: "0px"
+          }): rail.css({
+            left: "0px"
+          });
+          self.body.append(rail);
+          if (self.railh) {
+            railh.css({
+              position: "fixed",
+              left: "0px",
+              width: "100%"
+            });
+            (railh.align) ? railh.css({
+              bottom: "0px"
+            }): railh.css({
+              top: "0px"
+            });
+            self.body.append(railh);
+          }
+        } else {
+          if (self.ishwscroll) {
+            if (self.win.css('position') == 'static') self.css(self.win, {
+              'position': 'relative'
+            });
+            var bd = (self.win[0].nodeName == 'HTML') ? self.body : self.win;
+            $(bd).scrollTop(0).scrollLeft(0);  // fix rail position if content already scrolled
+            if (self.zoom) {
+              self.zoom.css({
+                position: "absolute",
+                top: 1,
+                right: 0,
+                "margin-right": rail.width + 4
+              });
+              bd.append(self.zoom);
+            }
+            rail.css({
+              position: "absolute",
+              top: 0
+            });
+            (rail.align) ? rail.css({
+              right: 0
+            }): rail.css({
+              left: 0
+            });
+            bd.append(rail);
+            if (railh) {
+              railh.css({
+                position: "absolute",
+                left: 0,
+                bottom: 0
+              });
+              (railh.align) ? railh.css({
+                bottom: 0
+              }): railh.css({
+                top: 0
+              });
+              bd.append(railh);
+            }
+          } else {
+            self.isfixed = (self.win.css("position") == "fixed");
+            var rlpos = (self.isfixed) ? "fixed" : "absolute";
+
+            if (!self.isfixed) self.viewport = self.getViewport(self.win[0]);
+            if (self.viewport) {
+              self.body = self.viewport;
+              if ((/fixed|absolute/.test(self.viewport.css("position"))) == false) self.css(self.viewport, {
+                "position": "relative"
+              });
+            }
+
+            rail.css({
+              position: rlpos
+            });
+            if (self.zoom) self.zoom.css({
+              position: rlpos
+            });
+            self.updateScrollBar();
+            self.body.append(rail);
+            if (self.zoom) self.body.append(self.zoom);
+            if (self.railh) {
+              railh.css({
+                position: rlpos
+              });
+              self.body.append(railh);
+            }
+          }
+
+          if (cap.isios) self.css(self.win, {
+            '-webkit-tap-highlight-color': 'rgba(0,0,0,0)',
+            '-webkit-touch-callout': 'none'
+          }); // prevent grey layer on click
+
+          if (cap.isie && self.opt.disableoutline) self.win.attr("hideFocus", "true"); // IE, prevent dotted rectangle on focused div
+          if (cap.iswebkit && self.opt.disableoutline) self.win.css({"outline": "none"});  // Webkit outline
+          //if (cap.isopera&&self.opt.disableoutline) self.win.css({"outline":"0"});  // Opera 12- to test [TODO]
+
+        }
+
+        if (self.opt.autohidemode === false) {
+          self.autohidedom = false;
+          self.rail.css({
+            opacity: self.opt.cursoropacitymax
+          });
+          if (self.railh) self.railh.css({
+            opacity: self.opt.cursoropacitymax
+          });
+        } else if ((self.opt.autohidemode === true) || (self.opt.autohidemode === "leave")) {
+          self.autohidedom = $().add(self.rail);
+          if (cap.isie8) self.autohidedom = self.autohidedom.add(self.cursor);
+          if (self.railh) self.autohidedom = self.autohidedom.add(self.railh);
+          if (self.railh && cap.isie8) self.autohidedom = self.autohidedom.add(self.cursorh);
+        } else if (self.opt.autohidemode == "scroll") {
+          self.autohidedom = $().add(self.rail);
+          if (self.railh) self.autohidedom = self.autohidedom.add(self.railh);
+        } else if (self.opt.autohidemode == "cursor") {
+          self.autohidedom = $().add(self.cursor);
+          if (self.railh) self.autohidedom = self.autohidedom.add(self.cursorh);
+        } else if (self.opt.autohidemode == "hidden") {
+          self.autohidedom = false;
+          self.hide();
+          self.railslocked = false;
+        }
+
+        if (cap.isie9mobile) {
+
+          self.scrollmom = new ScrollMomentumClass2D(self);
+
+          self.onmangotouch = function() {
+            var py = self.getScrollTop();
+            var px = self.getScrollLeft();
+
+            if ((py == self.scrollmom.lastscrolly) && (px == self.scrollmom.lastscrollx)) return true;
+
+            var dfy = py - self.mangotouch.sy;
+            var dfx = px - self.mangotouch.sx;
+            var df = Math.round(Math.sqrt(Math.pow(dfx, 2) + Math.pow(dfy, 2)));
+            if (df == 0) return;
+
+            var dry = (dfy < 0) ? -1 : 1;
+            var drx = (dfx < 0) ? -1 : 1;
+
+            var tm = +new Date();
+            if (self.mangotouch.lazy) clearTimeout(self.mangotouch.lazy);
+
+            if (((tm - self.mangotouch.tm) > 80) || (self.mangotouch.dry != dry) || (self.mangotouch.drx != drx)) {
+              self.scrollmom.stop();
+              self.scrollmom.reset(px, py);
+              self.mangotouch.sy = py;
+              self.mangotouch.ly = py;
+              self.mangotouch.sx = px;
+              self.mangotouch.lx = px;
+              self.mangotouch.dry = dry;
+              self.mangotouch.drx = drx;
+              self.mangotouch.tm = tm;
+            } else {
+
+              self.scrollmom.stop();
+              self.scrollmom.update(self.mangotouch.sx - dfx, self.mangotouch.sy - dfy);
+              self.mangotouch.tm = tm;
+
+              var ds = Math.max(Math.abs(self.mangotouch.ly - py), Math.abs(self.mangotouch.lx - px));
+              self.mangotouch.ly = py;
+              self.mangotouch.lx = px;
+
+              if (ds > 2) {
+                self.mangotouch.lazy = setTimeout(function() {
+                  self.mangotouch.lazy = false;
+                  self.mangotouch.dry = 0;
+                  self.mangotouch.drx = 0;
+                  self.mangotouch.tm = 0;
+                  self.scrollmom.doMomentum(30);
+                }, 100);
+              }
+            }
+          };
+
+          var top = self.getScrollTop();
+          var lef = self.getScrollLeft();
+          self.mangotouch = {
+            sy: top,
+            ly: top,
+            dry: 0,
+            sx: lef,
+            lx: lef,
+            drx: 0,
+            lazy: false,
+            tm: 0
+          };
+
+          self.bind(self.docscroll, "scroll", self.onmangotouch);
+
+        } else {
+
+          if (cap.cantouch || self.istouchcapable || self.opt.touchbehavior || cap.hasmstouch) {
+
+            self.scrollmom = new ScrollMomentumClass2D(self);
+
+            self.ontouchstart = function(e) {
+              if (e.pointerType && e.pointerType != 2 && e.pointerType != "touch") return false;
+              
+              self.hasmoving = false;
+
+              if (!self.railslocked) {
+
+                var tg;
+                if (cap.hasmstouch) {
+                  tg = (e.target) ? e.target : false;
+                  while (tg) {
+                    var nc = $(tg).getNiceScroll();
+                    if ((nc.length > 0) && (nc[0].me == self.me)) break;
+                    if (nc.length > 0) return false;
+                    if ((tg.nodeName == 'DIV') && (tg.id == self.id)) break;
+                    tg = (tg.parentNode) ? tg.parentNode : false;
+                  }
+                }
+
+                self.cancelScroll();
+
+                tg = self.getTarget(e);
+
+                if (tg) {
+                  var skp = (/INPUT/i.test(tg.nodeName)) && (/range/i.test(tg.type));
+                  if (skp) return self.stopPropagation(e);
+                }
+
+                if (!("clientX" in e) && ("changedTouches" in e)) {
+                  e.clientX = e.changedTouches[0].clientX;
+                  e.clientY = e.changedTouches[0].clientY;
+                }
+
+                if (self.forcescreen) {
+                  var le = e;
+                  e = {
+                    "original": (e.original) ? e.original : e
+                  };
+                  e.clientX = le.screenX;
+                  e.clientY = le.screenY;
+                }
+
+                self.rail.drag = {
+                  x: e.clientX,
+                  y: e.clientY,
+                  sx: self.scroll.x,
+                  sy: self.scroll.y,
+                  st: self.getScrollTop(),
+                  sl: self.getScrollLeft(),
+                  pt: 2,
+                  dl: false
+                };
+
+                if (self.ispage || !self.opt.directionlockdeadzone) {
+                  self.rail.drag.dl = "f";
+                } else {
+
+                  var view = {
+                    w: $(window).width(),
+                    h: $(window).height()
+                  };
+
+                  var page = {
+                    w: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+                    h: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+                  };
+
+                  var maxh = Math.max(0, page.h - view.h);
+                  var maxw = Math.max(0, page.w - view.w);
+
+                  if (!self.rail.scrollable && self.railh.scrollable) self.rail.drag.ck = (maxh > 0) ? "v" : false;
+                  else if (self.rail.scrollable && !self.railh.scrollable) self.rail.drag.ck = (maxw > 0) ? "h" : false;
+                  else self.rail.drag.ck = false;
+                  if (!self.rail.drag.ck) self.rail.drag.dl = "f";
+                }
+
+                if (self.opt.touchbehavior && self.isiframe && cap.isie) {
+                  var wp = self.win.position();
+                  self.rail.drag.x += wp.left;
+                  self.rail.drag.y += wp.top;
+                }
+
+                self.hasmoving = false;
+                self.lastmouseup = false;
+                self.scrollmom.reset(e.clientX, e.clientY);
+                
+                if (!cap.cantouch && !this.istouchcapable && !e.pointerType) {       
+                
+                  var ip = (tg) ? /INPUT|SELECT|TEXTAREA/i.test(tg.nodeName) : false;
+                  if (!ip) {
+                    if (!self.ispage && cap.hasmousecapture) tg.setCapture();
+                    if (self.opt.touchbehavior) {
+                      if (tg.onclick && !(tg._onclick || false)) { // intercept DOM0 onclick event
+                        tg._onclick = tg.onclick;
+                        tg.onclick = function(e) {
+                          if (self.hasmoving) return false;
+                          tg._onclick.call(this, e);
+                        };
+                      }
+                      return self.cancelEvent(e);
+                    }
+                    return self.stopPropagation(e);
+                  }
+
+                  if (/SUBMIT|CANCEL|BUTTON/i.test($(tg).attr('type'))) {
+                    pc = {
+                      "tg": tg,
+                      "click": false
+                    };
+                    self.preventclick = pc;
+                  }
+
+                }
+              }
+
+            };
+
+            self.ontouchend = function(e) {              
+              if (!self.rail.drag) return true;              
+              if (self.rail.drag.pt == 2) {
+                if (e.pointerType && e.pointerType != 2 && e.pointerType != "touch") return false;
+                self.scrollmom.doMomentum();
+                self.rail.drag = false;
+                if (self.hasmoving) {
+                  self.lastmouseup = true;
+                  self.hideCursor();
+                  if (cap.hasmousecapture) document.releaseCapture();
+                  if (!cap.cantouch) return self.cancelEvent(e);
+                }
+              }
+              else if (self.rail.drag.pt == 1) {
+                return self.onmouseup(e);
+              }
+
+            };
+
+            var moveneedoffset = (self.opt.touchbehavior && self.isiframe && !cap.hasmousecapture);
+
+            self.ontouchmove = function(e, byiframe) {
+
+              if (!self.rail.drag) return false;
+            
+              if (e.targetTouches && self.opt.preventmultitouchscrolling) {
+                if (e.targetTouches.length > 1) return false; // multitouch
+              }
+            
+              if (e.pointerType && e.pointerType != 2 && e.pointerType != "touch") return false;
+          
+              if (self.rail.drag.pt == 2) {
+                if (cap.cantouch && (cap.isios) && (typeof e.original == "undefined")) return true; // prevent ios "ghost" events by clickable elements
+
+                self.hasmoving = true;
+
+                if (self.preventclick && !self.preventclick.click) {
+                  self.preventclick.click = self.preventclick.tg.onclick || false;
+                  self.preventclick.tg.onclick = self.onpreventclick;
+                }
+
+                var ev = $.extend({
+                  "original": e
+                }, e);
+                e = ev;
+
+                if (("changedTouches" in e)) {
+                  e.clientX = e.changedTouches[0].clientX;
+                  e.clientY = e.changedTouches[0].clientY;
+                }
+
+                if (self.forcescreen) {
+                  var le = e;
+                  e = {
+                    "original": (e.original) ? e.original : e
+                  };
+                  e.clientX = le.screenX;
+                  e.clientY = le.screenY;
+                }
+
+                var ofy,ofx;
+                ofx = ofy = 0;
+
+                if (moveneedoffset && !byiframe) {
+                  var wp = self.win.position();
+                  ofx = -wp.left;
+                  ofy = -wp.top;
+                }
+
+                var fy = e.clientY + ofy;
+                var my = (fy - self.rail.drag.y);
+                var fx = e.clientX + ofx;
+                var mx = (fx - self.rail.drag.x);
+
+                var ny = self.rail.drag.st - my;
+
+                if (self.ishwscroll && self.opt.bouncescroll) {
+                  if (ny < 0) {
+                    ny = Math.round(ny / 2);
+                    //                    fy = 0;
+                  } else if (ny > self.page.maxh) {
+                    ny = self.page.maxh + Math.round((ny - self.page.maxh) / 2);
+                    //                    fy = 0;
+                  }
+                } else {
+                  if (ny < 0) {
+                    ny = 0;
+                    fy = 0;
+                  }
+                  if (ny > self.page.maxh) {
+                    ny = self.page.maxh;
+                    fy = 0;
+                  }
+                }
+
+                var nx;
+                if (self.railh && self.railh.scrollable) {
+                  nx = (self.isrtlmode) ? mx - self.rail.drag.sl : self.rail.drag.sl - mx;
+
+                  if (self.ishwscroll && self.opt.bouncescroll) {
+                    if (nx < 0) {
+                      nx = Math.round(nx / 2);
+                      //                      fx = 0;
+                    } else if (nx > self.page.maxw) {
+                      nx = self.page.maxw + Math.round((nx - self.page.maxw) / 2);
+                      //                      fx = 0;
+                    }
+                  } else {
+                    if (nx < 0) {
+                      nx = 0;
+                      fx = 0;
+                    }
+                    if (nx > self.page.maxw) {
+                      nx = self.page.maxw;
+                      fx = 0;
+                    }
+                  }
+
+                }
+
+                var grabbed = false;
+                if (self.rail.drag.dl) {
+                  grabbed = true;
+                  if (self.rail.drag.dl == "v") nx = self.rail.drag.sl;
+                  else if (self.rail.drag.dl == "h") ny = self.rail.drag.st;
+                } else {
+                  var ay = Math.abs(my);
+                  var ax = Math.abs(mx);
+                  var dz = self.opt.directionlockdeadzone;
+                  if (self.rail.drag.ck == "v") {
+                    if (ay > dz && (ax <= (ay * 0.3))) {
+                      self.rail.drag = false;
+                      return true;
+                    } else if (ax > dz) {
+                      self.rail.drag.dl = "f";
+                      $("body").scrollTop($("body").scrollTop()); // stop iOS native scrolling (when active javascript has blocked)
+                    }
+                  } else if (self.rail.drag.ck == "h") {
+                    if (ax > dz && (ay <= (ax * 0.3))) {
+                      self.rail.drag = false;
+                      return true;
+                    } else if (ay > dz) {
+                      self.rail.drag.dl = "f";
+                      $("body").scrollLeft($("body").scrollLeft()); // stop iOS native scrolling (when active javascript has blocked)
+                    }
+                  }
+                }
+
+                self.synched("touchmove", function() {
+                  if (self.rail.drag && (self.rail.drag.pt == 2)) {
+                    if (self.prepareTransition) self.prepareTransition(0);
+                    if (self.rail.scrollable) self.setScrollTop(ny);
+                    self.scrollmom.update(fx, fy);
+                    if (self.railh && self.railh.scrollable) {
+                      self.setScrollLeft(nx);
+                      self.showCursor(ny, nx);
+                    } else {
+                      self.showCursor(ny);
+                    }
+                    if (cap.isie10) document.selection.clear();
+                  }
+                });
+
+                if (cap.ischrome && self.istouchcapable) grabbed = false; //chrome touch emulation doesn't like!
+                if (grabbed) return self.cancelEvent(e);
+              }
+              else if (self.rail.drag.pt == 1) { // drag on cursor
+                return self.onmousemove(e);
+              }
+
+            };
+
+          }
+
+          self.onmousedown = function(e, hronly) {
+            if (self.rail.drag && self.rail.drag.pt != 1) return;
+            if (self.railslocked) return self.cancelEvent(e);
+            self.cancelScroll();
+            self.rail.drag = {
+              x: e.clientX,
+              y: e.clientY,
+              sx: self.scroll.x,
+              sy: self.scroll.y,
+              pt: 1,
+              hr: (!!hronly)
+            };
+            var tg = self.getTarget(e);
+            if (!self.ispage && cap.hasmousecapture) tg.setCapture();
+            if (self.isiframe && !cap.hasmousecapture) {
+              self.saved.csspointerevents = self.doc.css("pointer-events");
+              self.css(self.doc, {
+                "pointer-events": "none"
+              });
+            }
+            self.hasmoving = false;
+            return self.cancelEvent(e);
+          };
+
+          self.onmouseup = function(e) {
+            if (self.rail.drag) {
+              if (self.rail.drag.pt != 1) return true;
+              if (cap.hasmousecapture) document.releaseCapture();
+              if (self.isiframe && !cap.hasmousecapture) self.doc.css("pointer-events", self.saved.csspointerevents);              
+              self.rail.drag = false;
+              //if (!self.rail.active) self.hideCursor();
+              if (self.hasmoving) self.triggerScrollEnd(); // TODO - check &&!self.scrollrunning
+              return self.cancelEvent(e);
+            }
+          };
+
+          self.onmousemove = function(e) {
+            if (self.rail.drag) {
+              if (self.rail.drag.pt != 1) return;
+
+              if (cap.ischrome && e.which == 0) return self.onmouseup(e);
+
+              self.cursorfreezed = true;
+              self.hasmoving = true;
+
+              if (self.rail.drag.hr) {
+                self.scroll.x = self.rail.drag.sx + (e.clientX - self.rail.drag.x);
+                if (self.scroll.x < 0) self.scroll.x = 0;
+                var mw = self.scrollvaluemaxw;
+                if (self.scroll.x > mw) self.scroll.x = mw;
+              } else {
+                self.scroll.y = self.rail.drag.sy + (e.clientY - self.rail.drag.y);
+                if (self.scroll.y < 0) self.scroll.y = 0;
+                var my = self.scrollvaluemax;
+                if (self.scroll.y > my) self.scroll.y = my;
+              }
+
+              self.synched('mousemove', function() {
+                if (self.rail.drag && (self.rail.drag.pt == 1)) {
+                  self.showCursor();
+                  if (self.rail.drag.hr) {
+                    if (self.hasreversehr) {
+                      self.doScrollLeft(self.scrollvaluemaxw-Math.round(self.scroll.x * self.scrollratio.x), self.opt.cursordragspeed);
+                    } else {
+                      self.doScrollLeft(Math.round(self.scroll.x * self.scrollratio.x), self.opt.cursordragspeed);
+                    }
+                  }
+                  else self.doScrollTop(Math.round(self.scroll.y * self.scrollratio.y), self.opt.cursordragspeed);
+                }
+              });
+
+              return self.cancelEvent(e);
+            }
+            /*              
+            else {
+              self.checkarea = true;
+            }
+*/
+          };
+
+          if (cap.cantouch || self.opt.touchbehavior) {
+
+            self.onpreventclick = function(e) {
+              if (self.preventclick) {
+                self.preventclick.tg.onclick = self.preventclick.click;
+                self.preventclick = false;
+                return self.cancelEvent(e);
+              }
+            }
+
+            self.bind(self.win, "mousedown", self.ontouchstart); // control content dragging
+
+            self.onclick = (cap.isios) ? false : function(e) {
+              if (self.lastmouseup) {
+                self.lastmouseup = false;
+                return self.cancelEvent(e);
+              } else {
+                return true;
+              }
+            };
+
+            if (self.opt.grabcursorenabled && cap.cursorgrabvalue) {
+              self.css((self.ispage) ? self.doc : self.win, {
+                'cursor': cap.cursorgrabvalue
+              });
+              self.css(self.rail, {
+                'cursor': cap.cursorgrabvalue
+              });
+            }
+
+          } else {
+
+            var checkSelectionScroll = function(e) {
+              if (!self.selectiondrag) return;
+
+              if (e) {
+                var ww = self.win.outerHeight();
+                var df = (e.pageY - self.selectiondrag.top);
+                if (df > 0 && df < ww) df = 0;
+                if (df >= ww) df -= ww;
+                self.selectiondrag.df = df;
+              }
+              if (self.selectiondrag.df == 0) return;
+
+              var rt = -Math.floor(self.selectiondrag.df / 6) * 2;
+              self.doScrollBy(rt);
+
+              self.debounced("doselectionscroll", function() {
+                checkSelectionScroll()
+              }, 50);
+            };
+
+            if ("getSelection" in document) { // A grade - Major browsers
+              self.hasTextSelected = function() {
+                return (document.getSelection().rangeCount > 0);
+              };
+            } else if ("selection" in document) { //IE9-
+              self.hasTextSelected = function() {
+                return (document.selection.type != "None");
+              };
+            } else {
+              self.hasTextSelected = function() { // no support
+                return false;
+              };
+            }
+
+            self.onselectionstart = function(e) {
+/*  More testing - severe chrome issues            
+              if (!self.haswrapper&&(e.which&&e.which==2)) {  // fool browser to manage middle button scrolling
+                self.win.css({'overflow':'auto'});
+                setTimeout(function(){
+                  self.win.css({'overflow':''});
+                },10);                
+                return true;
+              }            
+*/              
+              if (self.ispage) return;
+              self.selectiondrag = self.win.offset();
+            };
+            
+            self.onselectionend = function(e) {
+              self.selectiondrag = false;
+            };
+            self.onselectiondrag = function(e) {
+              if (!self.selectiondrag) return;
+              if (self.hasTextSelected()) self.debounced("selectionscroll", function() {
+                checkSelectionScroll(e)
+              }, 250);
+            };
+
+
+          }
+
+          if (cap.hasw3ctouch) { //IE11+
+            self.css(self.rail, {
+              'touch-action': 'none'
+            });
+            self.css(self.cursor, {
+              'touch-action': 'none'
+            });
+            self.bind(self.win, "pointerdown", self.ontouchstart);
+            self.bind(document, "pointerup", self.ontouchend);
+            self.bind(document, "pointermove", self.ontouchmove);
+          } else if (cap.hasmstouch) { //IE10
+            self.css(self.rail, {
+              '-ms-touch-action': 'none'
+            });
+            self.css(self.cursor, {
+              '-ms-touch-action': 'none'
+            });
+            self.bind(self.win, "MSPointerDown", self.ontouchstart);
+            self.bind(document, "MSPointerUp", self.ontouchend);
+            self.bind(document, "MSPointerMove", self.ontouchmove);
+            self.bind(self.cursor, "MSGestureHold", function(e) {
+              e.preventDefault()
+            });
+            self.bind(self.cursor, "contextmenu", function(e) {
+              e.preventDefault()
+            });
+          } else if (this.istouchcapable) { //desktop with screen touch enabled
+            self.bind(self.win, "touchstart", self.ontouchstart);
+            self.bind(document, "touchend", self.ontouchend);
+            self.bind(document, "touchcancel", self.ontouchend);
+            self.bind(document, "touchmove", self.ontouchmove);
+          }
+
+          
+          if (self.opt.cursordragontouch || (!cap.cantouch && !self.opt.touchbehavior)) {
+
+            self.rail.css({
+              "cursor": "default"
+            });
+            self.railh && self.railh.css({
+              "cursor": "default"
+            });
+
+            self.jqbind(self.rail, "mouseenter", function() {
+              if (!self.ispage && !self.win.is(":visible")) return false;
+              if (self.canshowonmouseevent) self.showCursor();
+              self.rail.active = true;
+            });
+            self.jqbind(self.rail, "mouseleave", function() {
+              self.rail.active = false;
+              if (!self.rail.drag) self.hideCursor();
+            });
+
+            if (self.opt.sensitiverail) {
+              self.bind(self.rail, "click", function(e) {
+                self.doRailClick(e, false, false)
+              });
+              self.bind(self.rail, "dblclick", function(e) {
+                self.doRailClick(e, true, false)
+              });
+              self.bind(self.cursor, "click", function(e) {
+                self.cancelEvent(e)
+              });
+              self.bind(self.cursor, "dblclick", function(e) {
+                self.cancelEvent(e)
+              });
+            }
+
+            if (self.railh) {
+              self.jqbind(self.railh, "mouseenter", function() {
+                if (!self.ispage && !self.win.is(":visible")) return false;
+                if (self.canshowonmouseevent) self.showCursor();
+                self.rail.active = true;
+              });
+              self.jqbind(self.railh, "mouseleave", function() {
+                self.rail.active = false;
+                if (!self.rail.drag) self.hideCursor();
+              });
+
+              if (self.opt.sensitiverail) {
+                self.bind(self.railh, "click", function(e) {
+                  self.doRailClick(e, false, true)
+                });
+                self.bind(self.railh, "dblclick", function(e) {
+                  self.doRailClick(e, true, true)
+                });
+                self.bind(self.cursorh, "click", function(e) {
+                  self.cancelEvent(e)
+                });
+                self.bind(self.cursorh, "dblclick", function(e) {
+                  self.cancelEvent(e)
+                });
+              }
+
+            }
+
+          }
+
+          if (!cap.cantouch && !self.opt.touchbehavior) {
+
+            self.bind((cap.hasmousecapture) ? self.win : document, "mouseup", self.onmouseup);
+            self.bind(document, "mousemove", self.onmousemove);
+            if (self.onclick) self.bind(document, "click", self.onclick);
+
+            self.bind(self.cursor, "mousedown", self.onmousedown);
+            self.bind(self.cursor, "mouseup", self.onmouseup);
+
+            if (self.railh) {
+              self.bind(self.cursorh, "mousedown", function(e) {
+                self.onmousedown(e, true)
+              });
+              self.bind(self.cursorh, "mouseup", self.onmouseup);
+            }
+            
+            if (!self.ispage && self.opt.enablescrollonselection) {
+              self.bind(self.win[0], "mousedown", self.onselectionstart);
+              self.bind(document, "mouseup", self.onselectionend);
+              self.bind(self.cursor, "mouseup", self.onselectionend);
+              if (self.cursorh) self.bind(self.cursorh, "mouseup", self.onselectionend);
+              self.bind(document, "mousemove", self.onselectiondrag);
+            }
+
+            if (self.zoom) {
+              self.jqbind(self.zoom, "mouseenter", function() {
+                if (self.canshowonmouseevent) self.showCursor();
+                self.rail.active = true;
+              });
+              self.jqbind(self.zoom, "mouseleave", function() {
+                self.rail.active = false;
+                if (!self.rail.drag) self.hideCursor();
+              });
+            }
+
+          } else {
+
+            self.bind((cap.hasmousecapture) ? self.win : document, "mouseup", self.ontouchend);
+            self.bind(document, "mousemove", self.ontouchmove);
+            if (self.onclick) self.bind(document, "click", self.onclick);
+
+            if (self.opt.cursordragontouch) {
+              self.bind(self.cursor, "mousedown", self.onmousedown);
+              self.bind(self.cursor, "mouseup", self.onmouseup);
+              //self.bind(self.cursor, "mousemove", self.onmousemove);
+              self.cursorh && self.bind(self.cursorh, "mousedown", function(e) {
+                self.onmousedown(e, true)
+              });
+              //self.cursorh && self.bind(self.cursorh, "mousemove", self.onmousemove);
+              self.cursorh && self.bind(self.cursorh, "mouseup", self.onmouseup);
+            }
+
+          }
+
+          if (self.opt.enablemousewheel) {
+            if (!self.isiframe) self.bind((cap.isie && self.ispage) ? document : self.win /*self.docscroll*/ , "mousewheel", self.onmousewheel);
+            self.bind(self.rail, "mousewheel", self.onmousewheel);
+            if (self.railh) self.bind(self.railh, "mousewheel", self.onmousewheelhr);
+          }
+
+          if (!self.ispage && !cap.cantouch && !(/HTML|^BODY/.test(self.win[0].nodeName))) {
+            if (!self.win.attr("tabindex")) self.win.attr({
+              "tabindex": tabindexcounter++
+            });
+
+            self.jqbind(self.win, "focus", function(e) {
+              domfocus = (self.getTarget(e)).id || true;
+              self.hasfocus = true;
+              if (self.canshowonmouseevent) self.noticeCursor();
+            });
+            self.jqbind(self.win, "blur", function(e) {
+              domfocus = false;
+              self.hasfocus = false;
+            });
+
+            self.jqbind(self.win, "mouseenter", function(e) {
+              mousefocus = (self.getTarget(e)).id || true;
+              self.hasmousefocus = true;
+              if (self.canshowonmouseevent) self.noticeCursor();
+            });
+            self.jqbind(self.win, "mouseleave", function() {
+              mousefocus = false;
+              self.hasmousefocus = false;
+              if (!self.rail.drag) self.hideCursor();
+            });
+
+          }
+
+        } // !ie9mobile
+
+        //Thanks to http://www.quirksmode.org !!
+        self.onkeypress = function(e) {
+          if (self.railslocked && self.page.maxh == 0) return true;
+
+          e = (e) ? e : window.e;
+          var tg = self.getTarget(e);
+          if (tg && /INPUT|TEXTAREA|SELECT|OPTION/.test(tg.nodeName)) {
+            var tp = tg.getAttribute('type') || tg.type || false;
+            if ((!tp) || !(/submit|button|cancel/i.tp)) return true;
+          }
+
+          if ($(tg).attr('contenteditable')) return true;
+
+          if (self.hasfocus || (self.hasmousefocus && !domfocus) || (self.ispage && !domfocus && !mousefocus)) {
+            var key = e.keyCode;
+
+            if (self.railslocked && key != 27) return self.cancelEvent(e);
+
+            var ctrl = e.ctrlKey || false;
+            var shift = e.shiftKey || false;
+
+            var ret = false;
+            switch (key) {
+              case 38:
+              case 63233: //safari
+                self.doScrollBy(24 * 3);
+                ret = true;
+                break;
+              case 40:
+              case 63235: //safari
+                self.doScrollBy(-24 * 3);
+                ret = true;
+                break;
+              case 37:
+              case 63232: //safari
+                if (self.railh) {
+                  (ctrl) ? self.doScrollLeft(0): self.doScrollLeftBy(24 * 3);
+                  ret = true;
+                }
+                break;
+              case 39:
+              case 63234: //safari
+                if (self.railh) {
+                  (ctrl) ? self.doScrollLeft(self.page.maxw): self.doScrollLeftBy(-24 * 3);
+                  ret = true;
+                }
+                break;
+              case 33:
+              case 63276: // safari
+                self.doScrollBy(self.view.h);
+                ret = true;
+                break;
+              case 34:
+              case 63277: // safari
+                self.doScrollBy(-self.view.h);
+                ret = true;
+                break;
+              case 36:
+              case 63273: // safari                
+                (self.railh && ctrl) ? self.doScrollPos(0, 0): self.doScrollTo(0);
+                ret = true;
+                break;
+              case 35:
+              case 63275: // safari
+                (self.railh && ctrl) ? self.doScrollPos(self.page.maxw, self.page.maxh): self.doScrollTo(self.page.maxh);
+                ret = true;
+                break;
+              case 32:
+                if (self.opt.spacebarenabled) {
+                  (shift) ? self.doScrollBy(self.view.h): self.doScrollBy(-self.view.h);
+                  ret = true;
+                }
+                break;
+              case 27: // ESC
+                if (self.zoomactive) {
+                  self.doZoom();
+                  ret = true;
+                }
+                break;
+            }
+            if (ret) return self.cancelEvent(e);
+          }
+        };
+
+        if (self.opt.enablekeyboard) self.bind(document, (cap.isopera && !cap.isopera12) ? "keypress" : "keydown", self.onkeypress);
+
+        self.bind(document, "keydown", function(e) {
+          var ctrl = e.ctrlKey || false;
+          if (ctrl) self.wheelprevented = true;
+        });
+        self.bind(document, "keyup", function(e) {
+          var ctrl = e.ctrlKey || false;
+          if (!ctrl) self.wheelprevented = false;
+        });
+        self.bind(window,"blur",function(e){
+          self.wheelprevented = false;
+        });        
+
+        self.bind(window, 'resize', self.lazyResize);
+        self.bind(window, 'orientationchange', self.lazyResize);
+
+        self.bind(window, "load", self.lazyResize);
+
+        if (cap.ischrome && !self.ispage && !self.haswrapper) { //chrome void scrollbar bug - it persists in version 26
+          var tmp = self.win.attr("style");
+          var ww = parseFloat(self.win.css("width")) + 1;
+          self.win.css('width', ww);
+          self.synched("chromefix", function() {
+            self.win.attr("style", tmp)
+          });
+        }
+
+
+        // Trying a cross-browser implementation - good luck!
+
+        self.onAttributeChange = function(e) {
+          self.lazyResize(self.isieold ? 250 : 30);
+        };
+
+        if (ClsMutationObserver !== false) {
+          self.observerbody = new ClsMutationObserver(function(mutations) {
+            mutations.forEach(function(mut){
+              if (mut.type=="attributes") {
+                return ($("body").hasClass("modal-open")) ? self.hide() : self.show();  // Support for Bootstrap modal
+              }
+            });  
+            if (document.body.scrollHeight!=self.page.maxh) return self.lazyResize(30);
+          });
+          self.observerbody.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: false,
+            attributes: true,
+            attributeFilter: ['class']
+          });
+        }
+        
+        if (!self.ispage && !self.haswrapper) {
+          // redesigned MutationObserver for Chrome18+/Firefox14+/iOS6+ with support for: remove div, add/remove content
+          if (ClsMutationObserver !== false) {
+            self.observer = new ClsMutationObserver(function(mutations) {
+              mutations.forEach(self.onAttributeChange);
+            });
+            self.observer.observe(self.win[0], {
+              childList: true,
+              characterData: false,
+              attributes: true,
+              subtree: false
+            });
+            self.observerremover = new ClsMutationObserver(function(mutations) {
+              mutations.forEach(function(mo) {
+                if (mo.removedNodes.length > 0) {
+                  for (var dd in mo.removedNodes) {
+                    if (!!self && (mo.removedNodes[dd] == self.win[0])) return self.remove();
+                  }
+                }
+              });
+            });
+            self.observerremover.observe(self.win[0].parentNode, {
+              childList: true,
+              characterData: false,
+              attributes: false,
+              subtree: false
+            });
+          } else {
+            self.bind(self.win, (cap.isie && !cap.isie9) ? "propertychange" : "DOMAttrModified", self.onAttributeChange);
+            if (cap.isie9) self.win[0].attachEvent("onpropertychange", self.onAttributeChange); //IE9 DOMAttrModified bug
+            self.bind(self.win, "DOMNodeRemoved", function(e) {
+              if (e.target == self.win[0]) self.remove();
+            });
+          }
+        }
+
+        //
+
+        if (!self.ispage && self.opt.boxzoom) self.bind(window, "resize", self.resizeZoom);
+        if (self.istextarea) self.bind(self.win, "mouseup", self.lazyResize);
+
+        //        self.checkrtlmode = true;
+        self.lazyResize(30);
+
+      }
+      
+      if (this.doc[0].nodeName == 'IFRAME') {
+        var oniframeload = function() {
+          self.iframexd = false;
+          var doc;
+          try {
+            doc = 'contentDocument' in this ? this.contentDocument : this.contentWindow.document;
+            var a = doc.domain;
+          } catch (e) {
+            self.iframexd = true;
+            doc = false
+          }
+          
+          if (self.iframexd) {
+            if ("console" in window) console.log('NiceScroll error: policy restriced iframe');
+            return true; //cross-domain - I can't manage this        
+          }
+
+          self.forcescreen = true;
+
+          if (self.isiframe) {
+            self.iframe = {
+              "doc": $(doc),
+              "html": self.doc.contents().find('html')[0],
+              "body": self.doc.contents().find('body')[0]
+            };
+            self.getContentSize = function() {
+              return {
+                w: Math.max(self.iframe.html.scrollWidth, self.iframe.body.scrollWidth),
+                h: Math.max(self.iframe.html.scrollHeight, self.iframe.body.scrollHeight)
+              };
+            };
+            self.docscroll = $(self.iframe.body); //$(this.contentWindow);
+          }
+
+          if (!cap.isios && self.opt.iframeautoresize && !self.isiframe) {
+            self.win.scrollTop(0); // reset position
+            self.doc.height(""); //reset height to fix browser bug
+            var hh = Math.max(doc.getElementsByTagName('html')[0].scrollHeight, doc.body.scrollHeight);
+            self.doc.height(hh);
+          }
+          self.lazyResize(30);
+
+          if (cap.isie7) self.css($(self.iframe.html), {
+            'overflow-y': 'hidden'
+          });
+          self.css($(self.iframe.body), {
+            'overflow-y': 'hidden'
+          });
+
+          if (cap.isios && self.haswrapper) {
+            self.css($(doc.body), {
+              '-webkit-transform': 'translate3d(0,0,0)'
+            }); // avoid iFrame content clipping - thanks to http://blog.derraab.com/2012/04/02/avoid-iframe-content-clipping-with-css-transform-on-ios/
+          }
+
+          if ('contentWindow' in this) {
+            self.bind(this.contentWindow, "scroll", self.onscroll); //IE8 & minor
+          } else {
+            self.bind(doc, "scroll", self.onscroll);
+          }
+
+          if (self.opt.enablemousewheel) {
+            self.bind(doc, "mousewheel", self.onmousewheel);
+          }
+
+          if (self.opt.enablekeyboard) self.bind(doc, (cap.isopera) ? "keypress" : "keydown", self.onkeypress);
+
+          if (cap.cantouch || self.opt.touchbehavior) {
+            self.bind(doc, "mousedown", self.ontouchstart);
+            self.bind(doc, "mousemove", function(e) {
+              return self.ontouchmove(e, true)
+            });
+            if (self.opt.grabcursorenabled && cap.cursorgrabvalue) self.css($(doc.body), {
+              'cursor': cap.cursorgrabvalue
+            });
+          }
+
+          self.bind(doc, "mouseup", self.ontouchend);
+
+          if (self.zoom) {
+            if (self.opt.dblclickzoom) self.bind(doc, 'dblclick', self.doZoom);
+            if (self.ongesturezoom) self.bind(doc, "gestureend", self.ongesturezoom);
+          }
+        };
+
+        if (this.doc[0].readyState && this.doc[0].readyState == "complete") {
+          setTimeout(function() {
+            oniframeload.call(self.doc[0], false)
+          }, 500);
+        }
+        self.bind(this.doc, "load", oniframeload);
+
+      }
+
+    };
+
+    this.showCursor = function(py, px) {
+      if (self.cursortimeout) {
+        clearTimeout(self.cursortimeout);
+        self.cursortimeout = 0;
+      }
+      if (!self.rail) return;
+      if (self.autohidedom) {
+        self.autohidedom.stop().css({
+          opacity: self.opt.cursoropacitymax
+        });
+        self.cursoractive = true;
+      }
+
+      if (!self.rail.drag || self.rail.drag.pt != 1) {
+        if ((typeof py != "undefined") && (py !== false)) {
+          self.scroll.y = Math.round(py * 1 / self.scrollratio.y);
+        }
+        if (typeof px != "undefined") {
+          self.scroll.x = Math.round(px * 1 / self.scrollratio.x);
+        }
+      }
+
+      self.cursor.css({
+        height: self.cursorheight,
+        top: self.scroll.y
+      });
+      if (self.cursorh) {        
+        var lx = (self.hasreversehr) ? self.scrollvaluemaxw-self.scroll.x : self.scroll.x;
+        (!self.rail.align && self.rail.visibility) ? self.cursorh.css({
+          width: self.cursorwidth,
+          left: lx + self.rail.width
+        }): self.cursorh.css({
+          width: self.cursorwidth,
+          left: lx
+        });
+        self.cursoractive = true;
+      }
+
+      if (self.zoom) self.zoom.stop().css({
+        opacity: self.opt.cursoropacitymax
+      });
+    };
+
+    this.hideCursor = function(tm) {
+      if (self.cursortimeout) return;
+      if (!self.rail) return;
+      if (!self.autohidedom) return;
+      if (self.hasmousefocus && self.opt.autohidemode == "leave") return;
+      self.cursortimeout = setTimeout(function() {
+        if (!self.rail.active || !self.showonmouseevent) {
+          self.autohidedom.stop().animate({
+            opacity: self.opt.cursoropacitymin
+          });
+          if (self.zoom) self.zoom.stop().animate({
+            opacity: self.opt.cursoropacitymin
+          });
+          self.cursoractive = false;
+        }
+        self.cursortimeout = 0;
+      }, tm || self.opt.hidecursordelay);
+    };
+
+    this.noticeCursor = function(tm, py, px) {
+      self.showCursor(py, px);
+      if (!self.rail.active) self.hideCursor(tm);
+    };
+
+    this.getContentSize =
+      (self.ispage) ?
+      function() {
+        return {
+          w: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+          h: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+        }
+      } : (self.haswrapper) ?
+      function() {
+        return {
+          w: self.doc.outerWidth() + parseInt(self.win.css('paddingLeft')) + parseInt(self.win.css('paddingRight')),
+          h: self.doc.outerHeight() + parseInt(self.win.css('paddingTop')) + parseInt(self.win.css('paddingBottom'))
+        }
+      } : function() {
+        return {
+          w: self.docscroll[0].scrollWidth,
+          h: self.docscroll[0].scrollHeight
+        }
+      };
+
+    this.onResize = function(e, page) {
+    
+      if (!self || !self.win) return false;
+
+      if (!self.haswrapper && !self.ispage) {
+        if (self.win.css('display') == 'none') {
+          if (self.visibility) self.hideRail().hideRailHr();
+          return false;
+        } else {
+          if (!self.hidden && !self.visibility) self.showRail().showRailHr();
+        }
+      }
+
+      var premaxh = self.page.maxh;
+      var premaxw = self.page.maxw;
+
+      var preview = {
+        h: self.view.h,
+        w: self.view.w
+      };
+
+      self.view = {
+        w: (self.ispage) ? self.win.width() : parseInt(self.win[0].clientWidth),
+        h: (self.ispage) ? self.win.height() : parseInt(self.win[0].clientHeight)
+      };
+
+      self.page = (page) ? page : self.getContentSize();
+
+      self.page.maxh = Math.max(0, self.page.h - self.view.h);
+      self.page.maxw = Math.max(0, self.page.w - self.view.w);
+      
+      if ((self.page.maxh == premaxh) && (self.page.maxw == premaxw) && (self.view.w == preview.w) && (self.view.h == preview.h)) {
+        // test position        
+        if (!self.ispage) {
+          var pos = self.win.offset();
+          if (self.lastposition) {
+            var lst = self.lastposition;
+            if ((lst.top == pos.top) && (lst.left == pos.left)) return self; //nothing to do            
+          }
+          self.lastposition = pos;
+        } else {
+          return self; //nothing to do
+        }
+      }
+
+      if (self.page.maxh == 0) {
+        self.hideRail();
+        self.scrollvaluemax = 0;
+        self.scroll.y = 0;
+        self.scrollratio.y = 0;
+        self.cursorheight = 0;
+        self.setScrollTop(0);
+        self.rail.scrollable = false;
+      } else {
+        self.page.maxh -= (self.opt.railpadding.top + self.opt.railpadding.bottom);  //**
+        self.rail.scrollable = true;
+      }
+
+      if (self.page.maxw == 0) {
+        self.hideRailHr();
+        self.scrollvaluemaxw = 0;
+        self.scroll.x = 0;
+        self.scrollratio.x = 0;
+        self.cursorwidth = 0;
+        self.setScrollLeft(0);
+        self.railh.scrollable = false;
+      } else {
+        self.page.maxw -= (self.opt.railpadding.left + self.opt.railpadding.right);  //**
+        self.railh.scrollable = true;
+      }
+
+      self.railslocked = (self.locked) || ((self.page.maxh == 0) && (self.page.maxw == 0));
+      if (self.railslocked) {
+        if (!self.ispage) self.updateScrollBar(self.view);
+        return false;
+      }
+
+      if (!self.hidden && !self.visibility) {
+        self.showRail().showRailHr();
+      }
+      else if (!self.hidden && !self.railh.visibility) self.showRailHr();
+
+      if (self.istextarea && self.win.css('resize') && self.win.css('resize') != 'none') self.view.h -= 20;
+
+      self.cursorheight = Math.min(self.view.h, Math.round(self.view.h * (self.view.h / self.page.h)));
+      self.cursorheight = (self.opt.cursorfixedheight) ? self.opt.cursorfixedheight : Math.max(self.opt.cursorminheight, self.cursorheight);
+
+      self.cursorwidth = Math.min(self.view.w, Math.round(self.view.w * (self.view.w / self.page.w)));
+      self.cursorwidth = (self.opt.cursorfixedheight) ? self.opt.cursorfixedheight : Math.max(self.opt.cursorminheight, self.cursorwidth);
+
+      self.scrollvaluemax = self.view.h - self.cursorheight - self.cursor.hborder - (self.opt.railpadding.top + self.opt.railpadding.bottom);  //**
+
+      if (self.railh) {
+        self.railh.width = (self.page.maxh > 0) ? (self.view.w - self.rail.width) : self.view.w;
+        self.scrollvaluemaxw = self.railh.width - self.cursorwidth - self.cursorh.wborder - (self.opt.railpadding.left + self.opt.railpadding.right);  //**
+      }
+
+      /*
+      if (self.checkrtlmode&&self.railh) {
+        self.checkrtlmode = false;
+        if (self.opt.rtlmode&&self.scroll.x==0) self.setScrollLeft(self.page.maxw);
+      }
+*/
+
+      if (!self.ispage) self.updateScrollBar(self.view);
+
+      self.scrollratio = {
+        x: (self.page.maxw / self.scrollvaluemaxw),
+        y: (self.page.maxh / self.scrollvaluemax)
+      };
+
+      var sy = self.getScrollTop();
+      if (sy > self.page.maxh) {
+        self.doScrollTop(self.page.maxh);
+      } else {
+        self.scroll.y = Math.round(self.getScrollTop() * (1 / self.scrollratio.y));
+        self.scroll.x = Math.round(self.getScrollLeft() * (1 / self.scrollratio.x));
+        if (self.cursoractive) self.noticeCursor();
+      }
+
+      if (self.scroll.y && (self.getScrollTop() == 0)) self.doScrollTo(Math.floor(self.scroll.y * self.scrollratio.y));
+
+      return self;
+    };
+
+    this.resize = self.onResize;
+
+    this.lazyResize = function(tm) { // event debounce
+      tm = (isNaN(tm)) ? 30 : tm;
+      self.debounced('resize', self.resize, tm);
+      return self;
+    };
+
+    // modified by MDN https://developer.mozilla.org/en-US/docs/DOM/Mozilla_event_reference/wheel
+    function _modernWheelEvent(dom, name, fn, bubble) {
+      self._bind(dom, name, function(e) {
+        var e = (e) ? e : window.event;
+        var event = {
+          original: e,
+          target: e.target || e.srcElement,
+          type: "wheel",
+          deltaMode: e.type == "MozMousePixelScroll" ? 0 : 1,
+          deltaX: 0,
+          deltaZ: 0,
+          preventDefault: function() {
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            return false;
+          },
+          stopImmediatePropagation: function() {
+            (e.stopImmediatePropagation) ? e.stopImmediatePropagation(): e.cancelBubble = true;
+          }
+        };
+
+        if (name == "mousewheel") {
+          event.deltaY = -1 / 40 * e.wheelDelta;
+          e.wheelDeltaX && (event.deltaX = -1 / 40 * e.wheelDeltaX);
+        } else {
+          event.deltaY = e.detail;
+        }
+
+        return fn.call(dom, event);
+      }, bubble);
+    };
+
+
+
+    this.jqbind = function(dom, name, fn) { // use jquery bind for non-native events (mouseenter/mouseleave)
+      self.events.push({
+        e: dom,
+        n: name,
+        f: fn,
+        q: true
+      });
+      $(dom).bind(name, fn);
+    };
+
+    this.bind = function(dom, name, fn, bubble) { // touch-oriented & fixing jquery bind
+      var el = ("jquery" in dom) ? dom[0] : dom;
+
+      if (name == 'mousewheel') {
+        if (window.addEventListener||'onwheel' in document) { // modern brosers & IE9 detection fix
+          self._bind(el, "wheel", fn, bubble || false);
+        } else {
+          var wname = (typeof document.onmousewheel != "undefined") ? "mousewheel" : "DOMMouseScroll"; // older IE/Firefox
+          _modernWheelEvent(el, wname, fn, bubble || false);
+          if (wname == "DOMMouseScroll") _modernWheelEvent(el, "MozMousePixelScroll", fn, bubble || false); // Firefox legacy
+        }
+      } else if (el.addEventListener) {
+        if (cap.cantouch && /mouseup|mousedown|mousemove/.test(name)) { // touch device support
+          var tt = (name == 'mousedown') ? 'touchstart' : (name == 'mouseup') ? 'touchend' : 'touchmove';
+          self._bind(el, tt, function(e) {
+            if (e.touches) {
+              if (e.touches.length < 2) {
+                var ev = (e.touches.length) ? e.touches[0] : e;
+                ev.original = e;
+                fn.call(this, ev);
+              }
+            } else if (e.changedTouches) {
+              var ev = e.changedTouches[0];
+              ev.original = e;
+              fn.call(this, ev);
+            } //blackberry
+          }, bubble || false);
+        }
+        self._bind(el, name, fn, bubble || false);
+        if (cap.cantouch && name == "mouseup") self._bind(el, "touchcancel", fn, bubble || false);
+      } else {
+        self._bind(el, name, function(e) {
+          e = e || window.event || false;
+          if (e) {
+            if (e.srcElement) e.target = e.srcElement;
+          }
+          if (!("pageY" in e)) {
+            e.pageX = e.clientX + document.documentElement.scrollLeft;
+            e.pageY = e.clientY + document.documentElement.scrollTop;
+          }
+          return ((fn.call(el, e) === false) || bubble === false) ? self.cancelEvent(e) : true;
+        });
+      }
+    };
+
+    if (cap.haseventlistener) {  // W3C standard model
+      this._bind = function(el, name, fn, bubble) { // primitive bind
+        self.events.push({
+          e: el,
+          n: name,
+          f: fn,
+          b: bubble,
+          q: false
+        });
+        el.addEventListener(name, fn, bubble || false);
+      };    
+      this.cancelEvent = function(e) {
+        if (!e) return false;
+        var e = (e.original) ? e.original : e;
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.preventManipulation) e.preventManipulation(); //IE10
+        return false;
+      };
+      this.stopPropagation = function(e) {
+        if (!e) return false;
+        var e = (e.original) ? e.original : e;
+        e.stopPropagation();
+        return false;
+      };
+      this._unbind = function(el, name, fn, bub) { // primitive unbind
+        el.removeEventListener(name, fn, bub);
+      };
+    } else {  // old IE model
+      this._bind = function(el, name, fn, bubble) { // primitive bind
+        self.events.push({
+          e: el,
+          n: name,
+          f: fn,
+          b: bubble,
+          q: false
+        });
+        if (el.attachEvent) {
+          el.attachEvent("on" + name, fn);
+        } else {
+          el["on" + name] = fn;
+        }
+      };    
+      // Thanks to http://www.switchonthecode.com !!
+      this.cancelEvent = function(e) {
+        var e = window.event || false;
+        if (!e) return false;
+        e.cancelBubble = true;
+        e.cancel = true;
+        e.returnValue = false;
+        return false;
+      };
+      this.stopPropagation = function(e) {
+        var e = window.event || false;
+        if (!e) return false;
+        e.cancelBubble = true;
+        return false;
+      };
+      this._unbind = function(el, name, fn, bub) { // primitive unbind IE old
+        if (el.detachEvent) {
+          el.detachEvent('on' + name, fn);
+        } else {
+          el['on' + name] = false;
+        }
+      };
+    }
+    
+    this.unbindAll = function() {
+      for (var a = 0; a < self.events.length; a++) {
+        var r = self.events[a];
+        (r.q) ? r.e.unbind(r.n, r.f): self._unbind(r.e, r.n, r.f, r.b);
+      }
+    };
+
+    this.showRail = function() {
+      if ((self.page.maxh != 0) && (self.ispage || self.win.css('display') != 'none')) {
+        self.visibility = true;
+        self.rail.visibility = true;
+        self.rail.css('display', 'block');
+      }
+      return self;
+    };
+
+    this.showRailHr = function() {
+      if (!self.railh) return self;
+      if ((self.page.maxw != 0) && (self.ispage || self.win.css('display') != 'none')) {
+        self.railh.visibility = true;
+        self.railh.css('display', 'block');
+      }
+      return self;
+    };
+
+    this.hideRail = function() {
+      self.visibility = false;
+      self.rail.visibility = false;
+      self.rail.css('display', 'none');
+      return self;
+    };
+
+    this.hideRailHr = function() {
+      if (!self.railh) return self;
+      self.railh.visibility = false;
+      self.railh.css('display', 'none');
+      return self;
+    };
+
+    this.show = function() {
+      self.hidden = false;
+      self.railslocked = false;
+      return self.showRail().showRailHr();
+    };
+
+    this.hide = function() {
+      self.hidden = true;
+      self.railslocked = true;
+      return self.hideRail().hideRailHr();
+    };
+
+    this.toggle = function() {
+      return (self.hidden) ? self.show() : self.hide();
+    };
+
+    this.remove = function() {
+      self.stop();
+      if (self.cursortimeout) clearTimeout(self.cursortimeout);
+      self.doZoomOut();
+      self.unbindAll();
+
+      if (cap.isie9) self.win[0].detachEvent("onpropertychange", self.onAttributeChange); //IE9 DOMAttrModified bug
+
+      if (self.observer !== false) self.observer.disconnect();
+      if (self.observerremover !== false) self.observerremover.disconnect();
+      if (self.observerbody !== false) self.observerbody.disconnect();
+
+      self.events = null;
+
+      if (self.cursor) {
+        self.cursor.remove();
+      }
+      if (self.cursorh) {
+        self.cursorh.remove();
+      }
+      if (self.rail) {
+        self.rail.remove();
+      }
+      if (self.railh) {
+        self.railh.remove();
+      }
+      if (self.zoom) {
+        self.zoom.remove();
+      }
+      for (var a = 0; a < self.saved.css.length; a++) {
+        var d = self.saved.css[a];
+        d[0].css(d[1], (typeof d[2] == "undefined") ? '' : d[2]);
+      }
+      self.saved = false;
+      self.me.data('__nicescroll', ''); //erase all traces
+
+      // memory leak fixed by GianlucaGuarini - thanks a lot!
+      // remove the current nicescroll from the $.nicescroll array & normalize array
+      var lst = $.nicescroll;
+      lst.each(function(i) {
+        if (!this) return;
+        if (this.id === self.id) {
+          delete lst[i];
+          for (var b = ++i; b < lst.length; b++, i++) lst[i] = lst[b];
+          lst.length--;
+          if (lst.length) delete lst[lst.length];
+        }
+      });
+
+      for (var i in self) {
+        self[i] = null;
+        delete self[i];
+      }
+
+      self = null;
+
+    };
+
+    this.scrollstart = function(fn) {
+      this.onscrollstart = fn;
+      return self;
+    };
+    this.scrollend = function(fn) {
+      this.onscrollend = fn;
+      return self;
+    };
+    this.scrollcancel = function(fn) {
+      this.onscrollcancel = fn;
+      return self;
+    };
+
+    this.zoomin = function(fn) {
+      this.onzoomin = fn;
+      return self;
+    };
+    this.zoomout = function(fn) {
+      this.onzoomout = fn;
+      return self;
+    };
+
+    this.isScrollable = function(e) {
+      var dom = (e.target) ? e.target : e;
+      if (dom.nodeName == 'OPTION') return true;
+      while (dom && (dom.nodeType == 1) && !(/^BODY|HTML/.test(dom.nodeName))) {
+        var dd = $(dom);
+        var ov = dd.css('overflowY') || dd.css('overflowX') || dd.css('overflow') || '';
+        if (/scroll|auto/.test(ov)) return (dom.clientHeight != dom.scrollHeight);
+        dom = (dom.parentNode) ? dom.parentNode : false;
+      }
+      return false;
+    };
+
+    this.getViewport = function(me) {
+      var dom = (me && me.parentNode) ? me.parentNode : false;
+      while (dom && (dom.nodeType == 1) && !(/^BODY|HTML/.test(dom.nodeName))) {
+        var dd = $(dom);
+        if (/fixed|absolute/.test(dd.css("position"))) return dd;
+        var ov = dd.css('overflowY') || dd.css('overflowX') || dd.css('overflow') || '';
+        if ((/scroll|auto/.test(ov)) && (dom.clientHeight != dom.scrollHeight)) return dd;
+        if (dd.getNiceScroll().length > 0) return dd;
+        dom = (dom.parentNode) ? dom.parentNode : false;
+      }
+      return false; //(dom) ? $(dom) : false;
+    };
+
+    this.triggerScrollEnd = function() {
+      if (!self.onscrollend) return;
+
+      var px = self.getScrollLeft();
+      var py = self.getScrollTop();
+
+      var info = {
+        "type": "scrollend",
+        "current": {
+          "x": px,
+          "y": py
+        },
+        "end": {
+          "x": px,
+          "y": py
+        }
+      };
+      self.onscrollend.call(self, info);
+    }
+
+    function execScrollWheel(e, hr, chkscroll) {
+      var px, py;
+      
+      if (e.deltaMode == 0) { // PIXEL
+        px = -Math.floor(e.deltaX * (self.opt.mousescrollstep / (18 * 3)));
+        py = -Math.floor(e.deltaY * (self.opt.mousescrollstep / (18 * 3)));
+      } else if (e.deltaMode == 1) { // LINE
+        px = -Math.floor(e.deltaX * self.opt.mousescrollstep);
+        py = -Math.floor(e.deltaY * self.opt.mousescrollstep);
+      }
+
+      if (hr && self.opt.oneaxismousemode && (px == 0) && py) { // classic vertical-only mousewheel + browser with x/y support 
+        px = py;
+        py = 0;
+      
+        if (chkscroll) {
+          var hrend = (px < 0) ? (self.getScrollLeft() >= self.page.maxw) : (self.getScrollLeft() <= 0);
+          if (hrend) {  // preserve vertical scrolling
+            py = px;
+            px = 0;            
+          }
+        }
+        
+      }
+
+      if (px) {
+        if (self.scrollmom) {
+          self.scrollmom.stop()
+        }
+        self.lastdeltax += px;
+        self.debounced("mousewheelx", function() {
+          var dt = self.lastdeltax;
+          self.lastdeltax = 0;
+          if (!self.rail.drag) {
+            self.doScrollLeftBy(dt)
+          }
+        }, 15);
+      }
+      if (py) {
+        if (self.opt.nativeparentscrolling && chkscroll && !self.ispage && !self.zoomactive) {
+          if (py < 0) {
+            if (self.getScrollTop() >= self.page.maxh) return true;
+          } else {
+            if (self.getScrollTop() <= 0) return true;
+          }
+        }
+        if (self.scrollmom) {
+          self.scrollmom.stop()
+        }
+        self.lastdeltay += py;
+        self.debounced("mousewheely", function() {
+          var dt = self.lastdeltay;
+          self.lastdeltay = 0;
+          if (!self.rail.drag) {
+            self.doScrollBy(dt)
+          }
+        }, 15);
+      }
+
+      e.stopImmediatePropagation();
+      return e.preventDefault();
+    };
+
+    this.onmousewheel = function(e) {
+      if (self.wheelprevented) return;
+      if (self.railslocked) {
+        self.debounced("checkunlock", self.resize, 250);
+        return true;
+      }
+      if (self.rail.drag) return self.cancelEvent(e);
+
+      if (self.opt.oneaxismousemode == "auto" && e.deltaX != 0) self.opt.oneaxismousemode = false; // check two-axis mouse support (not very elegant)
+
+      if (self.opt.oneaxismousemode && e.deltaX == 0) {
+        if (!self.rail.scrollable) {
+          if (self.railh && self.railh.scrollable) {
+            return self.onmousewheelhr(e);
+          } else {
+            return true;
+          }
+        }
+      }
+
+      var nw = +(new Date());
+      var chk = false;
+      if (self.opt.preservenativescrolling && ((self.checkarea + 600) < nw)) {
+        self.nativescrollingarea = self.isScrollable(e);
+        chk = true;
+      }
+      self.checkarea = nw;
+      if (self.nativescrollingarea) return true; // this isn't my business
+      var ret = execScrollWheel(e, false, chk);
+      if (ret) self.checkarea = 0;
+      return ret;
+    };
+
+    this.onmousewheelhr = function(e) {
+      if (self.wheelprevented) return;
+      if (self.railslocked || !self.railh.scrollable) return true;
+      if (self.rail.drag) return self.cancelEvent(e);
+
+      var nw = +(new Date());
+      var chk = false;
+      if (self.opt.preservenativescrolling && ((self.checkarea + 600) < nw)) {
+        self.nativescrollingarea = self.isScrollable(e);
+        chk = true;
+      }
+      self.checkarea = nw;
+      if (self.nativescrollingarea) return true; // this isn't my business
+      if (self.railslocked) return self.cancelEvent(e);
+
+      return execScrollWheel(e, true, chk);
+    };
+
+    this.stop = function() {
+      self.cancelScroll();
+      if (self.scrollmon) self.scrollmon.stop();
+      self.cursorfreezed = false;
+      self.scroll.y = Math.round(self.getScrollTop() * (1 / self.scrollratio.y));
+      self.noticeCursor();
+      return self;
+    };
+
+    this.getTransitionSpeed = function(dif) {
+      var sp = Math.round(self.opt.scrollspeed * 10);
+      var ex = Math.min(sp, Math.round((dif / 20) * self.opt.scrollspeed));
+      return (ex > 20) ? ex : 0;
+    };
+
+    if (!self.opt.smoothscroll) {
+      this.doScrollLeft = function(x, spd) { //direct
+        var y = self.getScrollTop();
+        self.doScrollPos(x, y, spd);
+      };
+      this.doScrollTop = function(y, spd) { //direct
+        var x = self.getScrollLeft();
+        self.doScrollPos(x, y, spd);
+      };
+      this.doScrollPos = function(x, y, spd) { //direct
+        var nx = (x > self.page.maxw) ? self.page.maxw : x;
+        if (nx < 0) nx = 0;
+        var ny = (y > self.page.maxh) ? self.page.maxh : y;
+        if (ny < 0) ny = 0;
+        self.synched('scroll', function() {
+          self.setScrollTop(ny);
+          self.setScrollLeft(nx);
+        });
+      };
+      this.cancelScroll = function() {}; // direct
+    } else if (self.ishwscroll && cap.hastransition && self.opt.usetransition && !!self.opt.smoothscroll) {
+      this.prepareTransition = function(dif, istime) {
+        var ex = (istime) ? ((dif > 20) ? dif : 0) : self.getTransitionSpeed(dif);
+        var trans = (ex) ? cap.prefixstyle + 'transform ' + ex + 'ms ease-out' : '';
+        if (!self.lasttransitionstyle || self.lasttransitionstyle != trans) {
+          self.lasttransitionstyle = trans;
+          self.doc.css(cap.transitionstyle, trans);
+        }
+        return ex;
+      };
+
+      this.doScrollLeft = function(x, spd) { //trans
+        var y = (self.scrollrunning) ? self.newscrolly : self.getScrollTop();
+        self.doScrollPos(x, y, spd);
+      };
+
+      this.doScrollTop = function(y, spd) { //trans
+        var x = (self.scrollrunning) ? self.newscrollx : self.getScrollLeft();
+        self.doScrollPos(x, y, spd);
+      };
+
+      this.doScrollPos = function(x, y, spd) { //trans
+
+        var py = self.getScrollTop();
+        var px = self.getScrollLeft();
+
+        if (((self.newscrolly - py) * (y - py) < 0) || ((self.newscrollx - px) * (x - px) < 0)) self.cancelScroll(); //inverted movement detection      
+
+        if (self.opt.bouncescroll == false) {
+          if (y < 0) y = 0;
+          else if (y > self.page.maxh) y = self.page.maxh;
+          if (x < 0) x = 0;
+          else if (x > self.page.maxw) x = self.page.maxw;
+        }
+
+        if (self.scrollrunning && x == self.newscrollx && y == self.newscrolly) return false;
+
+        self.newscrolly = y;
+        self.newscrollx = x;
+
+        self.newscrollspeed = spd || false;
+
+        if (self.timer) return false;
+
+        self.timer = setTimeout(function() {
+
+          var top = self.getScrollTop();
+          var lft = self.getScrollLeft();
+
+          var dst = {};
+          dst.x = x - lft;
+          dst.y = y - top;
+          dst.px = lft;
+          dst.py = top;
+
+          var dd = Math.round(Math.sqrt(Math.pow(dst.x, 2) + Math.pow(dst.y, 2)));
+          var ms = (self.newscrollspeed && self.newscrollspeed > 1) ? self.newscrollspeed : self.getTransitionSpeed(dd);
+          if (self.newscrollspeed && self.newscrollspeed <= 1) ms *= self.newscrollspeed;
+
+          self.prepareTransition(ms, true);
+
+          if (self.timerscroll && self.timerscroll.tm) clearInterval(self.timerscroll.tm);
+
+          if (ms > 0) {
+
+            if (!self.scrollrunning && self.onscrollstart) {
+              var info = {
+                "type": "scrollstart",
+                "current": {
+                  "x": lft,
+                  "y": top
+                },
+                "request": {
+                  "x": x,
+                  "y": y
+                },
+                "end": {
+                  "x": self.newscrollx,
+                  "y": self.newscrolly
+                },
+                "speed": ms
+              };
+              self.onscrollstart.call(self, info);
+            }
+
+            if (cap.transitionend) {
+              if (!self.scrollendtrapped) {
+                self.scrollendtrapped = true;
+                self.bind(self.doc, cap.transitionend, self.onScrollTransitionEnd, false); //I have got to do something usefull!!
+              }
+            } else {
+              if (self.scrollendtrapped) clearTimeout(self.scrollendtrapped);
+              self.scrollendtrapped = setTimeout(self.onScrollTransitionEnd, ms); // simulate transitionend event
+            }
+
+            var py = top;
+            var px = lft;
+            self.timerscroll = {
+              bz: new BezierClass(py, self.newscrolly, ms, 0, 0, 0.58, 1),
+              bh: new BezierClass(px, self.newscrollx, ms, 0, 0, 0.58, 1)
+            };
+            if (!self.cursorfreezed) self.timerscroll.tm = setInterval(function() {
+              self.showCursor(self.getScrollTop(), self.getScrollLeft())
+            }, 60);
+
+          }
+
+          self.synched("doScroll-set", function() {
+            self.timer = 0;
+            if (self.scrollendtrapped) self.scrollrunning = true;
+            self.setScrollTop(self.newscrolly);
+            self.setScrollLeft(self.newscrollx);
+            if (!self.scrollendtrapped) self.onScrollTransitionEnd();
+          });
+
+
+        }, 50);
+
+      };
+
+      this.cancelScroll = function() {
+        if (!self.scrollendtrapped) return true;
+        var py = self.getScrollTop();
+        var px = self.getScrollLeft();
+        self.scrollrunning = false;
+        if (!cap.transitionend) clearTimeout(cap.transitionend);
+        self.scrollendtrapped = false;
+        self._unbind(self.doc[0], cap.transitionend, self.onScrollTransitionEnd);
+        self.prepareTransition(0);
+        self.setScrollTop(py); // fire event onscroll
+        if (self.railh) self.setScrollLeft(px);
+        if (self.timerscroll && self.timerscroll.tm) clearInterval(self.timerscroll.tm);
+        self.timerscroll = false;
+
+        self.cursorfreezed = false;
+
+        self.showCursor(py, px);
+        return self;
+      };
+      this.onScrollTransitionEnd = function() {
+        if (self.scrollendtrapped) self._unbind(self.doc[0], cap.transitionend, self.onScrollTransitionEnd);
+        self.scrollendtrapped = false;
+        self.prepareTransition(0);
+        if (self.timerscroll && self.timerscroll.tm) clearInterval(self.timerscroll.tm);
+        self.timerscroll = false;
+        var py = self.getScrollTop();
+        var px = self.getScrollLeft();
+        self.setScrollTop(py); // fire event onscroll        
+        if (self.railh) self.setScrollLeft(px); // fire event onscroll left
+
+        self.noticeCursor(false, py, px);
+
+        self.cursorfreezed = false;
+
+        if (py < 0) py = 0
+        else if (py > self.page.maxh) py = self.page.maxh;
+        if (px < 0) px = 0
+        else if (px > self.page.maxw) px = self.page.maxw;
+        if ((py != self.newscrolly) || (px != self.newscrollx)) return self.doScrollPos(px, py, self.opt.snapbackspeed);
+
+        if (self.onscrollend && self.scrollrunning) {
+          self.triggerScrollEnd();
+        }
+        self.scrollrunning = false;
+
+      };
+
+    } else {
+
+      this.doScrollLeft = function(x, spd) { //no-trans
+        var y = (self.scrollrunning) ? self.newscrolly : self.getScrollTop();
+        self.doScrollPos(x, y, spd);
+      };
+
+      this.doScrollTop = function(y, spd) { //no-trans
+        var x = (self.scrollrunning) ? self.newscrollx : self.getScrollLeft();
+        self.doScrollPos(x, y, spd);
+      };
+
+      this.doScrollPos = function(x, y, spd) { //no-trans
+        var y = ((typeof y == "undefined") || (y === false)) ? self.getScrollTop(true) : y;
+
+        if ((self.timer) && (self.newscrolly == y) && (self.newscrollx == x)) return true;
+
+        if (self.timer) clearAnimationFrame(self.timer);
+        self.timer = 0;
+
+        var py = self.getScrollTop();
+        var px = self.getScrollLeft();
+
+        if (((self.newscrolly - py) * (y - py) < 0) || ((self.newscrollx - px) * (x - px) < 0)) self.cancelScroll(); //inverted movement detection
+
+        self.newscrolly = y;
+        self.newscrollx = x;
+
+        if (!self.bouncescroll || !self.rail.visibility) {
+          if (self.newscrolly < 0) {
+            self.newscrolly = 0;
+          } else if (self.newscrolly > self.page.maxh) {
+            self.newscrolly = self.page.maxh;
+          }
+        }
+        if (!self.bouncescroll || !self.railh.visibility) {
+          if (self.newscrollx < 0) {
+            self.newscrollx = 0;
+          } else if (self.newscrollx > self.page.maxw) {
+            self.newscrollx = self.page.maxw;
+          }
+        }
+
+        self.dst = {};
+        self.dst.x = x - px;
+        self.dst.y = y - py;
+        self.dst.px = px;
+        self.dst.py = py;
+
+        var dst = Math.round(Math.sqrt(Math.pow(self.dst.x, 2) + Math.pow(self.dst.y, 2)));
+
+        self.dst.ax = self.dst.x / dst;
+        self.dst.ay = self.dst.y / dst;
+
+        var pa = 0;
+        var pe = dst;
+
+        if (self.dst.x == 0) {
+          pa = py;
+          pe = y;
+          self.dst.ay = 1;
+          self.dst.py = 0;
+        } else if (self.dst.y == 0) {
+          pa = px;
+          pe = x;
+          self.dst.ax = 1;
+          self.dst.px = 0;
+        }
+
+        var ms = self.getTransitionSpeed(dst);
+        if (spd && spd <= 1) ms *= spd;
+        if (ms > 0) {
+          self.bzscroll = (self.bzscroll) ? self.bzscroll.update(pe, ms) : new BezierClass(pa, pe, ms, 0, 1, 0, 1);
+        } else {
+          self.bzscroll = false;
+        }
+
+        if (self.timer) return;
+
+        if ((py == self.page.maxh && y >= self.page.maxh) || (px == self.page.maxw && x >= self.page.maxw)) self.checkContentSize();
+
+        var sync = 1;
+
+        function scrolling() {
+          if (self.cancelAnimationFrame) return true;
+
+          self.scrollrunning = true;
+
+          sync = 1 - sync;
+          if (sync) return (self.timer = setAnimationFrame(scrolling) || 1);
+
+          var done = 0;
+          var sx, sy;
+
+          var sc = sy = self.getScrollTop();
+          if (self.dst.ay) {
+            sc = (self.bzscroll) ? self.dst.py + (self.bzscroll.getNow() * self.dst.ay) : self.newscrolly;
+            var dr = sc - sy;
+            if ((dr < 0 && sc < self.newscrolly) || (dr > 0 && sc > self.newscrolly)) sc = self.newscrolly;
+            self.setScrollTop(sc);
+            if (sc == self.newscrolly) done = 1;
+          } else {
+            done = 1;
+          }
+
+          var scx = sx = self.getScrollLeft();
+          if (self.dst.ax) {
+            scx = (self.bzscroll) ? self.dst.px + (self.bzscroll.getNow() * self.dst.ax) : self.newscrollx;
+            var dr = scx - sx;
+            if ((dr < 0 && scx < self.newscrollx) || (dr > 0 && scx > self.newscrollx)) scx = self.newscrollx;
+            self.setScrollLeft(scx);
+            if (scx == self.newscrollx) done += 1;
+          } else {
+            done += 1;
+          }
+
+          if (done == 2) {
+            self.timer = 0;
+            self.cursorfreezed = false;
+            self.bzscroll = false;
+            self.scrollrunning = false;
+            if (sc < 0) sc = 0;
+            else if (sc > self.page.maxh) sc = self.page.maxh;
+            if (scx < 0) scx = 0;
+            else if (scx > self.page.maxw) scx = self.page.maxw;
+            if ((scx != self.newscrollx) || (sc != self.newscrolly)) self.doScrollPos(scx, sc);
+            else {
+              if (self.onscrollend) {
+                self.triggerScrollEnd();
+              }
+            }
+          } else {
+            self.timer = setAnimationFrame(scrolling) || 1;
+          }
+        };
+        self.cancelAnimationFrame = false;
+        self.timer = 1;
+
+        if (self.onscrollstart && !self.scrollrunning) {
+          var info = {
+            "type": "scrollstart",
+            "current": {
+              "x": px,
+              "y": py
+            },
+            "request": {
+              "x": x,
+              "y": y
+            },
+            "end": {
+              "x": self.newscrollx,
+              "y": self.newscrolly
+            },
+            "speed": ms
+          };
+          self.onscrollstart.call(self, info);
+        }
+
+        scrolling();
+
+        if ((py == self.page.maxh && y >= py) || (px == self.page.maxw && x >= px)) self.checkContentSize();
+
+        self.noticeCursor();
+      };
+
+      this.cancelScroll = function() {
+        if (self.timer) clearAnimationFrame(self.timer);
+        self.timer = 0;
+        self.bzscroll = false;
+        self.scrollrunning = false;
+        return self;
+      };
+
+    }
+
+    this.doScrollBy = function(stp, relative) {
+      var ny = 0;
+      if (relative) {
+        ny = Math.floor((self.scroll.y - stp) * self.scrollratio.y)
+      } else {
+        var sy = (self.timer) ? self.newscrolly : self.getScrollTop(true);
+        ny = sy - stp;
+      }
+      if (self.bouncescroll) {
+        var haf = Math.round(self.view.h / 2);
+        if (ny < -haf) ny = -haf
+        else if (ny > (self.page.maxh + haf)) ny = (self.page.maxh + haf);
+      }
+      self.cursorfreezed = false;
+
+      var py = self.getScrollTop(true);
+      if (ny < 0 && py <= 0) return self.noticeCursor();
+      else if (ny > self.page.maxh && py >= self.page.maxh) {
+        self.checkContentSize();
+        return self.noticeCursor();
+      }
+
+      self.doScrollTop(ny);
+    };
+
+    this.doScrollLeftBy = function(stp, relative) {
+      var nx = 0;
+      if (relative) {
+        nx = Math.floor((self.scroll.x - stp) * self.scrollratio.x)
+      } else {
+        var sx = (self.timer) ? self.newscrollx : self.getScrollLeft(true);
+        nx = sx - stp;
+      }
+      if (self.bouncescroll) {
+        var haf = Math.round(self.view.w / 2);
+        if (nx < -haf) nx = -haf;
+        else if (nx > (self.page.maxw + haf)) nx = (self.page.maxw + haf);
+      }
+      self.cursorfreezed = false;
+
+      var px = self.getScrollLeft(true);
+      if (nx < 0 && px <= 0) return self.noticeCursor();
+      else if (nx > self.page.maxw && px >= self.page.maxw) return self.noticeCursor();
+
+      self.doScrollLeft(nx);
+    };
+
+    this.doScrollTo = function(pos, relative) {
+      var ny = (relative) ? Math.round(pos * self.scrollratio.y) : pos;
+      if (ny < 0) ny = 0;
+      else if (ny > self.page.maxh) ny = self.page.maxh;
+      self.cursorfreezed = false;
+      self.doScrollTop(pos);
+    };
+
+    this.checkContentSize = function() {
+      var pg = self.getContentSize();
+      if ((pg.h != self.page.h) || (pg.w != self.page.w)) self.resize(false, pg);
+    };
+
+    self.onscroll = function(e) {
+      if (self.rail.drag) return;
+      if (!self.cursorfreezed) {
+        self.synched('scroll', function() {
+          self.scroll.y = Math.round(self.getScrollTop() * (1 / self.scrollratio.y));
+          if (self.railh) self.scroll.x = Math.round(self.getScrollLeft() * (1 / self.scrollratio.x));
+          self.noticeCursor();
+        });
+      }
+    };
+    self.bind(self.docscroll, "scroll", self.onscroll);
+
+    this.doZoomIn = function(e) {
+      if (self.zoomactive) return;
+      self.zoomactive = true;
+
+      self.zoomrestore = {
+        style: {}
+      };
+      var lst = ['position', 'top', 'left', 'zIndex', 'backgroundColor', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight'];
+      var win = self.win[0].style;
+      for (var a in lst) {
+        var pp = lst[a];
+        self.zoomrestore.style[pp] = (typeof win[pp] != "undefined") ? win[pp] : '';
+      }
+
+      self.zoomrestore.style.width = self.win.css('width');
+      self.zoomrestore.style.height = self.win.css('height');
+
+      self.zoomrestore.padding = {
+        w: self.win.outerWidth() - self.win.width(),
+        h: self.win.outerHeight() - self.win.height()
+      };
+
+      if (cap.isios4) {
+        self.zoomrestore.scrollTop = $(window).scrollTop();
+        $(window).scrollTop(0);
+      }
+
+      self.win.css({
+        "position": (cap.isios4) ? "absolute" : "fixed",
+        "top": 0,
+        "left": 0,
+        "z-index": globalmaxzindex + 100,
+        "margin": "0px"
+      });
+      var bkg = self.win.css("backgroundColor");
+      if (bkg == "" || /transparent|rgba\(0, 0, 0, 0\)|rgba\(0,0,0,0\)/.test(bkg)) self.win.css("backgroundColor", "#fff");
+      self.rail.css({
+        "z-index": globalmaxzindex + 101
+      });
+      self.zoom.css({
+        "z-index": globalmaxzindex + 102
+      });
+      self.zoom.css('backgroundPosition', '0px -18px');
+      self.resizeZoom();
+
+      if (self.onzoomin) self.onzoomin.call(self);
+
+      return self.cancelEvent(e);
+    };
+
+    this.doZoomOut = function(e) {
+      if (!self.zoomactive) return;
+      self.zoomactive = false;
+
+      self.win.css("margin", "");
+      self.win.css(self.zoomrestore.style);
+
+      if (cap.isios4) {
+        $(window).scrollTop(self.zoomrestore.scrollTop);
+      }
+
+      self.rail.css({
+        "z-index": self.zindex
+      });
+      self.zoom.css({
+        "z-index": self.zindex
+      });
+      self.zoomrestore = false;
+      self.zoom.css('backgroundPosition', '0px 0px');
+      self.onResize();
+
+      if (self.onzoomout) self.onzoomout.call(self);
+
+      return self.cancelEvent(e);
+    };
+
+    this.doZoom = function(e) {
+      return (self.zoomactive) ? self.doZoomOut(e) : self.doZoomIn(e);
+    };
+
+    this.resizeZoom = function() {
+      if (!self.zoomactive) return;
+
+      var py = self.getScrollTop(); //preserve scrolling position
+      self.win.css({
+        width: $(window).width() - self.zoomrestore.padding.w + "px",
+        height: $(window).height() - self.zoomrestore.padding.h + "px"
+      });
+      self.onResize();
+
+      self.setScrollTop(Math.min(self.page.maxh, py));
+    };
+
+    this.init();
+
+    $.nicescroll.push(this);
+
+  };
+
+  // Inspired by the work of Kin Blas
+  // http://webpro.host.adobe.com/people/jblas/momentum/includes/jquery.momentum.0.7.js  
+
+
+  var ScrollMomentumClass2D = function(nc) {
+    var self = this;
+    this.nc = nc;
+
+    this.lastx = 0;
+    this.lasty = 0;
+    this.speedx = 0;
+    this.speedy = 0;
+    this.lasttime = 0;
+    this.steptime = 0;
+    this.snapx = false;
+    this.snapy = false;
+    this.demulx = 0;
+    this.demuly = 0;
+
+    this.lastscrollx = -1;
+    this.lastscrolly = -1;
+
+    this.chkx = 0;
+    this.chky = 0;
+
+    this.timer = 0;
+
+    this.time = function() {
+      return +new Date(); //beautifull hack
+    };
+
+    this.reset = function(px, py) {
+      self.stop();
+      var now = self.time();
+      self.steptime = 0;
+      self.lasttime = now;
+      self.speedx = 0;
+      self.speedy = 0;
+      self.lastx = px;
+      self.lasty = py;
+      self.lastscrollx = -1;
+      self.lastscrolly = -1;
+    };
+
+    this.update = function(px, py) {
+      var now = self.time();
+      self.steptime = now - self.lasttime;
+      self.lasttime = now;
+      var dy = py - self.lasty;
+      var dx = px - self.lastx;
+      var sy = self.nc.getScrollTop();
+      var sx = self.nc.getScrollLeft();
+      var newy = sy + dy;
+      var newx = sx + dx;
+      self.snapx = (newx < 0) || (newx > self.nc.page.maxw);
+      self.snapy = (newy < 0) || (newy > self.nc.page.maxh);
+      self.speedx = dx;
+      self.speedy = dy;
+      self.lastx = px;
+      self.lasty = py;
+    };
+
+    this.stop = function() {
+      self.nc.unsynched("domomentum2d");
+      if (self.timer) clearTimeout(self.timer);
+      self.timer = 0;
+      self.lastscrollx = -1;
+      self.lastscrolly = -1;
+    };
+
+    this.doSnapy = function(nx, ny) {
+      var snap = false;
+
+      if (ny < 0) {
+        ny = 0;
+        snap = true;
+      } else if (ny > self.nc.page.maxh) {
+        ny = self.nc.page.maxh;
+        snap = true;
+      }
+
+      if (nx < 0) {
+        nx = 0;
+        snap = true;
+      } else if (nx > self.nc.page.maxw) {
+        nx = self.nc.page.maxw;
+        snap = true;
+      }
+
+      (snap) ? self.nc.doScrollPos(nx, ny, self.nc.opt.snapbackspeed): self.nc.triggerScrollEnd();
+    };
+
+    this.doMomentum = function(gp) {
+      var t = self.time();
+      var l = (gp) ? t + gp : self.lasttime;
+
+      var sl = self.nc.getScrollLeft();
+      var st = self.nc.getScrollTop();
+
+      var pageh = self.nc.page.maxh;
+      var pagew = self.nc.page.maxw;
+
+      self.speedx = (pagew > 0) ? Math.min(60, self.speedx) : 0;
+      self.speedy = (pageh > 0) ? Math.min(60, self.speedy) : 0;
+
+      var chk = l && (t - l) <= 60;
+
+      if ((st < 0) || (st > pageh) || (sl < 0) || (sl > pagew)) chk = false;
+
+      var sy = (self.speedy && chk) ? self.speedy : false;
+      var sx = (self.speedx && chk) ? self.speedx : false;
+
+      if (sy || sx) {
+        var tm = Math.max(16, self.steptime); //timeout granularity
+
+        if (tm > 50) { // do smooth
+          var xm = tm / 50;
+          self.speedx *= xm;
+          self.speedy *= xm;
+          tm = 50;
+        }
+
+        self.demulxy = 0;
+
+        self.lastscrollx = self.nc.getScrollLeft();
+        self.chkx = self.lastscrollx;
+        self.lastscrolly = self.nc.getScrollTop();
+        self.chky = self.lastscrolly;
+
+        var nx = self.lastscrollx;
+        var ny = self.lastscrolly;
+
+        var onscroll = function() {
+          var df = ((self.time() - t) > 600) ? 0.04 : 0.02;
+
+          if (self.speedx) {
+            nx = Math.floor(self.lastscrollx - (self.speedx * (1 - self.demulxy)));
+            self.lastscrollx = nx;
+            if ((nx < 0) || (nx > pagew)) df = 0.10;
+          }
+
+          if (self.speedy) {
+            ny = Math.floor(self.lastscrolly - (self.speedy * (1 - self.demulxy)));
+            self.lastscrolly = ny;
+            if ((ny < 0) || (ny > pageh)) df = 0.10;
+          }
+
+          self.demulxy = Math.min(1, self.demulxy + df);
+
+          self.nc.synched("domomentum2d", function() {
+
+            if (self.speedx) {
+              var scx = self.nc.getScrollLeft();
+              if (scx != self.chkx) self.stop();
+              self.chkx = nx;
+              self.nc.setScrollLeft(nx);
+            }
+
+            if (self.speedy) {
+              var scy = self.nc.getScrollTop();
+              if (scy != self.chky) self.stop();
+              self.chky = ny;
+              self.nc.setScrollTop(ny);
+            }
+
+            if (!self.timer) {
+              self.nc.hideCursor();
+              self.doSnapy(nx, ny);
+            }
+
+          });
+
+          if (self.demulxy < 1) {
+            self.timer = setTimeout(onscroll, tm);
+          } else {
+            self.stop();
+            self.nc.hideCursor();
+            self.doSnapy(nx, ny);
+          }
+        };
+
+        onscroll();
+
+      } else {
+        self.doSnapy(self.nc.getScrollLeft(), self.nc.getScrollTop());
+      }
+
+    }
+
+  };
+
+
+  // override jQuery scrollTop
+
+  var _scrollTop = jQuery.fn.scrollTop; // preserve original function
+
+  jQuery.cssHooks["pageYOffset"] = {
+    get: function(elem, computed, extra) {
+      var nice = $.data(elem, '__nicescroll') || false;
+      return (nice && nice.ishwscroll) ? nice.getScrollTop() : _scrollTop.call(elem);
+    },
+    set: function(elem, value) {
+      var nice = $.data(elem, '__nicescroll') || false;
+      (nice && nice.ishwscroll) ? nice.setScrollTop(parseInt(value)): _scrollTop.call(elem, value);
+      return this;
+    }
+  };
+
+  /*  
+  $.fx.step["scrollTop"] = function(fx){    
+    $.cssHooks["scrollTop"].set( fx.elem, fx.now + fx.unit );
+  };
+*/
+
+  jQuery.fn.scrollTop = function(value) {
+    if (typeof value == "undefined") {
+      var nice = (this[0]) ? $.data(this[0], '__nicescroll') || false : false;
+      return (nice && nice.ishwscroll) ? nice.getScrollTop() : _scrollTop.call(this);
+    } else {
+      return this.each(function() {
+        var nice = $.data(this, '__nicescroll') || false;
+        (nice && nice.ishwscroll) ? nice.setScrollTop(parseInt(value)): _scrollTop.call($(this), value);
+      });
+    }
+  };
+
+  // override jQuery scrollLeft
+
+  var _scrollLeft = jQuery.fn.scrollLeft; // preserve original function
+
+  $.cssHooks.pageXOffset = {
+    get: function(elem, computed, extra) {
+      var nice = $.data(elem, '__nicescroll') || false;
+      return (nice && nice.ishwscroll) ? nice.getScrollLeft() : _scrollLeft.call(elem);
+    },
+    set: function(elem, value) {
+      var nice = $.data(elem, '__nicescroll') || false;
+      (nice && nice.ishwscroll) ? nice.setScrollLeft(parseInt(value)): _scrollLeft.call(elem, value);
+      return this;
+    }
+  };
+
+  /*  
+  $.fx.step["scrollLeft"] = function(fx){
+    $.cssHooks["scrollLeft"].set( fx.elem, fx.now + fx.unit );
+  };  
+*/
+
+  jQuery.fn.scrollLeft = function(value) {
+    if (typeof value == "undefined") {
+      var nice = (this[0]) ? $.data(this[0], '__nicescroll') || false : false;
+      return (nice && nice.ishwscroll) ? nice.getScrollLeft() : _scrollLeft.call(this);
+    } else {
+      return this.each(function() {
+        var nice = $.data(this, '__nicescroll') || false;
+        (nice && nice.ishwscroll) ? nice.setScrollLeft(parseInt(value)): _scrollLeft.call($(this), value);
+      });
+    }
+  };
+
+  var NiceScrollArray = function(doms) {
+    var self = this;
+    this.length = 0;
+    this.name = "nicescrollarray";
+
+    this.each = function(fn) {
+      for (var a = 0, i = 0; a < self.length; a++) fn.call(self[a], i++);
+      return self;
+    };
+
+    this.push = function(nice) {
+      self[self.length] = nice;
+      self.length++;
+    };
+
+    this.eq = function(idx) {
+      return self[idx];
+    };
+
+    if (doms) {
+      for (var a = 0; a < doms.length; a++) {
+        var nice = $.data(doms[a], '__nicescroll') || false;
+        if (nice) {
+          this[this.length] = nice;
+          this.length++;
+        }
+      };
+    }
+
+    return this;
+  };
+
+  function mplex(el, lst, fn) {
+    for (var a = 0; a < lst.length; a++) fn(el, lst[a]);
+  };
+  mplex(
+    NiceScrollArray.prototype, ['show', 'hide', 'toggle', 'onResize', 'resize', 'remove', 'stop', 'doScrollPos'],
+    function(e, n) {
+      e[n] = function() {
+        var args = arguments;
+        return this.each(function() {
+          this[n].apply(this, args);
+        });
+      };
+    }
+  );
+
+  jQuery.fn.getNiceScroll = function(index) {
+    if (typeof index == "undefined") {
+      return new NiceScrollArray(this);
+    } else {
+      var nice = this[index] && $.data(this[index], '__nicescroll') || false;
+      return nice;
+    }
+  };
+
+  jQuery.extend(jQuery.expr[':'], {
+    nicescroll: function(a) {
+      return ($.data(a, '__nicescroll')) ? true : false;
+    }
+  });
+
+  $.fn.niceScroll = function(wrapper, opt) {
+    if (typeof opt == "undefined") {
+      if ((typeof wrapper == "object") && !("jquery" in wrapper)) {
+        opt = wrapper;
+        wrapper = false;
+      }
+    }
+    opt = $.extend({},opt); // cloning
+    var ret = new NiceScrollArray();
+    if (typeof opt == "undefined") opt = {};
+
+    if (wrapper || false) {
+      opt.doc = $(wrapper);
+      opt.win = $(this);
+    }
+    var docundef = !("doc" in opt);
+    if (!docundef && !("win" in opt)) opt.win = $(this);
+
+    this.each(function() {
+      var nice = $(this).data('__nicescroll') || false;
+      if (!nice) {
+        opt.doc = (docundef) ? $(this) : opt.doc;
+        nice = new NiceScrollClass(opt, $(this));
+        $(this).data('__nicescroll', nice);
+      }
+      ret.push(nice);
+    });
+    return (ret.length == 1) ? ret[0] : ret;
+  };
+
+  window.NiceScroll = {
+    getjQuery: function() {
+      return jQuery
+    }
+  };
+
+  if (!$.nicescroll) {
+    $.nicescroll = new NiceScrollArray();
+    $.nicescroll.options = _globaloptions;
+  }
+
+}));;$(document).ready(function () {
 
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
@@ -51348,17 +55056,32 @@ Globally exposed namespace with the most frequently used public classes and hand
 		}
 
 	});
-	mobileview()
+
+	
+	page_resize();
+
+
 	$(window).resize(function () {
-		mobileview()
+		page_resize()
 	});
 });
-function mobileview() {
+function page_resize() {
+
+	var $body = $("body");
+	var bH = $body.height();
+	var wH = $(window).height();
+	
+	
+	if (bH > wH){
+		$body.addClass("sbhide")
+	} else {
+		$body.removeClass("sbhide")
+	}
 	var maxH = $(window).height() - $(".navbar-header").height()
 	$(".navbar-collapse").css({maxHeight: maxH + "px"});
 
-	//$("#mobile-selector-menu ").css({width:($(window).width()-300) + "px" })
-	$("#mobile-selector-menu").css({width: ($(window).width() - 200) + "px"});
+	var selectorWidth = ($(window).width() - 220);
+	$("#mobile-selector-menu").css({width: selectorWidth + "px"});
 
 	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
 
@@ -51370,7 +55093,7 @@ function updatetimerlist(d, page_size) {
 	if (!d || !typeof d == 'object') {
 		return false;
 	}
-	console.log(d);
+//	console.log(d);
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];
@@ -51388,9 +55111,9 @@ function updatetimerlist(d, page_size) {
 		} else {
 			thm = "";
 		}
-		console.log(thm)
+		//console.log(thm)
 		var timers = $("#template-timers-tr").jqote(data);
-		console.log(timers)
+		//console.log(timers)
 
 		//console.log($("#template-timers-tr"))
 		$("#systemTimers").prepend(th + timers + thm);

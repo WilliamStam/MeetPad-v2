@@ -37,11 +37,10 @@
 			<ul class="nav navbar-nav">
 
 
-				<li class="active">
-					<a href="/">Meetings</a>
+				<li {% if page['section']=="home" %}class="active"{% endif %}>
+					<a href="/">Home</a>
 				</li>
-				<li><a href="/archives">Archives</a></li>
-				<li><a href="/admin">Admin</a></li>
+				<li {% if page['section']=="admin" %}class="active"{% endif %}><a href="/admin">Admin</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">

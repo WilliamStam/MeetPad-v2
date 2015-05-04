@@ -1,11 +1,23 @@
+
 body {
+	position:relative;
+	overflow-x: hidden; /* Prevent scroll on narrow devices */
+
 	background-color: #ffffff;
 	#gradient > .vertical(#e1e1e1, #ffffff);
+	&.modal-open {
+		overflow-y: hidden; /* modal open */
+		&.sbhide {
+			#main-nav-bar, #footer-nav-bar {
+				padding-right:17px;
+			}
+			
+		}
+	}
 }
 #page-content {
 	background-color: #fff;
-	border-left      : 1px solid #ccc;
-	border-right     : 1px solid #ccc;
+	border      : 1px solid #ccc;
 	.box-shadow(0px 0px 10px rgba(150, 150, 150, 0.5)); /* Opera 10.5, IE9, FF4+, Chrome 10+ */
 	
 	
@@ -13,4 +25,13 @@ body {
 
 #page-content {
 	margin-top:40px;
+}
+.modal {
+	z-index:1041
+}
+.modal-dialog {
+	z-index:1041
+}
+.modal-backdrop {
+	
 }

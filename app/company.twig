@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="whole-arrea">
+		{% if data['ID'] %}
+		{{ data['company'] }}
+		{% else %}
+		no company found
+		{% endif %}
+	</div>
+</div>
+<div class="row">
+	<ul>
+		
+	
+	{% for row in meetings %}
+	
+	<li><a href="/content/{{ row['ID'] }}/{{ data['url'] }}/{{ row['url'] }}">{{ row['meeting'] }}</a></li>
+	{% endfor %}
+	</ul>
+</div>

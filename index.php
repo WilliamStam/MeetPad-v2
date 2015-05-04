@@ -76,9 +76,11 @@ $userO = new \models\user();
 
 
 if ($username && $password) {
-	$uID = $userO->login($username, $password);
+	$uID = $userO->login($username, $password)->show();
+	$url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$f3->reroute($url);
 }
-$user = $userO->get($uID);
+$user = $userO->get($uID)->show();
 if (isset($_GET['auID']) && $user['su']=='1'){
 	$_SESSION['uID'] = $_GET['auID'];
 	$user = $userO->get($_GET['auID']);
@@ -100,6 +102,8 @@ $f3->route('GET /txt', function ($f3) {
 
 $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
+$f3->route('GET|POST /content/@ID/*/*', 'controllers\meeting->page');
+$f3->route('GET|POST /content/@ID/*', 'controllers\company->page');
 
 $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	session_unset();
@@ -114,7 +118,31 @@ $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 
 
 
-
+$f3->route("GET|POST /save/@function", function ($app, $params) {
+	$app->call("controllers\\admin\\save\\save->" . $params['function']);
+}
+);
+$f3->route("GET|POST /save/@class/@function", function ($app, $params) {
+	$app->call("controllers\\save\\" . $params['class'] . "->" . $params['function']);
+}
+);
+$f3->route("GET|POST /save/@folder/@class/@function", function ($app, $params) {
+	$app->call("controllers\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+}
+);
+$f3->route("GET|POST /data/@function", function ($app, $params) {
+	$app->call("controllers\\data\\data->" . $params['function']);
+}
+);
+$f3->route("GET|POST /data/@class/@function", function ($app, $params) {
+	//test_array($params); 
+	$app->call("controllers\\data\\" . $params['class'] . "->" . $params['function']);
+}
+);
+$f3->route("GET|POST /data/@folder/@class/@function", function ($app, $params) {
+	$app->call("controllers\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+}
+);
 
 
 

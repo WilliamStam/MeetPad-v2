@@ -79,6 +79,7 @@ html.ie9 {
 	}
 }
 
+
 .record, .checkbox-record {
 	background-color : #fff;
 	&.highlight {
@@ -88,10 +89,13 @@ html.ie9 {
 		background-color : #ffe6e6
 	}
 	&.active {
-		background-color : #DEEBFF;
+		background-color : #DEEBFF !important;
 		cursor           : pointer;
 		text-shadow      : 0 1px 1px rgba(250, 250, 250, 0.25);
 		color            : #444;
+		td {
+			background: none!important;
+		}
 	}
 	&:hover {
 		background-color : #DEEBFF;

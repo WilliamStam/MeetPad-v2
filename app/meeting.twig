@@ -1,0 +1,32 @@
+<script type="text/javascript">
+	var _data = {{ data|json_encode()|raw() }};
+	
+//console.log(_data)
+</script>
+<section id="content-area">
+{% if data['ID'] %}
+
+	
+
+<div class="row">
+	<div class="col-md-5 affix affix-top  sidebar-offcanvas" id="left-area">
+		<section id="left-area-content">
+			
+			
+		</section>
+	</div>
+	<div class="col-md-7 col-md-offset-5 row-offcanvas row-offcanvas-left match-height" id="right-area" style="top:-20px;">
+		<div data-toggle="offcanvas" class="offcanvas visible-sm-block visible-xs-block">
+			<i class="fa fa-ellipsis-v"></i>
+		</div>
+		<section id="right-area-content">
+			
+		</section>
+
+	</div>
+	<div class="loadingmask wide" id="loading-mask"></div>
+</div>
+{% else %}
+	No meeting found
+{% endif %}
+</section>

@@ -21,17 +21,32 @@ $(document).ready(function () {
 		}
 
 	});
-	mobileview()
+
+	
+	page_resize();
+
+
 	$(window).resize(function () {
-		mobileview()
+		page_resize()
 	});
 });
-function mobileview() {
+function page_resize() {
+
+	var $body = $("body");
+	var bH = $body.height();
+	var wH = $(window).height();
+	
+	
+	if (bH > wH){
+		$body.addClass("sbhide")
+	} else {
+		$body.removeClass("sbhide")
+	}
 	var maxH = $(window).height() - $(".navbar-header").height()
 	$(".navbar-collapse").css({maxHeight: maxH + "px"});
 
-	//$("#mobile-selector-menu ").css({width:($(window).width()-300) + "px" })
-	$("#mobile-selector-menu").css({width: ($(window).width() - 200) + "px"});
+	var selectorWidth = ($(window).width() - 220);
+	$("#mobile-selector-menu").css({width: selectorWidth + "px"});
 
 	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
 
@@ -43,7 +58,7 @@ function updatetimerlist(d, page_size) {
 	if (!d || !typeof d == 'object') {
 		return false;
 	}
-	console.log(d);
+//	console.log(d);
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];
@@ -61,9 +76,9 @@ function updatetimerlist(d, page_size) {
 		} else {
 			thm = "";
 		}
-		console.log(thm)
+		//console.log(thm)
 		var timers = $("#template-timers-tr").jqote(data);
-		console.log(timers)
+		//console.log(timers)
 
 		//console.log($("#template-timers-tr"))
 		$("#systemTimers").prepend(th + timers + thm);
