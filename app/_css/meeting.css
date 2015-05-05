@@ -97,22 +97,11 @@
   padding-bottom: 3px;
 }
 #item-area h3 {
-  margin-top: 25px;
+  margin-top: 10px;
 }
 #left-area {
   overflow: hidden;
 }
-.scroll-pane {
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  overflow: auto;
-}
-.scroll-pane .content {
-  padding: 10px;
-}
-.scroll-pane.jspScrollable .content {
-  padding-right: 0;
+.breadcrumb {
+  margin: 0;
 }

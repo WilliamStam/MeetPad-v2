@@ -7637,14 +7637,14 @@ button.close {
 }
 /*scrollpane custom CSS*/
 .jspVerticalBar {
-  width: 8px;
+  width: 7px;
   background: transparent;
   right: 1px;
 }
 .jspHorizontalBar {
-  bottom: 5px;
+  bottom: 1px;
   width: 100%;
-  height: 8px;
+  height: 7px;
   background: transparent;
 }
 .jspTrack {
@@ -7663,6 +7663,20 @@ button.close {
 }
 .jspCorner {
   display: none;
+}
+.scroll-pane {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+.scroll-pane .content {
+  padding: 10px;
+}
+.scroll-pane.jspScrollable .content {
+  padding-right: 0;
 }
 #main-nav-bar .navbar-brand {
   margin-right: 20px;

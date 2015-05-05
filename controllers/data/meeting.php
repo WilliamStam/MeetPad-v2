@@ -5,6 +5,7 @@ use models as models;
 class meeting extends _data {
 	private static $instance;
 	public $meetingID;
+	public $companyID;
 	function __construct() {
 		parent::__construct();
 
@@ -25,7 +26,8 @@ class meeting extends _data {
 		$result = array(
 			"meeting"=>$this->meeting(),
 			"agenda"=>$this->agenda(),
-			"item"=>$this->item()
+			"item"=>$this->item(),
+			"company"=>$this->company()
 		);
 
 		return $GLOBALS["output"]['data'] = $result;
@@ -63,6 +65,7 @@ class meeting extends _data {
 		$result =  models\meeting::getInstance()->get($meetingID,$userID)->getGroups()->format()->show();
 
 		$this->meetingID = $result['ID'];
+		$this->companyID = $result['companyID'];
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
@@ -80,6 +83,21 @@ class meeting extends _data {
 		}
 
 //test_array($result); 
+	
+		
+		
+		return $GLOBALS["output"]['data'] = $result;
+	}
+
+	function company() {
+		$domain = $this->f3->get("domain");
+		$result = array();
+		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
+		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
+
+		$result =  models\company::getInstance()->get($this->companyID,$userID)->format()->show();
+
+		
 	
 		
 		

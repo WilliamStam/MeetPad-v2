@@ -32,7 +32,12 @@
 </script>
 <script type="text/x-jqote-template" id="template-item">
 	<![CDATA[
-	<div class="clearfix"></div>
+
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.meeting.company %></a></li>
+		<li class="active"><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/"><%= this.meeting.meeting %></a></li>
+	</ol>
 	<section id="item-area">
 		<h3><%= this.item.heading %></h3>
 		
