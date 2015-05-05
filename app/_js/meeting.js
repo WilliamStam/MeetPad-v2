@@ -20,7 +20,8 @@ $(document).ready(function () {
 		$('#right-area').removeClass("active");
 		getData();
 	});
-	$(document).on('click', "#meeting-info-btn", function () {
+	$(document).on('click', ".meeting-info-btn", function (e) {
+		e.preventDefault();
 		var $this = $(this);
 
 		$.bbq.removeState("ID");

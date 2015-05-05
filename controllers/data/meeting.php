@@ -33,31 +33,8 @@ class meeting extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 	
-	function agenda() {
-		$domain = $this->f3->get("domain");
-		$result = array();
-
-		$userSQL = ($this->user['global_admin']=='1')?"":"AND mp_users_group.userID = '{$this->user['ID']}'";
-		
-		$result = models\item::getInstance()->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC")->format()->show();
-
-		$items = array();
-		foreach ($result as $item){
-			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
-			$items['catID'.$item['categoryID']]["category"] = $item['category'];
-			$items['catID'.$item['categoryID']]["items"][] = $item;
-			
-		}
-		$result = array();
-		foreach ($items as $item) $result[] = $item;
-		
-		
-		//test_array($result);
-		return $GLOBALS["output"]['data'] = $result;
-	}
+	
 	function meeting() {
-		$domain = $this->f3->get("domain");
-		$result = array();
 		
 		$meetingID = isset($_GET['meetingID'])?$_GET['meetingID']:"";
 		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
@@ -69,16 +46,34 @@ class meeting extends _data {
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
-	function item() {
-		$domain = $this->f3->get("domain");
+	function agenda() {
+
+		$userSQL = ($this->user['global_admin']=='1')?"":"AND mp_users_group.userID = '{$this->user['ID']}'";
+
+		$result = models\item::getInstance()->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC")->format()->show();
+
+		$items = array();
+		foreach ($result as $item){
+			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
+			$items['catID'.$item['categoryID']]["category"] = $item['category'];
+			$items['catID'.$item['categoryID']]["items"][] = $item;
+
+		}
 		$result = array();
+		foreach ($items as $item) $result[] = $item;
+
+
+		//test_array($result);
+		return $GLOBALS["output"]['data'] = $result;
+	}
+	function item() {
 		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
 
 		$result =  models\item::getInstance()->get($itemID,$userID)->getGroups()->format()->show();
 
 		//test_array($result); 
-		if ($result['meetingID']!=$this->meetingID){
+		if ($result['meetingID']!=$this->meetingID && $itemID){
 			$result =  models\item::getInstance()->get("A",$userID)->getGroups()->format()->show();
 		}
 

@@ -3,7 +3,7 @@
 	<![CDATA[
 	
 	
-	<h1>Agenda <% if (this.item.ID!="") { %><button class="btn span1 pull-right" type="button" id="meeting-info-btn" ><i class="fa fa-info"></i></button><% } %></h1>
+	<h1>Agenda <% if (this.item.ID!="") { %><button class="btn span1 pull-right meeting-info-btn" type="button" ><i class="fa fa-info"></i></button><% } %></h1>
 
 	<table class="table table-condensed">
 		<% for(var i in this.agenda) { %>
@@ -35,7 +35,7 @@
 
 	<ol class="breadcrumb">
 		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-		<li><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/"><%= this.meeting.meeting %></a></li>
+		<li><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a></li>
 		<li class="active"><%= this.item.heading %></li>
 	</ol>
 	<section id="item-area">
