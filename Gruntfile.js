@@ -23,6 +23,7 @@ module.exports = function(grunt) {
 					'vendor/moxiecode/plupload/js/moxie.js',
 					'vendor/ivaynberg/select2/select2.js',
 					'app/_js/plugins/jquery.getData.js',
+					'app/_js/plugins/jquery.ba-dotimeout.min.js',
 					'app/_js/script.js'
 				],
 				dest: 'app/javascript.js',

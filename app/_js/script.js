@@ -58,7 +58,7 @@ function updatetimerlist(d, page_size) {
 	if (!d || !typeof d == 'object') {
 		return false;
 	}
-//	console.log(d);
+	//console.log(d);
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];

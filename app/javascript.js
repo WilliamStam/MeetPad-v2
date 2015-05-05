@@ -31605,7 +31605,7 @@ if (typeof jQuery === 'undefined') {
 
 }));
 ;/*!
- * jScrollPane - v2.0.20 - 2014-10-23
+ * jScrollPane - v2.0.22 - 2015-04-25
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -31614,7 +31614,7 @@ if (typeof jQuery === 'undefined') {
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.20, Last updated: 2014-10-23*
+// *Version: 2.0.22, Last updated: 2015-04-25*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -31638,13 +31638,15 @@ if (typeof jQuery === 'undefined') {
 // This plugin is tested on the browsers below and has been found to work reliably on them. If you run
 // into a problem on one of the supported browsers then please visit the support section on the jScrollPane
 // website (http://jscrollpane.kelvinluck.com/) for more information on getting support. You are also
-// welcome to fork the project on GitHub if you can contribute a fix for a given issue. 
+// welcome to fork the project on GitHub if you can contribute a fix for a given issue.
 //
 // jQuery Versions - tested in 1.4.2+ - reported to work in 1.3.x
 // Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 6, 7, 8
 //
 // About: Release History
 //
+// 2.0.22 - (2015-04-25) Resolve a memory leak due to an event handler that isn't cleaned up in destroy (thanks @timjnh)
+// 2.0.21 - (2015-02-24) Simplify UMD pattern: fixes browserify when loading jQuery outside of bundle
 // 2.0.20 - (2014-10-23) Adds AMD support (thanks @carlosrberto) and support for overflow-x/overflow-y (thanks @darimpulso)
 // 2.0.19 - (2013-11-16) Changes for more reliable scroll amount with latest mousewheel plugin (thanks @brandonaaron)
 // 2.0.18 - (2013-10-23) Fix for issue with gutters and scrollToElement (thanks @Dubiy)
@@ -31668,10 +31670,7 @@ if (typeof jQuery === 'undefined') {
 //							 elements and dynamically sized elements.
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
-(function (plugin, window) {
-	var factory = function($){
-		return plugin($, window);
-	}
+(function (factory) {
   if ( typeof define === 'function' && define.amd ) {
       // AMD. Register as an anonymous module.
       define(['jquery'], factory);
@@ -31682,7 +31681,7 @@ if (typeof jQuery === 'undefined') {
       // Browser globals
       factory(jQuery);
   }
-}(function($,window,undefined){
+}(function($){
 
 	$.fn.jScrollPane = function(settings)
 	{
@@ -31706,7 +31705,7 @@ if (typeof jQuery === 'undefined') {
 				originalPadding = elem.css('paddingTop') + ' ' +
 									elem.css('paddingRight') + ' ' +
 									elem.css('paddingBottom') + ' ' +
-									elem.css('paddingLeft');	
+									elem.css('paddingLeft');
 				originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 											(parseInt(elem.css('paddingRight'), 10) || 0);
 			}
@@ -31736,7 +31735,7 @@ if (typeof jQuery === 'undefined') {
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
-					
+
 					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
 					container = $('<div class="jspContainer" />')
 						.css({
@@ -31747,7 +31746,7 @@ if (typeof jQuery === 'undefined') {
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
-					// collapse with neighbouring elements as they would before jScrollPane 
+					// collapse with neighbouring elements as they would before jScrollPane
 					firstChild = pane.find(':first-child');
 					lastChild = pane.find(':last-child');
 					elem.css(
@@ -31782,7 +31781,7 @@ if (typeof jQuery === 'undefined') {
 						return;
 					}
 					previousContentWidth = contentWidth;
-					
+
 					pane.css('width', '');
 					elem.width(paneWidth);
 
@@ -31838,14 +31837,14 @@ if (typeof jQuery === 'undefined') {
 					initFocusHandler();
 					initMousewheel();
 					initTouch();
-					
+
 					if (settings.enableKeyboardNavigation) {
 						initKeyboardNav();
 					}
 					if (settings.clickOnTrack) {
 						initClickOnTrack();
 					}
-					
+
 					observeHash();
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
@@ -32106,7 +32105,7 @@ if (typeof jQuery === 'undefined') {
 			function appendArrows(ele, p, a1, a2)
 			{
 				var p1 = "before", p2 = "after", aTemp;
-				
+
 				// Sniff for mac... Is there a better way to determine whether the arrows would naturally appear
 				// at the top or the bottom of the bar?
 				if (p == "os") {
@@ -32221,7 +32220,7 @@ if (typeof jQuery === 'undefined') {
 						}
 					);
 				}
-				
+
 				if (isScrollableH) {
 					horizontalTrack.bind(
 						'mousedown.jsp',
@@ -32338,7 +32337,7 @@ if (typeof jQuery === 'undefined') {
 					wasAtBottom = isAtBottom;
 					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
 				}
-				
+
 				updateVerticalArrows(isAtTop, isAtBottom);
 				pane.css('top', destTop);
 				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
@@ -32385,7 +32384,7 @@ if (typeof jQuery === 'undefined') {
 					wasAtRight = isAtRight;
 					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
 				}
-				
+
 				updateHorizontalArrows(isAtLeft, isAtRight);
 				pane.css('left', destLeft);
 				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]).trigger('scroll');
@@ -32435,7 +32434,7 @@ if (typeof jQuery === 'undefined') {
 
 				container.scrollTop(0);
 				container.scrollLeft(0);
-				
+
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
@@ -32459,7 +32458,7 @@ if (typeof jQuery === 'undefined') {
 				if (!isNaN(destY)) {
 					scrollToY(destY, animate);
 				}
-				
+
 				viewportLeft = contentPositionX();
 	            maxVisibleEleLeft = viewportLeft + paneWidth;
 	            if (eleLeft < viewportLeft || stickToTop) { // element is to the left of viewport
@@ -32537,21 +32536,22 @@ if (typeof jQuery === 'undefined') {
 			{
 				pane.find(':input,a').unbind('focus.jsp');
 			}
-			
+
 			function initKeyboardNav()
 			{
 				var keyDown, elementHasScrolled, validParents = [];
 				isScrollableH && validParents.push(horizontalBar[0]);
 				isScrollableV && validParents.push(verticalBar[0]);
-				
+
 				// IE also focuses elements that don't have tabindex set.
-				pane.focus(
+				pane.bind(
+					'focus.jsp',
 					function()
 					{
 						elem.focus();
 					}
 				);
-				
+
 				elem.attr('tabindex', 0)
 					.unbind('keydown.jsp keypress.jsp')
 					.bind(
@@ -32596,7 +32596,7 @@ if (typeof jQuery === 'undefined') {
 							return !elementHasScrolled;
 						}
 					);
-				
+
 				if (settings.hideFocus) {
 					elem.css('outline', 'none');
 					if ('hideFocus' in container[0]){
@@ -32608,7 +32608,7 @@ if (typeof jQuery === 'undefined') {
 						elem.attr('hideFocus', false);
 					}
 				}
-				
+
 				function keyDownHandler()
 				{
 					var dX = horizontalDragPosition, dY = verticalDragPosition;
@@ -32638,12 +32638,14 @@ if (typeof jQuery === 'undefined') {
 					return elementHasScrolled;
 				}
 			}
-			
+
 			function removeKeyboardNav()
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
 					.unbind('keydown.jsp keypress.jsp');
+
+				pane.unbind('.jsp');
 			}
 
 			function observeHash()
@@ -32750,7 +32752,7 @@ if (typeof jQuery === 'undefined') {
 					event.preventDefault();
 				});
 			}
-			
+
 			// Init touch on iPad, iPhone, iPod, Android
 			function initTouch()
 			{
@@ -32760,7 +32762,7 @@ if (typeof jQuery === 'undefined') {
 					touchStartY,
 					moved,
 					moving = false;
-  
+
 				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
 					'touchstart.jsp',
 					function(e)
@@ -32780,14 +32782,14 @@ if (typeof jQuery === 'undefined') {
 						if(!moving) {
 							return;
 						}
-						
+
 						var touchPos = ev.originalEvent.touches[0],
 							dX = horizontalDragPosition, dY = verticalDragPosition;
-						
+
 						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
-						
+
 						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
-						
+
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -32811,11 +32813,12 @@ if (typeof jQuery === 'undefined') {
 					}
 				);
 			}
-			
+
 			function destroy(){
 				var currentY = contentPositionY(),
 					currentX = contentPositionX();
 				elem.removeClass('jspScrollable').unbind('.jsp');
+				pane.unbind('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
 				originalElement.scrollLeft(currentX);
@@ -33008,13 +33011,13 @@ if (typeof jQuery === 'undefined') {
 					}
 				}
 			);
-			
+
 			initialise(s);
 		}
 
 		// Pluginifying code...
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
-		
+
 		// Apply default speed
 		$.each(['arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
 			settings[this] = settings[this] || settings.speed;
@@ -33070,7 +33073,7 @@ if (typeof jQuery === 'undefined') {
 		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
-},this));
+}));
 ;/*!
  * jQuery Mousewheel 3.1.12
  *
@@ -52877,7 +52880,7 @@ Globally exposed namespace with the most frequently used public classes and hand
 
 })(jQuery);
 
-;$(document).ready(function () {
+;(function($){var a={},c="doTimeout",d=Array.prototype.slice;$[c]=function(){return b.apply(window,[0].concat(d.call(arguments)))};$.fn[c]=function(){var f=d.call(arguments),e=b.apply(this,[c+f[0]].concat(f));return typeof f[0]==="number"||typeof f[1]==="number"?this:e};function b(l){var m=this,h,k={},g=l?$.fn:$,n=arguments,i=4,f=n[1],j=n[2],p=n[3];if(typeof f!=="string"){i--;f=l=0;j=n[1];p=n[2]}if(l){h=m.eq(0);h.data(l,k=h.data(l)||{})}else{if(f){k=a[f]||(a[f]={})}}k.id&&clearTimeout(k.id);delete k.id;function e(){if(l){h.removeData(l)}else{if(f){delete a[f]}}}function o(){k.id=setTimeout(function(){k.fn()},j)}if(p){k.fn=function(q){if(typeof p==="string"){p=g[p]}p.apply(m,d.call(n,i))===true&&!q?o():e()};o()}else{if(k.fn){j===undefined?e():k.fn(j===false);return true}else{e()}}}})(jQuery);;$(document).ready(function () {
 
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
@@ -52937,7 +52940,7 @@ function updatetimerlist(d, page_size) {
 	if (!d || !typeof d == 'object') {
 		return false;
 	}
-//	console.log(d);
+	//console.log(d);
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];
