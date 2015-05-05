@@ -1,9 +1,11 @@
-
 <script type="text/x-jqote-template" id="template-agenda">
 	<![CDATA[
-	
-	
-	<h1>Agenda <% if (this.item.ID!="") { %><button class="btn span1 pull-right meeting-info-btn" type="button" ><i class="fa fa-info"></i></button><% } %></h1>
+
+
+	<h1>Agenda <% if (this.item.ID!="") { %>
+		<button class="btn span1 pull-right meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
+		<% } %>
+	</h1>
 
 	<table class="table table-condensed">
 		<% for(var i in this.agenda) { %>
@@ -14,7 +16,7 @@
 			</th>
 		</tr>
 		<% for(var y in this.agenda[i].items) { %>
-		<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
+		<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>"  >
 			<td></td>
 			<td><%= this.agenda[i].items[y].heading %></td>
 			<td class="dg s" style="width:80px;"><%= this.agenda[i].items[y].date.short.date %></td>
@@ -24,7 +26,7 @@
 		<% } %>
 		</tbody>
 		<% } %>
-		
+
 
 	</table>
 
@@ -35,24 +37,33 @@
 
 	<ol class="breadcrumb">
 		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-		<li><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a></li>
+		<li>
+			<a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a>
+		</li>
 		<li class="active"><%= this.item.heading %></li>
 	</ol>
+	<div class="clearfix"></div>
+	<% for (var i in this.item.groups) { %>
+	<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
+	<% } %>
+	<div class="clearfix"></div>
 	<section id="item-area">
 		<h3><%= this.item.heading %></h3>
-		
-		<ul>
-			<% for (var i in this.item.groups) { %>
-			<li>
-				<%= this.item.groups[i].ID %> | <%= this.item.groups[i].group %>
-			</li>
-			<% } %>
-		</ul>
+
+
+
+
+
+
+
+		<div class="well">
+			<%= this.item.description %>
+		</div>
 
 	</section>
 
-	
-	
+
+
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-meeting-home">
@@ -62,30 +73,30 @@
 		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
 		<li class="active"><%= this.meeting.meeting %></li>
 	</ol>
-
+	<div class="clearfix"></div>
+	<div class="">
+		<% for (var i in this.meeting.groups) { %>
+		<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
+		<% } %>
+	</div>
+	<div class="clearfix"></div>
 	<h2><%= this.meeting.meeting %></h2>
 
 	<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">
-		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"  style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
+		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
 
 		<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
 			<div class="pull-left"><%= this.meeting.timeStart.long.disp %></div>
 			<div class="pull-right"><%= this.meeting.timeEnd.long.disp %></div>
-			<div> - </div>
+			<div> -</div>
 		</div>
 	</div>
 
 
 
-	<ul>
-		<% for (var i in this.meeting.groups) { %>
-		<li>
-			<%= this.meeting.groups[i].ID %> | <%= this.meeting.groups[i].group %>
-		</li>
-		<% } %>
-	</ul>
 
-	
-	
+
+
+
 	]]>
 </script>
