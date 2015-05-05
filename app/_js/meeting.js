@@ -82,8 +82,6 @@ function getData() {
 		$("#left-area-content").jqotesub($("#template-agenda"), data);
 
 
-
-
 		$("#loading-mask").fadeOut();
 
 
