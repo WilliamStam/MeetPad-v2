@@ -1,7 +1,7 @@
 
 <script type="text/x-jqote-template" id="template-agenda">
 	<![CDATA[
-
+	
 	
 	<h1>Agenda <% if (this.item.ID!="") { %><button class="btn span1 pull-right" type="button" id="meeting-info-btn" ><i class="fa fa-info"></i></button><% } %></h1>
 
@@ -34,9 +34,9 @@
 	<![CDATA[
 
 	<ol class="breadcrumb">
-		<li><a href="#">Home</a></li>
 		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-		<li class="active"><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/"><%= this.meeting.meeting %></a></li>
+		<li><a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/"><%= this.meeting.meeting %></a></li>
+		<li class="active"><%= this.item.heading %></li>
 	</ol>
 	<section id="item-area">
 		<h3><%= this.item.heading %></h3>
@@ -57,8 +57,11 @@
 </script>
 <script type="text/x-jqote-template" id="template-meeting-home">
 	<![CDATA[
-	
-	<div class="clearfix"></div>
+
+	<ol class="breadcrumb">
+		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
+		<li class="active"><%= this.meeting.meeting %></li>
+	</ol>
 
 	<h2><%= this.meeting.meeting %></h2>
 
