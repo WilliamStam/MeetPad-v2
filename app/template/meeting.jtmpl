@@ -18,7 +18,7 @@
 
 	
 
-	<section class="scroll-pane" style="top:90px; left:10px;">
+	<section class="scroll-pane" style="left:10px;">
 		<table class="table table-condensed" id="record-list" >
 			<tbody><% for(var i in this.agenda) { %>
 			
