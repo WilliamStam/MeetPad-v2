@@ -76,6 +76,7 @@ function getData() {
 		var right_template = "#template-meeting-home";
 		if (data['item']['ID']) {
 			right_template = "#template-item";
+			
 		}
 
 		$("#right-area-content").jqotesub($(right_template), data);
@@ -87,10 +88,15 @@ function getData() {
 
 		$.doTimeout(400,function(){
 			resize();
+			if (right_template == "#template-item"){
+				$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
+			}
 			
 		})
 		resize()
-		$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='805']",true,false);
+		if (right_template == "#template-item"){
+			$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
+		}
 		showContent_state();
 		
 	});
