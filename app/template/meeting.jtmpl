@@ -1,53 +1,69 @@
 <script type="text/x-jqote-template" id="template-agenda">
 	<![CDATA[
+	<section class="content-header">
+
+		<h1>Agenda
+		<span class="pull-right btn-bar">
+			<% if (this.item.ID!="") { %>
+				<button class="btn meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
+			<% } %>
+			<button class="btn  btn-default" type="button"><i class="fa fa-plus"></i></button>
+			
+			
+		</span>
 
 
-	<h1>Agenda <% if (this.item.ID!="") { %>
-		<button class="btn span1 pull-right meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
-		<% } %>
-	</h1>
+		</h1>
+	</section>
 
-	<table class="table table-condensed">
-		<% for(var i in this.agenda) { %>
-		<tbody>
-		<tr>
-			<th colspan="5">
-				<%= this.agenda[i].category %>
-			</th>
-		</tr>
-		<% for(var y in this.agenda[i].items) { %>
-		<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>"  >
-			<td></td>
-			<td><%= this.agenda[i].items[y].heading %></td>
-			<td class="dg s" style="width:80px;"><%= this.agenda[i].items[y].date.short.date %></td>
-			<td><%= this.agenda[i].items[y].commentCount!=0?this.agenda[i].items[y].commentCount:'' %></td>
-			<td></td>
-		</tr>
-		<% } %>
-		</tbody>
-		<% } %>
+	
 
+	<section class="scroll-pane" style="top:90px; left:10px;">
+		<table class="table table-condensed" id="record-list" >
+			<tbody><% for(var i in this.agenda) { %>
+			
+			<tr>
+				<th colspan="5">
+					<%= this.agenda[i].category %>
+				</th>
+			</tr>
+			<% for(var y in this.agenda[i].items) { %>
+			<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
+				<td></td>
+				<td><%= this.agenda[i].items[y].heading %></td>
+				<td class="dg s" style="width:80px;"><%= this.agenda[i].items[y].date.short.date %></td>
+				<td><%= this.agenda[i].items[y].commentCount!=0?this.agenda[i].items[y].commentCount:'' %></td>
+				<td></td>
+			</tr>
+			<% } %>
+			
+			<% } %>
+			</tbody>
 
-	</table>
-
+		</table>
+	</section>
+	
+	<section class="content-footer"></section>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-item">
 	<![CDATA[
+	
 
-	<ol class="breadcrumb">
-		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-		<li>
-			<a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a>
-		</li>
-		<li class="active"><%= this.item.heading %></li>
-	</ol>
-	<div class="clearfix"></div>
-	<% for (var i in this.item.groups) { %>
-	<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
-	<% } %>
-	<div class="clearfix"></div>
-	<section id="item-area">
+	<section id="item-area" class="scroll-pane" style="top:0px;bottom:52px;left:12px;">
+		<div class="clearfix"></div>
+		<% for (var i in this.item.groups) { %>
+		<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
+		<% } %>
+
+		<div class="clearfix" style="height:10px;"></div>
+		<ol class="breadcrumb">
+			<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
+			<li>
+				<a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a>
+			</li>
+			<li class="active"><%= this.item.heading %></li>
+		</ol>
 		<h3><%= this.item.heading %></h3>
 
 
@@ -60,26 +76,44 @@
 			<%= this.item.description %>
 		</div>
 
+		<div style=" height:1000px;">a</div>
 	</section>
 
+	<section class="content-footer">
+		
+		<div class="pull-right btn-bar" >
+			<button class="btn btn-default hidden-xl hidden-md" type="button"><i class="fa fa-list"></i></button>
+			<button class="btn btn-default" type="button"><i class="fa fa-comment-o"></i></button>
+			<button class="btn btn-default" type="button"><i class="fa fa-pencil"></i></button>
+			<button class="btn btn-default meeting-info-btn" type="button"><i class="fa fa-arrow-up"></i></button>
+			<button class="btn btn-default" type="button" id="details-record-prev" ><i class="fa fa-arrow-circle-left"></i></button>
+			<button class="btn btn-default" type="button" id="details-record-next" ><i class="fa fa-arrow-circle-right"></i></button>
+		</div>
+	</section>
 
 
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-meeting-home">
 	<![CDATA[
-
-	<ol class="breadcrumb">
-		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-		<li class="active"><%= this.meeting.meeting %></li>
-	</ol>
 	<div class="clearfix"></div>
 	<div class="">
 		<% for (var i in this.meeting.groups) { %>
 		<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
 		<% } %>
+
+		<div class="pull-right btn-bar">
+			<button class="btn btn-default" type="button"><i class="fa fa-pencil"></i></button>
+			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
+		</div>
+		<div class="clearfix"></div>
 	</div>
-	<div class="clearfix"></div>
+	<div class="clearfix" style="height:10px;"></div>
+	<ol class="breadcrumb">
+		<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
+		<li class="active"><%= this.meeting.meeting %></li>
+	</ol>
+
 	<h2><%= this.meeting.meeting %></h2>
 
 	<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">

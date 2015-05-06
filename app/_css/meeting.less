@@ -1,66 +1,63 @@
 
-
-
-#left-area{
+#left-area {
 	background-color: #fff;
-	border-right:1px solid #ccc;
+	border-right: 1px solid #ccc;
 	overflow: hidden;
 	position: relative;
 }
 
 #left-area.affix-top {
 	position: static;
-	max-width:395px;
+	max-width: 395px;
 }
 
 #left-area.affix {
 	position: fixed;
-	top:40px;
-	bottom:20px;
-	max-width:395px;
-	width:100%;
+	top: 40px;
+	bottom: 20px;
+	max-width: 395px;
+	width: 100%;
 }
-
 
 #right-area {
 	background-color: #fff;
-	position:relative;
-	padding-left:10px;
-	padding-top:20px; 
-	
+	position: relative;
+	padding-left: 10px;
+	padding-top: 20px;
+
 }
+
 .offcanvas-btn-show {
-	display:block;
+	display: block;
 }
 
 .row-offcanvas-left.active {
-	
+
 	.offcanvas-btn-show {
-		display:none!important;
+		display: none !important;
 	}
 }
 
-
 .offcanvas {
-	width:9px;
-	height:100%;
+	width: 9px;
+	height: 100%;
 	background-color: #f1f1f1;
 	position: absolute;
 	top: 0;
 	bottom: 0%;
 	left: -1px;
 	cursor: pointer;
-	border-left:1px solid #999;
-	border-right:1px solid #999;
-	
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+
 	&:hover {
 		background-color: #ccc;
 	}
 	i.fa {
-		margin-top:-5px;
-		top:50%;
+		margin-top: -5px;
+		top: 50%;
 		position: fixed;
-		margin-left:2px;
+		margin-left: 2px;
 	}
 }
 
@@ -86,26 +83,26 @@
 
 	.row-offcanvas-right
 	.sidebar-offcanvas {
-		right: -395px; 
+		right: -395px;
 	}
 
 	.row-offcanvas-left
 	.sidebar-offcanvas {
-		left: -395px; 
+		left: -395px;
 	}
 
 	.row-offcanvas-right.active {
-		right: 395px; 
+		right: 395px;
 	}
 
 	.row-offcanvas-left.active {
-		left: 395px; 
+		left: 395px;
 	}
 
 	.sidebar-offcanvas {
 		position: absolute;
 		top: 0;
-		max-width: 395px; 
+		max-width: 395px;
 	}
 }
 
@@ -113,22 +110,23 @@
 	h1 {
 		margin-bottom: 19px;
 	}
-	.table th{
-		font-weight:bold;
-		font-size:16px;
-		padding-top:15px;
+	.table th {
+		font-weight: bold;
+		font-size: 16px;
+		padding-top: 15px;
 	}
 }
+
 #meeting-date-line {
-	border-bottom:1px solid #ddd;
-	margin-top:-5px;
-	padding-bottom:3px;
+	border-bottom: 1px solid #ddd;
+	margin-top: -5px;
+	padding-bottom: 3px;
 }
 
 #item-area {
 	h3 {
-		
-		margin-top:20px;
+
+		margin-top: 20px;
 	}
 }
 
@@ -137,5 +135,27 @@
 }
 
 .breadcrumb {
-	margin:0;
+	margin: 0;
+}
+
+.label-default {
+	background-color: #b7b7b7;
+	
+}
+.btn-bar {
+	.btn {
+		width:40px;
+		margin-left:10px;
+	}
+}
+.content-footer {
+	position: absolute;bottom: 0; left: 0;right:0;
+	background-color: #e1e1e1;
+	border-top:1px solid #ccc;
+	padding:5px;
+}
+.content-header {
+	position: absolute;top: 0; left: 0;right:0;
+	border-bottom:1px solid #ccc;
+	padding:5px;
 }

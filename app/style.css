@@ -7661,7 +7661,7 @@ button.close {
 .jspVerticalBar {
   width: 7px;
   background: transparent;
-  right: 1px;
+  right: 2px;
 }
 .jspHorizontalBar {
   bottom: 1px;

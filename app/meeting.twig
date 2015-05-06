@@ -1,33 +1,29 @@
 <script type="text/javascript">
 	var _data = {{ data|json_encode()|raw() }};
-	
-//console.log(_data)
+
+	//console.log(_data)
 </script>
 <section id="content-area">
-{% if data['ID'] %}
+	{% if data['ID'] %}
 
-	
 
-<div class="row">
-	<div class="col-md-5 affix affix-top  sidebar-offcanvas" id="left-area">
-		<section  class="scroll-pane">
-			<section id="left-area-content" class="content">
-			</section>
-		</section>
-	</div>
-	<div class="col-md-7 col-md-offset-5 row-offcanvas row-offcanvas-left match-height" id="right-area">
-		<div data-toggle="offcanvas" class="offcanvas visible-sm-block visible-xs-block">
-			<i class="fa fa-ellipsis-v"></i>
+
+		<div class="row">
+			<div class="col-md-5 affix affix-top  sidebar-offcanvas" id="left-area">
+				<section id="left-area-content" class="content">
+				</section>
+			</div>
+			<div class="col-md-7 col-md-offset-5 row-offcanvas row-offcanvas-left match-height" id="right-area">
+				<div data-toggle="offcanvas" class="offcanvas visible-sm-block visible-xs-block">
+					<i class="fa fa-ellipsis-v"></i>
+				</div>
+				<section id="right-area-content" class="content">
+				</section>
+
+			</div>
+			<div class="loadingmask wide" id="loading-mask"></div>
 		</div>
-		<section class="scroll-pane">
-			<section id="right-area-content" class="content">
-			</section>
-		</section>
-
-	</div>
-	<div class="loadingmask wide" id="loading-mask"></div>
-</div>
-{% else %}
-	No meeting found
-{% endif %}
+	{% else %}
+		No meeting found
+	{% endif %}
 </section>
