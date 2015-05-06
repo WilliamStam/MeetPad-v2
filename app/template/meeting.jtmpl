@@ -76,7 +76,7 @@
 			<%= this.item.description %>
 		</div>
 
-		<div style=" height:1000px;">a</div>
+		<div style=" height:1000px;">item details</div>
 	</section>
 
 	<section class="content-footer">
@@ -131,6 +131,10 @@
 			</div>
 		</div>
 
+
+		<div style=" height:1000px;">meeting details</div>
+		
+		
 	</section>
 	<section class="content-footer">
 		<div class="pull-left btn-bar" style="margin-left:-10px;">
