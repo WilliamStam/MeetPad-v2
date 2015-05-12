@@ -137,16 +137,17 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		if ($.bbq.getState("modal").indexOf("company") > -1) {
-			var ID = $.bbq.getState("modal").replace("company-", "");
-			formCompany(ID)
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("company") > -1) {
+			formCompany()
 		}
 
 	});
 
 	function formCompany(ID) {
-
-		$.bbq.pushState({"modal": "company-" + ID})
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("company") > -1) {
+			ID = $.bbq.getState("modal").replace("company-", "");
+		}
+		
 
 		//$("#formCompanyModal").modal("hide")
 		$.getData("/data/form/company?ID=" + ID, function (data) {
@@ -158,7 +159,8 @@
 	}
 	$(document).on("click", ".company-form", function () {
 		var $this = $(this);
-		formCompany($this.attr("data-ID"));
+		$.bbq.pushState({"modal": "company-" + $this.attr("data-ID")})
+		formCompany();
 
 	})
 
