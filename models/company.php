@@ -19,6 +19,10 @@ class company extends _ {
 	function get($ID,$userID=""){
 		$timer = new timer();
 		$where = "ID = '$ID'";
+		if ($userID===true){
+			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
+		}
+		
 		
 		$sql = "
 			SELECT *
@@ -27,11 +31,6 @@ class company extends _ {
 			";
 		
 		if ($userID){
-
-			if ($userID===true){
-				$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
-			}
-			
 			
 			$sql = "
 			SELECT DISTINCT mp_companies.*

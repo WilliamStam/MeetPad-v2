@@ -19,7 +19,9 @@ class meeting extends _ {
 	function get($ID,$userID=""){
 		$timer = new timer();
 		$where = "ID = '$ID'";
-		
+		if ($userID===true){
+			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
+		}
 		$sql = "
 			SELECT *
 			FROM mp_meetings
@@ -27,9 +29,7 @@ class meeting extends _ {
 		";
 
 		if ($userID){
-			if ($userID===true){
-				$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
-			}
+			
 			$sql = "
 			SELECT DISTINCT mp_meetings.*, mp_companies.company
 			FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
