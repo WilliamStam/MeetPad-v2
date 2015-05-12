@@ -23,8 +23,8 @@ class meeting extends _ {
 			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		}
 		$sql = "
-			SELECT *
-			FROM mp_meetings
+			SELECT *, mp_companies.company
+			FROM mp_meetings INNER JOIN mp_companies ON mp_companies.ID = mp_meetings.companyID
 			WHERE $where;
 		";
 
