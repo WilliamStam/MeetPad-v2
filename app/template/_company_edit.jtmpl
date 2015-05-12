@@ -139,7 +139,7 @@
 <style type="text/css">
 	.admin-list-items .input-group {
 		background-color:red;
-		padding-right:30px;
+		padding-right:50px;
 	}
 </style>
 <script type="text/javascript">
@@ -175,7 +175,7 @@
 				containment: "parent",
 				tolerance: "pointer"
 			});
-			$( ".admin-list-items" ).disableSelection();
+			//$( ".admin-list-items" ).disableSelection();
 
 		})
 
