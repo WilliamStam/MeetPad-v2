@@ -27,6 +27,12 @@ class company extends _ {
 			";
 		
 		if ($userID){
+
+			if ($userID===true){
+				$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
+			}
+			
+			
 			$sql = "
 			SELECT DISTINCT mp_companies.*
 			FROM mp_companies INNER JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
@@ -121,6 +127,40 @@ class company extends _ {
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		$this->return = $return;
 		$this->method = __FUNCTION__;
+		return $this;
+
+	}
+	function getGroups() {
+		$timer = new timer();
+
+		$result = $this->f3->get("DB")->exec("
+			SELECT mp_groups.*
+			FROM mp_groups
+			WHERE companyID = '{$this->return['ID']}'
+			ORDER BY mp_groups.orderby ASC
+		");
+
+		$this->return['groups'] = $result;
+
+		$return = $result;
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+
+	}
+	function getCategories() {
+		$timer = new timer();
+
+		$result = $this->f3->get("DB")->exec("
+			SELECT mp_categories.*
+			FROM mp_categories
+			WHERE companyID = '{$this->return['ID']}'
+			ORDER BY mp_categories.orderby ASC
+		");
+
+		$this->return['categories'] = $result;
+
+		$return = $result;
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $this;
 
 	}

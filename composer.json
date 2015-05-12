@@ -13,18 +13,6 @@
     {
       "type": "package",
       "package": {
-        "name": "components/jquery-bbq",
-        "version": "dev-master",
-        "source": {
-          "url": "https://github.com/cowboy/jquery-bbq",
-          "type": "git",
-          "reference": "origin/master"
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
         "name": "components/jquery-hotkeys",
         "version": "dev-master",
         "source": {

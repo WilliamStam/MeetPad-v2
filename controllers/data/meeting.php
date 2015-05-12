@@ -37,9 +37,8 @@ class meeting extends _data {
 	function meeting() {
 		
 		$meetingID = isset($_GET['meetingID'])?$_GET['meetingID']:"";
-		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 
-		$result =  models\meeting::getInstance()->get($meetingID,$userID)->getGroups()->format()->show();
+		$result =  models\meeting::getInstance()->get($meetingID,true)->getGroups()->format()->show();
 
 		$this->meetingID = $result['ID'];
 		$this->companyID = $result['companyID'];
@@ -67,14 +66,13 @@ class meeting extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 	function item() {
-		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
 
-		$result =  models\item::getInstance()->get($itemID,$userID)->getGroups()->format()->show();
+		$result =  models\item::getInstance()->get($itemID,true)->getGroups()->format()->show();
 
 		//test_array($result); 
 		if ($result['meetingID']!=$this->meetingID && $itemID){
-			$result =  models\item::getInstance()->get("A",$userID)->getGroups()->format()->show();
+			$result =  models\item::getInstance()->get("A",true)->getGroups()->format()->show();
 		}
 
 //test_array($result); 

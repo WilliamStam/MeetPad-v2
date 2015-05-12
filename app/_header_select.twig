@@ -3,6 +3,7 @@
 	<span class="caret"></span>
 </a>
 <ul class="dropdown-menu " style="" >
+	{% if menu['meetings']|length %}
 	<li role="presentation" class="dropdown-header" style="margin-top:0;">Active Meetings</li>
 	{% for row in menu['meetings'] %}
 	<li {% if row['ID'] == data['ID'] and page['section'] == 'meeting' %}class="active"{% endif %}>
@@ -25,8 +26,9 @@
 		</a>
 	</li>
 	{% endfor %}
+	{% endif %}
 	
-	<li role="presentation" class="dropdown-header">Companies / Organizations</li>
+	<li role="presentation" class="dropdown-header" {% if menu['meetings']|length == 0 %}style="margin-top:0;"{% endif %}>Companies / Organizations</li>
 	{% for row in menu['companies'] %}
 	<li {% if row['ID'] == data['ID'] and page['section'] == "company" %}class="active"{% endif %}><a href="/content/{{ row['ID'] }}/{{ row['url'] }}">{{ row['company'] }} {% if row['activeMeetings'] %}<span class="badge pull-right">{{ row['activeMeetings'] }}</span>{% endif %}</a></li>
 	{% endfor %}

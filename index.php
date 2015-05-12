@@ -104,6 +104,8 @@ $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
 $f3->route('GET|POST /content/@ID/*/*', 'controllers\meeting->page');
 $f3->route('GET|POST /content/@ID/*', 'controllers\company->page');
+$f3->route('GET|POST /edit/@ID/*/*', 'controllers\meeting->edit');
+$f3->route('GET|POST /edit/@ID/*', 'controllers\company->edit');
 
 $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	session_unset();

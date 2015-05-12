@@ -2,11 +2,18 @@
 	<div class="whole-arrea">
 		{% if data['ID'] %}
 		{{ data['company'] }}
+			<button class="btn company-form" data-ID="{{ data['ID'] }}" type="button"><i class="fa fa-pencil"></i></button>
+			<button class="btn company-form" data-ID="" type="button"><i class="fa fa-plus"></i></button>
 		{% else %}
-		no company found
+
+			<div class="c" style="padding:50px;">
+				<img src="/app/_images/sad_face.png" alt=""/>
+				<p class="oops-text">Sowwy!</p></div>
+			<div class="alert alert-danger c" role="alert">No company found or no permission to access it!</div>
 		{% endif %}
 	</div>
 </div>
+
 <div class="row">
 	<ul>
 		

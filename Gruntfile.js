@@ -12,7 +12,6 @@ module.exports = function(grunt) {
 					'vendor/components/jqueryui/jquery-ui.js',
 					'vendor/components/bootstrap/js/bootstrap.js' ,
 					'vendor/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
-					'vendor/components/jquery-bbq/jquery.ba-bbq.js',
 					'vendor/components/jquery-hotkeys/jquery.hotkeys.js',
 					'vendor/components/jquery-cookie/jquery.cookie.js',
 					'vendor/components/jquery-jScrollPane/script/jquery.jScrollPane.js',
@@ -24,6 +23,7 @@ module.exports = function(grunt) {
 					'vendor/ivaynberg/select2/select2.js',
 					'app/_js/plugins/jquery.getData.js',
 					'app/_js/plugins/jquery.ba-dotimeout.min.js',
+					'app/_js/plugins/jquery.ba-bbq.js',
 					'app/_js/script.js'
 				],
 				dest: 'app/javascript.js',

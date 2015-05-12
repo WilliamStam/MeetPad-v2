@@ -1,4 +1,4 @@
-$(document).ready(function () {
+;;$(document).ready(function () {
 
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
@@ -50,7 +50,7 @@ function page_resize() {
 
 	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
 
-}
+};
 
 function updatetimerlist(d, page_size) {
 	//d = jQuery.parseJSON(d);

@@ -105,9 +105,6 @@
 .breadcrumb {
   margin: 0;
 }
-.label-default {
-  background-color: #b7b7b7;
-}
 .btn-bar .btn {
   width: 40px;
   margin-left: 10px;
@@ -139,4 +136,14 @@
 }
 #left-area-content .scroll-pane {
   top: 60px;
+}
+#right-area-content .wells {
+  margin: 0;
+}
+.groups-access {
+  margin-bottom: 10px;
+}
+.groups-access .label-default {
+  background-color: #f1f1f1;
+  color: #ccc;
 }

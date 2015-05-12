@@ -24,6 +24,10 @@
 			<div class="loadingmask wide" id="loading-mask"></div>
 		</div>
 	{% else %}
-		No meeting found
+
+		<div class="c" style="padding:50px;">
+			<img src="/app/_images/sad_face.png" alt=""/>
+			<p class="oops-text">Sowwy!</p></div>
+		<div class="alert alert-danger c" role="alert">No meeting found or no permission to access it!</div>
 	{% endif %}
 </section>
