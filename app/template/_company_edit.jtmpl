@@ -136,7 +136,12 @@
 
 	]]>
 </script>
-
+<style type="text/css">
+	.admin-list-items .input-group {
+		background-color:red;
+		padding-right:30px;
+	}
+</style>
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -164,7 +169,7 @@
 
 
 			$(".admin-list-items").sortable({
-				handle: ".handle",
+				//handle: ".handle",
 				items: "> .input-group",
 				cancel: '',
 				containment: "parent",
