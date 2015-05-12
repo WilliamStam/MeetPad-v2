@@ -18,7 +18,7 @@ class meeting extends _ {
 	
 	function get($ID,$userID=""){
 		$timer = new timer();
-		$where = "ID = '$ID'";
+		$where = "mp_meetings.ID = '$ID'";
 		if ($userID===true){
 			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		}
