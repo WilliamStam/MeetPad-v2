@@ -14,7 +14,7 @@ class meeting extends _ {
 
 
 
-		$data = models\meeting::getInstance()->get($this->f3->get("PARAMS['ID']"), ($user['global_admin'] == '1') ? "" : $user['ID'])->show();
+		$data = models\meeting::getInstance()->get($this->f3->get("PARAMS['ID']"), true)->show();
 
 
 
