@@ -25,7 +25,11 @@
 	
 	page_resize();
 
-
+	$('#form-modal').on('hidden.bs.modal', function () {
+		$.bbq.removeState("modal")
+	});
+	
+	
 	$(window).resize(function () {
 		page_resize()
 	});

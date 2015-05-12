@@ -50,7 +50,7 @@
 
 							</div>
 							<span class="help-block">After adding the name please click the <i class="fa fa-plus"></i> button </span>
- 
+
 							<div id="company-groups" class="admin-list-items">
 								<% for (var i in this.groups) { %>
 								<div class="input-group">
@@ -59,7 +59,8 @@
 								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
 								  </span>
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-sort"></i></button>
+								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+								    </button>
 								  </span>
 
 
@@ -95,7 +96,7 @@
 							</div>
 							<span class="help-block">After adding the name please click the <i class="fa fa-plus"></i> button </span>
 
-							<div id="company-categories"  class="admin-list-items">
+							<div id="company-categories" class="admin-list-items">
 								<% for (var i in this.categories) { %>
 								<div class="input-group">
 									<input type="text" class="form-control" id="category-<%= this.categories[i].ID %>" name="category-<%= this.categories[i].ID %>" placeholder="Group Name" value="<%= this.categories[i].category %>">
@@ -103,7 +104,8 @@
 								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
 								  </span>
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-sort"></i></button>
+								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+								    </button>
 								  </span>
 
 
@@ -134,6 +136,7 @@
 
 	]]>
 </script>
+
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -141,18 +144,33 @@
 			formCompany()
 		}
 
+
+
+
+
 	});
 
 	function formCompany(ID) {
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("company") > -1) {
 			ID = $.bbq.getState("modal").replace("company-", "");
 		}
-		
+
 
 		//$("#formCompanyModal").modal("hide")
 		$.getData("/data/form/company?ID=" + ID, function (data) {
 
-			$("#form-modal").jqotesub($("#template-form-company"), data).modal("show")
+			$("#form-modal").jqotesub($("#template-form-company"), data).modal("show");
+
+
+
+			$(".admin-list-items").sortable({
+				handle: ".handle",
+				items: "> .input-group",
+				cancel: '',
+				containment: "parent",
+				tolerance: "pointer"
+			});
+			//$( ".admin-list-items" ).disableSelection();
 
 		})
 
