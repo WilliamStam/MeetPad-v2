@@ -24,6 +24,7 @@ module.exports = function(grunt) {
 					'app/_js/plugins/jquery.getData.js',
 					'app/_js/plugins/jquery.ba-dotimeout.min.js',
 					'app/_js/plugins/jquery.ba-bbq.js',
+					'app/_js/plugins/jquery.ui.touch-punch.min',
 					'app/_js/script.js'
 				],
 				dest: 'app/javascript.js',

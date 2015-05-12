@@ -170,7 +170,7 @@
 				containment: "parent",
 				tolerance: "pointer"
 			});
-			//$( ".admin-list-items" ).disableSelection();
+			$( ".admin-list-items" ).disableSelection();
 
 		})
 
