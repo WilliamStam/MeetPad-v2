@@ -1,8 +1,20 @@
-form{
+form {
 	label {
 		.help-block {
-			font-weight:normal;
-			margin-top:10px;
+			font-weight: normal;
+			margin-top: 10px;
+		}
+	}
+	.admin-list-items {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		&:empty {
+			text-align:center;
+			color: #ccc;
+			&:before {
+				content: 'empty';
+			}
+
 		}
 	}
 } 

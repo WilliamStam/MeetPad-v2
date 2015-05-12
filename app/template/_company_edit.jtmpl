@@ -50,8 +50,8 @@
 
 							</div>
 							<span class="help-block">After adding the name please click the <i class="fa fa-plus"></i> button </span>
-
-							<div id="company-groups" style="margin-top:30px;margin-bottom:30px;">
+ 
+							<div id="company-groups" class="admin-list-items">
 								<% for (var i in this.groups) { %>
 								<div class="input-group">
 									<input type="text" class="form-control" id="group-<%= this.groups[i].ID %>" name="group-<%= this.groups[i].ID %>" placeholder="Group Name" value="<%= this.groups[i].group %>">
@@ -95,7 +95,7 @@
 							</div>
 							<span class="help-block">After adding the name please click the <i class="fa fa-plus"></i> button </span>
 
-							<div id="company-categories" style="margin-top:30px;margin-bottom:30px;">
+							<div id="company-categories"  class="admin-list-items">
 								<% for (var i in this.categories) { %>
 								<div class="input-group">
 									<input type="text" class="form-control" id="category-<%= this.categories[i].ID %>" name="category-<%= this.categories[i].ID %>" placeholder="Group Name" value="<%= this.categories[i].category %>">

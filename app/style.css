@@ -7658,6 +7658,17 @@ form label .help-block {
   font-weight: normal;
   margin-top: 10px;
 }
+form .admin-list-items {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+form .admin-list-items:empty {
+  text-align: center;
+  color: #ccc;
+}
+form .admin-list-items:empty:before {
+  content: 'empty';
+}
 /*scrollpane custom CSS*/
 .jspVerticalBar {
   width: 7px;
