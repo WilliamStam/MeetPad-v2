@@ -157,7 +157,7 @@
 
 
 		//$("#formCompanyModal").modal("hide")
-		$.getData("/data/form/company?ID=" + ID, function (data) {
+		$.getData("/data/form/company?ID=" + ID, {}, function (data) {
 
 			$("#form-modal").jqotesub($("#template-form-company"), data).modal("show");
 
@@ -172,7 +172,7 @@
 			});
 			//$( ".admin-list-items" ).disableSelection();
 
-		})
+		},"form")
 
 	}
 	$(document).on("click", ".company-form", function () {

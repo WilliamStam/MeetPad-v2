@@ -8,6 +8,7 @@
 				<button class="btn meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
 			<% } %>
 			<button class="btn  btn-default" type="button"><i class="fa fa-plus"></i></button>
+			<button class="btn  btn-default" type="button"><i class="fa fa-pencil"></i></button>
 			
 			
 		</span>
@@ -139,7 +140,7 @@
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
 				<i class="fa fa-list"></i></button>
 
-			<a href="/edit/<%= this.meeting.ID %>/<%= this.company.company %>/<%= this.meeting.url %>" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+			<button class="btn btn-default meeting-form"  data-ID="<%= this.meeting.ID %>" type="button"><i class="fa fa-pencil"></i></button>
 			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
 		</div>
 		<div class="pull-right btn-bar">

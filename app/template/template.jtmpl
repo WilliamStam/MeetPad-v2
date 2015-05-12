@@ -67,4 +67,5 @@
 	</tr>
 	<% } %> ]]>
 </script>
-{%  include "template/_company_edit.jtmpl" %}
+{%  include "template/_company_form.jtmpl" %}
+{%  include "template/_meeting_form.jtmpl" %}

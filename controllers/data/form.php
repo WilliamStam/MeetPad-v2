@@ -34,6 +34,26 @@ class form extends _data {
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
+	function meeting() {
+		$result = array();
+		
+		$ID = isset($_GET['ID'])?$_GET['ID']:"";
+		$IDparts = explode("-",$ID);
+		$companyID = "";
+		if (isset($IDparts[1])){
+			$companyID = $IDparts[1];
+			$ID = $IDparts[0];
+		}
+		
+		$result =  models\meeting::getInstance()->get($ID,true)->getGroups()->format()->show();
+
+		if ($result['companyID'])$companyID = $result['companyID'];
+		$result['company'] = models\company::getInstance()->get($companyID,true)->format()->show();
+	
+		
+		
+		return $GLOBALS["output"]['data'] = $result;
+	}
 
 
 
