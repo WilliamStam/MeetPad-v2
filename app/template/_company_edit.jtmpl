@@ -169,7 +169,7 @@
 
 
 			$(".admin-list-items").sortable({
-				//handle: ".handle",
+				handle: ".handle",
 				items: "> .input-group",
 				cancel: '',
 				containment: "parent",
