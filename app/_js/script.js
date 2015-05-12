@@ -31,7 +31,9 @@
 	
 	
 	$(window).resize(function () {
-		page_resize()
+		$.doTimeout('resize', 250, function () {
+			page_resize();
+		});
 	});
 });
 function page_resize() {
@@ -52,7 +54,17 @@ function page_resize() {
 	var selectorWidth = ($(window).width() - 220);
 	$("#mobile-selector-menu").css({width: selectorWidth + "px"});
 
-	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"})
+	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"});
+
+	$.each($('.scroll-pane'), function () {
+		var api = $(this).data('jsp');
+		if (api) {
+			api.reinitialise();
+		} else {
+			$(this).jScrollPane(settings);
+		}
+
+	});
 
 };
 

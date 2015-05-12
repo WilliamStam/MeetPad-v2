@@ -115,6 +115,9 @@ function resize() {
 	//console.log($("#left-area").height())
 	$("#right-area").css({minHeight: $("#left-area").height() - 2 + "px"});
 
+
+
+
 	$.each($('.scroll-pane'), function () {
 		var api = $(this).data('jsp');
 		if (api) {
@@ -122,11 +125,8 @@ function resize() {
 		} else {
 			$(this).jScrollPane(settings);
 		}
-		
+
 	});
-
-
-
 
 
 
