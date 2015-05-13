@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 					'vendor/components/jquery-mousewheel/jquery.mousewheel.js',
 					'vendor/components/TouchSwipe-Jquery-Plugin/jquery.touchSwipe.js',
 					'vendor/components/jQote2/jquery.jqote2.js',
+					//'vendor/ckeditor/ckeditor/ckeditor.js',
 					'vendor/timrwood/moment/moment.js',
 					'vendor/components/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
 					'vendor/moxiecode/plupload/js/moxie.js',

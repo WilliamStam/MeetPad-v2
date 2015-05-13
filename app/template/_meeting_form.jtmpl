@@ -28,6 +28,10 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						<textarea name="note" id="note" cols="30" class="ckeditor" rows="10" placeholder="Meeting Note / Description"><%= this.note %></textarea>
+						</div>
+					
 
 					<div class="form-group">
 						<label for="timeStart" class="col-sm-3 control-label">Meeting Start</label>
@@ -123,6 +127,14 @@
 				$('#timeStart').data("DateTimePicker").maxDate(e.date);
 			});
 
+
+
+
+			CKEDITOR.config.skin = 'bootstrapck,/app/_ckeditor/bootstrapck/';
+			CKEDITOR.replace('note');
+
+
+			
 
 		}, "form");
 

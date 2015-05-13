@@ -113,6 +113,7 @@
     "components/TouchSwipe-Jquery-Plugin": "dev-master",
     "ivaynberg/select2": "3.*",
     "components/jquery-cookie": "*",
-    "timrwood/moment": "2.*"
+    "timrwood/moment": "2.*",
+    "ckeditor/ckeditor": "4.4.*"
   }
 }

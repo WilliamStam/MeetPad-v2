@@ -1,4 +1,8 @@
-;;$(document).ready(function () {
+;
+
+
+
+;$(document).ready(function () {
 
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
@@ -35,6 +39,9 @@
 			page_resize();
 		});
 	});
+	
+	
+	
 });
 function page_resize() {
 
