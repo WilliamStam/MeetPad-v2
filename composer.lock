@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4d98371f6da270d29e2f9957ddadac95",
+    "hash": "da4f7caac67217207b1f6a9ae04e35b4",
     "packages": [
         {
             "name": "bcosca/fatfree",
@@ -132,58 +132,11 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sabinus52/bootstrap-datetimepicker.git",
-                "reference": "9be695081ae944ac4932255c2a90ddc15b648dd1"
+                "url": "https://github.com/Eonasdan/bootstrap-datetimepicker",
+                "reference": "origin/master"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sabinus52/bootstrap-datetimepicker/zipball/9be695081ae944ac4932255c2a90ddc15b648dd1",
-                "reference": "9be695081ae944ac4932255c2a90ddc15b648dd1",
-                "shasum": ""
-            },
-            "require": {
-                "components/bootstrap": ">=2.0, <4.0"
-            },
-            "suggest": {
-                "robloach/component-installer": "Allows installation of Components via Composer"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "js/bootstrap-datetimepicker.js"
-                    ],
-                    "styles": [
-                        "css/bootstrap-datetimepicker.css"
-                    ],
-                    "files": [
-                        "js/*.js",
-                        "js/locales/bootstrap-datetimepicker.*.js",
-                        "css/*.css"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastien MALOT"
-                }
-            ],
-            "description": "Both Date and Time picker widget based on twitter bootstrap",
-            "homepage": "http://www.malot.fr/bootstrap-datetimepicker/",
-            "keywords": [
-                "bootstrap",
-                "date",
-                "datepicker",
-                "datetime",
-                "jquery",
-                "time",
-                "timepicker"
-            ],
-            "time": "2015-04-05 17:14:18"
+            "type": "library",
+            "time": "2015-04-02 22:01:45"
         },
         {
             "name": "components/jQote2",

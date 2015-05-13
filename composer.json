@@ -81,6 +81,18 @@
           "reference": "origin/master"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "components/bootstrap-datetimepicker",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/Eonasdan/bootstrap-datetimepicker",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
     }
   ],
   "require": {

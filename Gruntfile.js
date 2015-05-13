@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 					'vendor/components/jquery/jquery.js',
 					'vendor/components/jqueryui/jquery-ui.js',
 					'vendor/components/bootstrap/js/bootstrap.js' ,
-					'vendor/components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+					
 					'vendor/components/jquery-hotkeys/jquery.hotkeys.js',
 					'vendor/components/jquery-cookie/jquery.cookie.js',
 					'vendor/components/jquery-jScrollPane/script/jquery.jScrollPane.js',
@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 					'vendor/components/TouchSwipe-Jquery-Plugin/jquery.touchSwipe.js',
 					'vendor/components/jQote2/jquery.jqote2.js',
 					'vendor/timrwood/moment/moment.js',
+					'vendor/components/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
 					'vendor/moxiecode/plupload/js/moxie.js',
 					'vendor/ivaynberg/select2/select2.js',
 					'app/_js/plugins/jquery.getData.js',
