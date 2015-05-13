@@ -42,7 +42,7 @@
 </div>
 {%  include "_footer.twig" %}
 <script src="/app/javascript.{{ _v }}.js"></script>
-<script src="/vendor/ckeditor/ckeditor/ckeditor.js"></script>
+<script src="/vendor/ckeditor/ckeditor/ckeditor.js?v={{ _v }}"></script>
 {% if page['template_js'] %}
 <script src="{{ page['template_js'] }}"></script>
 {% endif %}

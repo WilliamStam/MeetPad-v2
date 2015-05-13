@@ -48,8 +48,27 @@ class form extends _data {
 		$result =  models\meeting::getInstance()->get($ID,true)->getGroups()->format()->show();
 
 		if ($result['companyID'])$companyID = $result['companyID'];
-		$result['company'] = models\company::getInstance()->get($companyID,true)->format()->show();
+		$result['company'] = models\company::getInstance()->get($companyID,true)->getGroups()->format()->show();
 	
+		$groups = $result['company']['groups'];
+		$meetingGroups = $result['groups'];
+		$g = array();
+		$gr = array();
+		
+		foreach ($meetingGroups as $item)$g[] = $item['ID'];
+		foreach ($groups as $item){
+			$item['active']='0';
+			if (in_array($item['ID'],$g)){
+				$item['active']='1';
+			}
+			$gr[] = $item;
+		}
+		$result['groups'] = $gr;
+		
+		
+		//test_array($result['groups']); 
+		
+		
 		
 		
 		return $GLOBALS["output"]['data'] = $result;

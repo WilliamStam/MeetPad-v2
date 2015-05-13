@@ -14,7 +14,7 @@
 							<span class="label label-default"><%= this.company.company %></span>
 						</small>
 					</h4>
-					
+
 				</div>
 				<div class="modal-body">
 
@@ -22,34 +22,56 @@
 
 					<div class="form-group">
 						<label for="company" class="col-sm-3 control-label">Meeting Name</label>
-
 						<div class="col-sm-8">
 							<input type="text" class="form-control" id="meeting" name="meeting" placeholder="Meeting Name" value="<%= this.meeting %>">
 						</div>
 					</div>
 
-					<div class="form-group">
-						<textarea name="note" id="note" cols="30" class="ckeditor" rows="10" placeholder="Meeting Note / Description"><%= this.note %></textarea>
-						</div>
-					
+
+
 
 					<div class="form-group">
 						<label for="timeStart" class="col-sm-3 control-label">Meeting Start</label>
-
 						<div class="col-sm-8">
 							<div id="timeStart"></div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="timeEnd" class="col-sm-3 control-label">Meeting End</label>
-
 						<div class="col-sm-8">
 							<div id="timeEnd"></div>
 						</div>
 					</div>
-
-
 					
+
+
+
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Groups</label>
+
+						<div class="col-sm-8">
+							<% for (var i in this.groups) { %>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="groups" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+									<%= this.groups[i].group %>
+								</label>
+							</div>
+							<% } %>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label for="groups" class="control-label">Meeting Note / Description</label>
+						<textarea name="note" id="note" cols="30" rows="10" placeholder="Meeting Note / Description"><%= this.note %></textarea>
+					</div>
+
+
+
+
+
+
 
 
 				</div>
@@ -103,8 +125,8 @@
 			});
 			//$( ".admin-list-items" ).disableSelection();
 
-			
-			
+
+
 			$('#timeStart, #timeEnd').datetimepicker({
 				inline: true,
 				sideBySide: true,
@@ -128,13 +150,21 @@
 			});
 
 
-
-
+			CKEDITOR.config.removeButtons = '';
+			CKEDITOR.config.toolbar = [
+				['Bold','Italic','Underline','StrikeThrough'],
+				['Styles','Format','Font','FontSize'],
+				['NumberedList','BulletedList'],
+				['Outdent','Indent'],
+				['Cut','Copy','Paste','Find','Replace'],	
+				['Source']
+			
+			] ;
 			CKEDITOR.config.skin = 'bootstrapck,/app/_ckeditor/bootstrapck/';
 			CKEDITOR.replace('note');
 
 
-			
+
 
 		}, "form");
 
