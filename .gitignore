@@ -43,3 +43,6 @@ vendor/*
 Thumbs.db
 
 config.inc.php
+app/less/*.css
+app/less/*/*.css
+app/less/*/*/*.css
