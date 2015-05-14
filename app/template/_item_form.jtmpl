@@ -1,0 +1,152 @@
+<script type="text/x-jqote-template" id="template-form-item">
+	<![CDATA[
+
+
+	<form class="form-horizontal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">
+						
+						<% if (this.ID) { %>
+							Edit Item
+						<% } else { %>
+						Add Item
+						<% } %>
+						<small class="pull-right" style="margin-right:30px;">
+							<span class="label label-default"><%= this.meeting.meeting %> | <%= this.company.company %></span>
+						</small>
+					</h4>
+
+				</div>
+				<div class="modal-body">
+
+
+
+					<div class="form-group">
+						<label for="heading" class="col-sm-3 control-label">Heading</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="heading" name="heading" placeholder="Item Heading" value="<%= this.heading %>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="description" class="control-label">Description</label>
+						<div class="clearfix"></div>
+						<textarea name="description" id="description" cols="30" rows="10" placeholder="Description"><%= this.description %></textarea>
+					</div>
+
+
+
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Categories</label>
+
+						<div class="col-sm-8">
+							<% for (var i in this.categories) { %>
+							<div class="radio">
+								<label>
+									<input type="radio" name="categories" value="<%= this.categories[i].ID %>" <% if (this.categories[i].active=='1'){ %>checked<% } %>>
+									<%= this.categories[i].category %>
+								</label>
+							</div>
+							<% } %>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Groups</label>
+
+						<div class="col-sm-8">
+							<% for (var i in this.groups) { %>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="groups" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+									<%= this.groups[i].group %>
+								</label>
+							</div>
+							<% } %>
+						</div>
+					</div>
+
+
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+
+
+	]]>
+</script>
+
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("item") > -1) {
+			formItem()
+		}
+
+
+
+
+
+	});
+
+	function formItem(ID) {
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("item") > -1) {
+			ID = $.bbq.getState("modal").replace("item-", "");
+
+		}
+
+
+		//$("#formCompanyModal").modal("hide")
+		$.getData("/data/form/item?ID=" + ID, {}, function (data) {
+
+			$("#form-modal").jqotesub($("#template-form-item"), data).modal("show");
+
+
+
+			
+
+
+
+			
+
+
+			CKEDITOR.config.removeButtons = '';
+			CKEDITOR.config.toolbar = [
+				['Bold','Italic','Underline','StrikeThrough'],
+				['Styles','Format','Font','FontSize'],
+				['NumberedList','BulletedList'],
+				['Outdent','Indent'],
+				['Cut','Copy','Paste','Find','Replace'],	
+				['Source']
+			
+			] ;
+			CKEDITOR.config.skin = 'bootstrapck,/app/_ckeditor/bootstrapck/';
+			CKEDITOR.replace('description');
+
+
+
+
+		}, "form");
+
+	}
+	$(document).on("click", ".item-form", function () {
+		var $this = $(this);
+		$.bbq.pushState({"modal": "item-" + $this.attr("data-ID") + "-" + $this.attr("data-meetingID")});
+		formItem();
+
+	})
+
+
+</script>

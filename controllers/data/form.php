@@ -74,6 +74,38 @@ class form extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
+function item() {
+		$result = array();
+		
+		$ID = isset($_GET['ID'])?$_GET['ID']:"";
+		$IDparts = explode("-",$ID);
+		$mID = "";
+		$cID = "";
+		if (isset($IDparts[1])){
+			$mID = $IDparts[1];
+			$ID = $IDparts[0];
+		}
+	if (isset($IDparts[2])){
+		$cID = $IDparts[2];
+	}
+		
+		$result =  models\item::getInstance()->get($ID,true)->getGroups()->format()->show();
+
+	if ($result['meetingID'])$mID = $result['meetingID'];
+	$result['meeting'] = models\meeting::getInstance()->get($mID,true)->getGroups()->format()->show();
+
+	if ($result['meeting']['companyID']) $cID = $result['meeting']['companyID'];
+	$result['company'] = models\company::getInstance()->get($cID,true)->getGroups()->format()->show();
+	
+		
+		//test_array($result['groups']); 
+		
+		
+		
+		
+		return $GLOBALS["output"]['data'] = $result;
+	}
+
 
 
 

@@ -69,3 +69,4 @@
 </script>
 {%  include "template/_company_form.jtmpl" %}
 {%  include "template/_meeting_form.jtmpl" %}
+{%  include "template/_item_form.jtmpl" %}
