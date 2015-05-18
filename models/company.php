@@ -129,13 +129,16 @@ class company extends _ {
 		return $this;
 
 	}
-	function getGroups() {
+	function getGroups($cID=false) {
 		$timer = new timer();
 
+		if (!$cID){
+			$cID = $this->return['ID'];
+		}
 		$result = $this->f3->get("DB")->exec("
 			SELECT mp_groups.*
 			FROM mp_groups
-			WHERE companyID = '{$this->return['ID']}'
+			WHERE companyID = '{$cID}'
 			ORDER BY mp_groups.orderby ASC
 		");
 
@@ -146,13 +149,15 @@ class company extends _ {
 		return $this;
 
 	}
-	function getCategories() {
+	function getCategories($cID=false) {
 		$timer = new timer();
-
+		if (!$cID){
+			$cID = $this->return['ID'];
+		}
 		$result = $this->f3->get("DB")->exec("
 			SELECT mp_categories.*
 			FROM mp_categories
-			WHERE companyID = '{$this->return['ID']}'
+			WHERE companyID = '{$cID}'
 			ORDER BY mp_categories.orderby ASC
 		");
 
@@ -163,8 +168,12 @@ class company extends _ {
 		return $this;
 
 	}
-	function show(){
-		return $this->return;
+	function show($value=''){
+		$return = $this->return;
+		if ($value){
+			$return = $return[$value];
+		}
+		return $return;
 	}
 	function format(){
 		$timer = new timer();

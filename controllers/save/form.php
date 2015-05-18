@@ -1,17 +1,29 @@
 <?php
-namespace controllers\data;
+namespace controllers\save;
 
 use models as models;
 
-class form extends _data {
+class form extends _save {
 	private static $instance;
+	private $errors;
 	public $meetingID;
 	public $companyID;
 
 	function __construct() {
 		parent::__construct();
+		
 
 	}
+	function post($key,$required=false){
+		$val = isset($_POST[$key])?$_POST[$key]:"";
+		if ($required && $val=="" ){
+			$this->errors[$key] = $required===true?"":$required;
+		}
+		return $val;
+	}
+
+	
+	
 
 	public static function getInstance() {
 		if (is_null(self::$instance)) {
@@ -21,20 +33,72 @@ class form extends _data {
 	}
 
 
-
+	
 
 	function company() {
 		$result = array();
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		
+		$values = array(
+			"company"=>$this->post("company",true),
+			"invitecode"=>$this->post("invitecode",true),
+			"admin_email"=>$this->post("admin_email","Required"),
+			
+		);
+		$errors = $this->errors;
+		
+	
+		
+		
+		
+		
+		
+		
+		$groups = array();
+		$categories = array();
+		
+		foreach ($_POST as $key=>$val){
+			if (strpos($key,"group-edit-")>-1){
+				$groups[] = array(
+					"ID"=>str_replace("group-edit-",'',$key),
+					"companyID"=>	$ID,
+					"group"=>$val,
+					"orderby"=>count($groups)
+				);
+			}
+			if (strpos($key,"category-edit-")>-1){
+				$categories[] = array(
+					"ID"=>str_replace("category-edit-",'',$key),
+					"companyID"=>	$ID,
+					"category"=>$val,
+					"orderby"=>count($categories)
+				);
+			}
+		}
+		
+		if (count($groups)==0){
+			$errors['company-groups'] = "No Groups Added, Please add at least 1 group to the company";
+		}
+		if (count($categories)==0){
+			$errors['company-categories'] = "No Categories Added, Please add at least 1 category to the company";
+		}
+		
+		
+		
+		//test_array(array("co"=>$values,"groups"=>$groups,"categories"=>$categories,"post"=>$_POST)); 
+		
+		
 
-		$result = models\company::getInstance()->get($ID, true)->getGroups()->getCategories()->format()->show();
+		$return = array(
+			"result"=>$result,
+			"errors"=>$errors
+		);
 
 
 
 
-
-		return $GLOBALS["output"]['data'] = $result;
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 	function meeting() {

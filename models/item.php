@@ -83,7 +83,68 @@ class item extends _ {
 		return $this;
 		
 	}
-	function getGroups() {
+
+	function getGroups($companyID=false) {
+		$timer = new timer();
+
+		if ($companyID){
+			if ($companyID===true OR $companyID=="undefined"){
+				$companyID = $this->return['companyID'];
+			}
+			$groups = company::getInstance()->getGroups($companyID)->show('groups');
+			
+					
+			$meetingGroups = $this->f3->get("DB")->exec("
+				SELECT mp_groups.*
+			FROM mp_content_group INNER JOIN mp_groups ON mp_content_group.groupID = mp_groups.ID
+			WHERE mp_content_group.contentID = '{$this->return['ID']}'
+			ORDER BY mp_groups.orderby ASC
+			");
+
+
+
+			$g = array();
+			$gr = array();
+
+			foreach ($meetingGroups as $item)$g[] = $item['ID'];
+			foreach ($groups as $item){
+				$item['active']='0';
+				if (in_array($item['ID'],$g)){
+					$item['active']='1';
+				}
+				$gr[] = $item;
+			}
+			$result = $gr;
+
+
+		} else {
+			$result = $this->f3->get("DB")->exec("
+				SELECT mp_groups.*
+			FROM mp_content_group INNER JOIN mp_groups ON mp_content_group.groupID = mp_groups.ID
+			WHERE mp_content_group.contentID = '{$this->return['ID']}'
+			ORDER BY mp_groups.orderby ASC
+			");
+		}
+
+
+
+
+
+
+
+		//test_array($result);
+
+
+
+
+		$this->return['groups'] = $result;
+
+		$return = $result;
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+
+	}
+	function getGroupsO() {
 		$timer = new timer();
 
 		$result = $this->f3->get("DB")->exec("

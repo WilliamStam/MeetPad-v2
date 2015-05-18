@@ -19,7 +19,7 @@
 						<% } %>
 						<% } else { %>Add Meeting<% } %>
 						<small class="pull-right" style="margin-right:30px;">
-							<span class="label label-default"><%= this.company.company %></span>
+							<span class="label label-default"><%= this.company %></span>
 						</small>
 					</h4>
 

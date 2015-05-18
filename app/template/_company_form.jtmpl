@@ -2,7 +2,7 @@
 	<![CDATA[
 
 
-	<form class="form-horizontal">
+	<form class="form-horizontal" id="form-company" data-ID="<%= this.ID %>">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -18,8 +18,25 @@
 						<label for="company" class="col-sm-3 control-label">Company Name</label>
 
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="company" name="company" placeholder="Company" value="<%= this.company %>">
+							<input type="text" class="form-control" id="company" name="company" placeholder="Company" value="<%= this.company||'' %>">
 						</div>
+					</div>
+					<div class="form-group">
+						<label for="admin_email" class="col-sm-3 control-label">Admin Email</label>
+
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="admin_email" name="admin_email" placeholder="Admin Email" value="<%= this.admin_email||'' %>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="invitecode" class="col-sm-3 control-label">Invite code</label>
+
+						<div class="col-sm-8">
+								<input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="Invite Code" value="<%= this.admin_email||'' %>">
+<div class="clearfix"></div>
+							<div class="help-block ">Give this code out to new users for them to be added to the company. you would still have to assign them to a group</div>
+						</div>
+
 					</div>
 
 
@@ -54,7 +71,7 @@
 							<div id="company-groups" class="admin-list-items">
 								<% for (var i in this.groups) { %>
 								<div class="input-group">
-									<input type="text" class="form-control" id="group-<%= this.groups[i].ID %>" name="group-<%= this.groups[i].ID %>" placeholder="Group Name" value="<%= this.groups[i].group %>">
+									<input type="text" class="form-control" id="group-edit-<%= this.groups[i].ID %>" name="group-edit-<%= this.groups[i].ID %>" placeholder="Group Name" value="<%= this.groups[i].group %>">
 								 <span class="input-group-btn">
 								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
 								  </span>
@@ -99,7 +116,7 @@
 							<div id="company-categories" class="admin-list-items">
 								<% for (var i in this.categories) { %>
 								<div class="input-group">
-									<input type="text" class="form-control" id="category-<%= this.categories[i].ID %>" name="category-<%= this.categories[i].ID %>" placeholder="Group Name" value="<%= this.categories[i].category %>">
+									<input type="text" class="form-control" id="category-edit-<%= this.categories[i].ID %>" name="category-edit-<%= this.categories[i].ID %>" placeholder="Group Name" value="<%= this.categories[i].category %>">
 								 <span class="input-group-btn">
 								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
 								  </span>
@@ -125,7 +142,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -172,7 +189,7 @@
 			});
 			//$( ".admin-list-items" ).disableSelection();
 
-		},"form")
+		}, "form")
 
 	}
 	$(document).on("click", ".company-form", function () {
@@ -180,7 +197,49 @@
 		$.bbq.pushState({"modal": "company-" + $this.attr("data-ID")})
 		formCompany();
 
-	})
+	});
+	$(document).on("submit", "#form-company", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+		var $submit = $("button[type='submit']",$this).html("Save changes").removeClass("btn-danger");
+		$(".form-validation",$this).remove();
+		$(".has-error",$this).removeClass("has-error has-feedback");
+		
+		$.post("/save/form/company?ID=" + $this.attr("data-ID"), data, function (r) {
+			var data = r.data;
+			validationErrors(data,$this);
+			
+		})
+		
+
+
+		return false;
+		//formCompany();
+
+	});
+
+
+	function validationErrors(data,$form){
+		if (!$.isEmptyObject(data['errors'])){
+			var i = 0;
+			$.each(data.errors,function(k,v){
+				i = i+1;
+				var $field = $("#"+k);
+				//console.info(k)
+				var $block = $field.closest(".form-group");
+
+				$block.addClass("has-error has-feedback");
+				if (v!=""){
+					$field.after('<span class="help-block s form-validation">'+v+'</span>');
+				}
+				$field.after('<span class="fa fa-times form-control-feedback form-validation" aria-hidden="true"></span>')
+			});
+
+			$("button[type='submit']",$form).addClass("btn-danger").html("("+i+") Error(s) Found");
+		}
+		
+	}
 
 
 </script>
