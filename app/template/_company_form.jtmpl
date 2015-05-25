@@ -32,16 +32,17 @@
 						<label for="invitecode" class="col-sm-3 control-label">Invite code</label>
 
 						<div class="col-sm-8">
-								<input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="Invite Code" value="<%= this.admin_email||'' %>">
-<div class="clearfix"></div>
-							<div class="help-block ">Give this code out to new users for them to be added to the company. you would still have to assign them to a group</div>
+							<input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="Invite Code" value="<%= this.invitecode||'' %>">
+
+							<div class="clearfix"></div>
+							<div class="help-block ">Give this code out to new users for them to be added to the company. you would still have to assign them to groups. Clear this field and submit to automaticaly generate a key</div>
 						</div>
 
 					</div>
 
 
 					<div class="form-group">
-						<label for="company" class="col-sm-3 control-label">Groups
+						<label for="new-group" class="col-sm-3 control-label">Groups
 
 							<span class="help-block ">
 								<p>
@@ -58,9 +59,10 @@
 						<div class="col-sm-8">
 
 							<div class="input-group">
-								<input type="text" class="form-control" id="group-new" name="group-new[]" placeholder="Group Name" value="">
+								<input type="text" class="form-control" id="new-group" name="new-group" placeholder="Group Name" value="">
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+								    <button class="btn btn-default" type="button" id="btn-new-group">
+									    <i class="fa fa-plus"></i></button>
 								  </span>
 
 
@@ -70,10 +72,11 @@
 
 							<div id="company-groups" class="admin-list-items">
 								<% for (var i in this.groups) { %>
-								<div class="input-group">
+								<div class="input-group edit-item" data-ID="<%= this.groups[i].ID %>">
 									<input type="text" class="form-control" id="group-edit-<%= this.groups[i].ID %>" name="group-edit-<%= this.groups[i].ID %>" placeholder="Group Name" value="<%= this.groups[i].group %>">
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
+								    <button class="btn btn-default btn-remove" type="button"><i class="fa fa-trash"></i>
+								    </button>
 								  </span>
 								 <span class="input-group-btn">
 								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
@@ -93,7 +96,7 @@
 						</div>
 					</div>
 					<div class="form-group" style="margin-top:30px;">
-						<label for="company" class="col-sm-3 control-label">Categories
+						<label for="new-category" class="col-sm-3 control-label">Categories
 						<span class="help-block ">
 								Content gets added to Categories, its just a means of grouping similer items together in the agenda.
 							</span>
@@ -103,9 +106,10 @@
 						<div class="col-sm-8">
 
 							<div class="input-group">
-								<input type="text" class="form-control" id="category-new" name="category-new[]" placeholder="Category Name" value="">
+								<input type="text" class="form-control" id="new-category" name="new-category" placeholder="Category Name" value="">
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+								    <button class="btn btn-default" type="button" id="btn-new-category">
+									    <i class="fa fa-plus"></i></button>
 								  </span>
 
 
@@ -113,12 +117,14 @@
 							</div>
 							<span class="help-block">After adding the name please click the <i class="fa fa-plus"></i> button </span>
 
+
 							<div id="company-categories" class="admin-list-items">
 								<% for (var i in this.categories) { %>
-								<div class="input-group">
+								<div class="input-group edit-item" data-ID="<%= this.categories[i].ID %>">
 									<input type="text" class="form-control" id="category-edit-<%= this.categories[i].ID %>" name="category-edit-<%= this.categories[i].ID %>" placeholder="Group Name" value="<%= this.categories[i].category %>">
 								 <span class="input-group-btn">
-								    <button class="btn btn-default" type="button"><i class="fa fa-trash"></i></button>
+								    <button class="btn btn-default btn-remove" type="button"><i class="fa fa-trash"></i>
+								    </button>
 								  </span>
 								 <span class="input-group-btn">
 								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
@@ -153,7 +159,71 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-form-group-new">
+	<![CDATA[
 
+	<div class="input-group new-item">
+		<input type="text" class="form-control" id="group-add-<%= this.ID %>" name="group-add-<%= this.ID %>" placeholder="Group Name" value="<%= this.new %>">
+		<span class="input-group-btn">
+			<button class="btn btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>
+		</span>
+		<span class="input-group-btn">
+			<button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+			</button>
+		</span>
+
+
+	</div>
+
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-category-new">
+	<![CDATA[
+
+	<div class="input-group new-item">
+		<input type="text" class="form-control" id="category-add-<%= this.ID %>" name="category-add-<%= this.ID %>" placeholder="Category Name" value="<%= this.new %>">
+		<span class="input-group-btn">
+			<button class="btn btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>
+		</span>
+		<span class="input-group-btn">
+			<button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+			</button>
+		</span>
+
+		]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-company-saved">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Success!!</h4>
+			</div>
+			<div class="modal-body c">
+				
+				
+				<div class="c" style="position: relative;">
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+					<div style="" >
+						<h3 class="g">Form Saved</h3>
+					</div>
+					
+				</div>
+				
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-link reload-modal">Continue Editing</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>	
+		]]>
+</script>
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -198,48 +268,123 @@
 		formCompany();
 
 	});
+	$(document).on("click", ".reload-modal", function () {
+		formCompany();
+
+	});
 	$(document).on("submit", "#form-company", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
-		var $submit = $("button[type='submit']",$this).html("Save changes").removeClass("btn-danger");
-		$(".form-validation",$this).remove();
-		$(".has-error",$this).removeClass("has-error has-feedback");
-		
+		var $submit = $("button[type='submit']", $this).html("Save changes").removeClass("btn-danger");
+		$(".form-validation", $this).remove();
+		$(".has-error", $this).removeClass("has-error has-feedback");
+
 		$.post("/save/form/company?ID=" + $this.attr("data-ID"), data, function (r) {
 			var data = r.data;
-			validationErrors(data,$this);
-			
+			validationErrors(data, $this);
+			$.bbq.pushState({"modal":"company-"+data['result']['ID']});
+			$("#form-modal").jqotesub($("#template-form-company-saved"), data);
 		})
-		
+
 
 
 		return false;
 		//formCompany();
 
 	});
+	$(document).on("change", ".has-error.has-feedback input", function () {
+		var $this = $(this);
+		var $block = $this.closest(".form-group");
+
+		$block.removeClass("has-error has-feedback");
+		$(".form-validation", $block).remove();
+
+		submitBtnCounter($this.closest("form"))
+
+	});
 
 
-	function validationErrors(data,$form){
-		if (!$.isEmptyObject(data['errors'])){
+	$(document).on("click", "#btn-new-group", function () {
+		var $input = $("#new-group");
+
+		var data = {
+			"ID": $("#company-groups .new-item").length,
+			"new": $input.val()
+		}
+		if (data.new) {
+			$("#company-groups").jqoteapp($("#template-form-group-new"), data);
+
+			$input.val("");
+		}
+
+	});
+	$(document).on("click", "#btn-new-category", function () {
+		var $input = $("#new-category");
+
+		var data = {
+			"ID": $("#company-categories .new-item").length,
+			"new": $input.val()
+		}
+		if (data.new) {
+			$("#company-categories").jqoteapp($("#template-form-category-new"), data);
+			$input.val("");
+		}
+
+	});
+	$(document).on("click", ".new-item .btn-remove", function () {
+		var $row = $(this).closest(".new-item");
+
+		if (confirm("Remove this item?")) {
+			$row.remove();
+		}
+	});
+	$(document).on("click", ".edit-item .btn-remove", function () {
+		var $row = $(this).closest(".edit-item");
+
+		if (confirm("Remove this item? \n\rAny records are linked they will be permanently removed aswell.\n\rUse cautiously")) {
+			
+			$row.remove();
+		}
+	});
+
+
+
+	function validationErrors(data, $form) {
+		if (!$.isEmptyObject(data['errors'])) {
 			var i = 0;
-			$.each(data.errors,function(k,v){
-				i = i+1;
-				var $field = $("#"+k);
+			$.each(data.errors, function (k, v) {
+				i = i + 1;
+				var $field = $("#" + k);
 				//console.info(k)
 				var $block = $field.closest(".form-group");
 
 				$block.addClass("has-error has-feedback");
-				if (v!=""){
-					$field.after('<span class="help-block s form-validation">'+v+'</span>');
+				if (v != "") {
+					$field.after('<span class="help-block s form-validation">' + v + '</span>');
 				}
 				$field.after('<span class="fa fa-times form-control-feedback form-validation" aria-hidden="true"></span>')
 			});
-
-			$("button[type='submit']",$form).addClass("btn-danger").html("("+i+") Error(s) Found");
+			$(".has-error").get(0).scrollIntoView();
+			$("button[type='submit']", $form).addClass("btn-danger").html("(" + i + ") Error(s) Found");
+			return false;
+		} else {
+			return true;
 		}
-		
+
+		submitBtnCounter($form);
 	}
 
+	function submitBtnCounter($form) {
+
+		var c = $(".form-group.has-error").length;
+		var $btn = $("button[type='submit']", $form);
+		if (c) {
+			$btn.addClass("btn-danger").html("(" + c + ") Error(s) Found");
+		} else {
+			$btn.html("Save changes").removeClass("btn-danger");
+		}
+
+	}
 
 </script>

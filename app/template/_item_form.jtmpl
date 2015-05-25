@@ -169,7 +169,7 @@
 				['Source']
 
 			];
-			CKEDITOR.config.skin = 'bootstrapck,/app/_ckeditor/bootstrapck/';
+			CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
 			CKEDITOR.replace('description');
 
 

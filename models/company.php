@@ -168,6 +168,157 @@ class company extends _ {
 		return $this;
 
 	}
+
+
+	function save($values){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_companies");
+		$art->load("ID='$ID'");
+
+		
+		//test_array($this->get("14")); 
+		foreach ($values as $key => $value) {
+			if (isset($art->$key)) {
+				$art->$key = $value;
+			}
+
+		}
+
+		$art->save();
+		$ID = ($art->ID) ? $art->ID : $art->_id;
+
+
+		$this->return = array_merge($this->return , $this->get($ID)->show());
+		
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+	
+	function saveGroups($values){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_groups");
+		foreach ($values as $item){
+			$art->load("ID='{$item['ID']}'");
+			$item['companyID'] = $ID;
+			foreach ($item as $key => $value) {
+				if (isset($art->$key)) {
+					$art->$key = $value;
+				}
+
+			}
+
+			$art->save();
+			$art->reset();
+			
+		}
+		
+		
+
+		
+		
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+	function saveCategories($values){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_categories");
+		foreach ($values as $item){
+			$art->load("ID='{$item['ID']}'");
+			$item['companyID'] = $ID;
+			foreach ($item as $key => $value) {
+				if (isset($art->$key)) {
+					$art->$key = $value;
+				}
+
+			}
+
+			$art->save();
+			$art->reset();
+			
+		}
+		
+		
+
+		
+		
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+	function remove(){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_companies");
+		$art->load("ID='$ID'");
+		$art->erase();
+
+	
+		$art->save();
+		$ID = ($art->ID) ? $art->ID : $art->_id;
+
+
+		$this->return = array_merge($this->return , $this->get($ID)->show());
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+
+	function removeGroups($values){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_groups");
+		foreach ($values as $item){
+			$art->load("ID='{$item}'");
+			$art->erase();
+
+			$art->save();
+			$art->reset();
+
+		}
+
+
+
+
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+	function removeCategories($values){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_categories");
+		foreach ($values as $item){
+			$art->load("ID='{$item}'");
+			$art->erase();
+
+			
+
+			$art->save();
+			$art->reset();
+
+		}
+
+
+
+
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
+	
+	
 	function show($value=''){
 		$return = $this->return;
 		if ($value){

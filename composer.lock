@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "2c8990581e05aaeca2090d1eaa3447d2",
@@ -725,16 +725,16 @@
         },
         {
             "name": "timrwood/moment",
-            "version": "2.10.2",
+            "version": "2.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment.git",
-                "reference": "ce233cecf3d07aa15869a1db0fd8a8c43efccfcd"
+                "reference": "25cc720fbaab7323a1016cd0beb6a36e349c41be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/ce233cecf3d07aa15869a1db0fd8a8c43efccfcd",
-                "reference": "ce233cecf3d07aa15869a1db0fd8a8c43efccfcd",
+                "url": "https://api.github.com/repos/moment/moment/zipball/25cc720fbaab7323a1016cd0beb6a36e349c41be",
+                "reference": "25cc720fbaab7323a1016cd0beb6a36e349c41be",
                 "shasum": ""
             },
             "require": {
@@ -775,7 +775,7 @@
                 "time",
                 "validate"
             ],
-            "time": "2015-04-09 06:31:25"
+            "time": "2015-05-13 07:42:12"
         },
         {
             "name": "twig/twig",
