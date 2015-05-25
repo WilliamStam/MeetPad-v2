@@ -55,7 +55,12 @@ class form extends _save {
 		
 		
 		
-		
+		$exists = models\company::getInstance()->getAll("company='{$values['company']}'")->show();
+		$exists = isset($exists[0])?$exists[0]:false;
+		if ($exists && $exists['ID']!=$ID){
+			$errors['company'] = "A company with that name already exists<br> Admin Contact: {$exists['admin_email']}";
+		}
+		//test_array($errors); 
 		
 		
 		
@@ -125,16 +130,18 @@ class form extends _save {
 			}
 		}
 
-		
-		
-	
-		
 
 
+
+
+
+		$result = models\company::getInstance()->get($ID);
 
 		if (count($errors)==0){
-			$result = models\company::getInstance()->get($ID)->save($values)->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
+			$result = $result->save($values)->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
 			
+		} else {
+			$result = $result->show();
 		}
 		
 		
@@ -153,7 +160,7 @@ class form extends _save {
 			"errors" => $errors
 		);
 
-		//test_array($return); 
+	//	test_array($return); 
 /*
 		test_array(array(
 			           "co" => $values,
