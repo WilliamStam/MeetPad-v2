@@ -137,4 +137,16 @@ class user extends _ {
 	function show(){
 		return $this->return;
 	}
+	function setActivity(){
+		if ($this->return['ID']!=""){
+			$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_users");
+			$art->load("ID = '{$this->return['ID']}'");
+			$art->lastActivity = date("Y-m-d H:i:s");
+			$art->save();
+		}
+		
+		
+		
+		return $this;
+	}
 }

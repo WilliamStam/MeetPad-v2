@@ -85,7 +85,7 @@ if (isset($_GET['auID']) && $user['su']=='1'){
 	$_SESSION['uID'] = $_GET['auID'];
 	$user = $userO->get($_GET['auID']);
 }
-
+$userO->setActivity();
 
 
 
