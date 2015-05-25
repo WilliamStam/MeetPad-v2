@@ -284,7 +284,9 @@
 			var data = r.data;
 			validationErrors(data, $this);
 			$.bbq.pushState({"modal":"company-"+data['result']['ID']});
-			$("#form-modal").jqotesub($("#template-form-company-saved"), data);
+			if ($.isEmptyObject(data['errors'])) {
+				$("#form-modal").jqotesub($("#template-form-company-saved"), data);
+			}
 		})
 
 
@@ -367,9 +369,9 @@
 			});
 			$(".has-error").get(0).scrollIntoView();
 			$("button[type='submit']", $form).addClass("btn-danger").html("(" + i + ") Error(s) Found");
-			return false;
+			
 		} else {
-			return true;
+			
 		}
 
 		submitBtnCounter($form);
