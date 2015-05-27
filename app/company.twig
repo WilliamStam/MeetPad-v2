@@ -1,32 +1,41 @@
-<div class="row">
-	<div class="whole-arrea">
-		{% if data['ID'] %}
-			<h1>{{ data['company'] }}</h1>
+<script type="text/javascript">
+	var _data = {{ data|json_encode()|raw() }};
 
-			<div class="clearfix"></div>
-			Company: 
-			<button class="btn company-form" data-ID="{{ data['ID'] }}" type="button"><i class="fa fa-pencil"></i></button>
-			<button class="btn company-form" data-ID="" type="button"><i class="fa fa-plus"></i></button>
-			
-			<div class="clearfix"></div>
-			Meeting: <button class="btn meeting-form" data-ID="" data-companyID="{{ data['ID'] }}" type="button"><i class="fa fa-plus"></i></button>
-		{% else %}
+	//console.log(_data)
+</script>
+<section id="content-area">
+	{% if data['ID'] %}
+		<div class="row">
+			<div class="col-md-5 affix affix-top  sidebar-offcanvas" id="left-area">
+				<section id="left-area-content" class="content">
+				</section>
+			</div>
+			<div class="col-md-7 col-md-offset-5 row-offcanvas row-offcanvas-left match-height" id="right-area">
+				<div data-toggle="offcanvas" class="offcanvas visible-sm-block visible-xs-block">
+					<i class="fa fa-ellipsis-v"></i>
+				</div>
+				<section id="right-area-content" class="content">
+				</section>
 
-			<div class="c" style="padding:50px;">
-				<img src="/app/_images/sad_face.png" alt=""/>
-				<p class="oops-text">Sowwy!</p></div>
-			<div class="alert alert-danger c" role="alert">No company found or no permission to access it!</div>
-		{% endif %}
-	</div>
-</div>
+			</div>
+			<div class="loadingmask wide" id="loading-mask"></div>
+		</div>
+	{% else %}
 
-<div class="row">
-	<ul>
-		
-	
-	{% for row in meetings %}
-	
-	<li><a href="/content/{{ row['ID'] }}/{{ data['url'] }}/{{ row['url'] }}">{{ row['meeting'] }}</a></li>
-	{% endfor %}
-	</ul>
-</div>
+		<div class="c" style="padding:50px;">
+
+			<div class="c" style="position: relative;">
+				<i class="fa fa-frown-o" style="font-size: 120px; color:rgba(255, 0, 0, 0.3)"></i>
+
+				<div style="">
+					<h3 class="g">Sowwy!!</h3>
+				</div>
+
+			</div>
+
+
+		</div>
+
+		<div class="alert alert-danger c" role="alert">No company found or no permission to access it!</div>
+	{% endif %}
+</section>

@@ -317,7 +317,25 @@ class company extends _ {
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $this;
 	}
-	
+	function addUser($userID,$admin=false){
+		$timer = new timer();
+		$ID = $this->return['ID'];
+		
+		
+		
+
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_users_company");
+		$art->load(array('companyID=? AND userID=?',$ID,$userID));
+
+	//	test_array($art);
+		$art->userID = $userID;
+		$art->companyID = $ID;
+		$art->admin = $admin?1:0;
+		$art->save();
+		
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $this;
+	}
 	
 	function show($value=''){
 		$return = $this->return;

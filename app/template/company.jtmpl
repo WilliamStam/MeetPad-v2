@@ -1,0 +1,139 @@
+<script type="text/x-jqote-template" id="template-left">
+	<![CDATA[
+	<section class="content-header">
+
+		<h1><%= this.company.company %></h1>
+	</section>
+
+
+
+	<section class="scroll-pane" style="left:10px;">
+
+		<div style="margin-right:10px;">
+
+
+
+			<button type="button" class="btn btn-default company-form" data-ID="<%= this.company.ID %>" style="width:180px; margin-right:10px;">
+				<i class="fa fa-pencil"></i> &nbsp; Edit this company
+			</button>
+
+			<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" style="width:180px;">
+				<i class="fa fa-plus"></i> &nbsp; New Meeting
+			</button>
+
+
+		</div>
+
+
+
+
+	</section>
+
+	<section class="content-footer"></section>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right">
+	<![CDATA[
+
+
+	<section class="scroll-pane" style="left:10px;  ">
+		<div style="padding-right:10px; padding-top:20px;">
+
+			<div class="alert alert-info" role="alert" style="margin-bottom:10px;">
+				<p class="c">
+					Click the button to schedule a new meeting
+				</p>
+			</div>
+			<button type="button" class="btn btn-primary  btn-block meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" style="">
+				<i class="fa fa-plus"></i> &nbsp; New Meeting
+			</button>
+
+
+			<% if (this.meetings.active.length) { %>
+			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
+				<h3 style="margin:0; padding:0;">Active Meetings</h3>
+			</div>
+
+			<% for (var i in this.meetings.active){ %>
+			<article class="meeting-block">
+				<h4><%= this.meetings.active[i].meeting %></h4>
+
+				<div style="margin-top:10px;">
+					<%= this.meetings.active[i].note||'' %>
+				</div>
+
+				<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
+					<div style="width:<%= this.meetings.active[i].percent %>%; opacity: 0.2" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= this.meetings.active[i].percent %>" role="progressbar" class="progress-bar progress-bar-info"></div>
+
+					<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
+						<em><%= this.meetings.active[i].timeStart.short.disp %> - <%= this.meetings.active[i].timeEnd.short.disp %></em>
+					</div>
+				</div>
+
+
+				<div class="clearfix"></div>
+				<div class="pull-left" role="group">
+					<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.meetings.active[i].companyID %>" data-ID="<%= this.meetings.active[i].ID %>">
+						<i class="fa fa-pencil"></i> Edit
+					</button>
+
+				</div>
+
+				<div class="pull-right">
+					<a href="/content/<%= this.meetings.active[i].ID %>/<%= this.meetings.active[i].company %>/<%= this.meetings.active[i].url %>" class="btn btn-default"><i class="fa fa-eye"></i> View</a>
+				</div>
+				<div class="clearfix"></div>
+			</article>
+
+			<% } %>
+			<% } %>
+
+			<div class="clearfix"></div>
+
+
+			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
+				<h3 style="margin:0; padding:0;">Past Meetings</h3>
+			</div>
+
+
+
+
+			<% for (var i in this.meetings.past){ %>
+			<article class="meeting-block">
+				<h4><%= this.meetings.past[i].meeting %></h4>
+
+
+				<div style="margin-top:10px;">
+					<%= this.meetings.past[i].note||'' %>
+				</div>
+
+
+
+
+
+				<div class="clearfix"></div>
+				<div class="pull-left" role="group">
+					<button type="button" class="btn btn-default meeting-form btn-xs" data-companyID="<%= this.meetings.past[i].companyID %>" data-ID="<%= this.meetings.past[i].ID %>">
+						<i class="fa fa-pencil"></i> Edit
+					</button>
+
+				</div>
+
+				<div class="pull-right">
+					<a href="/content/<%= this.meetings.past[i].ID %>/<%= this.meetings.past[i].company %>/<%= this.meetings.past[i].url %>" class="btn btn-default btn-xs" style="margin-right:10px;"><i class="fa fa-eye"></i> View</a>
+					<button type="button" class="btn btn-default btn-xs"><i class="fa fa-print"></i> Print</button>
+				</div>
+				<div class="clearfix"></div>
+
+
+
+			</article>
+			<% } %>
+
+
+
+		</div>
+
+	</section>
+	]]>
+</script>

@@ -16,7 +16,7 @@ class company extends _ {
 		$data = models\company::getInstance()->get($this->f3->get("PARAMS['ID']"),$userID)->format()->show();
 		
 		//test_array($data); 
-		$meetings = models\meeting::getInstance()->getUser(" $userSQL mp_meetings.companyID = '{$data['ID']}'","timeEnd DESC")->format()->show();
+		
 	
 		
 		//test_array($meetings); 
@@ -36,7 +36,6 @@ class company extends _ {
 		$tmpl->menu = models\user::getInstance()->menu()->show();;
 		$tmpl->data = $data;
 		
-		$tmpl->meetings = $meetings;
 		$tmpl->dropdownLabel = $data['company'];
 		
 

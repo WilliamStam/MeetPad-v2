@@ -49,8 +49,9 @@ class form extends _data {
 		}
 
 		$result = models\meeting::getInstance()->get($ID, true)->getGroups($companyID)->format()->show();
+		if ($result['companyID'])$companyID = $result['companyID'];
 
-
+		$result['company'] = models\company::getInstance()->get($companyID, true)->format()->show();
 
 
 		//test_array($result['groups']); 

@@ -35,8 +35,9 @@
 	
 	
 	$(window).resize(function () {
-		$.doTimeout('resize', 250, function () {
+		$.doTimeout(250, function () {
 			page_resize();
+			
 		});
 	});
 	

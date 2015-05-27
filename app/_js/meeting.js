@@ -31,6 +31,9 @@ $(document).ready(function () {
 	$(document).on('click', ".scroll-paneaaa", function () {
 		//getData();
 	});
+	$(document).on('hide.bs.modal', "#form-modal", function () {
+		getData();
+	});
 
 	$("#right-area").swipe({
 		//Generic swipe handler for all directions

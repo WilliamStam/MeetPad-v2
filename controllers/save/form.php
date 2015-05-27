@@ -131,17 +131,22 @@ class form extends _save {
 		}
 
 
+		//test_array($this->user['ID']);
 
 
-
-
-		$result = models\company::getInstance()->get($ID);
+		$resultO = models\company::getInstance()->get($ID);
 
 		if (count($errors)==0){
-			$result = $result->save($values)->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
+			$result = $resultO->save($values)->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
+			
+			if ($result['ID']!=$ID){
+				//test_array($this->user['ID']); 
+				$resultO->addUser($this->user['ID'],true);
+			}
+			
 			
 		} else {
-			$result = $result->show();
+			$result = $resultO->show();
 		}
 		
 		
