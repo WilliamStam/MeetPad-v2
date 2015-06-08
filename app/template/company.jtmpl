@@ -9,15 +9,15 @@
 
 	<section class="scroll-pane" style="left:10px;">
 
-		<div style="margin-right:10px;">
+		<div style="margin-right:10px;" >
 
 
 
-			<button type="button" class="btn btn-default company-form" data-ID="<%= this.company.ID %>" style="width:180px; margin-right:10px;">
+			<button type="button" class="btn btn-default btn-block company-form" data-ID="<%= this.company.ID %>" >
 				<i class="fa fa-pencil"></i> &nbsp; Edit this company
 			</button>
 
-			<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" style="width:180px;">
+			<button type="button" class="btn btn-default btn-block meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" >
 				<i class="fa fa-plus"></i> &nbsp; New Meeting
 			</button>
 
@@ -39,14 +39,7 @@
 	<section class="scroll-pane" style="left:10px;  ">
 		<div style="padding-right:10px; padding-top:20px;">
 
-			<div class="alert alert-info" role="alert" style="margin-bottom:10px;">
-				<p class="c">
-					Click the button to schedule a new meeting
-				</p>
-			</div>
-			<button type="button" class="btn btn-primary  btn-block meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" style="">
-				<i class="fa fa-plus"></i> &nbsp; New Meeting
-			</button>
+			
 
 
 			<% if (this.meetings.active.length) { %>
@@ -69,8 +62,7 @@
 						<em><%= this.meetings.active[i].timeStart.short.disp %> - <%= this.meetings.active[i].timeEnd.short.disp %></em>
 					</div>
 				</div>
-
-
+				
 				<div class="clearfix"></div>
 				<div class="pull-left" role="group">
 					<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.meetings.active[i].companyID %>" data-ID="<%= this.meetings.active[i].ID %>">
@@ -92,7 +84,7 @@
 
 
 			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
-				<h3 style="margin:0; padding:0;">Past Meetings</h3>
+				<h3 style="margin:0; padding:0;">In-Active Meetings</h3>
 			</div>
 
 
@@ -100,7 +92,7 @@
 
 			<% for (var i in this.meetings.past){ %>
 			<article class="meeting-block">
-				<h4><%= this.meetings.past[i].meeting %></h4>
+				<h4><% if(this.meetings.past[i].future=='1'){ %><span class="label label-success s" style="margin-right:10px;">Upcoming</span> <% } %><%= this.meetings.past[i].meeting %></h4>
 
 
 				<div style="margin-top:10px;">
@@ -108,7 +100,13 @@
 				</div>
 
 
+				<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
+					
 
+					<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
+						<em><%= this.meetings.past[i].timeStart.short.disp %> - <%= this.meetings.past[i].timeEnd.short.disp %></em>
+					</div>
+				</div>
 
 
 				<div class="clearfix"></div>

@@ -47,9 +47,7 @@ class meeting extends _ {
 		}
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
+		return self::format($return);
 	}
 	function getAll($where = "", $orderby = "", $limit = "", $options = array()) {
 		$timer = new timer();
@@ -74,84 +72,40 @@ class meeting extends _ {
 			$limit = " LIMIT " . $limit;
 		}
 		$result = $this->f3->get("DB")->exec("
-			SELECT *
-			FROM mp_meetings
-			$where
-			$orderby
-			$limit
-		", $options['args'],$options['ttl']);
-
-
-		$return = $result;
-		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
 		
-	}
-	function getUser($where = "", $orderby = "", $limit = "", $options = array()) {
-		$timer = new timer();
-		$options = array(
-			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
-		);
-		$return = array();
-
-
-
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
-
-		if ($orderby) {
-			$orderby = " ORDER BY " . $orderby;
-		}
-		if ($limit) {
-			$limit = " LIMIT " . $limit;
-		}
-		$result = $this->f3->get("DB")->exec("
 			SELECT DISTINCT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active
-			FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
-
+			FROM (((mp_meetings LEFT JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
 			$where
 			$orderby
 			$limit
 		", $options['args'],$options['ttl']);
-
-
-	//	test_array($where); 
-		
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
-
+		return self::format($return);
+		
 	}
-	function getGroups($companyID=false) {
+		function getGroups($meetingID,$companyID=false) {
 		$timer = new timer();
 
-		if ($companyID){
-			if ($companyID===true OR $companyID=="undefined"){
-				$companyID = $this->return['companyID'];
-			}
-			$groups = company::getInstance()->getGroups($companyID)->show('groups');
-
-			$meetingGroups = $this->f3->get("DB")->exec("
-				SELECT mp_groups.*
+			$result = $this->f3->get("DB")->exec("
+				SELECT DISTINCT mp_groups.*
 				FROM mp_meetings_group INNER JOIN mp_groups ON mp_meetings_group.groupID = mp_groups.ID
-				WHERE mp_meetings_group.meetingID = '{$this->return['ID']}'
+				WHERE mp_meetings_group.meetingID = '{$meetingID}'
 				ORDER BY mp_groups.orderby ASC
 			");
 			
+		if ($companyID){
+			if ($companyID===true){
+				$companyID = $this->get($meetingID);
+				$companyID = $companyID['companyID'];
+			}
+			$groups = company::getInstance()->getGroups($companyID);
 
 			
 			$g = array();
 			$gr = array();
 
-			foreach ($meetingGroups as $item)$g[] = $item['ID'];
+			foreach ($result as $item)$g[] = $item['ID'];
 			foreach ($groups as $item){
 				$item['active']='0';
 				if (in_array($item['ID'],$g)){
@@ -161,55 +115,81 @@ class meeting extends _ {
 			}
 			$result = $gr;
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		} else {
-			$result = $this->f3->get("DB")->exec("
-				SELECT mp_groups.*
-				FROM mp_meetings_group INNER JOIN mp_groups ON mp_meetings_group.groupID = mp_groups.ID
-				WHERE mp_meetings_group.meetingID = '{$this->return['ID']}'
-				ORDER BY mp_groups.orderby ASC
-			");
-		}
-		 
-		
-		
-		
-		
-
-		
-		//test_array($result);
+		} 
 
 
 		
 
-		$this->return['groups'] = $result;
 		
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return $return;
 
 	}
-
-	
-	function show(){
-		return $this->return;
-	}
-	function format(){
+	static function save($ID,$values){
 		$timer = new timer();
-		$items = $this->return;
+		$f3 = \base::instance();
+	//	test_array($values); 
+
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_meetings");
+		$art->load("ID='$ID'");
+
+
+		//test_array($this->get("14")); 
+		foreach ($values as $key => $value) {
+			if (isset($art->$key)) {
+				$art->$key = $value;
+			}
+
+		}
+
+		$art->save();
+		$ID = ($art->ID) ? $art->ID : $art->_id;
+		
+		if (isset($values['groups'])&&$values['companyID']){
+			$f3->get("DB")->exec("DELETE FROM mp_meetings_group WHERE meetingID = '{$ID}'");
+			
+			
+		
+			//test_array($values['groups']); 
+			$n = array();
+			foreach ($values['groups'] as $item){
+				if ($item) $n[] = "('$ID','$item')";
+			}
+			
+
+			if (count($n)){
+				$str = implode(",",$n);
+				$f3->get("DB")->exec("INSERT INTO mp_meetings_group (meetingID,groupID) VALUES $str");
+			}
+			
+			
+			
+				
+		//	test_array(array($n,$r,$str)); 
+			
+		}
+
+
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $ID;
+	}
+
+	function show($value=''){
+		$return = $this->return;
+		if ($value){
+			$return = $return[$value];
+		}
+		return $return;
+	}
+	static function format($data){
+		$timer = new timer();
 		$single = false;
 	//	test_array($items); 
-		if (isset($items['ID'])) {
+		if (isset($data['ID'])) {
 			$single = true;
-			$items = array($this->return);
+			$data = array($data);
 		}
 		//test_array($items);
 		
@@ -217,7 +197,7 @@ class meeting extends _ {
 		$n = array();
 		//test_array($items); 
 		
-		foreach ($items as $item){
+		foreach ($data as $item){
 			$timeStart = strtotime($item['timeStart']);
 			$item['timeStart'] = array(
 				"raw"=>$item['timeStart'],
@@ -238,7 +218,7 @@ class meeting extends _ {
 
 			$timeEnd = strtotime($item['timeEnd']);
 			$item['timeEnd'] = array(
-				"raw"=>$item['timeStart'],
+				"raw"=>$item['timeEnd'],
 				"long"=>array(
 					"date"=>date("d F Y",($timeEnd)),
 					"time"=>date("H:i:sa",($timeEnd)),
@@ -260,6 +240,7 @@ class meeting extends _ {
 			}
 			$item['percent'] = $percent;
 			$item['active'] =  (strtotime("now") >= $timeStart AND strtotime("now") <= $timeEnd ) ? 1: 0;
+			$item['future'] =  (strtotime("now") <= $timeStart ) ? 1: 0;
 			
 			$item['url'] = toAscii($item['meeting']);
 			
@@ -267,14 +248,8 @@ class meeting extends _ {
 		}
 
 		if ($single) $n = $n[0];
-
-
-		//test_array($n); 
-		
-		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $n;
-		return $this;
+		return $n;
 	}
 	
 }

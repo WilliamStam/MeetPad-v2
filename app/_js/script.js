@@ -111,3 +111,44 @@ function updatetimerlist(d, page_size) {
 	}
 
 };
+
+function validationErrors(data, $form) {
+	if (!$.isEmptyObject(data['errors'])) {
+		var i = 0;
+		$.each(data.errors, function (k, v) {
+			i = i + 1;
+			var $field = $("#" + k);
+			//console.info(k)
+			var $block = $field.closest(".form-group");
+
+			$block.addClass("has-error");
+			if (v != "") {
+				$field.after('<span class="help-block s form-validation">' + v + '</span>');
+			}
+			if ($block.hasClass("has-feedback")){
+				$field.after('<span class="fa fa-times form-control-feedback form-validation" aria-hidden="true"></span>')
+			}
+
+
+		});
+		$(".has-error").get(0).scrollIntoView();
+		$("button[type='submit']", $form).addClass("btn-danger").html("(" + i + ") Error(s) Found");
+
+	} else {
+
+	}
+
+	submitBtnCounter($form);
+}
+
+function submitBtnCounter($form) {
+
+	var c = $(".form-group.has-error").length;
+	var $btn = $("button[type='submit']", $form);
+	if (c) {
+		$btn.addClass("btn-danger").html("(" + c + ") Error(s) Found");
+	} else {
+		$btn.html("Save changes").removeClass("btn-danger");
+	}
+
+}

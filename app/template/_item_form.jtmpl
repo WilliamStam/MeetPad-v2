@@ -2,7 +2,7 @@
 	<![CDATA[
 
 
-	<form class="form-horizontal">
+	<form class="form-horizontal" id="form-item" data-ID="<%= this.ID %>" data-mID="<%= this.meeting.ID %>" data-cID="<%= this.company.ID %>">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -25,7 +25,7 @@
 
 
 
-					<div class="form-group">
+					<div class="form-group has-feedback">
 						<label for="heading" class="col-sm-3 control-label">Heading</label>
 
 						<div class="col-sm-8">
@@ -58,14 +58,17 @@
 						<label for="groups" class="col-sm-3 control-label">Categories</label>
 
 						<div class="col-sm-8">
-							<% for (var i in this.company.categories) { %>
-							<div class="radio">
-								<label>
-									<input type="radio" name="categories" value="<%= this.company.categories[i].ID %>" <% if (this.company.categories[i].ID == this.categoryID){ %>checked<% } %>>
-									<%= this.company.categories[i].category %>
-								</label>
+							<div id="categoryID">
+								<% for (var i in this.company.categories) { %>
+								<div class="radio">
+									<label>
+										<input type="radio" name="categoryID" value="<%= this.company.categories[i].ID %>" <% if (this.company.categories[i].ID == this.categoryID){ %>checked<% } %>>
+										<%= this.company.categories[i].category %>
+									</label>
+								</div>
+								<% } %>
 							</div>
-							<% } %>
+
 						</div>
 					</div>
 
@@ -73,14 +76,17 @@
 						<label for="groups" class="col-sm-3 control-label">Groups</label>
 
 						<div class="col-sm-8">
-							<% for (var i in this.groups) { %>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="groups" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
-									<%= this.groups[i].group %>
-								</label>
+							<div id="groups" >
+								<% for (var i in this.groups) { %>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+										<%= this.groups[i].group %>
+									</label>
+								</div>
+								<% } %>
 							</div>
-							<% } %>
+
 						</div>
 					</div>
 
@@ -91,7 +97,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -103,6 +109,37 @@
 	]]>
 </script>
 
+<script type="text/x-jqote-template" id="template-form-item-saved">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Success!!</h4>
+			</div>
+			<div class="modal-body c">
+
+
+				<div class="c" style="position: relative;">
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+					<div style="" >
+						<h3 class="g">Form Saved</h3>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-link reload-modal-item">Continue Editing</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+	]]>
+</script>
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -128,54 +165,24 @@
 
 			$("#form-modal").jqotesub($("#template-form-item"), data).modal("show");
 
+			
+
+			if ($("#description").length){
+				CKEDITOR.config.removeButtons = '';
+				CKEDITOR.config.toolbar = [
+					['Bold','Italic','Underline','StrikeThrough'],
+					['Styles','Format','Font','FontSize'],
+					['NumberedList','BulletedList'],
+					['Outdent','Indent'],
+					['Cut','Copy','Paste','Find','Replace'],
+					['Source']
+				] ;
+				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
+				CKEDITOR.replace('description');
+			}
 
 
-
-
-
-
-
-
-
-			CKEDITOR.config.removeButtons = '';
-			CKEDITOR.config.toolbar = [
-				[
-					'Bold',
-					'Italic',
-					'Underline',
-					'StrikeThrough'
-				],
-				[
-					'Styles',
-					'Format',
-					'Font',
-					'FontSize'
-				],
-				[
-					'NumberedList',
-					'BulletedList'
-				],
-				[
-					'Outdent',
-					'Indent'
-				],
-				[
-					'Cut',
-					'Copy',
-					'Paste',
-					'Find',
-					'Replace'
-				],
-				['Source']
-
-			];
-			CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
-			CKEDITOR.replace('description');
-
-
-
-
-		}, "form");
+		}, "form")
 
 	}
 	$(document).on("click", ".item-form", function () {
@@ -184,6 +191,44 @@
 		formItem();
 
 	})
+	$(document).on("click", ".reload-modal-item", function () {
+		formItem();
+
+	});
+	$(document).on("submit", "#form-item", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+		var $submit = $("button[type='submit']", $this).html("Save changes").removeClass("btn-danger");
+		$(".form-validation", $this).remove();
+		$(".has-error", $this).removeClass("has-error has-feedback");
+
+		$.post("/save/form/item?ID=" + $this.attr("data-ID")+"&mID="+$this.attr("data-mID")+"&cID="+$this.attr("data-cID"), data, function (r) {
+			var data = r.data;
+			validationErrors(data, $this);
+			
+			$.bbq.pushState({"modal":"item-"+data['ID']+"-"+data['meetingID']});
+			if ($.isEmptyObject(data['errors'])) {
+				$("#form-modal").jqotesub($("#template-form-item-saved"), data);
+			}
+		});
+
+		return false;
+	});
+	$(document).on("change", ".has-error.has-feedback input", function () {
+		var $this = $(this);
+		var $block = $this.closest(".form-group");
+
+		$block.removeClass("has-error has-feedback");
+		$(".form-validation", $block).remove();
+
+		submitBtnCounter($this.closest("form"))
+
+	});
+
+
+
+
 
 
 </script>

@@ -28,7 +28,7 @@ class home extends _ {
 			"js"=>"",
 		);
 
-		$tmpl->menu = models\user::getInstance()->menu()->show();;
+		$tmpl->menu = models\user::getInstance()->menu();
 		$tmpl->output();
 		
 		

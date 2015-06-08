@@ -38,8 +38,10 @@ class meeting extends _data {
 		
 		$meetingID = isset($_GET['meetingID'])?$_GET['meetingID']:"";
 
-		$result =  models\meeting::getInstance()->get($meetingID,true)->getGroups()->format()->show();
-
+		$object = models\meeting::getInstance();
+		$result =  $object->get($meetingID,true);
+		$result['groups'] = $object->getGroups($meetingID);
+		
 		$this->meetingID = $result['ID'];
 		$this->companyID = $result['companyID'];
 		
@@ -49,8 +51,14 @@ class meeting extends _data {
 
 		$userSQL = ($this->user['global_admin']=='1')?"":"AND mp_users_group.userID = '{$this->user['ID']}'";
 
-		$result = models\item::getInstance()->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC")->format()->show();
 
+		$object = models\item::getInstance();
+		$result =  $object->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC");
+		
+		
+		
+		
+		
 		$items = array();
 		foreach ($result as $item){
 			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
@@ -68,13 +76,19 @@ class meeting extends _data {
 	function item() {
 		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
 
-		$result =  models\item::getInstance()->get($itemID,true)->getGroups()->format()->show();
+		$object = models\item::getInstance();
+		
+		
+		$result =  $object->get($itemID,true);
+		
+		
 
 		//test_array($result); 
 		if ($result['meetingID']!=$this->meetingID && $itemID){
-			$result =  models\item::getInstance()->get("A",true)->getGroups()->format()->show();
+			$result =  $object->get("a",true);
 		}
 
+		$result['groups'] = $object->getGroups($result['ID']);
 //test_array($result); 
 	
 		
@@ -88,7 +102,7 @@ class meeting extends _data {
 		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
 
-		$result =  models\company::getInstance()->get($this->companyID,$userID)->format()->show();
+		$result =  models\company::getInstance()->get($this->companyID,$userID);
 
 		
 	

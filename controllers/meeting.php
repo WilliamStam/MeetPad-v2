@@ -14,7 +14,7 @@ class meeting extends _ {
 
 
 
-		$data = models\meeting::getInstance()->get($this->f3->get("PARAMS['ID']"), true)->show();
+		$data = models\meeting::getInstance()->get($this->f3->get("PARAMS['ID']"), true);
 
 		//test_array($data); 
 
@@ -30,7 +30,7 @@ class meeting extends _ {
 			"css" => "",
 			"js" => "",
 		);
-		$tmpl->menu = models\user::getInstance()->menu()->show();;
+		$tmpl->menu = models\user::getInstance()->menu();;
 		$tmpl->data = $data;
 		$tmpl->dropdownLabel = $tmpl->data['meeting'];
 		$tmpl->output();

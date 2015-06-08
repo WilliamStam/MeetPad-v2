@@ -18,7 +18,7 @@ class company extends _ {
 	
 	function get($ID,$userID=""){
 		$timer = new timer();
-		$where = "ID = '$ID'";
+		$where = "mp_companies.ID = '$ID'";
 		if ($userID===true){
 			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
 		}
@@ -31,11 +31,10 @@ class company extends _ {
 			";
 		
 		if ($userID){
-			
 			$sql = "
 			SELECT DISTINCT mp_companies.*
 			FROM mp_companies INNER JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
-			WHERE ID='{$ID}' AND userID = '{$userID}'
+			WHERE mp_companies.ID='{$ID}' AND mp_users_company.userID = '{$userID}'
 			";
 		}
 		
@@ -48,10 +47,10 @@ class company extends _ {
 		} else {
 			$return = parent::dbStructure("mp_companies", array("administrator" => "0"));
 		}
+
+		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
+		return  self::format($return);
 	}
 	function getAll($where = "", $orderby = "", $limit = "", $options = array()) {
 		$timer = new timer();
@@ -76,65 +75,23 @@ class company extends _ {
 			$limit = " LIMIT " . $limit;
 		}
 		$result = $this->f3->get("DB")->exec("
-			SELECT *
-			FROM mp_companies
+			SELECT DISTINCT mp_companies.*
+			FROM mp_companies LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
 			$where
 			$orderby
 			$limit
 		", $options['args'],$options['ttl']);
 
 
-		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
+		return self::format($result);
 		
 	}
-	function getUser($where = "", $orderby = "", $limit = "", $options = array()) {
-		$timer = new timer();
-		$options = array(
-			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
-		);
-		$return = array();
-
-
-
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
-
-		if ($orderby) {
-			$orderby = " ORDER BY " . $orderby;
-		}
-		if ($limit) {
-			$limit = " LIMIT " . $limit;
-		}
-		$result = $this->f3->get("DB")->exec("
-			SELECT DISTINCT mp_companies.*
-			FROM mp_companies INNER JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
-			$where
-			$orderby
-			$limit
-		", $options['args'],$options['ttl']);
-
-
-		$return = $result;
-		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
-		return $this;
-
-	}
-	function getGroups($cID=false) {
+	
+	function getGroups($cID) {
 		$timer = new timer();
 
-		if (!$cID){
-			$cID = $this->return['ID'];
-		}
+		
 		$result = $this->f3->get("DB")->exec("
 			SELECT mp_groups.*
 			FROM mp_groups
@@ -142,18 +99,14 @@ class company extends _ {
 			ORDER BY mp_groups.orderby ASC
 		");
 
-		$this->return['groups'] = $result;
 
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return $return;
 
 	}
-	function getCategories($cID=false) {
+	function getCategories($cID) {
 		$timer = new timer();
-		if (!$cID){
-			$cID = $this->return['ID'];
-		}
 		$result = $this->f3->get("DB")->exec("
 			SELECT mp_categories.*
 			FROM mp_categories
@@ -161,26 +114,24 @@ class company extends _ {
 			ORDER BY mp_categories.orderby ASC
 		");
 
-		$this->return['categories'] = $result;
 
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return $return;
 
 	}
 
 
-	function save($values){
+	public static function save($ID,$values){
 		$timer = new timer();
-		$ID = $this->return['ID'];
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_companies");
+		$f3 = \base::instance();
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
 		$art->load("ID='$ID'");
 
 		
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
-			if (isset($art->$key)) {
+			if (isset($art->$key) && $key != "ID") {
 				$art->$key = $value;
 			}
 
@@ -190,29 +141,34 @@ class company extends _ {
 		$ID = ($art->ID) ? $art->ID : $art->_id;
 
 
-		$this->return = array_merge($this->return , $this->get($ID)->show());
+		
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return $ID;
 	}
 	
-	function saveGroups($values){
+	public static function saveGroups($companyID,$values){
 		$timer = new timer();
-		$ID = $this->return['ID'];
+		$f3 = \base::instance();
 
 
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_groups");
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_groups");
 		foreach ($values as $item){
 			$art->load("ID='{$item['ID']}'");
-			$item['companyID'] = $ID;
+			$item['companyID'] = $companyID;
 			foreach ($item as $key => $value) {
-				if (isset($art->$key)) {
+				if (isset($art->$key) && $key != "ID") {
 					$art->$key = $value;
 				}
 
 			}
 
-			$art->save();
+			if (isset($item['group'])&& $item['group']==""){
+				$art->erase();
+			} else {
+				$art->save();
+			}
+			
 			$art->reset();
 			
 		}
@@ -222,25 +178,27 @@ class company extends _ {
 		
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return "done";
 	}
-	function saveCategories($values){
+	public static function saveCategories($companyID,$values){
 		$timer = new timer();
-		$ID = $this->return['ID'];
+		$f3 = \base::instance();
 
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_categories");
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_categories");
 		foreach ($values as $item){
 			$art->load("ID='{$item['ID']}'");
-			$item['companyID'] = $ID;
+			$item['companyID'] = $companyID;
 			foreach ($item as $key => $value) {
-				if (isset($art->$key)) {
+				if (isset($art->$key) && $key != "ID") {
 					$art->$key = $value;
 				}
 
 			}
-
-			$art->save();
+			if (isset($item['category'])&& $item['category']==""){
+				$art->erase();
+			} else {
+				$art->save();
+			}
 			$art->reset();
 			
 		}
@@ -250,107 +208,57 @@ class company extends _ {
 		
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return "done";;
 	}
-	function remove(){
+	function remove($ID){
 		$timer = new timer();
-		$ID = $this->return['ID'];
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_companies");
+		$f3 = \base::instance();
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
 		$art->load("ID='$ID'");
 		$art->erase();
 
 	
 		$art->save();
-		$ID = ($art->ID) ? $art->ID : $art->_id;
 
 
-		$this->return = array_merge($this->return , $this->get($ID)->show());
-
-		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
-	}
-
-	function removeGroups($values){
-		$timer = new timer();
-		$ID = $this->return['ID'];
-
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_groups");
-		foreach ($values as $item){
-			$art->load("ID='{$item}'");
-			$art->erase();
-
-			$art->save();
-			$art->reset();
-
-		}
-
-
-
-
+	
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return "done";
 	}
-	function removeCategories($values){
+
+	
+	public static function addUser($userID,$companyID,$admin=false) {
 		$timer = new timer();
-		$ID = $this->return['ID'];
-
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_categories");
-		foreach ($values as $item){
-			$art->load("ID='{$item}'");
-			$art->erase();
-
-			
-
-			$art->save();
-			$art->reset();
-
-		}
+		$ID = $companyID;
+		$f3 = \base::instance();
 
 
 
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_users_company");
+		$art->load(array('companyID=? AND userID=?', $ID, $userID));
 
-
-		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
-	}
-	function addUser($userID,$admin=false){
-		$timer = new timer();
-		$ID = $this->return['ID'];
-		
-		
-		
-
-		$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_users_company");
-		$art->load(array('companyID=? AND userID=?',$ID,$userID));
-
-	//	test_array($art);
+		//	test_array($art);
 		$art->userID = $userID;
 		$art->companyID = $ID;
-		$art->admin = $admin?1:0;
+		$art->admin = $admin ? 1 : 0;
 		$art->save();
-		
+
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return $this;
+		return "done";
 	}
 	
-	function show($value=''){
-		$return = $this->return;
-		if ($value){
-			$return = $return[$value];
-		}
-		return $return;
-	}
-	function format(){
+	
+	static function format($data){
 		$timer = new timer();
-		$items = $this->return;
+		$f3 = \base::instance();
+		
+		
+		
 		$single = false;
-		if (isset($items['ID'])) {
+		if (isset($data['ID'])) {
 			$single = true;
-			$items = array($this->return);
+			$data = array($data);
 		}
 
 
@@ -358,7 +266,7 @@ class company extends _ {
 		$n = array();
 		//test_array($items); 
 
-		foreach ($items as $item){
+		foreach ($data as $item){
 			$item['url'] = toAscii($item['company']);
 			$n[] = $item;
 		}
@@ -368,8 +276,8 @@ class company extends _ {
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $n;
-		return $this;
+		
+		return $n;
 	}
 	
 }

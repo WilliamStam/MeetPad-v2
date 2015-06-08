@@ -76,17 +76,16 @@ $userO = new \models\user();
 
 
 if ($username && $password) {
-	$uID = $userO->login($username, $password)->show();
+	$uID = $userO->login($username, $password);
 	$url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	$f3->reroute($url);
 }
-$user = $userO->get($uID)->show();
+$user = $userO->get($uID);
 if (isset($_GET['auID']) && $user['su']=='1'){
 	$_SESSION['uID'] = $_GET['auID'];
 	$user = $userO->get($_GET['auID']);
 }
-$userO->setActivity();
-
+$userO->setActivity($uID);
 
 
 $f3->set('user', $user);

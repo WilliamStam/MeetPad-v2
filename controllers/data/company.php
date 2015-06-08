@@ -42,7 +42,11 @@ class company extends _data {
 		$userID = ($this->user['global_admin'] == '1') ? "" : "{$this->user['ID']}";
 		$ID = isset($_GET['companyID']) ? $_GET['companyID'] : "";
 
-		$result = models\company::getInstance()->get($ID, $userID)->getGroups()->getCategories()->format()->show();
+		$company = models\company::getInstance();
+		$result = $company->get($ID, true);
+		$result['groups'] = $company->getGroups($result['ID']);
+		$result['categories'] = $company->getCategories($result['ID']);
+		
 
 
 		$this->companyID = $result['ID'];
@@ -53,9 +57,8 @@ class company extends _data {
 
 	function meetings() {
 		
-		$userID = ($this->user['global_admin']=='1')?"":$this->user['ID'];
 		$userSQL = ($this->user['global_admin']=='1')?"":"mp_users_group.userID='{$this->user['ID']}' AND ";
-		$records = models\meeting::getInstance()->getUser(" $userSQL mp_meetings.companyID = '{$this->companyID}'", "timeEnd DESC")->format()->show();
+		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}'", "timeEnd DESC", "0,10");
 
 		$result = array(
 			"active"=>array(),

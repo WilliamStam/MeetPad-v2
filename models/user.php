@@ -34,19 +34,15 @@ class user extends _ {
 
 		if (count($result)) {
 			$return = $result[0];
-
-		
 		} else {
-
 			$return = parent::dbStructure("mp_users", array("administrator" => "0"));
 			
 		}
+		
 		//test_array($return);
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		$this->method = __FUNCTION__;
 		
-		return $this;
+		return self::format($return);
 	}
 	function login($username, $password) {
 		$timer = new timer();
@@ -79,8 +75,7 @@ class user extends _ {
 
 		$return = $ID;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		return $this;
+		return $return;
 	}
 	
 	function menu(){
@@ -95,7 +90,7 @@ class user extends _ {
 			$whereC = "userID='{$user['ID']}'";
 			$whereM = "mp_users_group.userID='{$user['ID']}'";
 		}
-		$meetings = meeting::getInstance()->getUser($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC")->format()->show();
+		$meetings = meeting::getInstance()->getAll($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC");
 		$am = array();
 		foreach ($meetings as $item){
 			$item['activeMeetings'] = 0;
@@ -106,7 +101,7 @@ class user extends _ {
 		
 		
 		
-		$companies = company::getInstance()->getUser($whereC,"company ASC")->format()->show();
+		$companies = company::getInstance()->getAll($whereC,"company ASC");
 		
 		//test_array($whereC); 
 		$n = array();
@@ -131,16 +126,15 @@ class user extends _ {
 		
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		$this->return = $return;
-		return $this;
+		return $return;
 	}
 	function show(){
 		return $this->return;
 	}
-	function setActivity(){
-		if ($this->return['ID']!=""){
+	function setActivity($ID){
+		if ($ID!=""){
 			$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_users");
-			$art->load("ID = '{$this->return['ID']}'");
+			$art->load("ID = '{$ID}'");
 			$art->lastActivity = date("Y-m-d H:i:s");
 			$art->save();
 		}
@@ -149,4 +143,34 @@ class user extends _ {
 		
 		return $this;
 	}
+	static function format($data){
+		$timer = new timer();
+		$f3 = \base::instance();
+
+ 
+
+		$single = false;
+		if (isset($data['ID'])) {
+			$single = true;
+			$data = array($data);
+		}
+
+		$i = 1;
+		$n = array();
+		//test_array($items); 
+
+		foreach ($data as $item){
+			$n[] = $item;
+		}
+
+		if ($single) $n = $n[0];
+
+
+
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+
+		return $n;
+	}
+	
+
 }

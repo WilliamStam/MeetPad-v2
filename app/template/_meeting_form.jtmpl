@@ -1,21 +1,20 @@
 <script type="text/x-jqote-template" id="template-form-meeting">
 	<![CDATA[
 
-
-	<form class="form-horizontal">
+	<form class="form-horizontal" id="form-meeting" data-ID="<%= this.ID %>" data-cID="<%= this.company.ID %>"> <% if (this.company.ID){ %>
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">
-						
+
 						<% if (this.ID) { %>
-						<% if (this.active=='1'){ %>
-							Edit Meeting
+						<% if (this.active=='1' || this.future=='1'){ %>
+						Edit Meeting
 						<% } else { %>
-								<span class="label label-warning">Inactive Meeting</span>					
-						
+						<span class="label label-warning">Inactive Meeting</span>
+
 						<% } %>
 						<% } else { %>Add Meeting<% } %>
 						<small class="pull-right" style="margin-right:30px;">
@@ -28,57 +27,78 @@
 
 
 
-					<div class="form-group">
-						<label for="company" class="col-sm-3 control-label">Meeting Name</label>
+					<% if (this.active=='1' || this.future=='1' || this.ID==''){ %>
+					<div class="form-group has-feedback">
+						<label for="meeting" class="col-sm-3 control-label">Meeting Name</label>
+
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="meeting" name="meeting" placeholder="Meeting Name" value="<%= this.meeting %>" <% if (this.active!='1' && this.ID!=''){ %>disabled<% } %>>
+							<input type="text" class="form-control" id="meeting" name="meeting" placeholder="Meeting Name" value="<%= this.meeting %>">
 						</div>
 					</div>
 
-
+					<% } else { %>
+					<div class="alert alert-info">
+						<p class="c">
+							This meeting isnt active. Only active meetings can be edited.
+						</p>
+					</div>
+					<% } %>
 
 
 					<div class="form-group">
 						<label for="timeStart" class="col-sm-3 control-label">Meeting Start</label>
+
 						<div class="col-sm-8">
-							<div id="timeStart"></div>
+
+							<input type="hidden" id="timeStart" name="timeStart" value="<%= this.timeStart.raw %>"/>
+
+							<div id="timeStart-area"></div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="timeEnd" class="col-sm-3 control-label">Meeting End</label>
+
 						<div class="col-sm-8">
-							<div id="timeEnd"></div>
+							<input type="hidden" id="timeEnd" name="timeEnd" value="<%= this.timeEnd.raw %>"/>
+
+							<div id="timeEnd-area"></div>
+
 						</div>
 					</div>
-					
 
 
 
+					<% if (this.active=='1' || this.future=='1' || this.ID==''){ %>
 					<div class="form-group">
 						<label for="groups" class="col-sm-3 control-label">Groups</label>
 
 						<div class="col-sm-8">
-							<% for (var i in this.groups) { %>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="groups" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %> <% if (this.active!='1'){ %>disabled<% } %>>
-									<%= this.groups[i].group %>
-								</label>
+							<div id="groups">
+
+
+								<% for (var i in this.groups) { %>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+										<%= this.groups[i].group %>
+									</label>
+								</div>
+								<% } %>
 							</div>
-							<% } %>
 						</div>
 					</div>
 
 
 					<div class="form-group">
-						<label for="groups" class="control-label">Meeting Note / Description</label>
+						<label for="note" class="control-label">Meeting Note / Description</label>
+
 						<div class="clearfix"></div>
-						<textarea name="note" id="note" cols="30" rows="10" placeholder="Meeting Note / Description" <% if (this.active!='1'){ %>disabled<% } %>><%= this.note %></textarea>
+						<textarea name="note" id="note" cols="30" rows="10" placeholder="Meeting Note / Description"><%= this.note %></textarea>
 					</div>
 
 
 
-
+					<% } %>
 
 
 
@@ -86,10 +106,13 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
+		<% } else { %>
+		oops something went wrong. no company selected for this meeting
+		<% } %>
 	</form>
 
 
@@ -97,8 +120,39 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-form-meeting-saved">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Success!!</h4>
+			</div>
+			<div class="modal-body c">
 
+
+				<div class="c" style="position: relative;">
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+					<div style="">
+						<h3 class="g">Form Saved</h3>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-link reload-modal-meeting">Continue Editing</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+	]]>
+</script>
 <script type="text/javascript">
+
 
 	$(document).ready(function () {
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("meeting") > -1) {
@@ -123,20 +177,7 @@
 
 			$("#form-modal").jqotesub($("#template-form-meeting"), data).modal("show");
 
-
-
-			$(".admin-list-items").sortable({
-				handle: ".handle",
-				items: "> .input-group",
-				cancel: '',
-				containment: "parent",
-				tolerance: "pointer"
-			});
-			//$( ".admin-list-items" ).disableSelection();
-
-
-
-			$('#timeStart, #timeEnd').datetimepicker({
+			$('#timeStart-area, #timeEnd-area').datetimepicker({
 				inline: true,
 				sideBySide: true,
 				icons: {
@@ -149,33 +190,59 @@
 					today: 'fa fa-calendar-o',
 					clear: 'fa fa-trash',
 					close: 'fa fa-times'
-				}
-			});
-			$("#timeStart").on("dp.change", function (e) {
-				$('#timeEnd').data("DateTimePicker").minDate(e.date);
-			});
-			$("#timeEnd").on("dp.change", function (e) {
-				$('#timeStart').data("DateTimePicker").maxDate(e.date);
+				},
+
+				format: "YYYY-MM-DD HH:mm:00",
 			});
 
+			$("#timeStart-area").on("dp.change", function (e) {
+				$('#timeEnd-area').data("DateTimePicker").minDate(e.date);
+				$("#timeStart").val(moment(e.date).format("YYYY-MM-DD HH:mm:00")).trigger("change")
 
-			CKEDITOR.config.removeButtons = '';
-			CKEDITOR.config.toolbar = [
-				['Bold','Italic','Underline','StrikeThrough'],
-				['Styles','Format','Font','FontSize'],
-				['NumberedList','BulletedList'],
-				['Outdent','Indent'],
-				['Cut','Copy','Paste','Find','Replace'],	
-				['Source']
-			
-			] ;
-			CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
-			CKEDITOR.replace('note');
+			}).data("DateTimePicker").date(moment($("#timeStart").val() || "d"));
+			$("#timeEnd-area").on("dp.change", function (e) {
+				$('#timeStart-area').data("DateTimePicker").maxDate(e.date);
+				$("#timeEnd").val(moment(e.date).format("YYYY-MM-DD HH:mm:00")).trigger("change")
+			}).data("DateTimePicker").date(moment($("#timeEnd").val() || "d"));
+
+			if (data.active == '1') {
+				CKEDITOR.config.removeButtons = '';
+				CKEDITOR.config.toolbar = [
+					[
+						'Bold',
+						'Italic',
+						'Underline',
+						'StrikeThrough'
+					],
+					[
+						'Styles',
+						'Format',
+						'Font',
+						'FontSize'
+					],
+					[
+						'NumberedList',
+						'BulletedList'
+					],
+					[
+						'Outdent',
+						'Indent'
+					],
+					[
+						'Cut',
+						'Copy',
+						'Paste',
+						'Find',
+						'Replace'
+					],
+					['Source']
+				];
+				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
+				CKEDITOR.replace('note');
+			}
 
 
-
-
-		}, "form");
+		}, "form")
 
 	}
 	$(document).on("click", ".meeting-form", function () {
@@ -184,6 +251,48 @@
 		formMeeting();
 
 	})
+	$(document).on("click", ".reload-modal-meeting", function () {
+		formMeeting();
+
+	});
+	$(document).on("submit", "#form-meeting", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+		var $submit = $("button[type='submit']", $this).html("Save changes").removeClass("btn-danger");
+		$(".form-validation", $this).remove();
+		$(".has-error", $this).removeClass("has-error has-feedback");
+
+		$.post("/save/form/meeting?ID=" + $this.attr("data-ID") + "&cID=" + $this.attr("data-cID"), data, function (r) {
+			var data = r.data;
+			validationErrors(data, $this);
+			$.bbq.pushState({"modal": "meeting-" + data['ID'] + "-" + data['companyID']});
+			if ($.isEmptyObject(data['errors'])) {
+				$("#form-modal").jqotesub($("#template-form-meeting-saved"), data);
+			}
+		})
+
+
+
+		return false;
+		//formCompany();
+
+	});
+	$(document).on("change", ".has-error.has-feedback input", function () {
+		var $this = $(this);
+		var $block = $this.closest(".form-group");
+
+		$block.removeClass("has-error has-feedback");
+		$(".form-validation", $block).remove();
+
+		submitBtnCounter($this.closest("form"))
+
+	});
+
+
+
+
+
 
 
 </script>

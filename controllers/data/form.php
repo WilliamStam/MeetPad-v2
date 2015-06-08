@@ -28,7 +28,10 @@ class form extends _data {
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
 
-		$result = models\company::getInstance()->get($ID, true)->getGroups()->getCategories()->format()->show();
+		$company = models\company::getInstance();
+		$result = $company->get($ID, true);
+		$result['groups'] = $company->getGroups($result['ID']);
+		$result['categories'] = $company->getCategories($result['ID']);
 
 
 
@@ -48,14 +51,27 @@ class form extends _data {
 			$ID = $IDparts[0];
 		}
 
-		$result = models\meeting::getInstance()->get($ID, true)->getGroups($companyID)->format()->show();
+		$object = models\meeting::getInstance();
+		
+		$result = $object->get($ID, true);
+		$result['groups'] = array();
+		
+		
 		if ($result['companyID'])$companyID = $result['companyID'];
 
-		$result['company'] = models\company::getInstance()->get($companyID, true)->format()->show();
-
+		$result['company'] = models\company::getInstance()->get($companyID,true);
+		$result['groups'] = $object->getGroups($result['ID'],$companyID);
 
 		//test_array($result['groups']); 
+		if ($result['ID']==''){
+			$result['active'] = '1';
+		}
 
+
+
+
+
+		
 
 
 
@@ -76,24 +92,33 @@ class form extends _data {
 		if (isset($IDparts[2])) {
 			$cID = $IDparts[2];
 		}
+		
+		$object = models\item::getInstance();
 
-		$resultO = models\item::getInstance()->get($ID, true);
-		$result = $resultO->format()->show();
+		$result = $object->get($ID,true);
 		
 		
+		//test_array($ID); 
+	
 		
 		if ($result['meetingID']) $mID = $result['meetingID'];
-		$result['meeting'] = models\meeting::getInstance()->get($mID, true)->getGroups()->format()->show();
 
-		if ($result['meeting']['companyID']) $cID = $result['meeting']['companyID'];
-		$result['company'] = models\company::getInstance()->get($cID, true)->getGroups()->getCategories()->format()->show();
-
-
-
-		$resultG = $resultO->getGroups($result['company']['ID'])->show();
-		$result['groups'] = $resultG['groups'];
+		$result['groups'] = $object->getGroups($result['ID'],$mID);
+		$result['meeting'] = models\meeting::getInstance()->get($mID, true);
 		
-		//test_array($resultG); 
+		if ($result['meeting']['companyID']) $cID = $result['meeting']['companyID'];
+		
+		
+		$companyObject = models\company::getInstance();
+		$result['company'] = $companyObject->get($cID, true);
+		$result['company']['categories'] = $companyObject->getCategories($cID);
+
+
+	//	test_array($mID); 
+	//	test_array($result['groups'] ); 
+		
+		
+	//	test_array($result['groups']); 
 		
 
 

@@ -38,8 +38,9 @@ class form extends _save {
 
 	function company() {
 		$result = array();
-
+		
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$ID_orig = isset($_GET['ID']) ? $_GET['ID'] : "";
 
 		$values = array(
 			"company" => $this->post("company", true),
@@ -53,9 +54,10 @@ class form extends _save {
 		if ($values['invitecode'] == "") $values['invitecode'] = $values['company'] . "-" . md5($values['company'] . "meetpad" . date("dmyhis"));
 
 		
+		$companyO = models\company::getInstance();
 		
 		
-		$exists = models\company::getInstance()->getAll("company='{$values['company']}'")->show();
+		$exists = $companyO->getAll("company='{$values['company']}'");
 		$exists = isset($exists[0])?$exists[0]:false;
 		if ($exists && $exists['ID']!=$ID){
 			$errors['company'] = "A company with that name already exists<br> Admin Contact: {$exists['admin_email']}";
@@ -73,6 +75,8 @@ class form extends _save {
 		$categories = array();
 		$groups_id = array();
 		$categories_id = array();
+		$groupCount = 0;
+		$catCount = 0;
 
 		foreach ($_POST as $key => $val) {
 			if (strpos($key, "group-edit-") > -1) {
@@ -83,6 +87,7 @@ class form extends _save {
 					"group" => $val,
 					"orderby" => count($groups)
 				);
+				if ($val!="")$groupCount=$groupCount+1;
 			}
 			if (strpos($key, "group-add-") > -1) {
 				$groups[] = array(
@@ -90,6 +95,7 @@ class form extends _save {
 					"group" => $val,
 					"orderby" => count($groups)
 				);
+				if ($val!="")$groupCount=$groupCount+1;
 			}
 			if (strpos($key, "category-add-") > -1) {
 				$categories[] = array(
@@ -97,6 +103,7 @@ class form extends _save {
 					"category" => $val,
 					"orderby" => count($categories)
 				);
+				if ($val!="")$catCount=$catCount+1;
 			}
 			if (strpos($key, "category-edit-") > -1) {
 				$itemID = str_replace("category-edit-", '', $key);
@@ -106,77 +113,54 @@ class form extends _save {
 					"category" => $val,
 					"orderby" => count($categories)
 				);
+				if ($val!="")$catCount=$catCount+1;
 			}
 		}
 
-		if (count($groups) == 0) {
+		if ($groupCount<=0) {
 			$errors['company-groups'] = "No Groups Added, Please add at least 1 group to the company";
 		}
-		if (count($categories) == 0) {
+		if ($catCount <=0) {
 			$errors['company-categories'] = "No Categories Added, Please add at least 1 category to the company";
 		}
 
-		$company = models\company::getInstance()->get($ID)->getGroups()->getCategories()->format()->show();
-		$group_remove_list = array();
-		foreach ($company['groups'] as $item) {
-			if (!in_array($item['ID'], $groups_id)) {
-				$group_remove_list[] = $item['ID'];
-			}
-		}
-		$category_remove_list = array();
-		foreach ($company['categories'] as $item) {
-			if (!in_array($item['ID'], $categories_id)) {
-				$category_remove_list[] = $item['ID'];
-			}
-		}
+	
+
+		
+		//test_array($categories);
 
 
-		//test_array($this->user['ID']);
 
-
-		$resultO = models\company::getInstance()->get($ID);
-
+		
+		
 		if (count($errors)==0){
-			$result = $resultO->save($values)->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
+			$ID = models\company::save($ID,$values);
 			
-			if ($result['ID']!=$ID){
-				//test_array($this->user['ID']); 
-				$resultO->addUser($this->user['ID'],true);
+			
+			models\company::saveGroups($ID,$groups);
+			models\company::saveCategories($ID,$categories);
+			
+			
+			
+			
+			
+		//	->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
+			
+			if ($ID_orig!=$ID){
+				models\company::addUser($this->user("ID"),$ID,true);
+				
 			}
 			
 			
-		} else {
-			$result = $resultO->show();
-		}
+		} 
 		
 		
 		
 		
-		
-		
-
-
-		
-
-
-
 		$return = array(
-			"result" => $result,
+			"ID" => $ID,
 			"errors" => $errors
 		);
-
-	//	test_array($return); 
-/*
-		test_array(array(
-			           "co" => $values,
-			           "groups" => $groups,
-			           "groups-del" => $group_remove_list,
-			           "categories" => $categories,
-			           "categories-del" => $category_remove_list,
-			           "post" => $_POST
-		           )
-		);
-*/
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
@@ -184,33 +168,82 @@ class form extends _save {
 		$result = array();
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$companyID = isset($_GET['cID']) ? $_GET['cID'] : "";
 		$IDparts = explode("-", $ID);
-		$companyID = "";
 		if (isset($IDparts[1])) {
 			$companyID = $IDparts[1];
 			$ID = $IDparts[0];
 		}
 
-		$result = models\meeting::getInstance()->get($ID, true)->getGroups($companyID)->format()->show();
+		//test_array($_POST); 
+		
+		$errors = $this->errors;
+
+		$values = array(
+			"timeStart" => $this->post("timeStart", "Please enter a start date and time"),
+			"timeEnd" => $this->post("timeEnd", "Please enter a start date and time"),
+			"companyID"=>$companyID
+		);
+
+		if (isset($_POST['meeting'])) $values['meeting'] = $this->post("meeting", true);
+		if (isset($_POST['note'])) $values['note'] = $this->post("note");
+		if (isset($_POST['meeting'])) {
+			$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
+		}
+		
+		if (isset($values['meeting'])&&$values['meeting']=="")$errors['meeting'] = "";
+		
+		
+	//	test_array($errors); 
+		
+		if (isset($values['groups']) && count($values['groups'])<=0){
+			$errors['groups'] = "No Groups Selected, Please add at least 1 group for the meeting";
+		}
+		
+		if (isset($values['timeStart']) && $values['timeStart']=="")$values['timeStart'] = date("Y-m-d H:i:s");
+		if (isset($values['timeEnd']) && $values['timeEnd']=="")$values['timeEnd'] = date("Y-m-d H:i:s");
+		
+		//test_array($values); 
+		
+		if (!count($errors)){
+			$ID = models\meeting::save($ID,$values);
+			
+			
+		}
+			
+		
+		
+		
+
+		//$result['company'] = $company;
+	//	test_array($values); 
 
 
 
 
-		//test_array($result['groups']); 
+		
 
 
 
+		$return = array(
+			"ID" => $ID,
+			"companyID" => $companyID,
+			"errors" => $errors
+		);
 
-		return $GLOBALS["output"]['data'] = $result;
+		
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 	function item() {
 		$result = array();
-
+		$errors = $this->errors;
+		
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
 		$IDparts = explode("-", $ID);
 		$mID = "";
-		$cID = "";
+		$mID = isset($_GET['mID']) ? $_GET['mID'] : "";;
+		$cID = isset($_GET['cID']) ? $_GET['cID'] : "";;
 		if (isset($IDparts[1])) {
 			$mID = $IDparts[1];
 			$ID = $IDparts[0];
@@ -218,29 +251,52 @@ class form extends _save {
 		if (isset($IDparts[2])) {
 			$cID = $IDparts[2];
 		}
+	
 
-		$resultO = models\item::getInstance()->get($ID, true);
-		$result = $resultO->format()->show();
+		$values = array(
+			"heading" => $this->post("heading", true),
+			"description" => $this->post("description"),
+			"discussion_link" => $this->post("discussion_link"),
+			"meetingID"=>$mID,
+			"categoryID"=>$this->post("categoryID"),
+		);
+
+		if (isset($_POST['heading'])) {
+			$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
+			//test_array($values['groups']); 
+			if (!count($values['groups'])){
+				$errors['groups'] = "You need to specify at least 1 group";
+			}
+		}
+		if ($values['heading']==""){
+			$errors['heading'] = "";
+		}
+	//	test_array(array($values,$errors,$this->post("heading"))); 
+		
+		if (!$ID){
+			
+			$values['userID'] = $this->user['ID'];
+		}
+		
+		//test_array($values); 
+
+		if (!count($errors)){
+			$ID = models\item::save($ID,$values);
+			
+		}
+		
+		
 
 
 
-		if ($result['meetingID']) $mID = $result['meetingID'];
-		$result['meeting'] = models\meeting::getInstance()->get($mID, true)->getGroups()->format()->show();
+		$return = array(
+			"ID" => $ID,
+			"meetingID" => $mID,
+			"errors" => $errors
+		);
+		
 
-		if ($result['meeting']['companyID']) $cID = $result['meeting']['companyID'];
-		$result['company'] = models\company::getInstance()->get($cID, true)->getGroups()->getCategories()->format()->show();
-
-
-
-		$resultG = $resultO->getGroups($result['company']['ID'])->show();
-		$result['groups'] = $resultG['groups'];
-
-		//test_array($resultG); 
-
-
-
-
-		return $GLOBALS["output"]['data'] = $result;
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 
