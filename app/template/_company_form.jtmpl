@@ -208,7 +208,11 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-link reload-modal">Continue Editing</button>
+				<% if (this.new) { %>
+				<a href="/content/<%= this.ID %>/<%= this.new %>" class="btn btn-primary">Close</a>
+				<% } else { %>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				<% } %>
 			</div>
 		</div>
 	</div>	
@@ -275,7 +279,11 @@
 			validationErrors(data, $this);
 			$.bbq.pushState({"modal":"company-"+data['ID']});
 			if ($.isEmptyObject(data['errors'])) {
+				
 				$("#form-modal").jqotesub($("#template-form-company-saved"), data);
+				
+				
+				
 			}
 		})
 

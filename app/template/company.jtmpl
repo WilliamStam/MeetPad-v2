@@ -62,18 +62,25 @@
 						<em><%= this.meetings.active[i].timeStart.short.disp %> - <%= this.meetings.active[i].timeEnd.short.disp %></em>
 					</div>
 				</div>
+
+				<div class="r">
+					<% for (var o in this.meetings.active[i].groups.split(", ")) { %>
+					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.active[i].groups.split(", ")[o] %></span>
+					<% } %>
+				</div>
 				
-				<div class="clearfix"></div>
+				<div class="clearfix" style="height:10px;"></div>
 				<div class="pull-left" role="group">
 					<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.meetings.active[i].companyID %>" data-ID="<%= this.meetings.active[i].ID %>">
 						<i class="fa fa-pencil"></i> Edit
 					</button>
 
 				</div>
-
+				<% if(this.meetings.active[i].access=='1'){ %>
 				<div class="pull-right">
 					<a href="/content/<%= this.meetings.active[i].ID %>/<%= this.meetings.active[i].company %>/<%= this.meetings.active[i].url %>" class="btn btn-default"><i class="fa fa-eye"></i> View</a>
 				</div>
+				<% } %>
 				<div class="clearfix"></div>
 			</article>
 
@@ -108,8 +115,13 @@
 					</div>
 				</div>
 
+				<div class="r">
+					<% for (var o in this.meetings.past[i].groups.split(", ")) { %>
+					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.past[i].groups.split(", ")[o] %></span>
+					<% } %>
+				</div>
 
-				<div class="clearfix"></div>
+				<div class="clearfix" style="height:10px;"></div>
 				<div class="pull-left" role="group">
 					<button type="button" class="btn btn-default meeting-form btn-xs" data-companyID="<%= this.meetings.past[i].companyID %>" data-ID="<%= this.meetings.past[i].ID %>">
 						<i class="fa fa-pencil"></i> Edit
@@ -117,10 +129,12 @@
 
 				</div>
 
+				<% if(this.meetings.past[i].access=='1'){ %>
 				<div class="pull-right">
 					<a href="/content/<%= this.meetings.past[i].ID %>/<%= this.meetings.past[i].company %>/<%= this.meetings.past[i].url %>" class="btn btn-default btn-xs" style="margin-right:10px;"><i class="fa fa-eye"></i> View</a>
 					<button type="button" class="btn btn-default btn-xs"><i class="fa fa-print"></i> Print</button>
 				</div>
+				<% } %>
 				<div class="clearfix"></div>
 
 

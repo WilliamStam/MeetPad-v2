@@ -40,7 +40,6 @@
 				<li {% if page['section']=="home" %}class="active"{% endif %}>
 					<a href="/">Home</a>
 				</li>
-				<li {% if page['section']=="admin" %}class="active"{% endif %}><a href="/archives">Archives</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -75,11 +74,11 @@
 					</a>
 					<ul class="dropdown-menu" >
 						<li>
-							<a href="/settings/profile">Profile </a>
+							<a href="/settings/profile"><i class="fa fa-pencil" style="margin-right:10px;"></i>My Profile </a>
 
 						</li>
 						<li>
-							<a href="/settings/company">Company</a>
+							<a href="#" class="company-form" data-ID=""><i class="fa fa-plus" style="margin-right:10px;"></i>Company</a>
 						</li>
 					</ul>
 				</li>

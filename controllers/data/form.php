@@ -53,7 +53,7 @@ class form extends _data {
 
 		$object = models\meeting::getInstance();
 		
-		$result = $object->get($ID, true);
+		$result = $object->get($ID,true);
 		$result['groups'] = array();
 		
 		

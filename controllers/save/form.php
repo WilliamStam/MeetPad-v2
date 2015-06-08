@@ -38,9 +38,9 @@ class form extends _save {
 
 	function company() {
 		$result = array();
-		
+		$user = $this->user;
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
-		$ID_orig = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$ID_orig = $ID;
 
 		$values = array(
 			"company" => $this->post("company", true),
@@ -147,7 +147,7 @@ class form extends _save {
 		//	->saveGroups($groups)->removeGroups($group_remove_list)->saveCategories($categories)->removeCategories($category_remove_list)->show();
 			
 			if ($ID_orig!=$ID){
-				models\company::addUser($this->user("ID"),$ID,true);
+				models\company::addUser($this->user["ID"],$ID,true);
 				
 			}
 			
@@ -161,6 +161,9 @@ class form extends _save {
 			"ID" => $ID,
 			"errors" => $errors
 		);
+		if ($ID_orig!=$ID){
+			$return['new'] = toAscii($values['company']);;
+		}
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
@@ -168,6 +171,7 @@ class form extends _save {
 		$result = array();
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$ID_orig = $ID;
 		$companyID = isset($_GET['cID']) ? $_GET['cID'] : "";
 		$IDparts = explode("-", $ID);
 		if (isset($IDparts[1])) {
@@ -231,7 +235,9 @@ class form extends _save {
 			"errors" => $errors
 		);
 
-		
+		if ($ID_orig!=$ID){
+			$return['new'] = toAscii($values['meeting']);;
+		}
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
@@ -240,6 +246,7 @@ class form extends _save {
 		$errors = $this->errors;
 		
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		
 		$IDparts = explode("-", $ID);
 		$mID = "";
 		$mID = isset($_GET['mID']) ? $_GET['mID'] : "";;
