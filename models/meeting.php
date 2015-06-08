@@ -55,7 +55,8 @@ class meeting extends _ {
 		$timer = new timer();
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
+			"args" => isset($options['args']) ? $options['args'] : array(),
+			"groups" => isset($options['groups']) ? $options['groups'] : false
 		);
 		$return = array();
 
@@ -73,11 +74,18 @@ class meeting extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
+		$groupSQL = "";
+		if ($options['groups']){
+			$groupSQL = "(SELECT GROUP_CONCAT(DISTINCT gg.group SEPARATOR ', ') FROM mp_groups gg INNER JOIN mp_meetings_group mm ON gg.ID = mm.groupID WHERE mm.meetingID = mp_meetings.ID) AS groups,";
+		}
+		
+		
 		$result = $this->f3->get("DB")->exec("
 		
 			SELECT DISTINCT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
-			if(mp_users_group.userID,1,0) AS access,
-			(SELECT GROUP_CONCAT(DISTINCT gg.group SEPARATOR ', ') FROM mp_groups gg INNER JOIN mp_meetings_group mm ON gg.ID = mm.groupID WHERE mm.meetingID = mp_meetings.ID) AS groups
+			$groupSQL
+			if(mp_users_group.userID,1,0) AS access
+			
 			
 			FROM ((((mp_meetings LEFT JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID)
 			$where

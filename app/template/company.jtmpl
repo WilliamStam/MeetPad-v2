@@ -62,13 +62,13 @@
 						<em><%= this.meetings.active[i].timeStart.short.disp %> - <%= this.meetings.active[i].timeEnd.short.disp %></em>
 					</div>
 				</div>
-
+				<% if (this.meetings.active[i].groups) { %>
 				<div class="r">
 					<% for (var o in this.meetings.active[i].groups.split(", ")) { %>
 					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.active[i].groups.split(", ")[o] %></span>
 					<% } %>
 				</div>
-				
+				<% } %>
 				<div class="clearfix" style="height:10px;"></div>
 				<div class="pull-left" role="group">
 					<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.meetings.active[i].companyID %>" data-ID="<%= this.meetings.active[i].ID %>">
@@ -115,12 +115,13 @@
 					</div>
 				</div>
 
+				<% if (this.meetings.past[i].groups) { %>
 				<div class="r">
 					<% for (var o in this.meetings.past[i].groups.split(", ")) { %>
 					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.past[i].groups.split(", ")[o] %></span>
 					<% } %>
 				</div>
-
+				<% } %>
 				<div class="clearfix" style="height:10px;"></div>
 				<div class="pull-left" role="group">
 					<button type="button" class="btn btn-default meeting-form btn-xs" data-companyID="<%= this.meetings.past[i].companyID %>" data-ID="<%= this.meetings.past[i].ID %>">
