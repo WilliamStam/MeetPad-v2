@@ -132,7 +132,7 @@ class company extends _ {
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
 			if (isset($art->$key) && $key != "ID") {
-				$art->$key = $value;
+				$art->$key = $f3->scrub($value,$f3->get("TAGS"));
 			}
 
 		}
@@ -158,7 +158,7 @@ class company extends _ {
 			$item['companyID'] = $companyID;
 			foreach ($item as $key => $value) {
 				if (isset($art->$key) && $key != "ID") {
-					$art->$key = $value;
+					$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
 				}
 
 			}
@@ -190,7 +190,7 @@ class company extends _ {
 			$item['companyID'] = $companyID;
 			foreach ($item as $key => $value) {
 				if (isset($art->$key) && $key != "ID") {
-					$art->$key = $value;
+					$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
 				}
 
 			}

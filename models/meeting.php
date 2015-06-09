@@ -151,7 +151,7 @@ class meeting extends _ {
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
 			if (isset($art->$key)) {
-				$art->$key = $value;
+				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
 			}
 
 		}

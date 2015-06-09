@@ -42,6 +42,8 @@ $f3->set('UI', 'app/');
 $f3->set('MEDIA', './media/');
 $f3->set('TZ', 'Africa/Johannesburg');
 
+$f3->set('TAGS', 'p,br,b,strong,i,italics,em,h1,h2,h3,h4,h5,h6,div,span,blockquote,pre,cite,ol,li,ul');
+
 //$f3->set('ERRORFILE', $errorFile);
 //$f3->set('ONERROR', 'Error::handler');
 $f3->set('ONERRORd',
