@@ -9,6 +9,8 @@ class _data extends \controllers\_ {
 		
 
 		$this->f3->set("__runJSON", true);
+		
+		
 	}
 
 

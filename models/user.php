@@ -83,43 +83,49 @@ class user extends _ {
 		$return = array();
 		$user = $this->f3->get("user");
 		
-		if ($user['global_admin']=='1'){
-			$whereC = "1";
-			$whereM = "1";
-		} else {
-			$whereC = "userID='{$user['ID']}'";
-			$whereM = "mp_users_group.userID='{$user['ID']}'";
-		}
-		$meetings = meeting::getInstance()->getAll($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC");
-		$am = array();
-		foreach ($meetings as $item){
-			$item['activeMeetings'] = 0;
-			if (!isset($am[$item['companyID']]))$am[$item['companyID']] = 0;
+		if ($user['ID']){
 			
-			$am[$item['companyID']] = $am[$item['companyID']] + 1;
+			
+			if ($user['global_admin']=='1'){
+				$whereC = "1";
+				$whereM = "1";
+			} else {
+				$whereC = "userID='{$user['ID']}'";
+				$whereM = "mp_users_group.userID='{$user['ID']}'";
+			}
+			$meetings = meeting::getInstance()->getAll($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC");
+			$am = array();
+			foreach ($meetings as $item){
+				$item['activeMeetings'] = 0;
+				if (!isset($am[$item['companyID']]))$am[$item['companyID']] = 0;
+
+				$am[$item['companyID']] = $am[$item['companyID']] + 1;
+			}
+
+
+
+			$companies = company::getInstance()->getAll($whereC,"company ASC");
+
+			//test_array($whereC); 
+			$n = array();
+			foreach ($companies as $item){
+				$item['activeMeetings'] = isset($am[$item['ID']])?$am[$item['ID']] : 0;
+				$n[] = $item;
+			}
+			$companies = $n;
+
+
+
+
+
+			$return = array(
+				"companies"=>$companies,
+				"meetings"=>$meetings
+			);
+
+
+
 		}
-		
-		
-		
-		$companies = company::getInstance()->getAll($whereC,"company ASC");
-		
-		//test_array($whereC); 
-		$n = array();
-		foreach ($companies as $item){
-			$item['activeMeetings'] = isset($am[$item['ID']])?$am[$item['ID']] : 0;
-			$n[] = $item;
-		}
-		$companies = $n;
-		
-		
-		
-		
-		
-		$return = array(
-			"companies"=>$companies,
-			"meetings"=>$meetings
-		);
-		
 		
 		
 	//	test_array($return); 

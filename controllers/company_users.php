@@ -2,11 +2,12 @@
 namespace controllers;
 use \timer as timer;
 use \models as models;
-class company extends _ {
+class company_users extends _ {
 	function __construct(){
 		parent::__construct();
 		if ($this->user['ID']=="")$this->f3->reroute("/login");
 	}
+	
 	function page(){
 		$user = $this->f3->get("user");
 		
@@ -22,15 +23,16 @@ class company extends _ {
 		$tmpl = new \template("template.twig");
 		$tmpl->page = array(
 			"section"    => "company",
-			"sub_section"=> "company",
-			"template"   => "company",
+			"sub_section"=> "users",
+			"template"   => "company_users",
 			"meta"       => array(
-				"title"=> "MeetPad | {$data['company']}",
+				"title"=> "MeetPad | {$data['company']} | Users",
 			),
 			"css"=>"",
 			"js"=>"",
 		);
 		$tmpl->data = $data;
+		$tmpl->co_dropdown_append = "/users";
 		
 		$tmpl->dropdownLabel = $data['company'];
 		
@@ -41,6 +43,6 @@ class company extends _ {
 		
 
 	}
-
+	
 
 }

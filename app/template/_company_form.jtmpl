@@ -256,13 +256,15 @@
 		}, "form")
 
 	}
-	$(document).on("click", ".company-form", function () {
+	$(document).on("click", ".company-form", function (e) {
+		e.preventDefault();
 		var $this = $(this);
 		$.bbq.pushState({"modal": "company-" + $this.attr("data-ID")})
 		formCompany();
 
 	});
-	$(document).on("click", ".reload-modal", function () {
+	$(document).on("click", ".reload-modal", function (e) {
+		e.preventDefault();
 		formCompany();
 
 	});

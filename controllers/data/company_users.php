@@ -3,7 +3,7 @@ namespace controllers\data;
 
 use models as models;
 
-class company extends _data {
+class company_users extends _data {
 	private static $instance;
 	public $meetingID;
 	public $companyID;
@@ -26,7 +26,7 @@ class company extends _data {
 
 		$result = array(
 			"company" => $this->company(),
-			"meetings" => $this->meetings()
+			"users" => $this->users()
 
 		);
 
@@ -45,7 +45,6 @@ class company extends _data {
 		$company = models\company::getInstance();
 		$result = $company->get($ID, true);
 		$result['groups'] = $company->getGroups($result['ID']);
-		$result['categories'] = $company->getCategories($result['ID']);
 		
 
 
@@ -55,21 +54,9 @@ class company extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
-	function meetings() {
-		
-		$userSQL = ($this->user['global_admin']=='1')?"":"(mp_users_group.userID='{$this->user['ID']}' OR mp_users_company.admin = '1') AND ";
-		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}' AND (timeEnd>= now() AND timeStart <= now())", "timeEnd DESC", "",array("groups"=>true));
+	function users() {
 
-		$result = array(
-			"active"=>array(),
-			"past"=>array()
-		);
-		
-		foreach($records as $item){
-			$result[$item['active']=='1'?"active":"past"][] = $item;
-		}
-		
-		
+		$result = array();
 		
 		//test_array($result); 
 

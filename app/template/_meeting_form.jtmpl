@@ -147,7 +147,7 @@
 				<button type="button" class="btn btn-link reload-modal-meeting">Continue Editing</button>
 				
 				<% if (this.new) { %>
-				<a href="/content/<%= this.ID %>/<%= this.new %>" class="btn btn-primary">Close</a>
+				<a href="/content/<%= this.ID %>/<%= this.new %>?new" class="btn btn-primary">Close</a>
 				<% } else { %>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 				<% } %>
@@ -250,13 +250,15 @@
 		}, "form")
 
 	}
-	$(document).on("click", ".meeting-form", function () {
+	$(document).on("click", ".meeting-form", function (e) {
+		e.preventDefault();
 		var $this = $(this);
 		$.bbq.pushState({"modal": "meeting-" + $this.attr("data-ID") + "-" + $this.attr("data-companyID")});
 		formMeeting();
 
 	})
-	$(document).on("click", ".reload-modal-meeting", function () {
+	$(document).on("click", ".reload-modal-meeting", function (e) {
+		e.preventDefault();
 		formMeeting();
 
 	});

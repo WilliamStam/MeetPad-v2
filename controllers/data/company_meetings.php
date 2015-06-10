@@ -3,7 +3,7 @@ namespace controllers\data;
 
 use models as models;
 
-class company extends _data {
+class company_meetings extends _data {
 	private static $instance;
 	public $meetingID;
 	public $companyID;
@@ -44,8 +44,6 @@ class company extends _data {
 
 		$company = models\company::getInstance();
 		$result = $company->get($ID, true);
-		$result['groups'] = $company->getGroups($result['ID']);
-		$result['categories'] = $company->getCategories($result['ID']);
 		
 
 
@@ -56,17 +54,39 @@ class company extends _data {
 	}
 
 	function meetings() {
-		
+		$selectedpage = isset($_GET['page']) ? $_GET['page'] : "1";
 		$userSQL = ($this->user['global_admin']=='1')?"":"(mp_users_group.userID='{$this->user['ID']}' OR mp_users_company.admin = '1') AND ";
-		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}' AND (timeEnd>= now() AND timeStart <= now())", "timeEnd DESC", "",array("groups"=>true));
+		
+		$recordCount = count(models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}'"));
+
+		$pagination = new \pagination("page");
+		$pagination = $pagination->calculate_pages($recordCount, "10", $selectedpage, "10", "0");
+		
+		
+		
+		
+		
+		
+		
+		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}'", "timeEnd DESC", $pagination['limit'],array("groups"=>true));
 
 		$result = array(
 			"active"=>array(),
-			"past"=>array()
+			"future"=>array(),
+			"past"=>array(),
+			"pagination"=>$pagination,
+			"count"=>$recordCount
 		);
 		
 		foreach($records as $item){
-			$result[$item['active']=='1'?"active":"past"][] = $item;
+			$g = "past";
+			if ($item['active']=='1'){
+				$g = "active";
+			}
+			if ($item['future']=='1'){
+				$g = "future";
+			}
+			$result[$g][] = $item;
 		}
 		
 		

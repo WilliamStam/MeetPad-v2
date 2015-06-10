@@ -185,13 +185,15 @@
 		}, "form")
 
 	}
-	$(document).on("click", ".item-form", function () {
+	$(document).on("click", ".item-form", function (e) {
+		e.preventDefault();
 		var $this = $(this);
 		$.bbq.pushState({"modal": "item-" + $this.attr("data-ID") + "-" + $this.attr("data-meetingID")});
 		formItem();
 
 	})
-	$(document).on("click", ".reload-modal-item", function () {
+	$(document).on("click", ".reload-modal-item", function (e) {
+		e.preventDefault();
 		formItem();
 
 	});

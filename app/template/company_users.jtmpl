@@ -1,0 +1,45 @@
+<script type="text/x-jqote-template" id="template-left">
+	<![CDATA[
+	<section class="content-header">
+
+		<h1><%= this.company.company %>
+		<small class="pull-right">Users: 0</small>
+		</h1>
+	</section>
+
+
+
+	<section class="scroll-pane" style="left:10px;">
+
+
+		<form  id="add-user" class="form-inline">
+			
+			<input type="text" class="form-control" id="email" placeholder="Email Address" style="margin-right:10px; width: 270px;;">
+			<button type="submit" class="btn btn-default">Invite User</button>
+			<div class="inline-help s g">
+				Enter a users email address here that you want to invite to the company. if the user doesnt exist they will be sent an email with an invite code
+			</div>
+		</form>
+
+
+	</section>
+
+	<section class="content-footer"></section>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right">
+	<![CDATA[
+
+
+	<section class="scroll-pane" style="left:10px;  ">
+		<div style="padding-right:10px; padding-top:20px;">
+
+			
+
+right
+
+
+		</div>
+	</section>
+	]]>
+</script>

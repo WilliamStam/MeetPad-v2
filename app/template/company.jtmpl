@@ -13,13 +13,7 @@
 
 
 
-			<button type="button" class="btn btn-default btn-block company-form" data-ID="<%= this.company.ID %>" >
-				<i class="fa fa-pencil"></i> &nbsp; Edit this company
-			</button>
-
-			<button type="button" class="btn btn-default btn-block meeting-form" data-companyID="<%= this.company.ID %>" data-ID="" >
-				<i class="fa fa-plus"></i> &nbsp; New Meeting
-			</button>
+			charts on activity here. stats and charts are for the whole company
 
 
 		</div>
@@ -90,58 +84,7 @@
 			<div class="clearfix"></div>
 
 
-			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
-				<h3 style="margin:0; padding:0;">In-Active Meetings</h3>
-			</div>
-
-
-
-
-			<% for (var i in this.meetings.past){ %>
-			<article class="meeting-block">
-				<h4><% if(this.meetings.past[i].future=='1'){ %><span class="label label-success s" style="margin-right:10px;">Upcoming</span> <% } %><%= this.meetings.past[i].meeting %></h4>
-
-
-				<div style="margin-top:10px;">
-					<%= this.meetings.past[i].note||'' %>
-				</div>
-
-
-				<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
-					
-
-					<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
-						<em><%= this.meetings.past[i].timeStart.short.disp %> - <%= this.meetings.past[i].timeEnd.short.disp %></em>
-					</div>
-				</div>
-
-				<% if (this.meetings.past[i].groups) { %>
-				<div class="r">
-					<% for (var o in this.meetings.past[i].groups.split(", ")) { %>
-					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.past[i].groups.split(", ")[o] %></span>
-					<% } %>
-				</div>
-				<% } %>
-				<div class="clearfix" style="height:10px;"></div>
-				<div class="pull-left" role="group">
-					<button type="button" class="btn btn-default meeting-form btn-xs" data-companyID="<%= this.meetings.past[i].companyID %>" data-ID="<%= this.meetings.past[i].ID %>">
-						<i class="fa fa-pencil"></i> Edit
-					</button>
-
-				</div>
-
-				<% if(this.meetings.past[i].access=='1'){ %>
-				<div class="pull-right">
-					<a href="/content/<%= this.meetings.past[i].ID %>/<%= this.meetings.past[i].company %>/<%= this.meetings.past[i].url %>" class="btn btn-default btn-xs" style="margin-right:10px;"><i class="fa fa-eye"></i> View</a>
-					<button type="button" class="btn btn-default btn-xs"><i class="fa fa-print"></i> Print</button>
-				</div>
-				<% } %>
-				<div class="clearfix"></div>
-
-
-
-			</article>
-			<% } %>
+			
 
 
 

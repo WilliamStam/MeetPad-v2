@@ -4,6 +4,9 @@
 
 ;$(document).ready(function () {
 
+	$('[data-toggle="tooltip"]').tooltip()
+	
+	
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
 		var $clicked = $(e.target).closest("tr.btn-row-details");
@@ -86,6 +89,7 @@ function updatetimerlist(d, page_size) {
 	var data = d['timer'];
 	var page = d['page'];
 	var models = d['models'];
+	var menu = d['menu'];
 
 //console.log(models)
 
@@ -106,6 +110,10 @@ function updatetimerlist(d, page_size) {
 
 		//console.log($("#template-timers-tr"))
 		$("#systemTimers").prepend(th + timers + thm);
+		
+		
+		$("#main-nav-bar").jqotesub($("#template-navbar"), menu);
+		$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"});
 
 		// console.log($("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")));
 	}

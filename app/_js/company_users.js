@@ -58,7 +58,7 @@ function getData() {
 
 	$(".loadingmask").show();
 	
-	$.getData("/data/company/data?companyID=" + _data['ID'], {}, function (data) {
+	$.getData("/data/company_users/data?companyID=" + _data['ID'], {}, function (data) {
 
 		
 

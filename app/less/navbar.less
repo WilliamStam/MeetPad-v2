@@ -1,5 +1,10 @@
 
 #main-nav-bar {
+	.alert-counter {
+		margin-right:-7px;
+		margin-left:7px;
+		
+	}
 	.navbar-brand {
 		margin-right: 20px;
 	}
@@ -26,6 +31,7 @@
 				padding-left: 14px;
 				padding-right: 14px;
 			}
+			
 		}
 		.selector-dropdown {
 
@@ -41,6 +47,10 @@
 					right: 12px;
 					top: calc(50% - 2px);
 				}
+				.badge {
+					right:2px;
+					position: absolute;
+				}
 			}
 			.dropdown-menu {
 				
@@ -49,23 +59,24 @@
 					
 				}
 			}
-			.dropdown {
-				&.open {
-					
-					& > a.dropdown-toggle {
-						padding-left: 14px;
-						padding-right: 23px;
-						.caret {
-							right: 11px;
-						}
-					}
-					
-					
-					
-					
-				}
-			}
+			
+			&.open {
 
+				& > a.dropdown-toggle {
+					padding-left: 14px;
+					padding-right: 23px;
+					.caret {
+						right: 11px;
+					}
+					.badge {
+						right:1px;
+					}
+				}
+
+
+
+
+			}
 		}
 
 	}

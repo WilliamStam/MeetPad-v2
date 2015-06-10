@@ -217,7 +217,7 @@ class form extends _save {
 			
 		
 		
-		
+		//test_array($c); 
 
 		//$result['company'] = $company;
 	//	test_array($values); 
@@ -236,7 +236,8 @@ class form extends _save {
 		);
 
 		if ($ID_orig!=$ID){
-			$return['new'] = toAscii($values['meeting']);;
+			$c = models\meeting::getInstance()->get($ID);
+			$return['new'] = toAscii($c['company'])."/".$c['url'];;
 		}
 		return $GLOBALS["output"]['data'] = $return;
 	}

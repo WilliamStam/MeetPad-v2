@@ -20,6 +20,7 @@ $f3 = require('vendor/bcosca/fatfree/lib/base.php');
 require('inc/timer.php');
 require('inc/template.php');
 require('inc/functions.php');
+require('inc/pagination.php');
 $GLOBALS['page_execute_timer'] = new timer(true);
 $cfg = array();
 require_once('config.default.inc.php');
@@ -103,10 +104,15 @@ $f3->route('GET /txt', function ($f3) {
 
 $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
-$f3->route('GET|POST /content/@ID/*/*', 'controllers\meeting->page');
-$f3->route('GET|POST /content/@ID/*', 'controllers\company->page');
-$f3->route('GET|POST /edit/@ID/*/*', 'controllers\meeting->edit');
-$f3->route('GET|POST /edit/@ID/*', 'controllers\company->edit');
+
+$f3->route('GET|POST /content/@ID/@url', 'controllers\company->page');
+$f3->route('GET|POST /content/@ID/@url/users', 'controllers\company_users->page');
+$f3->route('GET|POST /content/@ID/@url/meetings', 'controllers\company_meetings->page');
+
+$f3->route('GET|POST /content/@ID/@company/@url', 'controllers\meeting->page');
+$f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_users->page');
+
+
 
 $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	session_unset();
@@ -189,13 +195,15 @@ $GLOBALS["output"]['page'] = array(
 	"page" => $_SERVER['REQUEST_URI'],
 	"time" => $pageTime
 );
-
+$GLOBALS["output"]['menu'] = models\user::getInstance()->menu();
 if ($f3->get("ERROR")){
 	exit();
 }
 
 if (($f3->get("AJAX") && ($f3->get("__runTemplate")==false) || $f3->get("__runJSON"))) {
 	header("Content-Type: application/json");
+	
+	
 
 	echo json_encode($GLOBALS["output"]);
 } else {

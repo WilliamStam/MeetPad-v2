@@ -4,6 +4,13 @@ $(document).ready(function () {
 	$(document).on('click', '[data-toggle="offcanvas"]', function () {
 		$('#right-area').toggleClass('active')
 	});
+	
+	$(document).on('click', '.pagination li a', function (e) {
+		e.preventDefault();
+		var page = $(this).attr("data-page");
+		$.bbq.pushState({"page":page});
+		getData();
+	});
 
 	$(window).resize(function () {
 		$.doTimeout('resize', 250, function () {
@@ -55,15 +62,17 @@ $(document).ready(function () {
 });
 function getData() {
 	var ID = $.bbq.getState("ID") || '';
-
+	var page = $.bbq.getState("page") || '1';
+	
 	$(".loadingmask").show();
 	
-	$.getData("/data/company/data?companyID=" + _data['ID'], {}, function (data) {
+	$.getData("/data/company_meetings/data?companyID=" + _data['ID'], {"page":page}, function (data) {
 
 		
 
 		$("#right-area-content").jqotesub($("#template-right"), data);
 		$("#left-area-content").jqotesub($("#template-left"), data);
+		$("#pagination").jqotesub($("#template-pagination"), data['meetings']['pagination']);
 
 
 		$("#loading-mask").fadeOut();
