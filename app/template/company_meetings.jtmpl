@@ -31,7 +31,7 @@
 	<![CDATA[
 
 
-	<section class="scroll-pane" style="left:10px;  ">
+	<section class="scroll-pane" style="left:10px; <% if (this.meetings.pagination.pages.length) { %>bottom:50px; <% } %>  ">
 		<div style="padding-right:10px; padding-top:20px;">
 
 			
@@ -205,9 +205,11 @@
 			<% } %>
 
 
-			<div id="pagination"></div>
 		</div>
 
+	</section>
+	<section class="content-footer">
+		<div id="pagination"></div>
 	</section>
 	]]>
 </script>

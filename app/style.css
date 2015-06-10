@@ -7841,8 +7841,11 @@ form .admin-list-items:empty:before {
 .selector-dropdown .dropdown-menu li.active a {
   color: #fff!important;
 }
+#mobile-selector-menu .badge {
+  right: 10px;
+}
 #mobile-selector-menu .dropdown-menu {
-  margin-right: -222px;
+  margin-right: -60px;
 }
 #mobile-selector-menu.open .dropdown-menu {
   display: block;
@@ -7851,6 +7854,9 @@ form .admin-list-items:empty:before {
   overflow-x: hidden;
   background: none;
   background-color: #fff;
+}
+#mobile-selector-menu.open .badge {
+  right: 9px;
 }
 #web-selector-menu .dropdown-menu {
   width: 320px;

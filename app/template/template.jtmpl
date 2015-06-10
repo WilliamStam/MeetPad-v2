@@ -1,4 +1,3 @@
-
 <script type="text/x-jqote-template" id="template-timers-tr">
 	<![CDATA[
 
@@ -70,245 +69,231 @@
 <script type="text/x-jqote-template" id="template-navbar">
 	<![CDATA[
 
-	
-		<div class="container">
-			<div class="navbar-header">
-				<a href="/" class="navbar-brand hidden-xs">MeetPad</a>
 
-				<ul class="nav navbar-nav navbar-right pull-left visible-xs-inline" style="margin-top:0;margin-bottom:0;">
-					<li class="dropdown selector-dropdown" id="mobile-selector-menu"  >
+	<div class="container">
+		<div class="navbar-header">
+			<a href="/" class="navbar-brand hidden-xs">MeetPad</a>
 
-						<!--- select list -->
+			<ul class="nav navbar-nav navbar-right pull-left visible-xs-inline" style="margin-top:0;margin-bottom:0;">
+				<li class="dropdown selector-dropdown" id="mobile-selector-menu">
 
-						<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
-							<% if(this.meetings.length){ %>
-							<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
-							<% } %>
-							{{ dropdownLabel|default("Meeting / Company") }}
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu " style="" >
-							<% if (this.meetings.length){ %>
+					<!--- select list MOBILE -->
+
+					<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
+						<% if(this.meetings.length){ %>
+						<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
+						<% } %>
+						{{ dropdownLabel|default("Meeting / Company") }}
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu " style="">
+						<% if (this.meetings.length){ %>
 							<li role="presentation" class="dropdown-header" style="margin-top:0;">Active Meetings</li>
 							<% for (var i in this.meetings) { %>
-							<li <% if ( this.meetings[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'meeting'){ %>class="active"<% } %>>
-							<a href="/content/<%= this.meetings[i].ID %>/<%= this.meetings[i].company %>/<%= this.meetings[i].url %>">
-								<div><%= this.meetings[i].meeting %></div>
-								<div class="s r g">
-									<strong><%= this.meetings[i].company %></strong>
-								</div>
-
-								<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
-									<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"  style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
-
-									<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
-										<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
-									</div>
-								</div>
-
-
-
-							</a>
-					</li>
-					<% } %>
-					<% } %>
-
-					<li role="presentation" class="dropdown-header" <% if (this.meetings.length==0){ %>style="margin-top:0;"<% } %>>Companies / Organizations</li>
-					<% for (var i in this.companies) { %>
-					<li <% if ( this.companies[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'company'){ %>class="active"<% } %>>
-					<a href="/content/<%= this.companies[i].ID %>/<%= this.companies[i].url %> ">
-						<%= this.companies[i].company %>
-						<% if (this.companies[i].activeMeetings) { %>
-						<span class="badge pull-right"><%= this.companies[i].activeMeetings %> </span>
+								<li<% if ( this.meetings[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'meeting'){ %> class="active"<% } %>>
+									<a href="/content/<%= this.meetings[i].ID %>/<%= this.meetings[i].company %>/<%= this.meetings[i].url %>">
+										<div><%= this.meetings[i].meeting %></div>
+										<div class="s r g">
+											<strong><%= this.meetings[i].company %></strong>
+										</div>
+			
+										<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
+											<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
+			
+											<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
+												<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
+											</div>
+										</div>
+			
+		
+		
+									</a>
+								</li>
+							<% } %>
 						<% } %>
-					</a>
-					</li>
-					<% } %>
 
-				</ul>
-
-
-				<!--- select list -->
-						
-						
-					</li>
-				</ul>
-				<button class="navbar-toggle pull-right" type="button" data-toggle="collapse" data-target="#navbar-main">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<ul class="nav navbar-nav navbar-right pull-right visible-xs-inline" style="margin: 0 10px;">
-					<li style="display: inline-block;">
-						<a  href="?c=3"><i class="fa fa-envelope-o"></i></a>
-
-					</li>
-					<li style="display: inline-block;">
-						<a href="?c=3"><i class="fa fa-comments-o"></i></a>
-
-					</li>
-
-					<li style="display: inline-block;">
-						<a href="?c=3"><i class="fa fa-question"></i></a>
-					</li>
-
-
-
-				</ul>
-
-			</div>
-
-			<div class="navbar-collapse collapse" id="navbar-main">
-				<ul class="nav navbar-nav">
-
-
-					<li {% if page['section']=="home" %}class="active"{% endif %}>
-						<a href="/"><i class="fa fa-dashboard"></i></a>
-					</li>
-					{% if page['section']=="company" %}
-						<li {% if page['sub_section']=="company" %}class="active"{% endif %}>
-							<a href="/content/{{ data['ID'] }}/{{ data['url'] }}">Company</a>
-						</li>
-						<li {% if page['sub_section']=="meetings" %}class="active"{% endif %}>
-							<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/meetings">Meetings</a>
-						</li>
-						<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
-							<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/users">Users
-								<span class="badge alert-counter">2</span>
+						<li role="presentation" class="dropdown-header" <% if (this.meetings.length==0){ %>style="margin-top:0;"<% } %>>Companies / Organizations</li>
+						<% for (var i in this.companies) { %>
+						<li <% if ( this.companies[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'company'){ %> class="active"<% } %>>
+							<a href="/content/<%= this.companies[i].ID %>/<%= this.companies[i].url %> ">
+								<%= this.companies[i].company %>
+								<% if (this.companies[i].activeMeetings) { %>
+								<span class="badge pull-right"><%= this.companies[i].activeMeetings %> </span>
+								<% } %>
 							</a>
 						</li>
-					
-					{% endif %}
-					{% if page['section']=="meeting" %}
-						<li {% if page['sub_section']=="meeting" %}class="active"{% endif %}>
-							<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}">Meeting</a>
-						</li>
-						<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
-							<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}/users">Users
-								
-							</a>
-						</li>
-						
-						
+						<% } %>
+					</ul>
 
-					{% endif %}
-					
-					
-				</ul>
 
-				<ul class="nav navbar-nav navbar-right">
-					{% if page['section']=="company" %}
-						<li>
-							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-plus"></i></a>
-						</li>
-						<li>
-							<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i></a>
-						</li>
+			<!--- select list MOBILE -->
 
-					{% endif %}
-					{% if page['section']=="meeting" %}
+
+				</li>
+			</ul>
+			<button class="navbar-toggle pull-right" type="button" data-toggle="collapse" data-target="#navbar-main">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+
+		</div>
+
+		<div class="navbar-collapse collapse" id="navbar-main">
+			<ul class="nav navbar-nav">
+
+
+				<li {% if page['section']=="home" %}class="active"{% endif %}>
+					<a href="/"><i class="fa fa-dashboard"></i></a>
+				</li>
+				{% if page['section']=="company" %}
+					<li {% if page['sub_section']=="company" %}class="active"{% endif %}>
+						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}">Company</a>
+					</li>
+					<li {% if page['sub_section']=="meetings" %}class="active"{% endif %}>
+						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/meetings">Meetings</a>
+					</li>
+					<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
+						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/users">Users
+							<span class="badge alert-counter">2</span>
+						</a>
+					</li>
+
+				{% endif %}
+				{% if page['section']=="meeting" %}
+					<li {% if page['sub_section']=="meeting" %}class="active"{% endif %}>
+						<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}">Meeting</a>
+					</li>
+					<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
+						<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}/users">Users
+
+						</a>
+					</li>
+
+
+
+				{% endif %}
+
+
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				{% if page['section']=="company" %}
+					<li>
+						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-plus"></i></a>
+					</li>
+					<li>
+						<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i></a>
+					</li>
+
+				{% endif %}
+				{% if page['section']=="meeting" %}
 					<li>
 						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i></a>
 					</li>
-						<li>
+					<li>
 						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i></a>
 					</li>
 
-					{% endif %}
-					
-					
-
-					<li class="dropdown hidden-xs selector-dropdown" id="web-selector-menu" >
+				{% endif %}
 
 
-						<!--- select list -->
 
-						<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
-							<% if(this.meetings.length){ %>
-							<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
-							<% } %>
-							{{ dropdownLabel|default("Meeting / Company") }}
-							
-							<span class="caret"></span>
+				<li class="dropdown hidden-xs selector-dropdown" id="web-selector-menu">
+
+
+					<!--- select list -->
+
+					<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
+						<% if(this.meetings.length){ %>
+						<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
+						<% } %>
+						{{ dropdownLabel|default("Meeting / Company") }}
+
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu " style="">
+						<% if (this.meetings.length){ %>
+						<li role="presentation" class="dropdown-header" style="margin-top:0;">Active Meetings</li>
+						<% for (var i in this.meetings) { %>
+						<li <% if ( this.meetings[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'meeting'){ %> class="active"<% } %>>
+						<a href="/content/<%= this.meetings[i].ID %>/<%= this.meetings[i].company %>/<%= this.meetings[i].url %>{{ me_dropdown_append }}">
+							<div><%= this.meetings[i].meeting %></div>
+							<div class="s r g">
+								<strong><%= this.meetings[i].company %></strong>
+							</div>
+
+							<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
+
+								<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
+									<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
+								</div>
+							</div>
+
+
+
 						</a>
-						<ul class="dropdown-menu " style="" >
-							<% if (this.meetings.length){ %>
-							<li role="presentation" class="dropdown-header" style="margin-top:0;">Active Meetings</li>
-							<% for (var i in this.meetings) { %>
-							<li <% if ( this.meetings[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'meeting'){ %>class="active"<% } %>>
-								<a href="/content/<%= this.meetings[i].ID %>/<%= this.meetings[i].company %>/<%= this.meetings[i].url %>{{ me_dropdown_append }}">
-									<div><%= this.meetings[i].meeting %></div>
-									<div class="s r g">
-										<strong><%= this.meetings[i].company %></strong>
-									</div>
+				</li>
+				<% } %>
+				<% } %>
 
-									<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
-										<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"  style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
-
-										<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
-											<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
-										</div>
-									</div>
-
-
-
-								</a>
-							</li>
-							<% } %>
-							<% } %>
-
-							<li role="presentation" class="dropdown-header" <% if (this.meetings.length==0){ %>style="margin-top:0;"<% } %>>Companies / Organizations</li>
-					<% for (var i in this.companies) { %>		
-								<li <% if ( this.companies[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'company'){ %>class="active"<% } %>>
-									<a href="/content/<%= this.companies[i].ID %>/<%= this.companies[i].url %>{{ co_dropdown_append }}">
-										<%= this.companies[i].company %> 
-										<% if (this.companies[i].activeMeetings) { %>
-											<span class="badge pull-right"><%= this.companies[i].activeMeetings %> </span>
-										<% } %>
-									</a>
-								</li>
+				<li role="presentation" class="dropdown-header"
+				<% if (this.meetings.length==0){ %>style="margin-top:0;"<% } %>>Companies / Organizations</li>
+				<% for (var i in this.companies) { %>
+				<li <% if ( this.companies[i].ID == "{{ data['ID'] }}" && "{{ page['section'] }}" == 'company'){ %> class="active"<% } %>>
+				<a href="/content/<%= this.companies[i].ID %>/<%= this.companies[i].url %>{{ co_dropdown_append }}">
+					<%= this.companies[i].company %>
+					<% if (this.companies[i].activeMeetings) { %>
+					<span class="badge pull-right"><%= this.companies[i].activeMeetings %> </span>
 					<% } %>
+				</a>
+				</li>
+				<% } %>
 
-						</ul>
-
-
-						<!--- select list -->
-
-
+			</ul>
 
 
-
+			<!--- select list -->
 
 
 
 
 
-					</li>
 
-					<li class="dropdown icon-btn">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="/settings">
-							<span class="visible-xs-inline">Settings </span><span class="fa fa-gears"></span>
+
+
+
+
+			</li>
+
+			<li class="dropdown icon-btn">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="/settings">
+					<span class="visible-xs-inline">Settings </span><span class="fa fa-gears"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="/settings/profile"><i class="fa fa-pencil" style="margin-right:10px;"></i>My Profile
 						</a>
-						<ul class="dropdown-menu" >
-							<li>
-								<a href="/settings/profile"><i class="fa fa-pencil" style="margin-right:10px;"></i>My Profile </a>
 
-							</li>
-							<li>
-								<a href="#" class="company-form" data-ID=""><i class="fa fa-plus" style="margin-right:10px;"></i>Company</a>
-							</li>
-						</ul>
 					</li>
-
-
-
-					<li class="icon-btn"><a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out"></span></a>
+					<li>
+						<a href="#" class="company-form" data-ID=""><i class="fa fa-plus" style="margin-right:10px;"></i>Company</a>
 					</li>
 				</ul>
+			</li>
 
-			</div>
+
+
+			<li class="icon-btn">
+				<a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out"></span></a>
+			</li>
+			</ul>
 
 		</div>
+
+	</div>
 
 
 	]]>
@@ -319,28 +304,28 @@
 	<% if (this.pages.length) { %>
 	<nav class="c">
 		<ul class="pagination">
-			<li <% if(this.previous=='1'){ %>class="disabled"<% } %>>
-				<a href="#page=<%= this.previous %>" data-page="<%= this.previous %>" aria-label="Previous">
-					<span aria-hidden="true">&laquo;</span>
-				</a>
+			<li <% if(this.previous=='1'){ %> class="disabled"<% } %>>
+			<a href="#page=<%= this.previous %>" data-page="<%= this.previous %>" aria-label="Previous">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
 			</li>
-			
+
 			<% for (var i in this.pages) { %>
-			<li <% if(this.current==this.pages[i].p){ %>class="active"<% } %>><a href="#page=<%= this.pages[i].p %>" data-page="<%= this.pages[i].p %>"><%= this.pages[i].p %></a></li>
+			<li<% if(this.current==this.pages[i].p){ %> class="active"<% } %>><a href="#page=<%= this.pages[i].p %>" data-page="<%= this.pages[i].p %>"><%= this.pages[i].p %></a></li>
 			<% } %>
-			<li <% if(this.current==this.last){ %>class="disabled"<% } %>>
-				<a href="#page=<%= this.next %>" data-page="<%= this.next %>" aria-label="Next">
-					<span aria-hidden="true">&raquo;</span>
-				</a>
+			<li <% if(this.current==this.last){ %> class="disabled"<% } %>>
+			<a href="#page=<%= this.next %>" data-page="<%= this.next %>" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
 			</li>
 		</ul>
 	</nav>
 	<% } %>
-	
+
 	]]>
 </script>
 
 
-{%  include "template/_company_form.jtmpl" %}
-{%  include "template/_meeting_form.jtmpl" %}
-{%  include "template/_item_form.jtmpl" %}
+{% include "template/_company_form.jtmpl" %}
+{% include "template/_meeting_form.jtmpl" %}
+{% include "template/_item_form.jtmpl" %}

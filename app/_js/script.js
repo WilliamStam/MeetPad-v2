@@ -62,7 +62,7 @@ function page_resize() {
 	var maxH = $(window).height() - $(".navbar-header").height()
 	$(".navbar-collapse").css({maxHeight: maxH + "px"});
 
-	var selectorWidth = ($(window).width() - 220);
+	var selectorWidth = ($(window).width() - 55);
 	$("#mobile-selector-menu").css({width: selectorWidth + "px"});
 
 	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"});
@@ -113,7 +113,7 @@ function updatetimerlist(d, page_size) {
 		
 		
 		$("#main-nav-bar").jqotesub($("#template-navbar"), menu);
-		$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"});
+		page_resize()
 
 		// console.log($("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")));
 	}

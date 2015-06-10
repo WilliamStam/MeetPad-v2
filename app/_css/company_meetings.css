@@ -160,3 +160,6 @@
 .tggssgg {
   color: red;
 }
+#pagination .pagination {
+  margin: 0;
+}
