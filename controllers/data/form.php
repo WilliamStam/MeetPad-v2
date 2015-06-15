@@ -126,7 +126,37 @@ class form extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
+	function user() {
+		$result = array();
 
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$IDparts = explode("-", $ID);
+		$companyID = "";
+		if (isset($IDparts[1])) {
+			$companyID = $IDparts[1];
+			$ID = $IDparts[0];
+		}
+
+		//test_array($ID); 
+		$object = models\users::getInstance();
+
+		$result = $object->get($ID);
+
+		$result['groups'] = $object->getGroups($result['ID'],$companyID);
+		
+	//	test_array($result); 
+
+
+
+
+		$result['company'] = models\company::getInstance()->get($companyID,true);
+
+
+
+
+
+		return $GLOBALS["output"]['data'] = $result;
+	}
 
 
 }

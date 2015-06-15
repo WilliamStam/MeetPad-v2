@@ -306,7 +306,60 @@ class form extends _save {
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
+	function user() {
+		$result = array();
 
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$ID_orig = $ID;
+		$companyID = isset($_GET['cID']) ? $_GET['cID'] : "";
+		$IDparts = explode("-", $ID);
+		if (isset($IDparts[1])) {
+			$companyID = $IDparts[1];
+			$ID = $IDparts[0];
+		}
+
+		//test_array($_POST); 
+
+		$errors = $this->errors;
+
+		$values = array(
+			"name" => $this->post("name", true),
+			"email" => $this->post("email", "Please enter a valid email address")
+		);
+
+		if (isset($_POST['password'])&&$_POST['password']!="") $values['password'] = $this->post("password");
+		
+		$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
+		
+		if (isset($values['groups']) && count($values['groups'])<=0){
+			$errors['groups'] = "No Groups Selected, Please add at least 1 group for the user";
+		}
+
+
+		if (!count($errors)){
+			$ID = models\users::save($ID,$values);
+			models\company::getInstance()->addUser($ID,$companyID,$this->post("admin")?true:false);
+				
+		}
+
+
+
+
+
+
+
+
+
+
+		$return = array(
+			"ID" => $ID,
+			"companyID" => $companyID,
+			"errors" => $errors
+		);
+
+		
+		return $GLOBALS["output"]['data'] = $return;
+	}
 
 
 

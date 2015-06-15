@@ -24,11 +24,53 @@ class company_users extends _data {
 	function data() {
 		$result = array();
 
-		$result = array(
-			"company" => $this->company(),
-			"users" => $this->users()
+		$company = $this->company();
+		$users = $this->users();
 
+		$groups = $company['groups'];
+		$g = array();
+		foreach ($groups as $item){
+			$g[$item['ID']] = $item;
+		}
+		
+		
+		
+		
+		
+
+		$result = array();
+		
+		
+		$ug = array();
+		foreach ($users as $item){
+			$gr = explode(",",$item['groupIDs']);
+			foreach ($gr as $o){
+				if (isset($g[$o]))	$ug[$o][] = $item;
+			}
+			
+		}
+
+		foreach ($groups as $item){
+			$item['users'] = isset($ug[$item['ID']])?$ug[$item['ID']]:array();;
+			$result[] = $item;
+		}
+		
+		
+
+		//test_array($result);
+
+
+
+		$result = array(
+			"company"=>$company,
+			"users"=>$result,
+			"userCount"=>count($users)
 		);
+
+
+
+
+
 
 		return $GLOBALS["output"]['data'] = $result;
 	}
@@ -57,6 +99,11 @@ class company_users extends _data {
 	function users() {
 
 		$result = array();
+
+		$usersO = models\users::getInstance();
+		$result = $usersO->getAll("mp_users_company.companyID={$this->companyID}","name ASC");
+		$result = $usersO->format($result);
+		
 		
 		//test_array($result); 
 
