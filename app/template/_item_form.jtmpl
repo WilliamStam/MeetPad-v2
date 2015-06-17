@@ -80,7 +80,7 @@
 								<% for (var i in this.groups) { %>
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1' || this.ID==''){ %>checked<% } %>>
 										<%= this.groups[i].group %>
 									</label>
 								</div>

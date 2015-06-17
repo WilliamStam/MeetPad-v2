@@ -332,13 +332,19 @@ class form extends _save {
 		$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
 		
 		if (isset($values['groups']) && count($values['groups'])<=0){
-			$errors['groups'] = "No Groups Selected, Please add at least 1 group for the user";
+		//	$errors['groups'] = "No Groups Selected, Please add at least 1 group for the user";
 		}
 
 
 		if (!count($errors)){
 			$ID = models\users::save($ID,$values);
-			models\company::getInstance()->addUser($ID,$companyID,$this->post("admin")?true:false);
+			
+			$vals = array(
+				"admin"=>$this->post("admin")?true:false,
+				"tag"=>$this->post("tag")
+			);
+			
+			models\company::getInstance()->addUser($ID,$companyID,$vals);
 				
 		}
 

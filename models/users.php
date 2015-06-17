@@ -19,9 +19,6 @@ class users extends _ {
 	function get($ID,$companyID=""){
 		$timer = new timer();
 		$where = "mp_users.ID = '$ID'";
-		if ($companyID===true){
-			
-		}
 		
 		
 		$sql = "
@@ -29,10 +26,17 @@ class users extends _ {
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
-		
-			
-		
-		
+		if ($companyID){
+			$sql = "
+			SELECT mp_users.*
+			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
+			WHERE $where;
+			";
+		}
+
+
+
+
 		$result = $this->f3->get("DB")->exec($sql);
 		if (count($result)) {
 			$return = $result[0];
@@ -48,17 +52,25 @@ class users extends _ {
 		$timer = new timer();
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
+			"args" => isset($options['args']) ? $options['args'] : array(),
+			"companyID" => isset($options['companyID']) ? $options['companyID'] : false
 		);
 		$return = array();
-
+		
 		
 
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
-			$where = " ";
+			$where = "WHERE 1 ";
 		}
+
+		$select = "";
+		if ($options['companyID']) {
+			$select = ",  mp_users_company.tag";
+			$where = $where. " AND mp_users_company.companyID = '{$options['companyID']}'";
+		}
+		
 
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
@@ -66,14 +78,18 @@ class users extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
-		$result = $this->f3->get("DB")->exec("
-			SELECT DISTINCT mp_users.*, GROUP_CONCAT(DISTINCT mp_users_group.groupID) as groupIDs, GROUP_CONCAT(DISTINCT mp_users_company.companyID) as companyIDs
+		
+		$sql = "
+			SELECT DISTINCT mp_users.*, GROUP_CONCAT(DISTINCT mp_users_group.groupID) as groupIDs, GROUP_CONCAT(DISTINCT mp_users_company.companyID) as companyIDs $select
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			$where
 			GROUP BY mp_users.ID
 			$orderby
 			$limit
-		", $options['args'],$options['ttl']);
+		";
+		//test_string($where); 
+		
+		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
@@ -135,6 +151,9 @@ class users extends _ {
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_users");
 		$art->load("ID='$ID'");
 
+		if (isset($values['password'])){
+			$values['password'] = md5(md5("meet").$values['password'].md5("pad"));
+		}
 		
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {

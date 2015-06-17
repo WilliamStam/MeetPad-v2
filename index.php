@@ -45,6 +45,9 @@ $f3->set('TZ', 'Africa/Johannesburg');
 
 $f3->set('TAGS', 'p,br,b,strong,i,italics,em,h1,h2,h3,h4,h5,h6,div,span,blockquote,pre,cite,ol,li,ul');
 
+$f3->set("menu", array());
+$f3->set("company", array());
+
 //$f3->set('ERRORFILE', $errorFile);
 //$f3->set('ONERROR', 'Error::handler');
 $f3->set('ONERRORd',
@@ -195,7 +198,14 @@ $GLOBALS["output"]['page'] = array(
 	"page" => $_SERVER['REQUEST_URI'],
 	"time" => $pageTime
 );
-$GLOBALS["output"]['menu'] = models\user::getInstance()->menu();
+
+$tt = array(
+	"company"=>$f3->get("company"),
+	"meeting"=>$f3->get("meeting"),
+);
+//test_array($tt); 
+$GLOBALS["output"]['menu'] = models\user::getInstance()->menu($tt);
+
 if ($f3->get("ERROR")){
 	exit();
 }

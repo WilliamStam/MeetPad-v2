@@ -91,7 +91,7 @@ function updatetimerlist(d, page_size) {
 	var models = d['models'];
 	var menu = d['menu'];
 
-//console.log(models)
+
 
 
 	if (data) {

@@ -13,7 +13,8 @@ class company extends _ {
 		
 		$data = models\company::getInstance()->get($this->f3->get("PARAMS['ID']"),true);
 		//test_array($menu); 
-		
+
+		$this->f3->set("company",$data);
 	
 		
 		//test_array($meetings); 
@@ -31,8 +32,9 @@ class company extends _ {
 			"js"=>"",
 		);
 		$tmpl->data = $data;
-		
 		$tmpl->dropdownLabel = $data['company'];
+		
+		
 		
 
 		$tmpl->output();

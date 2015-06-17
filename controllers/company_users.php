@@ -14,7 +14,7 @@ class company_users extends _ {
 		
 		$data = models\company::getInstance()->get($this->f3->get("PARAMS['ID']"),true);
 		//test_array($menu); 
-		
+		$this->f3->set("company",$data);
 	
 		
 		//test_array($meetings); 

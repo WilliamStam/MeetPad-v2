@@ -232,6 +232,8 @@ class company extends _ {
 		$timer = new timer();
 		$ID = $companyID;
 		$f3 = \base::instance();
+		
+		
 
 
 
@@ -241,7 +243,20 @@ class company extends _ {
 		//	test_array($art);
 		$art->userID = $userID;
 		$art->companyID = $ID;
-		$art->admin = $admin ? 1 : 0;
+		
+		if (is_array($admin)){
+			foreach ($admin as $key => $value) {
+				if (isset($art->$key) && $key != "ID") {
+					$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+				}
+
+			}
+		} else {
+			$art->admin = $admin ? 1 : 0;
+		}
+		
+		
+		
 		$art->save();
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());

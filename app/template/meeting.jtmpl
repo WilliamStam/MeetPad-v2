@@ -94,9 +94,9 @@
 		</div>
 		<div class="pull-right btn-bar">
 
-			<button class="btn btn-default" type="button" id="details-record-prev">
+			<button class="btn btn-default" type="button" id="details-record-prev" style="width:80px;">
 				<i class="fa fa-arrow-circle-left"></i></button>
-			<button class="btn btn-default" type="button" id="details-record-next">
+			<button class="btn btn-default" type="button" id="details-record-next" style="width:80px;">
 				<i class="fa fa-arrow-circle-right"></i></button>
 		</div>
 	</section>

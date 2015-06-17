@@ -20,7 +20,22 @@
 				Enter a users email address here that you want to invite to the company. if the user doesnt exist they will be sent an email with an invite code
 			</div>
 		</form>
-
+		<% if( this.users_no_groups.length){ %>
+		<h4 style="margin-top:40px;">Users without Groups</h4>
+		
+		<table class="table">
+			<% for (var i in this.users_no_groups) { %>
+			<tr class="record user-form" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
+				<td>
+					<%= this.users_no_groups[i].name %>
+				</td>
+			</tr>
+			<% } %>
+		</table>
+		<div class="alert alert-info">
+			These users are part of the company but havent been added to any groups. They wont be a part of any meeting.
+		</div>
+		<% } %>
 
 	</section>
 
@@ -47,7 +62,12 @@
 				<tbody>
 				<% for (var u in this.users[i].users){ %>
 				<tr class="record user-form" data-ID="<%= this.users[i].users[u].ID %>" data-companyID="{{ data['ID'] }}">
-					<td><%= this.users[i].users[u].name %></td>
+					<td>
+						<%= this.users[i].users[u].name %> 
+						<% if(this.users[i].users[u].tag){ %>
+						<small>(<%= this.users[i].users[u].tag %>)</small>
+						<% } %>
+					</td>
 				</tr>
 				<% } %>
 				</tbody>

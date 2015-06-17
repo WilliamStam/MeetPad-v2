@@ -78,10 +78,11 @@ class user extends _ {
 		return $return;
 	}
 	
-	function menu(){
+	function menu($data){
 		$timer = new timer();
 		$return = array();
 		$user = $this->f3->get("user");
+		
 		
 		if ($user['ID']){
 			
@@ -123,6 +124,20 @@ class user extends _ {
 				"meetings"=>$meetings
 			);
 
+			//test_array($data['company']['ID']); 
+			if (isset($data['company']['ID'])){
+				
+				
+				
+				
+				
+				
+				$return['company_users_no_groups'] = count(users::getInstance()->getAll("mp_users_group.groupID is null AND mp_users_company.companyID = '{$data['company']['ID']}'"));
+
+			//	test_array(array($data['company']['ID'],$return['company_users_no_groups'],"mp_users_group.groupID is null AND mp_users_company.companyID = '{$data['companyID']}'" ));
+
+
+			}
 
 
 		}

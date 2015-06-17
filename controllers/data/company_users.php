@@ -25,6 +25,8 @@ class company_users extends _data {
 		$result = array();
 
 		$company = $this->company();
+		$this->f3->set("company",$company);
+		
 		$users = $this->users();
 
 		$groups = $company['groups'];
@@ -54,15 +56,18 @@ class company_users extends _data {
 			$item['users'] = isset($ug[$item['ID']])?$ug[$item['ID']]:array();;
 			$result[] = $item;
 		}
+
 		
-		
 
-		//test_array($result);
-
-
+		$resultNoGroupsO = models\users::getInstance();
+		$resultNoGroups = $resultNoGroupsO->getAll("mp_users_group.groupID is null","name ASC","",array("companyID"=>$this->companyID));
+		$resultNoGroups = $resultNoGroupsO->format($resultNoGroups);
+		//test_array($resultNoGroups);
+	
 
 		$result = array(
 			"company"=>$company,
+			"users_no_groups"=>$resultNoGroups,
 			"users"=>$result,
 			"userCount"=>count($users)
 		);
@@ -70,6 +75,7 @@ class company_users extends _data {
 
 
 
+		$this->f3->set("menu",array("companyID"=>$company['ID']));
 
 
 		return $GLOBALS["output"]['data'] = $result;
@@ -101,7 +107,7 @@ class company_users extends _data {
 		$result = array();
 
 		$usersO = models\users::getInstance();
-		$result = $usersO->getAll("mp_users_company.companyID={$this->companyID}","name ASC");
+		$result = $usersO->getAll("","name ASC","",array("companyID"=>$this->companyID));
 		$result = $usersO->format($result);
 		
 		

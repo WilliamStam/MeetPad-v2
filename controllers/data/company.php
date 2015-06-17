@@ -29,7 +29,9 @@ class company extends _data {
 			"meetings" => $this->meetings()
 
 		);
-
+		$this->f3->set("company",$result['company']);
+		
+		
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
