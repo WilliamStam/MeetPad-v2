@@ -318,7 +318,7 @@ class form extends _save {
 			$ID = $IDparts[0];
 		}
 
-		//test_array($_POST); 
+		//test_array($this->post("admin")); 
 
 		$errors = $this->errors;
 

@@ -58,6 +58,25 @@
 						
 					</div>
 					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Company Admin</label>
+
+						<div class="col-sm-8">
+							<div id="groups" >
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="admin" value="1" <% if (this.admin=='1'){ %>checked<% } %>>
+										Company Admin
+										
+									</label>
+									<div class="help-block s g">
+										If ticked this user will have full admin privilages!
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="groups" class="col-sm-3 control-label">Groups</label>
 
 						<div class="col-sm-8">

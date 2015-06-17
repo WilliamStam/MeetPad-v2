@@ -140,15 +140,8 @@ class form extends _data {
 		//test_array($ID); 
 		$object = models\users::getInstance();
 
-		$result = $object->get($ID);
-
+		$result = $object->get($ID,$companyID);
 		$result['groups'] = $object->getGroups($result['ID'],$companyID);
-		
-	//	test_array($result); 
-
-
-
-
 		$result['company'] = models\company::getInstance()->get($companyID,true);
 
 

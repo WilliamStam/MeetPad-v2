@@ -28,7 +28,7 @@ class users extends _ {
 			";
 		if ($companyID){
 			$sql = "
-			SELECT mp_users.*
+			SELECT mp_users.*, mp_users_company.tag, mp_users_company.admin
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
@@ -44,6 +44,7 @@ class users extends _ {
 			$return = parent::dbStructure("mp_users", array());
 		}
 
+		//test_array($return); 
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return  self::format($return);
