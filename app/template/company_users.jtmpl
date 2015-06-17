@@ -27,7 +27,15 @@
 			<% for (var i in this.users_no_groups) { %>
 			<tr class="record user-form" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
 				<td>
+					<% if(this.users_no_groups[i].admin=='1'){ %>
+					<span class="legend">Admin</span>
+					<% } %>
 					<%= this.users_no_groups[i].name %>
+					<% if(this.users_no_groups[i].tag){ %>
+					<small>(<%= this.users_no_groups.tag %>)</small>
+					<% } %>
+					
+					
 				</td>
 			</tr>
 			<% } %>
@@ -63,7 +71,13 @@
 				<% for (var u in this.users[i].users){ %>
 				<tr class="record user-form" data-ID="<%= this.users[i].users[u].ID %>" data-companyID="{{ data['ID'] }}">
 					<td>
+						<% if(this.users[i].users[u].admin=='1'){ %>
+						<span class="label label-danger" style="margin-right:10px;">Admin</span>
+						<% } %>
+						
 						<%= this.users[i].users[u].name %> 
+						
+						
 						<% if(this.users[i].users[u].tag){ %>
 						<small>(<%= this.users[i].users[u].tag %>)</small>
 						<% } %>

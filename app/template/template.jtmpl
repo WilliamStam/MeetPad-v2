@@ -154,6 +154,7 @@
 					<li {% if page['sub_section']=="meetings" %}class="active"{% endif %}>
 						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/meetings">Meetings</a>
 					</li>
+					<% if(this.company_admin=='1'){ %>
 					<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
 						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}/users">Users
 							<% if (this.company_users_no_groups) { %>
@@ -161,7 +162,7 @@
 							<% } %>
 						</a>
 					</li>
-
+					<% } %>
 				{% endif %}
 				{% if page['section']=="meeting" %}
 					<li {% if page['sub_section']=="meeting" %}class="active"{% endif %}>

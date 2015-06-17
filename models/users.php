@@ -27,9 +27,10 @@ class users extends _ {
 			WHERE $where;
 			";
 		if ($companyID){
+			$where = $where. " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "
 			SELECT mp_users.*, mp_users_company.tag, mp_users_company.admin
-			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
+			FROM (mp_users INNER JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
 		}
@@ -44,7 +45,7 @@ class users extends _ {
 			$return = parent::dbStructure("mp_users", array());
 		}
 
-		//test_array($return); 
+	//	test_array($return); 
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return  self::format($return);
@@ -68,7 +69,7 @@ class users extends _ {
 
 		$select = "";
 		if ($options['companyID']) {
-			$select = ",  mp_users_company.tag";
+			$select = ",  mp_users_company.tag,  mp_users_company.admin";
 			$where = $where. " AND mp_users_company.companyID = '{$options['companyID']}'";
 		}
 		
