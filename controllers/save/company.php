@@ -67,8 +67,6 @@ class company extends _save {
 			"email" => $this->post("email","Need a valid email address"),
 		);
 		$errors = $this->errors;
-		//test_array($_POST); 
-
 
 
 		$response = array();
@@ -76,7 +74,7 @@ class company extends _save {
 		
 		if (count($errors)==0){
 			
-			$response = models\users::getInstance()->getAll("email LIKE '%{$values['email']}%'");
+			$response = models\users::getInstance()->getAll("email LIKE '{$values['email']}'");
 			if (isset($response[0])){
 				$response = $response[0];
 				$ID = $response['ID'];
@@ -85,14 +83,6 @@ class company extends _save {
 			$t = $t[0];
 			$response['tag'] = $t['tag'];
 			$response['admin'] = $t['admin'];
-			
-		//	test_array(array($response['ID'],$companyID,$t)); 
-			
-		
-			
-		//	test_array($response); 
-			// $ID = models\company::save($ID,$values);
-			
 			
 		
 			
