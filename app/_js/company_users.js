@@ -1,6 +1,67 @@
 var left = $("#left-area .scroll-pane");
 
 $(document).ready(function () {
+	
+	$(document).on("submit","#add-user",function(e){
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+		
+		$(".form-validation", $this).remove();
+		$(".has-error", $this).removeClass("has-error");
+		
+		$.post("/save/company/find_user?companyID="+$(this).attr("data-companyID"),data,function(d){
+			var d = d.data;
+			validationErrors(d, $this);
+			
+			if (d['ID']){
+				
+				$("#form-modal").jqotesub($("#template-user-to-company"), d).modal("show");
+			} else {
+				$.bbq.pushState({"modal": "user-" + d['ID'] + "-" + d['companyID']});
+				formUser('',d.email);
+			}
+			
+			
+		});
+		return false;
+	});
+	
+	
+	$(document).on('submit', '#user-company-add-groups', function (e) {
+		e.preventDefault();
+		var d = $(this).serialize();
+
+		$.post("/save/company/add_user?userID="+$(this).attr("data-userID")+"&companyID="+$(this).attr("data-companyID"),d,function(d) {
+
+			alert("User added");
+			$("#form-modal").modal("hide");
+			
+		});
+		
+	});
+	
+	$(document).on('submit', '#search-form', function (e) {
+		e.preventDefault();
+		$.bbq.pushState({"search-group":$("#search-group").val(),"search":$("#search").val()})
+
+		getData();
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+	$(document).on('click', '#search-clear-btn', function () {
+		$.bbq.removeState("search");
+		$.bbq.removeState("search-group");
+		getData();
+	});
+	
+	
 	$(document).on('click', '[data-toggle="offcanvas"]', function () {
 		$('#right-area').toggleClass('active')
 	});
@@ -55,10 +116,12 @@ $(document).ready(function () {
 });
 function getData() {
 	var ID = $.bbq.getState("ID") || '';
+	var search = $.bbq.getState("search") || '';
+	var searchgroup = $.bbq.getState("search-group") || '';
 
 	$(".loadingmask").show();
 	
-	$.getData("/data/company_users/data?companyID=" + _data['ID'], {}, function (data) {
+	$.getData("/data/company_users/data?companyID=" + _data['ID'], {"search":search,"search-group":searchgroup}, function (data) {
 
 		
 
@@ -68,10 +131,11 @@ function getData() {
 
 		$("#loading-mask").fadeOut();
 
+		
 
 		$.doTimeout(400,function(){
 			resize();
-			
+		//	$("#search-group").select2();
 
 		})
 		resize()

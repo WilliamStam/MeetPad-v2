@@ -53585,21 +53585,22 @@ function validationErrors(data, $form) {
 		$(".has-error").get(0).scrollIntoView();
 		$("button[type='submit']", $form).addClass("btn-danger").html("(" + i + ") Error(s) Found");
 
-	} else {
-
-	}
+	} 
 
 	submitBtnCounter($form);
+	
+	
 }
 
 function submitBtnCounter($form) {
-
 	var c = $(".form-group.has-error").length;
 	var $btn = $("button[type='submit']", $form);
 	if (c) {
 		$btn.addClass("btn-danger").html("(" + c + ") Error(s) Found");
 	} else {
-		$btn.html("Save changes").removeClass("btn-danger");
+		
+		var tx = $btn.attr("data-text")||"Save changes";
+		
+		$btn.html(tx).removeClass("btn-danger");
 	}
-
 }

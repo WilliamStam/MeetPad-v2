@@ -210,7 +210,7 @@
 				$("#timeEnd").val(moment(e.date).format("YYYY-MM-DD HH:mm:00")).trigger("change")
 			}).data("DateTimePicker").date(moment($("#timeEnd").val() || "d"));
 
-			if (data.active == '1') {
+			if ($("#note").length) {
 				CKEDITOR.config.removeButtons = '';
 				CKEDITOR.config.toolbar = [
 					[
@@ -268,7 +268,7 @@
 		var data = $this.serialize();
 		var $submit = $("button[type='submit']", $this).html("Save changes").removeClass("btn-danger");
 		$(".form-validation", $this).remove();
-		$(".has-error", $this).removeClass("has-error has-feedback");
+		$(".has-error", $this).removeClass("has-error");
 
 		$.post("/save/form/meeting?ID=" + $this.attr("data-ID") + "&cID=" + $this.attr("data-cID"), data, function (r) {
 			var data = r.data;
@@ -285,7 +285,7 @@
 		//formCompany();
 
 	});
-	$(document).on("change", ".has-error.has-feedback input", function () {
+	$(document).on("change", ".has-error input", function () {
 		var $this = $(this);
 		var $block = $this.closest(".form-group");
 

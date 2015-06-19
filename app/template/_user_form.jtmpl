@@ -150,26 +150,18 @@
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("user") > -1) {
 			formUser()
 		}
-
-
-
-
-
 	});
 
-	function formUser(ID) {
+	function formUser(ID,email) {
+		console.log(email)
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("user") > -1) {
 			ID = $.bbq.getState("modal").replace("user-", "");
 		}
 
 
 		$.getData("/data/form/user?ID=" + ID, {}, function (data) {
-
+			data.email = email;
 			$("#form-modal").jqotesub($("#template-form-user"), data).modal("show");
-
-
-
-			
 
 		}, "form")
 
@@ -199,11 +191,7 @@
 			validationErrors(data, $this);
 			$.bbq.pushState({"modal": "user-" + data['ID'] + "-" + data['companyID']});
 			if ($.isEmptyObject(data['errors'])) {
-				
 				$("#form-modal").jqotesub($("#template-form-user-saved"), data);
-				
-				
-				
 			}
 		})
 

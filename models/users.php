@@ -89,7 +89,7 @@ class users extends _ {
 			$orderby
 			$limit
 		";
-		//test_string($where); 
+		//test_string($sql); 
 		
 		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
 

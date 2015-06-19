@@ -95,6 +95,8 @@ class user extends _ {
 				$whereM = "mp_users_group.userID='{$user['ID']}'";
 			}
 			$meetings = meeting::getInstance()->getAll($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC");
+			
+			//test_array($whereM); 
 			$am = array();
 			foreach ($meetings as $item){
 				$item['activeMeetings'] = 0;
@@ -107,7 +109,7 @@ class user extends _ {
 
 			$companies = company::getInstance()->getAll($whereC,"company ASC");
 
-			//test_array($whereC); 
+			//test_array($meetings); 
 			$n = array();
 			foreach ($companies as $item){
 				$item['activeMeetings'] = isset($am[$item['ID']])?$am[$item['ID']] : 0;

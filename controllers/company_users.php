@@ -17,7 +17,7 @@ class company_users extends _ {
 		$this->f3->set("company",$data);
 		$user = models\users::getInstance()->get($user['ID'],$data['ID']);
 		if ($user['admin']!='1'){
-			$this->f3->error("404");
+			$this->f3->reroute("/content/{$data['ID']}/{$data['url']}");
 		}
 	
 		
