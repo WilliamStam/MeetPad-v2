@@ -147,7 +147,7 @@ function resize() {
 			n = n + tw;
 
 				
-			$this.css({"width":bl-10});
+			$this.css({"width":bl-8});
 			
 			
 		});

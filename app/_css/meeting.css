@@ -156,6 +156,10 @@
   text-overflow: ellipsis;
 }
 /* Breadcrumbs from http://bootsnipp.com/snippets/featured/triangle-breadcrumbs-arrows */
+.btn-breadcrumb {
+  margin-bottom: -5px;
+  margin-top: -4px;
+}
 .btn-breadcrumb .btn:not(:last-child):after {
   content: " ";
   display: block;
@@ -186,13 +190,13 @@
   z-index: 3;
 }
 .btn-breadcrumb .btn {
-  padding: 6px 12px 6px 24px;
+  padding: 6px 6px 6px 20px;
 }
 .btn-breadcrumb .btn:first-child {
   padding: 6px 6px 6px 10px;
 }
 .btn-breadcrumb .btn:last-child {
-  padding: 6px 18px 6px 24px;
+  padding: 6px 6px 6px 20px;
 }
 /** Default button **/
 .btn-breadcrumb .btn.btn-default:not(:last-child):after {

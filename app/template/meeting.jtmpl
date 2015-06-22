@@ -49,9 +49,9 @@
 <script type="text/x-jqote-template" id="template-item">
 	<![CDATA[
 
-	<div class="content-header" style="height:58px;">
+	<div class="content-header" >
 		<div class="clearfix"></div>
-		<div class="btn-group btn-breadcrumb" style="margin-top:10px;" >
+		<div class="btn-group btn-breadcrumb"  >
 			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
 				<div><%= this.company.company %></div>
 			</a>
@@ -68,7 +68,7 @@
 		
 		
 	</div>	
-	<section id="item-area" class="scroll-pane" style="top:61px;bottom:52px;left:12px;">
+	<section id="item-area" class="scroll-pane" style="top:37px;bottom:52px;left:12px;">
 		
 
 		<h3><%= this.item.heading %></h3>
@@ -119,9 +119,9 @@
 <script type="text/x-jqote-template" id="template-meeting-home">
 	<![CDATA[
 
-	<div class="content-header" style="height:58px;">
+	<div class="content-header">
 		<div class="clearfix"></div>
-		<div class="btn-group btn-breadcrumb" style="margin-top:10px;" >
+		<div class="btn-group btn-breadcrumb"  >
 			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
 				<div><%= this.company.company %></div>
 			</a>
@@ -138,7 +138,7 @@
 	</div>
 	
 	
-	<section class="scroll-pane" style="left:10px;top:61px;">
+	<section class="scroll-pane" style="left:10px;top:37px;">
 		
 
 		<h2><%= this.meeting.meeting %></h2>

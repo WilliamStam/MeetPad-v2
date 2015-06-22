@@ -186,7 +186,7 @@
 }
 
 .groups-access {
-	margin-bottom:10px;
+	margin-bottom: 10px;
 	.label-default {
 		background-color: #f1f1f1;
 		color: #ccc;
@@ -195,7 +195,7 @@
 }
 
 .table-nowrap {
-	table-layout:fixed;
+	table-layout: fixed;
 }
 
 .table-nowrap td {
@@ -204,10 +204,12 @@
 	text-overflow: ellipsis;
 }
 
-
-
-
 /* Breadcrumbs from http://bootsnipp.com/snippets/featured/triangle-breadcrumbs-arrows */
+.btn-breadcrumb {
+	margin-bottom:-5px;
+	margin-top:-4px;
+}
+
 .btn-breadcrumb .btn:not(:last-child):after {
 	content: " ";
 	display: block;
@@ -222,6 +224,7 @@
 	left: 100%;
 	z-index: 3;
 }
+
 .btn-breadcrumb .btn:not(:last-child):before {
 	content: " ";
 	display: block;
@@ -239,25 +242,30 @@
 }
 
 .btn-breadcrumb .btn {
-	padding:6px 12px 6px 24px;
+	padding: 6px 6px 6px 20px;
 }
+
 .btn-breadcrumb .btn:first-child {
-	padding:6px 6px 6px 10px;
+	padding: 6px 6px 6px 10px;
 }
+
 .btn-breadcrumb .btn:last-child {
-	padding:6px 18px 6px 24px;
+	padding: 6px 6px 6px 20px;
 }
 
 /** Default button **/
 .btn-breadcrumb .btn.btn-default:not(:last-child):after {
 	border-left: 10px solid #fff;
 }
+
 .btn-breadcrumb .btn.btn-default:not(:last-child):before {
 	border-left: 10px solid #ccc;
 }
+
 .btn-breadcrumb .btn.btn-default:hover:not(:last-child):after {
 	border-left: 10px solid #ebebeb;
 }
+
 .btn-breadcrumb .btn.btn-default:hover:not(:last-child):before {
 	border-left: 10px solid #adadad;
 }
@@ -272,17 +280,18 @@
 }
 
 .btn-breadcrumb > *:nth-child(n+2) {
-	display:none;
+	display: none;
 }
 
 /* === For phones =================================== */
 
-	.btn-breadcrumb > *:nth-last-child(-n+2) {
-		display:block;
-	}
-	.btn-breadcrumb > * div {
-		
-	}
+.btn-breadcrumb > *:nth-last-child(-n+2) {
+	display: block;
+}
+
+.btn-breadcrumb > * div {
+
+}
 
 
 
