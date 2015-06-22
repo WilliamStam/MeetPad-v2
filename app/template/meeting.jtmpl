@@ -68,7 +68,7 @@
 		
 		
 	</div>	
-	<section id="item-area" class="scroll-pane" style="top:51px;bottom:52px;left:12px;">
+	<section id="item-area" class="scroll-pane" style="top:61px;bottom:52px;left:12px;">
 		
 
 		<h3><%= this.item.heading %></h3>
@@ -138,7 +138,7 @@
 	</div>
 	
 	
-	<section class="scroll-pane" style="left:10px;top:51px;">
+	<section class="scroll-pane" style="left:10px;top:61px;">
 		
 
 		<h2><%= this.meeting.meeting %></h2>
