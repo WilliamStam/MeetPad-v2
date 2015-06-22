@@ -168,11 +168,7 @@
 					<li {% if page['sub_section']=="meeting" %}class="active"{% endif %}>
 						<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}">Meeting</a>
 					</li>
-					<li {% if page['sub_section']=="users" %}class="active"{% endif %}>
-						<a href="/content/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}/users">Users
-
-						</a>
-					</li>
+					
 
 
 

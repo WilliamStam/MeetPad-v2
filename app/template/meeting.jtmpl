@@ -48,16 +48,28 @@
 </script>
 <script type="text/x-jqote-template" id="template-item">
 	<![CDATA[
-	
 
-	<section id="item-area" class="scroll-pane" style="top:0px;bottom:52px;left:12px;">
-		<ol class="breadcrumb">
-			<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-			<li>
-				<a href="/content/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>/" class="meeting-info-btn"><%= this.meeting.meeting %></a>
-			</li>
-			<li class="active"><%= this.item.heading %></li>
-		</ol>
+	<div class="content-header" style="height:58px;">
+		<div class="clearfix"></div>
+		<div class="btn-group btn-breadcrumb" style="margin-top:10px;" >
+			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
+				<div><%= this.company.company %></div>
+			</a>
+			<a href="/content/<%= this.meeting.ID %>/<%= this.company.company %>/<%= this.meeting.url %>" class="btn meeting-info-btn">
+				<div><%= this.meeting.meeting %></div>
+			</a>
+			<a href="/content/<%= this.meeting.ID %>/<%= this.company.company %>/<%= this.meeting.url %>#ID=<%= this.item.ID %>" class="btn " data-id="<%= this.item.ID %>">
+				<div><%= this.item.heading %></div>
+			</a>
+		</div>
+		
+		<div class="clearfix"></div>
+		
+		
+		
+	</div>	
+	<section id="item-area" class="scroll-pane" style="top:51px;bottom:52px;left:12px;">
+		
 
 		<h3><%= this.item.heading %></h3>
 		<section class="groups-access">
@@ -107,11 +119,27 @@
 <script type="text/x-jqote-template" id="template-meeting-home">
 	<![CDATA[
 
-	<section class="scroll-pane" style="left:10px;">
-		<ol class="breadcrumb">
-			<li><a href="/content/<%= this.company.ID %>/<%= this.company.url %>"><%= this.company.company %></a></li>
-			<li class="active"><%= this.meeting.meeting %></li>
-		</ol>
+	<div class="content-header" style="height:58px;">
+		<div class="clearfix"></div>
+		<div class="btn-group btn-breadcrumb" style="margin-top:10px;" >
+			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
+				<div><%= this.company.company %></div>
+			</a>
+			<a href="/content/<%= this.meeting.ID %>/<%= this.company.company %>/<%= this.meeting.url %>" class="btn meeting-info-btn">
+				<div><%= this.meeting.meeting %></div>
+			</a>
+			
+		</div>
+
+		<div class="clearfix"></div>
+
+
+
+	</div>
+	
+	
+	<section class="scroll-pane" style="left:10px;top:51px;">
+		
 
 		<h2><%= this.meeting.meeting %></h2>
 		<section class="groups-access">

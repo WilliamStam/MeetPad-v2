@@ -90,7 +90,7 @@ function getData() {
 
 
 		$.doTimeout(400,function(){
-			resize();
+			//resize();
 			if (right_template == "#template-item"){
 				$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
 			}
@@ -131,6 +131,30 @@ function resize() {
 
 	});
 
+	
+	$(".btn-breadcrumb").each(function(){
+		var $this = $(this);
+		var width = $this.parent().innerWidth();
+		var n = 0;
+		var i = $("a",$this).length;
+
+		var bl = width / $("a",$this).length;
+		
+		
+		$("a",$this).each(function(){
+			var $this = $(this);
+			var tw = $this.outerWidth();
+			n = n + tw;
+
+				
+			$this.css({"width":bl-10});
+			
+			
+		});
+
+		
+
+	})
 
 
 
