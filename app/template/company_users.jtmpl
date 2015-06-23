@@ -31,7 +31,7 @@
 		<table class="table">
 			<% for (var i in this.users_no_groups) { %>
 			
-			<tr class="record user-form" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
+			<tr class="record user-form-company" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
 				<td>
 					<% if(this.users_no_groups[i].admin=='1'){ %>
 					<span class="label label-danger" style="margin-right:10px;">Admin</span>

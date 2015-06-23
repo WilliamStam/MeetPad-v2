@@ -111,7 +111,11 @@
 				
 			</div>
 			<div class="modal-footer">
+				<% if (this.new) { %>
+				<a href="<%= this.new %>" class="btn btn-primary">Login as this user</a>
+				<% } else { %>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				<% } %>
 			</div>
 		</div>
 	</div>	

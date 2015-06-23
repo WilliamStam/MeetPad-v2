@@ -324,9 +324,12 @@ class form extends _save {
 
 		$values = array(
 			"name" => $this->post("name", true),
-			"email" => $this->post("email", "Please enter a valid email address")
 		);
 
+		if (isset($_POST['email'])&&$_POST['email']!=''){
+			$values['email'] = $_POST['email'];
+		}
+		
 		if (isset($_POST['password'])&&$_POST['password']!="") $values['password'] = $this->post("password");
 		
 		$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
@@ -334,6 +337,8 @@ class form extends _save {
 		if (isset($values['groups']) && count($values['groups'])<=0){
 		//	$errors['groups'] = "No Groups Selected, Please add at least 1 group for the user";
 		}
+		
+		
 
 
 		if (!count($errors)){
@@ -372,7 +377,7 @@ class form extends _save {
 		$errors = $this->errors;
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
-
+		$ID_orig = $ID;
 
 		$values = array(
 			"name"=>$this->post("name",true),
@@ -386,7 +391,21 @@ class form extends _save {
 		if (isset($_POST['password'])&&$_POST['password']!=''){
 			$values['password'] = $_POST['password'];
 		}
-
+		if (isset($_POST['email'])&&$_POST['email']!=''){
+			$values['email'] = $_POST['email'];
+		}
+		if ($values['email']!=""){
+			if (count(models\users::getInstance()->getAll("email LIKE '{$values['email']}' AND mp_users.ID != '{$ID}'"))){
+				$errors['email'] = "The email address already exists";
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
 		if (!count($errors)){
 			//	test_array($values); 
 			$ID = models\users::save($ID,$values);
@@ -395,7 +414,10 @@ class form extends _save {
 			"ID" => $ID,
 			"errors" => $errors
 		);
-
+		if ($ID_orig!=$ID){
+			
+			$return['new'] = "/?login_email={$values['email']}&login_password={$values['password']}";
+		}
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

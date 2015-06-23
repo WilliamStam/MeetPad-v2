@@ -73,17 +73,34 @@ $f3->set('version', $version);
 
 
 $uID = isset($_SESSION['uID']) ? $_SESSION['uID'] : "";
-$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
-$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
+$username = isset($_REQUEST['login_email']) ? $_REQUEST['login_email'] : "";
+$password = isset($_REQUEST['login_password']) ? $_REQUEST['login_password'] : "";
 
 $userO = new \models\user();
 //$uID = "2";
 
 
 
+
+
 if ($username && $password) {
 	$uID = $userO->login($username, $password);
-	$url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		
+	$uri = $_SERVER['REQUEST_URI'];
+	$uri = str_replace("login_email=","",$uri);
+	$uri = str_replace("login_password=","",$uri);
+	if (isset($_GET['login_email'])) $uri = str_replace($_GET['login_email'],"",$uri);
+	if (isset($_GET['login_password'])) $uri = str_replace($_GET['login_password'],"",$uri);
+
+	$uri = str_replace("&&","&",$uri);
+	$uri = str_replace("&&","&",$uri);
+	$uri = str_replace("&&","&",$uri);
+	$uri = str_replace("&&","&",$uri);
+	$uri = str_replace("&&","&",$uri);
+	$uri = str_replace("?&","?",$uri);
+	if ($uri=="?")$uri = "";
+	
+	$url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $uri;
 	$f3->reroute($url);
 }
 $user = $userO->get($uID);
