@@ -126,7 +126,7 @@ class form extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
-	function user() {
+	function usercompany() {
 		$result = array();
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
@@ -145,6 +145,29 @@ class form extends _data {
 		$result['company'] = models\company::getInstance()->get($companyID,true);
 
 
+		$result['em'] = $result['email'];
+
+
+		return $GLOBALS["output"]['data'] = $result;
+	}
+function user() {
+		$result = array();
+
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$IDparts = explode("-", $ID);
+		$companyID = "";
+		if (isset($IDparts[1])) {
+			$companyID = $IDparts[1];
+			$ID = $IDparts[0];
+		}
+
+		//test_array($ID); 
+		$object = models\users::getInstance();
+
+		$result = $object->get($ID,$companyID);
+
+
+	$result['em'] = $result['email'];
 
 
 

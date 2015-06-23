@@ -221,7 +221,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("company") > -1) {
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("company-") > -1) {
 			formCompany()
 		}
 

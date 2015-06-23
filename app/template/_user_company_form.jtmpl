@@ -1,8 +1,8 @@
-<script type="text/x-jqote-template" id="template-form-user">
+<script type="text/x-jqote-template" id="template-form-user-company">
 	<![CDATA[
 
 
-	<form class="form-horizontal" id="form-user"  data-ID="<%= this.ID %>">
+	<form class="form-horizontal" id="form-user-company"  data-ID="<%= this.ID %>" data-cID="<%= this.company.ID %>">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -10,7 +10,9 @@
 						<span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title"><% if (this.ID) { %>Edit User<% } else { %>Add User<% } %>
 
-						
+						<small class="pull-right" style="margin-right:30px;">
+							<span class="label label-default"><%= this.company.company %></span>
+						</small>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -34,15 +36,10 @@
 							</div>
 						</div>
 					</div>
-					
-					
-					
-					
 					<div class="form-group has-feedback">
 						<label for="email" class="col-sm-3 control-label">Email	</label>
 
 						<div class="col-sm-8">
-							<% console.log(this.em); %>
 							<% if (this.ID){ %>
 							<div style="padding:8px 0 0 12px;">
 								<%= this.em||"" %>
@@ -58,7 +55,6 @@
 							<% } %>
 						</div>
 					</div>
-				
 					<div class="form-group has-feedback">
 						<label for="password" class="col-sm-3 control-label">Password</label>
 
@@ -70,7 +66,42 @@
 						</div>
 						
 					</div>
-					
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Company Admin</label>
+
+						<div class="col-sm-8">
+							<div id="groups" >
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="admin" value="1" <% if (this.admin=='1'){ %>checked<% } %>>
+										Company Admin
+										
+									</label>
+									<div class="help-block s g">
+										If ticked this user will have full admin privilages!
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Groups</label>
+
+						<div class="col-sm-8">
+							<div id="groups" >
+								<% for (var i in this.groups) { %>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+										<%= this.groups[i].group %>
+									</label>
+								</div>
+								<% } %>
+							</div>
+
+						</div>
+					</div>
 
 
 				</div>
@@ -87,7 +118,7 @@
 
 	]]>
 </script>
-<script type="text/x-jqote-template" id="template-form-user-saved">
+<script type="text/x-jqote-template" id="template-form-user-company-saved">
 	<![CDATA[
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -111,7 +142,12 @@
 				
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-link reload-modal-c">Continue Editing</button>
+				<% if (this.new) { %>
+				<a href="/content/<%= this.ID %>/<%= this.new %>" class="btn btn-primary">Close</a>
+				<% } else { %>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				<% } %>
 			</div>
 		</div>
 	</div>	
@@ -120,42 +156,38 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("user-") > -1) {
-			formUser()
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("userC-") > -1) {
+			formUserCo()
 		}
 	});
 
-	function formUser(ID,email) {
+	function formUserCo(ID,email) {
 		//console.log(email)
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("user") > -1) {
-			ID = $.bbq.getState("modal").replace("user-", "");
+			ID = $.bbq.getState("modal").replace("userC-", "");
 		}
 
 
-		$.getData("/data/form/user?ID=" + ID, {}, function (data) {
-			//console.log(email)
-			if (email){
-				data.email = email;
-			}
-		//	console.log(data)
-			$("#form-modal").jqotesub($("#template-form-user"), data).modal("show");
+		$.getData("/data/form/usercompany?ID=" + ID, {}, function (data) {
+			data.email = email;
+			$("#form-modal").jqotesub($("#template-form-user-company"), data).modal("show");
 
 		}, "form")
 
 	}
-	$(document).on("click", ".user-form", function (e) {
+	$(document).on("click", ".user-form-company", function (e) {
 		e.preventDefault();
 		var $this = $(this);
-		$.bbq.pushState({"modal": "user-" + $this.attr("data-ID")});
-		formUser();
+		$.bbq.pushState({"modal": "userC-" + $this.attr("data-ID") + "-" + $this.attr("data-companyID")});
+		formUserCo();
 
 	});
-	$(document).on("click", ".reload-modal", function (e) {
+	$(document).on("click", ".reload-modal-c", function (e) {
 		e.preventDefault();
-		formUser();
+		formUserCo();
 
 	});
-	$(document).on("submit", "#form-user", function (e) {
+	$(document).on("submit", "#form-user-company", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
@@ -163,12 +195,12 @@
 		$(".form-validation", $this).remove();
 		$(".has-error", $this).removeClass("has-error");
 
-		$.post("/save/form/user?ID="  + $this.attr("data-ID") + "&cID=" + $this.attr("data-cID"), data, function (r) {
+		$.post("/save/form/usercompany?ID="  + $this.attr("data-ID") + "&cID=" + $this.attr("data-cID"), data, function (r) {
 			var data = r.data;
 			validationErrors(data, $this);
-			$.bbq.pushState({"modal": "user-" + data['ID'] + "-" + data['companyID']});
+			$.bbq.pushState({"modal": "userC-" + data['ID'] + "-" + data['companyID']});
 			if ($.isEmptyObject(data['errors'])) {
-				$("#form-modal").jqotesub($("#template-form-user-saved"), data);
+				$("#form-modal").jqotesub($("#template-form-user-company-saved"), data);
 			}
 		})
 

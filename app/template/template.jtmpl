@@ -281,9 +281,8 @@
 					<span class="visible-xs-inline">Settings </span><span class="fa fa-gears"></span>
 				</a>
 				<ul class="dropdown-menu">
-					<li>
-						<a href="/settings/profile"><i class="fa fa-pencil" style="margin-right:10px;"></i>My Profile
-						</a>
+					<li  <% if ("{{ page['section'] }}" == 'profile'){ %> class="active"<% } %>>
+						<a href="#" class="user-form" data-ID="{{ _user['ID'] }}"><i class="fa fa-user" style="margin-right:10px;"></i>My Profile</a>
 
 					</li>
 					<li>
@@ -337,4 +336,5 @@
 {% include "template/_company_form.jtmpl" %}
 {% include "template/_meeting_form.jtmpl" %}
 {% include "template/_item_form.jtmpl" %}
+{% include "template/_user_company_form.jtmpl" %}
 {% include "template/_user_form.jtmpl" %}

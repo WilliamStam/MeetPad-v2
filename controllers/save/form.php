@@ -306,7 +306,7 @@ class form extends _save {
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
-	function user() {
+	function usercompany() {
 		$result = array();
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
@@ -367,6 +367,37 @@ class form extends _save {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
+	function user() {
+		$result = array();
+		$errors = $this->errors;
+
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+
+
+		$values = array(
+			"name"=>$this->post("name",true),
+			"tag"=>$this->post("tag")
+		);
+
+		if ($values['name']==""){
+			$errors['name'] = "";
+		}
+
+		if (isset($_POST['password'])&&$_POST['password']!=''){
+			$values['password'] = $_POST['password'];
+		}
+
+		if (!count($errors)){
+			//	test_array($values); 
+			$ID = models\users::save($ID,$values);
+		}
+		$return = array(
+			"ID" => $ID,
+			"errors" => $errors
+		);
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
 
 
 }

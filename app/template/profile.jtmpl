@@ -1,0 +1,30 @@
+<script type="text/x-jqote-template" id="template-form-user">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Success!!</h4>
+			</div>
+			<div class="modal-body c">
+
+
+				<div class="c" style="position: relative;">
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+					<div style="" >
+						<h3 class="g">Form Saved</h3>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<a href="/profile" class="btn btn-primary">Close</a>
+			</div>
+		</div>
+	</div>
+	]]>
+</script>

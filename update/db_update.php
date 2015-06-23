@@ -6,7 +6,8 @@ $sql = array(
 	"ALTER TABLE  `mp_content_group` ADD  `ID` INT( 6 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
 	"ALTER TABLE  `mp_users` ADD  `tag` VARCHAR( 250 ) NULL DEFAULT NULL AFTER  `name`;",
 	"ALTER TABLE  `mp_users_company` ADD  `tag` VARCHAR( 250 ) NULL DEFAULT NULL AFTER  `companyID`;",
-	"ALTER TABLE `mp_users` DROP `tag`;",
+	"ALTER TABLE  `mp_users` DROP `tag`;",
+	"ALTER TABLE  `mp_users` ADD  `tag` VARCHAR( 250 ) NULL DEFAULT NULL AFTER  `password`;"
 
 )
 

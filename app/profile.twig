@@ -1,0 +1,78 @@
+<section id="content-area" >
+	<form class="form-horizontal" id="user-form"  >
+		<div class="row">
+			<div class="col-md-5 affix affix-top  sidebar-offcanvas" id="left-area">
+				<section id="left-area-content" class="content">
+					User stats. like comments / polls etc here. probably adding a heat calendar aswell
+				</section>
+			</div>
+			<div class="col-md-7 col-md-offset-5 row-offcanvas row-offcanvas-left match-height" id="right-area">
+				<div data-toggle="offcanvas" class="offcanvas visible-sm-block visible-xs-block">
+					<i class="fa fa-ellipsis-v"></i>
+				</div>
+				<section id="right-area-content" class="content">
+
+					<div class="content-header" >
+						<h4>User Profile</h4>
+						
+					</div>
+					<section class="scroll-pane" style="top:55px;bottom:52px;left:12px;">
+						<div  class="col-md-11" style="margin-top:20px;">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">Name</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="name" name="name" placeholder="Full Name" value="{{ _user['name'] }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+								<div class="col-sm-10">
+									
+									<div style="padding:8px 0 0 12px;">
+										{{ _user['email'] }}
+									</div>
+									<div class="help-block s g">
+										For security reasons you cant change your email address. Contact us if you need it changed. We only bite on request. admin@meetpad.org
+									</div>
+								
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+								<div class="col-sm-10">
+									<input type="password" class="form-control" id="password" name="password" placeholder="Password" value="" autocomplete="off">
+									<div class="help-block s g">
+										Leave it blank to keep old password
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						
+						
+						<div style="height:1000px;"></div>
+						
+						
+					</section>
+					<section class="content-footer">
+						<div class="pull-right">
+							<button class="btn btn-default">Save Changes</button>
+						</div>
+					</section>	
+					
+
+					
+					
+						
+					
+				
+					
+					
+				</section>
+
+			</div>
+			<div class="loadingmask wide" id="loading-mask"></div>
+		</div>
+</form>
+</section>

@@ -1,6 +1,6 @@
 <script type="text/x-jqote-template" id="template-left">
 	<![CDATA[
-	<section class="content-header">
+	<section class="content-header" style="height:51px;">
 
 		<h1><%= this.company.company %>
 			<small class="pull-right">Users: <%= this.userCount %></small>
@@ -47,7 +47,7 @@
 			
 			<% } %>
 		</table>
-		<div class="alert alert-info">
+		<div class="alert alert-info" style="margin-right:10px;">
 			These users are part of the company but havent been added to any groups. They wont be a part of any meeting.
 		</div>
 		<% } %>
@@ -60,7 +60,7 @@
 <script type="text/x-jqote-template" id="template-right">
 	<![CDATA[
 
-	<div class="content-header" style="height:51px;">
+	<div class="content-header" style="height:50px;">
 		<form class="form-inline pull-right" id="search-form" >
 
 			<div class="form-group" style="margin-right:10px;">
@@ -103,7 +103,7 @@
 				<tbody>
 				<% for (var u in this.users[i].users){ %>
 				<% n = n + 1; %>
-				<tr class="record user-form" data-ID="<%= this.users[i].users[u].ID %>" data-companyID="{{ data['ID'] }}">
+				<tr class="record user-form-company" data-ID="<%= this.users[i].users[u].ID %>" data-companyID="{{ data['ID'] }}">
 					<td>
 						<% if(this.users[i].users[u].admin=='1'){ %>
 						<span class="label label-danger" style="margin-right:10px;">Admin</span>

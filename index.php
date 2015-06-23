@@ -108,6 +108,8 @@ $f3->route('GET /txt', function ($f3) {
 $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
 
+$f3->route('GET|POST /profile', 'controllers\profile->page');
+
 $f3->route('GET|POST /content/@ID/@url', 'controllers\company->page');
 $f3->route('GET|POST /content/@ID/@url/users', 'controllers\company_users->page');
 $f3->route('GET|POST /content/@ID/@url/meetings', 'controllers\company_meetings->page');
@@ -125,7 +127,7 @@ $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 
 
 
-
+//test_array(md5(md5("meet")."123".md5("pad"))); 
 
 
 

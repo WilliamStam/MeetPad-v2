@@ -160,7 +160,7 @@
 
 
 	$(document).ready(function () {
-		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("meeting") > -1) {
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("meeting-") > -1) {
 			formMeeting()
 		}
 

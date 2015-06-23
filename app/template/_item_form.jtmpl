@@ -143,7 +143,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("item") > -1) {
+		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("item-") > -1) {
 			formItem()
 		}
 
