@@ -49,6 +49,7 @@
 			<div class="modal-body c">
 
 				<div class="c" style="position: relative;">
+					<% if (this.status=='1'){ %>
 					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
 
 					<div style="" >
@@ -56,6 +57,16 @@
 							</br><%= this.email %></br> <small>with further instructions</small>
 						</h3>
 					</div>
+					<% } else { %>
+					<i class="fa fa-frown-o" style="font-size: 120px; color:rgba(255,0, 0, 0.3)"></i>
+
+					<div style="" >
+						<h3 class="g"><small>there was an error sending an email</small>
+							</br> <small>Please email us: </small> {{ _cfg['email'] }}
+						</h3>
+					</div>
+					
+					<% } %>
 
 				</div>
 				

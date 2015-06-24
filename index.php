@@ -204,8 +204,7 @@ $f3->route('GET /php', function () {
 $f3->run();
 
 
-if ($f3->get("__NoEndStuff__")==false) {
-	
+
 	
 
 $models = $GLOBALS['models'];
@@ -263,11 +262,7 @@ if (($f3->get("AJAX") && ($f3->get("__runTemplate")==false) || $f3->get("__runJS
 				';
 
 }
-} else {
-	
-	
-	
-}
+
 
 
 ?>

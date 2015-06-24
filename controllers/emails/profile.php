@@ -50,13 +50,14 @@ class profile extends _emails {
 
 			$return = @mail($to, $subject, $message, $headers)?"1":"0";
 			
+			
 
 
 			 
 		}
 
 
-
+	//	test_array($return);
 
 
 

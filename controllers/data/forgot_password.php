@@ -39,15 +39,18 @@ class forgot_password extends _data {
 			$u = models\users::getInstance()->getAll("email LIKE '{$email}'","ID DESC");
 			$u = isset($u[0])?$u[0]:false;
 			
-			if ($u['ID']){
+			if ($u && $u['ID']!=""){
+				
 				$ret = \controllers\emails\profile::getInstance()->forgot($u['ID']);
+
+			
 			} else {
 				$errors['email'] = "No such email found in our slave ship. Please 'guess' again :P";
 			}
 			
 		}
-		
-		
+
+	
 		
 		
 		$result = array(
