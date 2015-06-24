@@ -36,7 +36,7 @@ class profile extends _emails {
 			$tmpl->key = $key;
 
 
-			$cfg = $this->f3->get("CFG");
+			$cfg = $this->f3->get("cfg");
 			$to = $user['email'];
 
 			$subject = 'Meetpad | Password Reset';
