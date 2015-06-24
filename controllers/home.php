@@ -5,7 +5,7 @@ use \models as models;
 class home extends _ {
 	function __construct(){
 		parent::__construct();
-		test_array($this->user['ID']); 
+		//test_array($this->user['ID']); 
 		if ($this->user['ID']=="")$this->f3->reroute("/login");
 	}
 	function page(){
