@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-md-8 ">
+
+		<h1>Reset your password here</h1>
+
+		<form class="form-horizontal" style="margin-top:40px;">
+
+
+			<div class="form-group">
+				<label for="password" class="col-sm-3 control-label">New Password</label>
+				<div class="col-sm-7">
+					<input type="password" class="form-control" name="password" id="password" placeholder="New Password">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-7 r">
+					<button type="submit" class="btn btn-default">Reset password</button>
+				</div>
+			</div>
+		</form>
+
+
+
+		<div class="clearfix"></div>
+	</div>
+	<div class="col-md-4 ">
+		<h1>OR... <small>Login here</small></h1>
+		<form action="/" method="post">
+			<h3>{{ msg }}</h3>
+
+			<div class="form-group">
+				<label for="login_email">Email address</label>
+				<input type="email" class="form-control" id="login_email" name="login_email" placeholder="Enter email" value="{{ user['email'] }}">
+			</div>
+			<div class="form-group">
+				<label for="login_password">Password</label>
+				<input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password">
+			</div>
+
+			<button type="submit" class="btn btn-primary btn-block">Login</button>
+			<a href="#" class="btn btn-link btn-block btn-xs user-forgot-password">Forgot Password</a>
+
+			<a href="#" class="btn btn-link btn-block user-form" data-ID="">Register</a>
+
+			<div class="clearfix"></div>
+			<div style="height: 30px;;"></div>
+		</form>
+
+
+		<div style="height: 30px;;"></div>
+
+	</div>
+	
+
+
+
+</div>

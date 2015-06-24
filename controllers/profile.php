@@ -6,12 +6,30 @@ use models as models;
 class profile extends _ {
 	function __construct() {
 		parent::__construct();
-		if ($this->user['ID'] == "") $this->f3->reroute("/login");
+	
 	}
 
-	function page() {
+	
+	function forgot() {
 		$user = $this->f3->get("user");
-
+		$key = $this->f3->get("PARAMS['key']");
+		
+		
+		$key = preg_split('/([a-z]+)/i', $key);
+		
+		$userID = $key[0];
+		$time = $key[1];
+		
+		$key_expired = true;
+		if ($time > strtotime("now")){
+			$key_expired = false;
+		}
+		
+		$user = models\users::getInstance()->get($userID);
+		
+		
+		
+		
 
 
 	
@@ -20,17 +38,17 @@ class profile extends _ {
 
 		$tmpl = new \template("template.twig");
 		$tmpl->page = array(
-			"section" => "profile",
-			"sub_section" => "profile",
-			"template" => "profile",
+			"section" => "user",
+			"sub_section" => "forgot",
+			"template" => "user_forgot",
 			"meta" => array(
-				"title" => "MeetPad | Profile | {$user['name']}",
+				"title" => "MeetPad | Forgot Password",
 			),
 			"css" => "",
-			"js" => "",
+			"js" => "/app/_js/login.js",
 		);
-		$tmpl->get = $_GET;
-		$tmpl->dropdownLabel = $tmpl->data['meeting'];
+		$tmpl->key_expired = $key_expired;
+		$tmpl->user = $user;
 		$tmpl->output();
 	}
 	

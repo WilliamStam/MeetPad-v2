@@ -125,7 +125,7 @@ $f3->route('GET /txt', function ($f3) {
 $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
 
-$f3->route('GET|POST /profile', 'controllers\profile->page');
+$f3->route('GET|POST /user/forgot/@key', 'controllers\profile->forgot');
 
 $f3->route('GET|POST /content/@ID/@url', 'controllers\company->page');
 $f3->route('GET|POST /content/@ID/@url/users', 'controllers\company_users->page');
@@ -135,7 +135,6 @@ $f3->route('GET|POST /content/@ID/@company/@url', 'controllers\meeting->page');
 $f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_users->page');
 
 
-$f3->route('GET|POST /internal/email/user/forgot','controllers\emails\user->forgot');
 
 
 
@@ -178,8 +177,8 @@ $f3->route("GET|POST /data/@folder/@class/@function", function ($app, $params) {
 }
 );
 
-$f3->route("GET|POST /internal/email/@folder/@class/@function", function ($app, $params) {
-	$app->call("controllers\\email\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+$f3->route("GET|POST /internal/emails/@class/@function", function ($app, $params) {
+	$app->call("controllers\\emails\\" . $params['class'] . "->" . $params['function']);
 }
 );
 

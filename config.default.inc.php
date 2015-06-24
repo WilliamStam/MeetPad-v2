@@ -1,6 +1,10 @@
 <?php
 
 
+$cfg['email'] = "darth.vader@meetpad.org";
+
+
+
 $cfg['DB']['host'] = "localhost";
 $cfg['DB']['username'] = "";
 $cfg['DB']['password'] = "";
@@ -12,5 +16,6 @@ $cfg['git'] = array(
 	"path"=>"github.com/WilliamStam/MeetPad-v2.git",
 	"branch"=>"master"
 );
+
 
 $cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/media/backups/";

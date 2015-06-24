@@ -43,6 +43,10 @@
 {%  include "_footer.twig" %}
 <script src="/app/javascript.{{ _v }}.js"></script>
 <script src="/vendor/ckeditor/ckeditor/ckeditor.js?v={{ _v }}"></script>
+
+{% for row in page['js'] %}
+	<script src="{{row }}"></script>
+{% endfor %}
 {% if page['template_js'] %}
 <script src="{{ page['template_js'] }}"></script>
 {% endif %}

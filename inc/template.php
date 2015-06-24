@@ -92,6 +92,13 @@ class template {
 
 
 		if (isset($this->vars['page'])) {
+			
+			if (isset($this->vars['page']['js']) &&$this->vars['page']['js'] !='' ){
+				if (!is_array($this->vars['page']['js'])){
+					$this->vars['page']['js'] = explode(",",$this->vars['page']['js']);
+				} 
+			}
+			
 			if (isset($this->vars['page']['template'])) {
 
 				$folders = $folder;
@@ -143,7 +150,7 @@ class template {
 
 
 
-	//	test_array($this->vars); 
+		//test_array($this->vars); 
 
 
 
