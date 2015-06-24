@@ -135,6 +135,9 @@ $f3->route('GET|POST /content/@ID/@company/@url', 'controllers\meeting->page');
 $f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_users->page');
 
 
+$f3->route('GET|POST /internal/email/user/forgot','controllers\emails\user->forgot');
+
+
 
 $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	session_unset();
@@ -175,6 +178,11 @@ $f3->route("GET|POST /data/@folder/@class/@function", function ($app, $params) {
 }
 );
 
+$f3->route("GET|POST /internal/email/@folder/@class/@function", function ($app, $params) {
+	$app->call("controllers\\email\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+}
+);
+
 
 
 
@@ -196,6 +204,11 @@ $f3->route('GET /php', function () {
 
 $f3->run();
 
+
+if ($f3->get("__NoEndStuff__")==false) {
+	
+	
+
 $models = $GLOBALS['models'];
 $t = array();
 foreach ($models as $model) {
@@ -206,6 +219,8 @@ foreach ($models as $model) {
 	$model['m'] = $c;
 	$t[] = $model;
 }
+
+
 
 $models = $t;
 $pageTime = $GLOBALS['page_execute_timer']->stop("Page Execute");
@@ -248,6 +263,11 @@ if (($f3->get("AJAX") && ($f3->get("__runTemplate")==false) || $f3->get("__runJS
 
 				';
 
+}
+} else {
+	
+	
+	
 }
 
 

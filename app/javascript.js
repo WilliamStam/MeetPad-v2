@@ -53555,11 +53555,17 @@ function updatetimerlist(d, page_size) {
 		$("#systemTimers").prepend(th + timers + thm);
 		
 		
-		$("#main-nav-bar").jqotesub($("#template-navbar"), menu);
-		page_resize()
+		
 
 		// console.log($("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")));
 	}
+
+	//console.log(menu)
+	
+		$("#main-nav-bar").jqotesub($("#template-navbar"), menu);
+		page_resize()
+	
+	
 
 };
 

@@ -1,6 +1,7 @@
 <script type="text/x-jqote-template" id="template-user-forgot">
 	<![CDATA[
 	<div class="modal-dialog">
+		<form class="form-horizontal" id="forgot-password-form">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -10,14 +11,63 @@
 			<div class="modal-body c">
 
 
+				<div class="form-group has-feedback">
+					<label for="email" class="col-sm-3 control-label">Email	</label>
+
+					<div class="col-sm-8">
+						
+						<input type="text" class="form-control" id="email" name="email" placeholder="Email" value="<%= this.email||'' %>">
+						<div class="help-block s g">
+							Please enter your email address here. we will send you an email detailing how you can get in again
+						</div>
+						
+					</div>
+				</div>
 				
 
 
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-primary" data-text="Submit">Submit</button>
 			</div>
 		</div>
+		</form>
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-user-forgot-sent">
+	<![CDATA[
+	<div class="modal-dialog">
+		<form class="form-horizontal" id="forgot-password-form">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Forgot password</h4>
+			</div>
+			<div class="modal-body c">
+
+				<div class="c" style="position: relative;">
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+					<div style="" >
+						<h3 class="g"><small>An email has been sent to</small>
+							</br><%= this.email %></br> <small>with further instructions</small>
+						</h3>
+					</div>
+
+				</div>
+				
+				
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+		</form>
 	</div>
 	]]>
 </script>

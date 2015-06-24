@@ -72,7 +72,9 @@
 
 	<div class="container">
 		<div class="navbar-header">
-			<a href="/" class="navbar-brand hidden-xs">MeetPad</a>
+				<a class="navbar-brand hidden-xs" href="/" style="padding:0;">
+					<img src="/app/_images/logo-small.png" alt="" style="height: 40px;;"/>
+				</a>
 
 			<ul class="nav navbar-nav navbar-right pull-left visible-xs-inline" style="margin-top:0;margin-bottom:0;">
 				<li class="dropdown selector-dropdown" id="mobile-selector-menu">
