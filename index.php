@@ -126,6 +126,7 @@ $f3->route('GET|POST /login', 'controllers\login->page');
 $f3->route('GET|POST /', 'controllers\home->page');
 
 $f3->route('GET|POST /user/forgot/@key', 'controllers\profile->forgot');
+$f3->route('GET|POST /user/activate/@key', 'controllers\profile->activate');
 
 $f3->route('GET|POST /content/@ID/@url', 'controllers\company->page');
 $f3->route('GET|POST /content/@ID/@url/users', 'controllers\company_users->page');

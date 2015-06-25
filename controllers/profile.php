@@ -51,6 +51,32 @@ class profile extends _ {
 		$tmpl->user = $user;
 		$tmpl->output();
 	}
+	function activate() {
+		$user = $this->f3->get("user");
+		$key = $this->f3->get("PARAMS['key']");
+		
+		
+		$key = preg_split('/([a-z]+)/i', $key);
+		
+		$userID = $key[0];
+		$time = $key[1];
+		
+		$key_expired = true;
+		if ($time > strtotime("now")){
+			$key_expired = false;
+		}
+		
+		$user = models\users::getInstance()->get($userID);
+		
+		if ($user['ID']){
+			models\users::getInstance()->save($user['ID'],array("activated"=>"1"));
+			$this->f3->reroute("/");
+			
+			
+		}
+		
+	}
+	
 	
 	
 
