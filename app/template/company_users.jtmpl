@@ -62,9 +62,10 @@
 
 	<div class="content-header" style="height:50px;">
 		<form class="form-inline pull-right" id="search-form" >
-
-			<div class="form-group" style="margin-right:10px;">
-				<select name="search-group" id="search-group" class="form-control" style="width:240px;">
+			
+		
+			<div style="position:absolute; top:5px; bottom:0; left:10px; right:<% if(this.search.group=='' && this.search.search ==''){ %>80<% } else { %>140<% } %>px;" >
+				<select name="search-group" id="search-group" class="form-control" style="width:50%; display: inline;">
 					<option value="" selected>< select group ></option>
 					<optgroup label="Groups">
 						<% for(var i in this.company.groups){ %>
@@ -72,15 +73,20 @@
 						<% } %>
 					</optgroup>
 				</select>
+
+				<input type="text" class="form-control" id="search" name="search" value="<%= this.search.search %>"  placeholder="Search" style="width:48%; margin-left:2%; display: inline;">
 			</div>
-			<div class="form-group">
-				<input type="text" class="form-control" id="search" name="search" value="<%= this.search.search %>"  placeholder="Search" style="width:<% if(this.search.group=='' && this.search.search ==''){ %>210<% } else { %>163<% } %>px;">
-			</div>
-			<button type="submit" class="btn btn-default" style="margin-left:10px;">Search</button>
-			<% if(this.search.group=='' && this.search.search ==''){ %>
-			<% } else { %>
-			<button type="button" class="btn btn-default" style="margin-left:10px;" id="search-clear-btn" ><i class="fa fa-close"></i></button>
-			<% } %>
+
+				
+			<span style="position:absolute; top:5px; right:10px;bottom:0; ">
+				<button type="submit" class="btn btn-default">Search</button>
+				<% if(this.search.group=='' && this.search.search ==''){ %>
+				<% } else { %>
+				<button type="button" class="btn btn-default" style="margin-left:10px;" id="search-clear-btn" ><i class="fa fa-close"></i></button>
+				<% } %>
+			</span>
+			
+			
 		</form>
 		<div class="clearfix"></div>
 	</div>

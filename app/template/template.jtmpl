@@ -143,12 +143,7 @@
 		</div>
 
 		<div class="navbar-collapse collapse" id="navbar-main">
-			<ul class="nav navbar-nav">
-
-
-				<li {% if page['section']=="home" %}class="active"{% endif %}>
-					<a href="/"><i class="fa fa-dashboard"></i></a>
-				</li>
+			<ul class="nav navbar-nav ">
 				{% if page['section']=="company" %}
 					<li {% if page['sub_section']=="company" %}class="active"{% endif %}>
 						<a href="/content/{{ data['ID'] }}/{{ data['url'] }}">Company</a>
@@ -178,28 +173,33 @@
 
 
 			</ul>
+			
+			
 
-			<ul class="nav navbar-nav navbar-right">
+			<ul class="nav navbar-nav navbar-right ">
 				{% if page['section']=="company" %}
 				{% if page['sub_section']=="users" %}
 					
-					<li>
-						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form"><i class="fa fa-plus"></i></a>
+					<li class="hidden-sm">
+						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form">
+							<span class="visible-xs">Add User</span>	
+							<i class="fa fa-plus"></i>
+						</a>
 					</li>
 
 				{% else %}
-					<li>
+					<li class="hidden-sm">
 						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-plus"></i></a>
 					</li>
 				{% endif %}
 					
-					<li>
+					<li class="hidden-sm">
 						<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i></a>
 					</li>
 
 				{% endif %}
 				{% if page['section']=="meeting" %}
-					<li>
+					<li class="hidden-sm">
 						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i></a>
 					</li>
 					<li>
@@ -282,14 +282,55 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="/settings">
 					<span class="visible-xs-inline">Settings </span><span class="fa fa-gears"></span>
 				</a>
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" id="settings-dropdown" >
+					
 					<li  <% if ("{{ page['section'] }}" == 'profile'){ %> class="active"<% } %>>
-						<a href="#" class="user-form" data-ID="{{ _user['ID'] }}"><i class="fa fa-user" style="margin-right:10px;"></i>My Profile</a>
+						<a href="#" class="user-form" data-ID="{{ _user['ID'] }}"><i class="fa fa-user"></i>My Profile</a>
 
 					</li>
-					<li>
-						<a href="#" class="company-form" data-ID=""><i class="fa fa-plus" style="margin-right:10px;"></i>Company</a>
+					
+					{% if page['section']=="company" %}
+						<li role="separator" class="divider"></li>
+				{% if page['sub_section']=="users" %}
+
+					<li >
+						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form">
+							<i class="fa fa-plus"></i>Add User
+						</a>
 					</li>
+
+				{% else %}
+					<li>
+						<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-plus" ></i> Meeting</a>
+					</li>
+				{% endif %}
+
+				<li>
+					<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i> Company</a>
+				</li>
+
+			{% endif %}
+			{% if page['section']=="meeting" %}
+
+
+
+				<li role="separator" class="divider"></li>
+				<li>
+					<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i> Item</a>
+				</li>
+				<li>
+					<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i> Meeting</a>
+				</li>
+				<li>
+					<a href="#" data-id="{{ data['companyID'] }}" class="company-form"><i class="fa fa-pencil"></i> Company</a>
+				</li>
+
+			{% endif %}
+			<li role="separator" class="divider"></li>
+			<li>
+				<a href="#" class="company-form" data-ID=""><i class="fa fa-plus"></i>Company</a>
+			</li>
+			
 				</ul>
 			</li>
 
