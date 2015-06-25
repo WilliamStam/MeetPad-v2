@@ -38,7 +38,7 @@
 					<% } %>
 					<%= this.users_no_groups[i].name %>
 					<% if(this.users_no_groups[i].tag){ %>
-					<small> (<%= this.users_no_groups[i].tag %>)</small>
+					<small> (<%= this.users_no_groups[i].tag||'' %>)</small>
 					<% } %>
 
 
@@ -118,7 +118,7 @@
 						<%= this.users[i].users[u].name %>
 
 						<% if(this.users[i].users[u].tag){ %>
-						 <small> (<%= this.users[i].users[u].tag %>)</small>
+						 <small> (<%= this.users[i].users[u].tag||'' %>)</small>
 						<% } %>
 					</td>
 				</tr>
