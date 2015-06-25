@@ -376,7 +376,7 @@
 	<% if (this.pages.length) { %>
 	<nav class="c">
 		<ul class="pagination">
-			<li <% if(this.previous=='1'){ %> class="disabled"<% } %>>
+			<li <% if(this.current=='1'){ %> class="disabled"<% } %>>
 			<a href="#page=<%= this.previous %>" data-page="<%= this.previous %>" aria-label="Previous">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
