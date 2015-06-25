@@ -64,7 +64,7 @@
 		<form class="form-inline pull-right" id="search-form" >
 			
 		
-			<div style="position:absolute; top:5px; bottom:0; left:10px; right:<% if(this.search.group=='' && this.search.search ==''){ %>80<% } else { %>140<% } %>px;" >
+			<div style="position:absolute; top:5px; bottom:0; left:10px; right:<% if(this.search.group=='' && this.search.search ==''){ %>90<% } else { %>140<% } %>px;" >
 				<select name="search-group" id="search-group" class="form-control" style="width:50%; display: inline;">
 					<option value="" selected>< select group ></option>
 					<optgroup label="Groups">
