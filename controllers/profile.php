@@ -52,7 +52,6 @@ class profile extends _ {
 		$tmpl->output();
 	}
 	function activate() {
-		$user = $this->f3->get("user");
 		$key = $this->f3->get("PARAMS['key']");
 		
 		
@@ -67,10 +66,10 @@ class profile extends _ {
 		}
 		
 		$user = models\users::getInstance()->get($userID);
-		
+		//test_array($user); 
 		if ($user['ID']){
 			models\users::getInstance()->save($user['ID'],array("activated"=>"1"));
-			$this->f3->reroute("/");
+			$this->f3->reroute("/?msg=Activated");
 			
 			
 		}
