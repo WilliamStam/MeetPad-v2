@@ -9,8 +9,9 @@
 	
 	$(document).on('click', '.resend-activation-email', function (e) {
 		e.preventDefault();
-		$.post("/save/profile/resend",{},function(data){
+		$.post("/save/profile/resend",{"p":"w"},function(data){
 			data = data.data;
+			//console.log(data);
 			$("#form-modal").jqotesub($("#template-user-activate-sent"), data).modal("show");
 		})
 		
