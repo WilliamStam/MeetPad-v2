@@ -53615,6 +53615,16 @@ Globally exposed namespace with the most frequently used public classes and hand
 	$('[data-toggle="tooltip"]').tooltip()
 	
 	
+	$(document).on('click', '.resend-activation-email', function (e) {
+		e.preventDefault();
+		$.post("/save/profile/resend",{},function(data){
+
+			$("#form-modal").jqotesub($("#template-user-activate-sent"), data).modal("show");
+		})
+		
+		
+		
+	});
 	$(document).on('click', '.btn-row-details', function (e) {
 		var $this = $(this), $table = $this.closest("table");
 		var $clicked = $(e.target).closest("tr.btn-row-details");

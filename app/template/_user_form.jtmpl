@@ -45,7 +45,6 @@
 						<label for="email" class="col-sm-3 control-label">Email	</label>
 
 						<div class="col-sm-8">
-							<% console.log(this.em); %>
 							<% if (this.ID){ %>
 							<div style="padding:8px 0 0 12px;">
 								<%= this.em||"" %>
@@ -56,7 +55,7 @@
 							<% } else { %>
 							<input type="text" class="form-control" id="email" name="email" placeholder="Email" value="<%= this.email||'' %>">
 							<div class="help-block s g">
-								The email address is used as the persons username. make sure you enter it correctly
+								The email address is used as the persons username. make sure you enter it correctly. We will be sending an email to the email address supplied with an activation link
 							</div>
 							<% } %>
 						</div>
@@ -97,19 +96,46 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Success!!</h4>
+				<h4 class="modal-title"><% if (this.status=='1'){ %>Success!!<% } else { %>Oops something went wrong<% } %></h4>
 			</div>
 			<div class="modal-body c">
-				
-				
+
+
+				<% if (this.new){ %>
+					<% if (this.status=='1'){ %>
+					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+	
+					<div style="" >
+						<h3 class="g"><small>An email has been sent to</small>
+							</br><%= this.email %></br> <small>with further instructions on how to activate</small>
+						</h3>
+					</div>
+					<% } else { %>
+					<i class="fa fa-frown-o" style="font-size: 120px; color:rgba(255,0, 0, 0.3)"></i>
+	
+					<div style="" >
+						<h3 class="g"><small>there was an error sending an email</small>
+							</br> <small>Please email us: </small> {{ _cfg['email'] }}
+						</h3>
+					</div>
+	
+					<% } %>
+				<% } else { %>
 				<div class="c" style="position: relative;">
 					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
 
 					<div style="" >
 						<h3 class="g">Form Saved</h3>
 					</div>
-					
+
 				</div>
+				
+				<% } %>
+				
+				
+				
+				
+				
 				
 				
 			</div>

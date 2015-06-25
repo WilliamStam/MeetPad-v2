@@ -1,1 +1,36 @@
-Home
+{% if _user['activated']=='1' %}
+	home
+{% else %}
+
+	<div class="c">
+		<div class="alert alert-danger" role="alert" style="margin:50px; ">
+			<h2>O snap! <br>
+				<small>Your email address hasnt been "verified" on our system yet.</small>
+			</h2>
+			<hr/>
+			<p>
+			</p>
+
+			<p>
+				You would of recieved an email to
+				<strong>{{ _user['email'] }}</strong>
+				with a link to activate your account. the mail would come from <strong>{{ _cfg['email'] }}</strong>
+				. </p>
+
+			<p>
+				We apologise for this added step.
+			</p>
+
+			<p>&nbsp;</p>
+			<hr/>
+			<button type="button" class="btn btn-primary resend-activation-email" >Resend activation link</button>
+		</div>
+		<div class="alert alert-warning" role="alert">
+			 Not getting the mail? get in touch {{ _cfg['email'] }}
+		</div>
+	</div>
+
+
+
+
+{% endif %}

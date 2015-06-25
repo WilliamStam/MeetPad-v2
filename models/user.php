@@ -65,6 +65,15 @@ class user extends _ {
 		if (count($result)) {
 			$result = $result[0];
 			$ID = $result['ID'];
+
+			if ($ID!=""){
+				$art = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_users");
+				$art->load("ID = '{$ID}'");
+				$art->lastLoggedin = date("Y-m-d H:i:s");
+				$art->save();
+			}
+			
+			
 			$_SESSION['uID'] = $ID;
 			if (isset($_COOKIE['username'])) {
 				$_COOKIE['username'] = $result['email'];

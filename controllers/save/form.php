@@ -412,11 +412,14 @@ class form extends _save {
 		}
 		$return = array(
 			"ID" => $ID,
-			"errors" => $errors
+			"errors" => $errors,
+			"status"=>"1"
 		);
 		if ($ID_orig!=$ID){
+			$ret = \controllers\emails\profile::getInstance()->newuser($ID);
 			
 			$return['new'] = "/?login_email={$values['email']}&login_password={$values['password']}";
+			$return['status'] = $ret;
 		}
 		return $GLOBALS["output"]['data'] = $return;
 	}

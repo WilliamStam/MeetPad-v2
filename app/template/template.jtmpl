@@ -70,6 +70,7 @@
 	<![CDATA[
 
 
+	{% if _user['activated']=='1' %}
 	<div class="container">
 		<div class="navbar-header">
 				<a class="navbar-brand hidden-xs" href="/" style="padding:0;">
@@ -314,22 +315,22 @@
 
 
 
+					<li role="separator" class="divider"></li>
+					<li>
+						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i> Item</a>
+					</li>
+					<li>
+						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i> Meeting</a>
+					</li>
+					<li>
+						<a href="#" data-id="{{ data['companyID'] }}" class="company-form"><i class="fa fa-pencil"></i> Company</a>
+					</li>
+	
+				{% endif %}
 				<li role="separator" class="divider"></li>
 				<li>
-					<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i> Item</a>
+					<a href="#" class="company-form" data-ID=""><i class="fa fa-plus"></i>Company</a>
 				</li>
-				<li>
-					<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i> Meeting</a>
-				</li>
-				<li>
-					<a href="#" data-id="{{ data['companyID'] }}" class="company-form"><i class="fa fa-pencil"></i> Company</a>
-				</li>
-
-			{% endif %}
-			<li role="separator" class="divider"></li>
-			<li>
-				<a href="#" class="company-form" data-ID=""><i class="fa fa-plus"></i>Company</a>
-			</li>
 			
 				</ul>
 			</li>
@@ -344,6 +345,27 @@
 		</div>
 
 	</div>
+	{% else %}
+	<div class="container">
+		<div >
+			<a class="navbar-brand" href="/" style="padding:0;">
+				<img src="/app/_images/logo-small.png" alt="" style="height: 40px;;"/>
+			</a>
+			<ul class="nav navbar-nav pull-left">
+				<li >
+					<h4 style="color:#F00;">Account not activated</h4>
+
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right pull-right">
+
+				<li class="icon-btn">
+					<a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out" style="margin-top:3px;margin-left:5px;"></span></a>
+				</li>
+			</ul>
+		</div>
+	</div>	
+	{% endif %}
 
 
 	]]>
@@ -374,7 +396,54 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-user-activate-sent">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><% if (this.status=='1'){ %>Email sent!!<% } else { %>Oops something went wrong<% } %></h4>
+			</div>
+			<div class="modal-body c">
 
+
+				<% if (this.status=='1'){ %>
+				<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
+
+				<div style="" >
+					<h3 class="g"><small>An email has been sent to</small>
+						</br><%= this.user.email %></br> <small>with further instructions on how to activate</small>
+					</h3>
+				</div>
+				<% } else { %>
+				<i class="fa fa-frown-o" style="font-size: 120px; color:rgba(255,0, 0, 0.3)"></i>
+
+				<div style="" >
+					<h3 class="g"><small>there was an error sending an email</small>
+						</br> <small>Please email us: </small> {{ _cfg['email'] }}
+					</h3>
+				</div>
+
+				<% } %>
+				
+
+
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			
+			</div>
+		</div>
+	</div>
+	]]>
+</script>
 
 {% include "template/_company_form.jtmpl" %}
 {% include "template/_meeting_form.jtmpl" %}

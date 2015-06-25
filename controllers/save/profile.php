@@ -81,52 +81,24 @@ class profile extends _save {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
-	function user() {
+	function resend() {
 		$result = array();
 		$errors = $this->errors;
 
-		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
-		$ID_orig = $ID;
+		$ID = isset($_GET['ID']) ? $_GET['ID'] :$this->user['ID'];
 
-		$values = array(
-			"name"=>$this->post("name",true),
-			"tag"=>$this->post("tag")
-		);
+		$user = models\users::getInstance()->get($ID);
+		$status = \controllers\emails\profile::getInstance()->newuser($user['ID']);
+		
 
-		if ($values['name']==""){
-			$errors['name'] = "";
-		}
 
-		if (isset($_POST['password'])&&$_POST['password']!=''){
-			$values['password'] = $_POST['password'];
-		}
-		if (isset($_POST['email'])&&$_POST['email']!=''){
-			$values['email'] = $_POST['email'];
-		}
-		if ($values['email']!=""){
-			if (count(models\users::getInstance()->getAll("email LIKE '{$values['email']}' AND mp_users.ID != '{$ID}'"))){
-				$errors['email'] = "The email address already exists";
-			}
-			
-		}
-		
-		
-		
-		
-		
-		
-		if (!count($errors)){
-			//	test_array($values); 
-			$ID = models\users::save($ID,$values);
-		}
+
 		$return = array(
-			"ID" => $ID,
-			"errors" => $errors
+			"user"=>$user,
+			"status"=>$status
 		);
-		if ($ID_orig!=$ID){
-			
-			$return['new'] = "/?login_email={$values['email']}&login_password={$values['password']}";
-		}
+		
+	
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
