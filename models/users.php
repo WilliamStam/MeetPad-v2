@@ -29,7 +29,7 @@ class users extends _ {
 		if ($companyID){
 			$where = $where. " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "
-			SELECT mp_users.*, coalesce(mp_users_company.tag,mp_users.tag) as tag, mp_users_company.admin
+			SELECT mp_users.*, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, mp_users_company.tag as cotag, mp_users_company.admin
 			FROM (mp_users INNER JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
@@ -69,7 +69,7 @@ class users extends _ {
 
 		$select = "";
 		if ($options['companyID']) {
-			$select = ",  coalesce(mp_users_company.tag,mp_users.tag) as tag,  mp_users_company.admin";
+			$select = ",  COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag,  mp_users_company.admin";
 			$where = $where. " AND mp_users_company.companyID = '{$options['companyID']}'";
 		}
 		

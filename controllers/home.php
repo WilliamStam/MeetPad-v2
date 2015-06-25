@@ -13,7 +13,6 @@ class home extends _ {
 		
 		
 		
-	
 		
 		
 		
@@ -28,13 +27,6 @@ class home extends _ {
 			"css"=>"",
 			"js"=>"",
 		);
-
 		$tmpl->output();
-		
-		
-		
-
 	}
-
-
 }
