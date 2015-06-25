@@ -1,7 +1,8 @@
 <?php
 
 
-$cfg['email'] = "online@meetpad.org";
+$cfg['email'] = "no-reply@meetpad.org";
+$cfg['contact'] = "team@meetpad.org";
 
 
 

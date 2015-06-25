@@ -115,7 +115,7 @@
 	
 					<div style="" >
 						<h3 class="g"><small>there was an error sending an email</small>
-							</br> <small>Please email us: </small> {{ _cfg['email'] }}
+							</br> <small>Please email us: </small> {{ _cfg['contact'] }}
 						</h3>
 					</div>
 	
