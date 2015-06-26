@@ -101,8 +101,11 @@
 				<i class="fa fa-list"></i></button>
 		
 			<button class="btn btn-default item-form" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button"><i class="fa fa-pencil"></i></button>
-			<button class="btn btn-default meeting-info-btn" type="button"><i class="fa fa-arrow-up"></i></button>
-			<button class="btn btn-default" type="button" disabled><i class="fa fa-comment-o"></i></button>
+			
+			<button class="btn btn-default" type="button"><i class="fa fa-comment-o"></i></button>
+		</div>
+		<div style="position: absolute;left:105px; right:105px;">
+			<input type="text" placeholder="Comment Bar" style="width:100%" class="form-control"/>
 		</div>
 		<div class="pull-right btn-bar">
 
@@ -168,7 +171,7 @@
 				<i class="fa fa-list"></i></button>
 
 			<button class="btn btn-default meeting-form"  data-ID="<%= this.meeting.ID %>" type="button"><i class="fa fa-pencil"></i></button>
-			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
+			
 		</div>
 		<div class="pull-right btn-bar">
 
