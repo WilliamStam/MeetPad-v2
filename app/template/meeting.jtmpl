@@ -7,7 +7,8 @@
 			<% if (this.item.ID!="") { %>
 				<button class="btn meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
 			<% } %>
-			<button class="btn  btn-default item-form" data-ID="" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button"><i class="fa fa-plus"></i></button>
+			<button class="btn  btn-default item-form" data-ID="" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
+				<i class="fa fa-plus"></i></button>
 			
 			
 		</span>
@@ -49,9 +50,9 @@
 <script type="text/x-jqote-template" id="template-item">
 	<![CDATA[
 
-	<div class="content-header" >
+	<div class="content-header">
 		<div class="clearfix"></div>
-		<div class="btn-group btn-breadcrumb"  >
+		<div class="btn-group btn-breadcrumb">
 			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
 				<div><%= this.company.company %></div>
 			</a>
@@ -62,46 +63,66 @@
 				<div><%= this.item.heading %></div>
 			</a>
 		</div>
-		
+
 		<div class="clearfix"></div>
-		
-		
-		
-	</div>	
-	<section id="item-area" class="scroll-pane" style="top:37px;bottom:52px;left:12px;">
-		
 
-		<h3><%= this.item.heading %></h3>
-		<section class="groups-access">
-			<% for (var i in this.item.groups) { %>
-			<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
+
+
+	</div>
+	<section id="item-area" class="scroll-pane" style="top:37px;bottom:52px;left:12px; ">
+		<div style="margin-right:7px;">
+
+			<h3><%= this.item.heading %></h3>
+			<section class="groups-access">
+				<% for (var i in this.item.groups) { %>
+				<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
+				<% } %>
+			</section>
+
+
+			<div class="well">
+				<%= this.item.description %>
+			</div>
+
+			<% if (this.item.resolution){ %>
+			<div class="alert alert-success">
+				<%= this.item.resolution||'' %>
+			</div>
 			<% } %>
-		</section>
-		
-		
 
+			<div class="clearfix"></div>
+			<%= this.item.poll.question||'' %>
 
+			<form action="" class="form-horizontal">
+				<div class="form-group">
+					<div id="categoryID">
+						<% for (var i in this.item.poll.options) { %>
+						<div class="radio">
+							<label style="margin-left:20px; display:block">
+								<input type="radio" name="categoryID" value="<%= this.item.poll.options[i].ID %>">
+								<%= this.item.poll.options[i].answer %>
+							</label>
+						</div>
+						<% } %>
 
+					</div>
+				</div>
 
-
-
-
-		<div class="well">
-			<%= this.item.description %>
+			</form>
+			
+			<div style="height: 1000px;"></div>
+			
 		</div>
-
-		
-
-		<div style=" height:1000px;">item details</div>
 	</section>
 
 	<section class="content-footer">
 		<div class="pull-left btn-bar" style="margin-left:-10px;">
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
 				<i class="fa fa-list"></i></button>
-		
-			<button class="btn btn-default item-form" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button"><i class="fa fa-pencil"></i></button>
-			
+
+			<button class="btn btn-default item-form" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
+				<i class="fa fa-pencil"></i></button>
+
 			<button class="btn btn-default" type="button"><i class="fa fa-comment-o"></i></button>
 		</div>
 		<div style="position: absolute;left:105px; right:105px;">
@@ -124,14 +145,14 @@
 
 	<div class="content-header">
 		<div class="clearfix"></div>
-		<div class="btn-group btn-breadcrumb"  >
+		<div class="btn-group btn-breadcrumb">
 			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>" class="btn ">
 				<div><%= this.company.company %></div>
 			</a>
 			<a href="/content/<%= this.meeting.ID %>/<%= this.company.company %>/<%= this.meeting.url %>" class="btn meeting-info-btn">
 				<div><%= this.meeting.meeting %></div>
 			</a>
-			
+
 		</div>
 
 		<div class="clearfix"></div>
@@ -139,10 +160,10 @@
 
 
 	</div>
-	
-	
+
+
 	<section class="scroll-pane" style="left:10px;top:37px;">
-		
+
 
 		<h2><%= this.meeting.meeting %></h2>
 		<section class="groups-access">
@@ -162,20 +183,21 @@
 
 
 		<div style=" height:1000px;">meeting details</div>
-		
-		
+
+
 	</section>
 	<section class="content-footer">
 		<div class="pull-left btn-bar" style="margin-left:-10px;">
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
 				<i class="fa fa-list"></i></button>
 
-			<button class="btn btn-default meeting-form"  data-ID="<%= this.meeting.ID %>" type="button"><i class="fa fa-pencil"></i></button>
-			
+			<button class="btn btn-default meeting-form" data-ID="<%= this.meeting.ID %>" type="button">
+				<i class="fa fa-pencil"></i></button>
+
 		</div>
 		<div class="pull-right btn-bar">
 
-			
+
 		</div>
 	</section>
 

@@ -40,6 +40,14 @@ class item extends _ {
 		$result = $this->f3->get("DB")->exec($sql);
 		if (count($result)) {
 			$return = $result[0];
+			
+			$return['poll']= array(
+				"question"=>$return['poll'],
+				"options"=>$this->f3->get("DB")->exec("SELECT mp_content_poll_answers.*, count(mp_content_poll_voted.userID) AS voted FROM mp_content_poll_answers LEFT JOIN mp_content_poll_voted ON mp_content_poll_voted.answerID = mp_content_poll_answers.ID AND mp_content_poll_voted.userID = '{$this->user['ID']}'  WHERE mp_content_poll_answers.contentID = '{$return['ID']}' GROUP BY mp_content_poll_answers.ID ORDER BY orderby ASC")
+			);
+			
+			
+			
 		} else {
 			$return = parent::dbStructure("mp_content");
 		}

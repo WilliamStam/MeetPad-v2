@@ -264,6 +264,7 @@ class form extends _save {
 		$values = array(
 			"heading" => $this->post("heading", true),
 			"description" => $this->post("description"),
+			"resolution" => $this->post("resolution"),
 			"discussion_link" => $this->post("discussion_link"),
 			"meetingID"=>$mID,
 			"categoryID"=>$this->post("categoryID"),

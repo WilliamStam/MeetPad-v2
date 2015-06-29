@@ -25,6 +25,28 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 					<div class="form-group has-feedback">
 						<label for="heading" class="col-sm-3 control-label">Heading</label>
 
@@ -38,6 +60,8 @@
 						<div class="clearfix"></div>
 						<textarea name="description" id="description" cols="30" rows="10" placeholder="Description"><%= this.description %></textarea>
 					</div>
+
+
 
 
 					<div class="form-group">
@@ -76,7 +100,7 @@
 						<label for="groups" class="col-sm-3 control-label">Groups</label>
 
 						<div class="col-sm-8">
-							<div id="groups" >
+							<div id="groups">
 								<% for (var i in this.groups) { %>
 								<div class="checkbox">
 									<label>
@@ -90,9 +114,110 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						<label for="resolution" class="control-label">Resolution</label>
+
+						<div class="clearfix"></div>
+						<textarea name="resolution" id="resolution" cols="30" rows="5" placeholder="Resolution"><%= this.resolution||'' %></textarea>
+					</div>
 
 
 
+
+					<hr/>
+					<h3>Poll</h3>
+
+
+
+
+					<div class="form-group has-feedback">
+						<label for="poll" class="col-sm-3 control-label">Poll</label>
+
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="poll" name="poll" placeholder="Poll Question" value="<%= this.poll.question||'' %>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="new-group" class="col-sm-3 control-label">Options
+
+
+
+						</label>
+
+						<div class="col-sm-8">
+
+							<div class="input-group">
+								<input type="text" class="form-control" id="new-option" name="new-option" placeholder="New Poll Option" value="">
+								 <span class="input-group-btn">
+								    <button class="btn btn-default" type="button" id="btn-new-poll-option">
+									    <i class="fa fa-plus"></i></button>
+								  </span>
+
+
+
+							</div>
+							<span class="help-block">After adding a poll option (answer choice) please click the <i class="fa fa-plus"></i> button. Drag the options up and down to order them </span>
+
+							<div id="poll-options" class="admin-list-items">
+								<% for (var i in this.poll.options) { %>
+								<div class="input-group edit-item" data-ID="<%= this.poll.options[i].ID %>">
+									<input type="text" class="form-control" id="option-edit-<%= this.poll.options[i].ID %>" name="group-edit-<%= this.poll.options[i].ID %>" placeholder="Poll Option" value="<%= this.poll.options[i].answer %>">
+								
+								 <span class="input-group-btn">
+								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+								    </button>
+								  </span>
+
+
+								</div>
+								<% } %>
+							</div>
+							<div class="alert alert-warning s c" role="alert">
+								Use the drag button on the far right to re order the options. To remove an option simply leave the field blank and click save
+
+							</div>
+
+
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="poll_show_result" class="col-sm-3 control-label">Show Result</label>
+
+						<div class="col-sm-8">
+							<div id="poll_show_result">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="poll_show_result" value="<%= this.poll_show_result %>" <% if (this.poll_show_result=='1'){ %>checked<% } %>>
+										When checked the result of the poll will be displayed
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="poll_anonymous" class="col-sm-3 control-label">Anonymous vote</label>
+
+						<div class="col-sm-8">
+							<div id="poll_anonymous">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="poll_anonymous" value="<%= this.poll_anonymous %>" <% if (this.poll_anonymous=='1'){ %>checked<% } %>>
+										When checked the vote is anonymous, the list of who voted for what wont be available
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<hr/>
+					<h3>Attachments</h3>
+
+					<div id="uploader">
+
+
+					</div>
 
 				</div>
 				<div class="modal-footer">
@@ -109,6 +234,19 @@
 	]]>
 </script>
 
+<script type="text/x-jqote-template" id="template-form-poll-option-new">
+	<![CDATA[
+
+	<div class="input-group new-item">
+		<input type="text" class="form-control" id="option-add-<%= this.ID %>" name="option-add-<%= this.ID %>" placeholder="Poll Option" value="<%= this.new %>">
+		
+		<span class="input-group-btn">
+			<button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
+			</button>
+		</span>
+
+		]]>
+</script>
 <script type="text/x-jqote-template" id="template-form-item-saved">
 	<![CDATA[
 	<div class="modal-dialog">
@@ -124,7 +262,7 @@
 				<div class="c" style="position: relative;">
 					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
 
-					<div style="" >
+					<div style="">
 						<h3 class="g">Form Saved</h3>
 					</div>
 
@@ -148,6 +286,20 @@
 		}
 
 
+		$(document).on("click", "#btn-new-poll-option", function () {
+			var $input = $("#new-option");
+
+			var data = {
+				"ID": $("#poll-options .new-item").length,
+				"new": $input.val()
+			}
+			if (data.new) {
+				$("#poll-options").jqoteapp($("#template-form-poll-option-new"), data);
+
+				$input.val("");
+			}
+
+		});
 
 
 
@@ -165,23 +317,86 @@
 
 			$("#form-modal").jqotesub($("#template-form-item"), data).modal("show");
 
-			
 
-			if ($("#description").length){
+
+			if ($("#description").length) {
 				CKEDITOR.config.removeButtons = '';
 				CKEDITOR.config.toolbar = [
-					['Bold','Italic','Underline','StrikeThrough'],
-					['Styles','Format','Font','FontSize'],
-					['NumberedList','BulletedList'],
-					['Outdent','Indent'],
-					['Cut','Copy','Paste','Find','Replace'],
+					[
+						'Bold',
+						'Italic',
+						'Underline',
+						'StrikeThrough'
+					],
+					[
+						'Styles',
+						'Format',
+						'Font',
+						'FontSize'
+					],
+					[
+						'NumberedList',
+						'BulletedList'
+					],
+					[
+						'Outdent',
+						'Indent'
+					],
+					[
+						'Cut',
+						'Copy',
+						'Paste',
+						'Find',
+						'Replace'
+					],
 					['Source']
-				] ;
+				];
 				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
 				CKEDITOR.replace('description');
 			}
-
-
+			if ($("#resolution").length) {
+				CKEDITOR.config.removeButtons = '';
+				CKEDITOR.config.toolbar = [
+					[
+						'Bold',
+						'Italic',
+						'Underline',
+						'StrikeThrough'
+					],
+					[
+						'Styles',
+						'Format',
+						'Font',
+						'FontSize'
+					],
+					[
+						'NumberedList',
+						'BulletedList'
+					],
+					[
+						'Outdent',
+						'Indent'
+					],
+					[
+						'Cut',
+						'Copy',
+						'Paste',
+						'Find',
+						'Replace'
+					],
+					['Source']
+				];
+				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
+				CKEDITOR.replace('resolution');
+			}
+			$(".admin-list-items").sortable({
+				handle: ".handle",
+				items: "> .input-group",
+				cancel: '',
+				containment: "parent",
+				tolerance: "pointer"
+			});
+			uploader();
 		}, "form")
 
 	}
@@ -205,11 +420,11 @@
 		$(".form-validation", $this).remove();
 		$(".has-error", $this).removeClass("has-error has-feedback");
 
-		$.post("/save/form/item?ID=" + $this.attr("data-ID")+"&mID="+$this.attr("data-mID")+"&cID="+$this.attr("data-cID"), data, function (r) {
+		$.post("/save/form/item?ID=" + $this.attr("data-ID") + "&mID=" + $this.attr("data-mID") + "&cID=" + $this.attr("data-cID"), data, function (r) {
 			var data = r.data;
 			validationErrors(data, $this);
-			
-			$.bbq.pushState({"modal":"item-"+data['ID']+"-"+data['meetingID']});
+
+			$.bbq.pushState({"modal": "item-" + data['ID'] + "-" + data['meetingID']});
 			if ($.isEmptyObject(data['errors'])) {
 				$("#form-modal").jqotesub($("#template-form-item-saved"), data);
 			}
@@ -228,6 +443,92 @@
 
 	});
 
+	function uploader() {
+		$("#uploader").pluploadQueue({
+			// General settings
+			runtimes: 'html5,gears,flash,silverlight',
+			url     : '/admin/articles/form/upload',
+
+			chunk_size         : '30mb',
+			unique_names       : true,
+			multiple_queues    : true,
+
+
+			// Resize images on clientside if we can
+			//resize             : {width: 1000, height: 1000, quality: 90},
+
+			// Specify what files to browse for
+			
+
+			// Flash settings
+			flash_swf_url      : '/ui/plupload/js/Moxie.swf',
+
+			// Silverlight settings
+			silverlight_xap_url: '/ui/plupload/js/Moxie.xap',
+
+			init: {
+				Refresh       : function (up) {
+
+				},
+				StateChanged  : function (up) {
+
+				},
+				QueueChanged  : function (up) {
+
+				},
+				UploadProgress: function (up, file) {
+
+				},
+				FilesAdded    : function (up, files) {
+					up.refresh();
+					up.start();
+				},
+				FilesRemoved  : function (up, files) {
+
+				},
+				FileUploaded  : function (up, file, info) {
+
+
+					var file_data = filedetails(file.target_name);
+
+					var data = [{
+						"tempID":file.id,
+						"ID": "",
+						//"domainID": "temp",
+						"filename": file.target_name,
+						"filename_orig": file.name,
+						"description": "",
+						"fileType": file_data.fileType ,
+						//"artID": 19933,
+						//"fileID": 31241,
+						"scope": 0,
+						"mainThumbnail": 0,
+						//"viewed": 0,
+						"tags": "",
+						"icon": file_data.icon
+					}];
+
+
+					//	console.log(file);
+					//	console.log(data);
+
+					$("#new-file-area").jqotepre($("#template-form-files"), data);
+					CKEDITOR.replace('file-description-' + file.id, file_description_boxes);
+
+
+
+
+				},
+				ChunkUploaded : function (up, file, info) {
+
+				},
+				Error         : function (up, args) {
+
+				}
+
+			}
+		});
+	}
 
 
 
