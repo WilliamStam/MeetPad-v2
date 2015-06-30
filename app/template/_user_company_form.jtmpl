@@ -33,7 +33,7 @@
 						<label for="tag" class="col-sm-3 control-label">Tag</label>
 
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="tag" name="tag" placeholder="Tag / User Badge / Description" value="<%= this.cotag %>">
+							<input type="text" class="form-control" id="tag" name="tag" placeholder="Tag / User Badge / Description" value="<%= this.cotag||'' %>">
 							<div class="help-block s g">
 								Use this field to add extra info to a user like for eg: Staff / Mr Ego
 							</div>

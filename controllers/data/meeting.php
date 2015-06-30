@@ -90,8 +90,9 @@ class meeting extends _data {
 
 		$result['groups'] = $object->getGroups($result['ID']);
 //test_array($result); 
-	
-		
+
+		$result['files']= models\item_file::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
+		$result['comments']= models\item_comment::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}

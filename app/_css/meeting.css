@@ -144,8 +144,8 @@
   margin-bottom: 10px;
 }
 .groups-access .label-default {
-  background-color: #f1f1f1;
-  color: #ccc;
+  background-color: #fff;
+  color: #b7b7b7;
 }
 .table-nowrap {
   table-layout: fixed;
@@ -224,4 +224,9 @@
 /* === For phones =================================== */
 .btn-breadcrumb > *:nth-last-child(-n+2) {
   display: block;
+}
+blockquote.comment-item {
+  font-size: inherit;
+  font-weight: normal;
+  border-bottom: 1px solid #eee;
 }

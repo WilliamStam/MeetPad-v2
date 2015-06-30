@@ -1,33 +1,36 @@
 <?php
 namespace models;
-use \timer as timer;
+
+use timer as timer;
 
 class users extends _ {
 	private static $instance;
+
 	//private $method;
 	function __construct() {
 		parent::__construct();
 	}
-	public static function getInstance(){
-		if ( is_null( self::$instance ) ) {
+
+	public static function getInstance() {
+		if (is_null(self::$instance)) {
 			self::$instance = new self();
 		}
 		return self::$instance;
 	}
-	
-	
-	function get($ID,$companyID=""){
+
+
+	function get($ID, $companyID = "") {
 		$timer = new timer();
 		$where = "mp_users.ID = '$ID'";
-		
-		
+
+
 		$sql = "
 			SELECT mp_users.*
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
-		if ($companyID){
-			$where = $where. " AND mp_users_company.companyID='{$companyID}'";
+		if ($companyID) {
+			$where = $where . " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "
 			SELECT mp_users.*, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, mp_users_company.tag as cotag, mp_users_company.admin
 			FROM (mp_users INNER JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
@@ -45,11 +48,12 @@ class users extends _ {
 			$return = parent::dbStructure("mp_users", array());
 		}
 
-	//	test_array($return); 
-		
+		//	test_array($return); 
+
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		return  self::format($return);
+		return self::format($return);
 	}
+
 	function getAll($where = "", $orderby = "", $limit = "", $options = array()) {
 		$timer = new timer();
 		$options = array(
@@ -58,8 +62,8 @@ class users extends _ {
 			"companyID" => isset($options['companyID']) ? $options['companyID'] : false
 		);
 		$return = array();
-		
-		
+
+
 
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -70,9 +74,9 @@ class users extends _ {
 		$select = "";
 		if ($options['companyID']) {
 			$select = ",  COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag,  mp_users_company.admin";
-			$where = $where. " AND mp_users_company.companyID = '{$options['companyID']}'";
+			$where = $where . " AND mp_users_company.companyID = '{$options['companyID']}'";
 		}
-		
+
 
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
@@ -80,7 +84,7 @@ class users extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
-		
+
 		$sql = "
 			SELECT DISTINCT mp_users.*, GROUP_CONCAT(DISTINCT mp_users_group.groupID) as groupIDs, GROUP_CONCAT(DISTINCT mp_users_company.companyID) as companyIDs $select
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
@@ -90,13 +94,13 @@ class users extends _ {
 			$limit
 		";
 		//test_string($sql); 
-		
-		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
+
+		$result = $this->f3->get("DB")->exec($sql, $options['args'], $options['ttl']);
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return self::format($result);
-		
+
 	}
 
 	function getGroups($ID, $companyID = false) {
@@ -145,22 +149,57 @@ class users extends _ {
 
 	}
 
+	function setGroups($ID, $companyID, $groups) {
+		$timer = new timer();
+
+		$companyGroups = $this->f3->get("DB")->exec("SELECT * FROM mp_groups WHERE companyID = '$companyID'");
+		$gid = [];
+		foreach ($companyGroups as $item) {
+			$gid[] = $item['ID'];
+		}
+
+		$groupstr = implode(",", $gid);
+		if ($groupstr) {
+			$this->f3->get("DB")->exec("DELETE FROM mp_users_group WHERE userID ='$ID' AND groupID in ($groupstr)");
+		}
 
 
-	public static function save($ID,$values){
+
+
+		$n = array();
+		foreach ($groups as $item) {
+			if ($item) $n[] = "('$ID','$item')";
+		}
+		//test_array(array($n,$groupstr)); 
+		if (count($n)) {
+			$str = implode(",", $n);
+			$this->f3->get("DB")->exec("INSERT INTO mp_users_group (userID,groupID) VALUES $str");
+		}
+
+
+
+		$return = array();;
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return $return;
+
+	}
+
+
+
+	public static function save($ID, $values) {
 		$timer = new timer();
 		$f3 = \base::instance();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_users");
 		$art->load("ID='$ID'");
 
-		if (isset($values['password'])){
-			$values['password'] = md5(md5("meet").$values['password'].md5("pad"));
+		if (isset($values['password'])) {
+			$values['password'] = md5(md5("meet") . $values['password'] . md5("pad"));
 		}
-		
+
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
 			if (isset($art->$key) && $key != "ID") {
-				$art->$key = $f3->scrub($value,$f3->get("TAGS"));
+				$art->$key = $f3->scrub($value, $f3->get("TAGS"));
 			}
 
 		}
@@ -168,45 +207,36 @@ class users extends _ {
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
 
-		if (isset($values['groups'])){
-			$f3->get("DB")->exec("DELETE FROM mp_users_group WHERE userID = '{$ID}'");
-			$n = array();
-			foreach ($values['groups'] as $item){
-				if ($item) $n[] = "('$ID','$item')";
-			}
-			if (count($n)){
-				$str = implode(",",$n);
-				$f3->get("DB")->exec("INSERT INTO mp_users_group (userID,groupID) VALUES $str");
-			}
-		}
-		
-		
+
+
+
+
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $ID;
 	}
-	
-	
-	function remove($ID,$companyID){
+
+
+	function remove($ID, $companyID) {
 		$timer = new timer();
 		$f3 = \base::instance();
 		$f3->get("DB")->exec("DELETE FROM mp_users_company WHERE userID = '{$ID}' AND companyID='{$companyID}'");
 
 
-	
+
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return "done";
 	}
 
-	
-	
-	
-	static function format($data){
+
+
+
+	static function format($data) {
 		$timer = new timer();
 		$f3 = \base::instance();
-		
-		
-		
+
+
+
 		$single = false;
 		if (isset($data['ID'])) {
 			$single = true;
@@ -218,7 +248,7 @@ class users extends _ {
 		$n = array();
 		//test_array($items); 
 
-		foreach ($data as $item){
+		foreach ($data as $item) {
 			unset($item['password']);
 			unset($item['reset_password']);
 			unset($item['global_admin']);
@@ -230,8 +260,8 @@ class users extends _ {
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
-		
+
 		return $n;
 	}
-	
+
 }

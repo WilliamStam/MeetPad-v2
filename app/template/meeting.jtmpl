@@ -80,17 +80,23 @@
 				<%= this.item.heading %>
 			</h3>
 
+			
+
+
+			<div class="well" style="margin-bottom:0;margin-top:20px; padding-bottom:9px;">
+				<%= this.item.description %>
+			</div>
+			
+			
+			
 			<section class="groups-access">
 				<% for (var i in this.item.groups) { %>
 				<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
 				<% } %>
 			</section>
-
-
-			<div class="well">
-				<%= this.item.description %>
-			</div>
-
+			
+			
+			
 			<% if (this.item.resolution){ %>
 			<div class="alert alert-success">
 				<%= this.item.resolution||'' %>
@@ -98,7 +104,11 @@
 			<% } %>
 
 			<div class="clearfix"></div>
-			<%= this.item.poll.question||'' %>
+			
+			<% if(this.item.poll.question){ %>
+			
+			<h4><%= this.item.poll.question||'' %></h4>
+
 
 			<form action="" class="form-horizontal">
 				<div class="form-group">
@@ -114,10 +124,12 @@
 
 					</div>
 				</div>
-
+<button class="btn btn-default btn-block" type="submit">Vote!</button>
 			</form>
-
+<% } %>
+			<% if(this.item.files[0]){ %>
 			<hr/>
+			<h3>Attachments</h3>
 			<% for(var i in this.item.files){ %>
 			<div class="attachment-item">
 				<% if(this.item.files[i].icon=="thumbnail"){ %>
@@ -130,7 +142,37 @@
 				<%= this.item.files[i].filename %>
 			</div>
 			<% } %>
+			<% } %>
+			<% if(this.item.comments[0]){ %>
+				<h3>Comments</h3>
 
+				<% for(var i in this.item.comments){ %>
+			<blockquote class="comment-item">
+				
+				<%= this.item.comments[i].comment %>
+				<div class="clearfix"></div>
+				<% if(this.userID=="{{ _user['ID'] }}"){ %>
+				<button class="btn btn-link btn-xs pull-left" type="button">Edit my comment</button>
+				<button class="btn btn-link btn-xs pull-left" type="button">Remove my comment</button>
+				<% } %>
+				<footer class="text-right">
+					<%= this.item.comments[i].name %> &nbsp;
+					<cite title="<%= this.item.comments[i].datein %>"><%= this.item.comments[i].timeago %></cite>
+				</footer>
+			
+					<input type="text" placeholder="Reply to <%= this.item.comments[i].name %>" style="width:100%; margin-top:10px;" class="form-control input-sm"/>
+					
+			
+				
+					
+					
+					
+				
+			</blockquote>
+			
+				
+				<% } %>
+			<% } %>
 		</div>
 	</section>
 
@@ -145,7 +187,7 @@
 		</div>
 		
 		<div style="position: absolute;left:55px; right:155px;">
-			<input type="text" placeholder="Comment Bar" style="width:100%" class="form-control"/>
+			<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control"/>
 		</div>
 		
 		<div class="pull-right btn-bar">
@@ -190,11 +232,7 @@
 			<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
 				<i class="fa fa-pencil"></i></button><%= this.meeting.meeting %>
 		</h2>
-		<section class="groups-access">
-			<% for (var i in this.meeting.groups) { %>
-			<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
-			<% } %>
-		</section>
+		
 		<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">
 			<div class="progress-bar <% if (this.meeting.percent > 90) { %>progress-bar-danger<% } else { %>progress-bar-info<% } %>" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
 
@@ -205,7 +243,11 @@
 			</div>
 		</div>
 
-
+		<section class="groups-access">
+			<% for (var i in this.meeting.groups) { %>
+			<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
+			<% } %>
+		</section>
 		<div style=" height:1000px;">meeting details</div>
 
 

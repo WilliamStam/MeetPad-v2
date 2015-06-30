@@ -529,6 +529,8 @@ class form extends _save {
 			);
 			
 			models\company::getInstance()->addUser($ID,$companyID,$vals);
+			models\users::getInstance()->setGroups($ID,$companyID,$values['groups']);
+			
 				
 		}
 
