@@ -5,7 +5,7 @@
 		<h1>Agenda
 		<span class="pull-right btn-bar">
 			<% if (this.item.ID!="") { %>
-				<button class="btn meeting-info-btn" type="button"><i class="fa fa-info"></i></button>
+				<button class="btn btn-default meeting-info-btn" type="button"><i class="fa fa-home"></i></button>
 			<% } %>
 			<button class="btn  btn-default item-form" data-ID="" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 				<i class="fa fa-plus"></i></button>
@@ -72,7 +72,14 @@
 	<section id="item-area" class="scroll-pane" style="top:37px;bottom:52px;left:12px; ">
 		<div style="margin-right:7px;">
 
-			<h3><%= this.item.heading %></h3>
+			<h3>
+
+				<button class="btn btn-default item-form pull-right" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
+					<i class="fa fa-pencil"></i></button>
+				
+				<%= this.item.heading %>
+			</h3>
+
 			<section class="groups-access">
 				<% for (var i in this.item.groups) { %>
 				<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
@@ -116,29 +123,31 @@
 				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/200/200/<%= this.item.files[i].filename %>" alt=""/>
 			</div>
 			<% } %>
-			
+
 		</div>
 	</section>
 
 	<section class="content-footer">
 		<div class="pull-left btn-bar" style="margin-left:-10px;">
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
-				<i class="fa fa-list"></i></button>
+				<i class="fa fa-list"></i>
+			</button>
+			<button class="btn btn-default  meeting-info-btn" type="button"><i class="fa fa-home"></i></button>
+			
 
-			<button class="btn btn-default item-form" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
-				<i class="fa fa-pencil"></i></button>
-
-			<button class="btn btn-default" type="button"><i class="fa fa-comment-o"></i></button>
 		</div>
-		<div style="position: absolute;left:105px; right:105px;">
+		
+		<div style="position: absolute;left:55px; right:155px;">
 			<input type="text" placeholder="Comment Bar" style="width:100%" class="form-control"/>
 		</div>
+		
 		<div class="pull-right btn-bar">
-
-			<button class="btn btn-default" type="button" id="details-record-prev">
-				<i class="fa fa-arrow-circle-left"></i></button>
-			<button class="btn btn-default" type="button" id="details-record-next">
-				<i class="fa fa-arrow-circle-right"></i></button>
+			<button class="btn btn-default" type="button" id="details-record-prev" style="padding-left:32px;padding-right:32px;">
+				<i class="fa fa-arrow-circle-left"></i>
+			</button>
+			<button class="btn btn-default" type="button" id="details-record-next" style="padding-left:32px;padding-right:32px;">
+				<i class="fa fa-arrow-circle-right"></i>
+			</button>
 		</div>
 	</section>
 
@@ -170,7 +179,10 @@
 	<section class="scroll-pane" style="left:10px;top:37px;">
 
 
-		<h2><%= this.meeting.meeting %></h2>
+		<h2>
+			<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
+				<i class="fa fa-pencil"></i></button><%= this.meeting.meeting %>
+		</h2>
 		<section class="groups-access">
 			<% for (var i in this.meeting.groups) { %>
 			<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
@@ -196,8 +208,7 @@
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
 				<i class="fa fa-list"></i></button>
 
-			<button class="btn btn-default meeting-form" data-ID="<%= this.meeting.ID %>" type="button">
-				<i class="fa fa-pencil"></i></button>
+		
 
 		</div>
 		<div class="pull-right btn-bar">

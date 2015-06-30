@@ -446,7 +446,7 @@
 			});
 
 
-			$("#edit-file-area").jqotesub($("#template-attachment-item"), data['files']);
+			if (data['files'])	$("#edit-file-area").jqotesub($("#template-attachment-item"), data['files']);
 
 			$(".item-attachment-desc").each(function(){
 				CKEDITOR.replace($(this).attr("id"),ckeditor_config_small);
