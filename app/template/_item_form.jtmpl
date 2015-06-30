@@ -435,7 +435,7 @@
 
 
 			if ($("#description").length) {
-				
+				CKEDITOR.env.isCompatible = true;
 				CKEDITOR.replace('description',ckeditor_config);
 			}
 			
@@ -443,6 +443,7 @@
 			
 			
 			if ($("#resolution").length) {
+				CKEDITOR.env.isCompatible = true;
 				CKEDITOR.replace('resolution',ckeditor_config);
 			}
 			$(".admin-list-items").sortable({
@@ -457,6 +458,7 @@
 			if (data['files'])	$("#edit-file-area").jqotesub($("#template-attachment-item"), data['files']);
 
 			$(".item-attachment-desc").each(function(){
+				CKEDITOR.env.isCompatible = true;
 				CKEDITOR.replace($(this).attr("id"),ckeditor_config_small);
 			})
 			
@@ -584,6 +586,7 @@
 					
 
 					$("#new-file-area").jqotepre($("#template-attachment-item"), data);
+					CKEDITOR.env.isCompatible = true;
 					CKEDITOR.replace('file-desc-' + file.id, ckeditor_config_small);
 
 
