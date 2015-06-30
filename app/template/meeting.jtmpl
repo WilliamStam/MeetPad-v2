@@ -119,8 +119,15 @@
 
 			<hr/>
 			<% for(var i in this.item.files){ %>
-			<div class="attachment-item"><%= this.item.files[i].store_filename %>
-				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/200/200/<%= this.item.files[i].filename %>" alt=""/>
+			<div class="attachment-item">
+				<% if(this.item.files[i].icon=="thumbnail"){ %>
+				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/20/20/<%= this.item.files[i].filename %>" alt=""/>
+				
+				<% } else { %>
+				<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>"></i>
+				<% } %> &nbsp;
+				
+				<%= this.item.files[i].filename %>
 			</div>
 			<% } %>
 

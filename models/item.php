@@ -206,6 +206,7 @@ class item extends _ {
 					$fileO->filename = $item['filename'];
 					$fileO->filesize = $item['filesize'];
 					$fileO->store_filename = $item['store_filename'];
+					$fileO->description = $item['description'];
 					$fileO->save();
 				}
 

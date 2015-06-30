@@ -126,10 +126,17 @@ class item_file extends _ {
 
 		$i = 1;
 		$n = array();
-		//test_array($items); 
+		//test_array($items);
+
+		$f3 = \base::instance();
+		$cfg = $f3->get('cfg');
+		$fileIcons = $cfg['file-icons'];
 
 		foreach ($data as $item) {
+			$icon = "";
+			$ext = $ext = pathinfo($item['store_filename'], PATHINFO_EXTENSION);;
 			
+			$item['icon'] = isset($fileIcons[$ext])?$fileIcons[$ext]:"";
 
 			$n[] = $item;
 		}

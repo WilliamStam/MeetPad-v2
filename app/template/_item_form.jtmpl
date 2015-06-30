@@ -290,12 +290,17 @@
 
 		<div class="row">
 			<div class="col-sm-3 c">
+				<% if(this.icon=='thumbnail'){ %>
 				<img src="/thumbnail/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/130/300/<%= this.store_filename %>" class="page" alt="" style="max-width:130px; max-height:300px;"/>
+				<% } else { %>
+				<i class="fa <%= this.icon||'fa-file-o' %>" style="font-size: 100px; color:#e1e1e1;"></i>
+				
+				<% } %>
 			</div>
 
 			<div class="col-sm-8">
 				
-				<textarea name="file-desc-<%= this.ID %>" id="file-desc-<%= this.ID %>" class="item-attachment-desc" cols="30" rows="10"></textarea>
+				<textarea name="file-desc-<%= this.ID %>" id="file-desc-<%= this.ID %>" class="item-attachment-desc" cols="30" rows="10"><%= this.description||'' %></textarea>
 				<div class="input-group form-group-sm">
 					<div class="input-group-addon">filename:</div>
 					<input type="text" class="form-control filename-input" id="file-filename-<%= this.ID %>" name="file-filename-<%= this.ID %>" placeholder="File Name"  value="<%= this.filename %>">
@@ -316,6 +321,9 @@
 	]]>
 </script>
 <script type="text/javascript">
+	
+	
+	
 	var toolbar = [
 		['Source'],
 		[
@@ -503,6 +511,7 @@
 	});
 
 	function uploader() {
+		var fileicons = {{ _cfg['file-icons']|json_encode()|raw() }};
 		var $form = $("form#form-item");
 		$("#item-uploader").pluploadQueue({
 			// General settings
@@ -551,7 +560,11 @@
 				FileUploaded: function (up, file, info) {
 
 
-					console.log( file.id)
+					var icon = "";
+					var fileName = file.target_name;
+					var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+					
+					
 
 					$form = $("form#form-item")
 					var data = [
@@ -562,6 +575,7 @@
 							"store_filename": file.target_name,
 							"meetingID": $form.attr("data-mid"),
 							"companyID": $form.attr("data-cid"),
+							"icon":fileicons[ext]
 
 						}
 					];
