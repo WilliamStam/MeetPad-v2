@@ -44,9 +44,6 @@
 
 
 
-
-
-
 					<div class="form-group has-feedback">
 						<label for="heading" class="col-sm-3 control-label">Heading</label>
 
@@ -161,7 +158,7 @@
 							<div id="poll-options" class="admin-list-items">
 								<% for (var i in this.poll.options) { %>
 								<div class="input-group edit-item" data-ID="<%= this.poll.options[i].ID %>">
-									<input type="text" class="form-control" id="option-edit-<%= this.poll.options[i].ID %>" name="group-edit-<%= this.poll.options[i].ID %>" placeholder="Poll Option" value="<%= this.poll.options[i].answer %>">
+									<input type="text" class="form-control" id="poll-option-<%= this.poll.options[i].ID %>" name="poll-option-<%= this.poll.options[i].ID %>" placeholder="Poll Option" value="<%= this.poll.options[i].answer %>">
 								
 								 <span class="input-group-btn">
 								    <button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
@@ -214,10 +211,14 @@
 					<hr/>
 					<h3>Attachments</h3>
 
-					<div id="uploader">
+					<div id="item-uploader"></div>
 
-
-					</div>
+					<div class="clearfix"></div>
+					<hr/>
+					
+					<div id="new-file-area"></div>
+					<div id="edit-file-area"></div>
+					
 
 				</div>
 				<div class="modal-footer">
@@ -238,14 +239,14 @@
 	<![CDATA[
 
 	<div class="input-group new-item">
-		<input type="text" class="form-control" id="option-add-<%= this.ID %>" name="option-add-<%= this.ID %>" placeholder="Poll Option" value="<%= this.new %>">
+		<input type="text" class="form-control" id="poll-option-new<%= this.ID %>" name="poll-option-new<%= this.ID %>" placeholder="Poll Option" value="<%= this.new %>">
 		
 		<span class="input-group-btn">
 			<button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
 			</button>
 		</span>
-
-		]]>
+	</div>
+	]]>
 </script>
 <script type="text/x-jqote-template" id="template-form-item-saved">
 	<![CDATA[
@@ -278,8 +279,114 @@
 	</div>
 	]]>
 </script>
-<script type="text/javascript">
 
+<script type="text/x-jqote-template" id="template-attachment-item">
+	<![CDATA[
+
+	<div class="item-attachment">
+		
+		
+
+
+		<div class="row">
+			<div class="col-sm-3 c">
+				<img src="/thumbnail/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/130/300/<%= this.store_filename %>" class="page" alt="" style="max-width:130px; max-height:300px;"/>
+			</div>
+
+			<div class="col-sm-8">
+				
+				<textarea name="file-desc-<%= this.ID %>" id="file-desc-<%= this.ID %>" class="item-attachment-desc" cols="30" rows="10"></textarea>
+				<div class="input-group form-group-sm">
+					<div class="input-group-addon">filename:</div>
+					<input type="text" class="form-control filename-input" id="file-filename-<%= this.ID %>" name="file-filename-<%= this.ID %>" placeholder="File Name"  value="<%= this.filename %>">
+					
+				</div>
+
+				<input type="hidden" id="file-store_filename-<%= this.ID %>" name="file-store_filename-<%= this.ID %>" value="<%= this.store_filename %>"/>
+			
+			
+				
+
+			</div>
+		</div>
+		
+	
+		<div class="clearfix"></div>
+	</div>
+	]]>
+</script>
+<script type="text/javascript">
+	var toolbar = [
+		['Source'],
+		[
+			'Cut',
+			'Copy',
+			'Paste',
+			'Find',
+			'Replace'
+		],
+		[
+			'Bold',
+			'Italic',
+			'Underline',
+			'StrikeThrough'
+		],
+		[
+			'Styles',
+			'Format',
+			'Font',
+			'FontSize'
+		],
+		[
+			'NumberedList',
+			'BulletedList'
+		],
+		[
+			'Outdent',
+			'Indent'
+		],
+	];
+	var toolbar_small = [
+		['Source'],
+		[
+			'Cut',
+			'Copy',
+			'Paste',
+			'Find',
+			'Replace'
+		],
+		[
+			'Bold',
+			'Italic',
+			'Underline',
+			'StrikeThrough'
+		]
+		
+				
+		
+		
+	];
+	var ckeditor_config = {
+
+		height            : '150px',
+		toolbar           : toolbar,
+		extraPlugins      : 'autogrow',
+		autoGrow_minHeight: 150,
+		autoGrow_maxHeight: 0,
+		removePlugins     : 'elementspath',
+		resize_enabled    : false,
+		skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+	};
+	var ckeditor_config_small = {
+		height            : '117px',
+		toolbar           : toolbar_small,
+		removePlugins     : 'elementspath',
+		resize_enabled    : false,
+		extraPlugins      : 'autogrow',
+		autoGrow_minHeight: 117,
+		autoGrow_maxHeight: 0,
+		skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+	};
 	$(document).ready(function () {
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("item-") > -1) {
 			formItem()
@@ -320,74 +427,15 @@
 
 
 			if ($("#description").length) {
-				CKEDITOR.config.removeButtons = '';
-				CKEDITOR.config.toolbar = [
-					[
-						'Bold',
-						'Italic',
-						'Underline',
-						'StrikeThrough'
-					],
-					[
-						'Styles',
-						'Format',
-						'Font',
-						'FontSize'
-					],
-					[
-						'NumberedList',
-						'BulletedList'
-					],
-					[
-						'Outdent',
-						'Indent'
-					],
-					[
-						'Cut',
-						'Copy',
-						'Paste',
-						'Find',
-						'Replace'
-					],
-					['Source']
-				];
-				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
-				CKEDITOR.replace('description');
+				
+				CKEDITOR.replace('description',ckeditor_config);
 			}
+			
+			
+			
+			
 			if ($("#resolution").length) {
-				CKEDITOR.config.removeButtons = '';
-				CKEDITOR.config.toolbar = [
-					[
-						'Bold',
-						'Italic',
-						'Underline',
-						'StrikeThrough'
-					],
-					[
-						'Styles',
-						'Format',
-						'Font',
-						'FontSize'
-					],
-					[
-						'NumberedList',
-						'BulletedList'
-					],
-					[
-						'Outdent',
-						'Indent'
-					],
-					[
-						'Cut',
-						'Copy',
-						'Paste',
-						'Find',
-						'Replace'
-					],
-					['Source']
-				];
-				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
-				CKEDITOR.replace('resolution');
+				CKEDITOR.replace('resolution',ckeditor_config);
 			}
 			$(".admin-list-items").sortable({
 				handle: ".handle",
@@ -396,7 +444,18 @@
 				containment: "parent",
 				tolerance: "pointer"
 			});
+
+
+			$("#edit-file-area").jqotesub($("#template-attachment-item"), data['files']);
+
+			$(".item-attachment-desc").each(function(){
+				CKEDITOR.replace($(this).attr("id"),ckeditor_config_small);
+			})
+			
+			
 			uploader();
+			
+			
 		}, "form")
 
 	}
@@ -444,90 +503,89 @@
 	});
 
 	function uploader() {
-		$("#uploader").pluploadQueue({
+		var $form = $("form#form-item");
+		$("#item-uploader").pluploadQueue({
 			// General settings
 			runtimes: 'html5,gears,flash,silverlight',
-			url     : '/admin/articles/form/upload',
+			url: '/save/form/item_upload?itemID=' + $form.attr("data-id") + "&cID=" + $form.attr("data-cid") + "&mID=" + $form.attr("data-mid"),
 
-			chunk_size         : '30mb',
-			unique_names       : true,
-			multiple_queues    : true,
+			chunk_size: '30mb',
+			unique_names: true,
+			multiple_queues: true,
+
+
 
 
 			// Resize images on clientside if we can
 			//resize             : {width: 1000, height: 1000, quality: 90},
 
 			// Specify what files to browse for
-			
+
 
 			// Flash settings
-			flash_swf_url      : '/ui/plupload/js/Moxie.swf',
+			flash_swf_url: '/vendor/moxiecode/plupload/js/Moxie.swf',
 
 			// Silverlight settings
-			silverlight_xap_url: '/ui/plupload/js/Moxie.xap',
+			silverlight_xap_url: '/vendor/moxiecode/plupload/js/Moxie.xap',
 
 			init: {
-				Refresh       : function (up) {
+				Refresh: function (up) {
 
 				},
-				StateChanged  : function (up) {
+				StateChanged: function (up) {
 
 				},
-				QueueChanged  : function (up) {
+				QueueChanged: function (up) {
 
 				},
 				UploadProgress: function (up, file) {
 
 				},
-				FilesAdded    : function (up, files) {
+				FilesAdded: function (up, files) {
 					up.refresh();
 					up.start();
 				},
-				FilesRemoved  : function (up, files) {
+				FilesRemoved: function (up, files) {
 
 				},
-				FileUploaded  : function (up, file, info) {
+				FileUploaded: function (up, file, info) {
 
 
-					var file_data = filedetails(file.target_name);
+					console.log( file.id)
 
-					var data = [{
-						"tempID":file.id,
-						"ID": "",
-						//"domainID": "temp",
-						"filename": file.target_name,
-						"filename_orig": file.name,
-						"description": "",
-						"fileType": file_data.fileType ,
-						//"artID": 19933,
-						//"fileID": 31241,
-						"scope": 0,
-						"mainThumbnail": 0,
-						//"viewed": 0,
-						"tags": "",
-						"icon": file_data.icon
-					}];
+					$form = $("form#form-item")
+					var data = [
+						{
+							"ID": file.id,
+							"contentID": $form.attr("data-id"),
+							"filename": file.name,
+							"store_filename": file.target_name,
+							"meetingID": $form.attr("data-mid"),
+							"companyID": $form.attr("data-cid"),
+
+						}
+					];
 
 
-					//	console.log(file);
-					//	console.log(data);
+					
 
-					$("#new-file-area").jqotepre($("#template-form-files"), data);
-					CKEDITOR.replace('file-description-' + file.id, file_description_boxes);
+					$("#new-file-area").jqotepre($("#template-attachment-item"), data);
+					CKEDITOR.replace('file-desc-' + file.id, ckeditor_config_small);
 
 
 
 
 				},
-				ChunkUploaded : function (up, file, info) {
+				ChunkUploaded: function (up, file, info) {
 
 				},
-				Error         : function (up, args) {
+				Error: function (up, args) {
 
 				}
 
 			}
 		});
+
 	}
 
 

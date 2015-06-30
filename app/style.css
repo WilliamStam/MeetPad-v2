@@ -7914,6 +7914,160 @@ button.close {
   border-radius: 4px!important;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
 }
+.cke_button__source .cke_button_label {
+  display: none;
+}
+.plupload_header {
+  display: none;
+}
+.plupload_filelist_header {
+  background: none!important;
+  border-top: none;
+  border-bottom: 1px solid #ccc!important;
+}
+.plupload_filelist_footer {
+  background: none!important;
+  border-top: 1px solid #ccc;
+  padding-left: 0!important;
+}
+.plupload_filelist {
+  background: none!important;
+  overflow-y: auto!important;
+  height: auto!important;
+}
+.plupload_filelist .plupload_droptext {
+  line-height: 80px;
+}
+.plupload_button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #666666;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.plupload_button:focus,
+.plupload_button.focus {
+  color: #666666;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.plupload_button:hover {
+  color: #666666;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.plupload_button:active,
+.plupload_button.active,
+.open > .dropdown-toggle.plupload_button {
+  color: #666666;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.plupload_button:active:hover,
+.plupload_button.active:hover,
+.open > .dropdown-toggle.plupload_button:hover,
+.plupload_button:active:focus,
+.plupload_button.active:focus,
+.open > .dropdown-toggle.plupload_button:focus,
+.plupload_button:active.focus,
+.plupload_button.active.focus,
+.open > .dropdown-toggle.plupload_button.focus {
+  color: #666666;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.plupload_button:active,
+.plupload_button.active,
+.open > .dropdown-toggle.plupload_button {
+  background-image: none;
+}
+.plupload_button.disabled,
+.plupload_button[disabled],
+fieldset[disabled] .plupload_button,
+.plupload_button.disabled:hover,
+.plupload_button[disabled]:hover,
+fieldset[disabled] .plupload_button:hover,
+.plupload_button.disabled:focus,
+.plupload_button[disabled]:focus,
+fieldset[disabled] .plupload_button:focus,
+.plupload_button.disabled.focus,
+.plupload_button[disabled].focus,
+fieldset[disabled] .plupload_button.focus,
+.plupload_button.disabled:active,
+.plupload_button[disabled]:active,
+fieldset[disabled] .plupload_button:active,
+.plupload_button.disabled.active,
+.plupload_button[disabled].active,
+fieldset[disabled] .plupload_button.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.plupload_button .badge {
+  color: #ffffff;
+  background-color: #666666;
+}
+.plupload_button:focus,
+.plupload_button:active:focus,
+.plupload_button.active:focus,
+.plupload_button.focus,
+.plupload_button:active.focus,
+.plupload_button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.plupload_button:hover,
+.plupload_button:focus,
+.plupload_button.focus {
+  color: #666666;
+  text-decoration: none;
+}
+.plupload_button:active,
+.plupload_button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.plupload_button.disabled,
+.plupload_button.plupload_disabled,
+.plupload_button[disabled],
+fieldset[disabled] .plupload_button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.plupload_button.disabled:hover,
+.plupload_button.plupload_disabled:hover,
+.plupload_button[disabled]:hover,
+fieldset[disabled] .plupload_button:hover {
+  background: none;
+}
+a.plupload_button.disabled,
+fieldset[disabled] a.plupload_button {
+  pointer-events: none;
+}
+.plupload_start {
+  display: none;
+}
 .pagination li.active a {
   background-color: #497dae!important;
   color: #fff!important;
@@ -7935,6 +8089,34 @@ form .admin-list-items:empty {
 }
 form .admin-list-items:empty:before {
   content: 'empty';
+}
+.item-attachment {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px dotted #ccc;
+  padding-bottom: 20px;
+}
+.item-attachment .filename-input {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.item-attachment .input-group {
+  margin-top: -1px;
+}
+.item-attachment .input-group .input-group-addon {
+  border-top-left-radius: 0;
+  font-size: 12px;
+}
+.item-attachment .cke_contents {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.item-attachment .cke_chrome {
+  padding-left: 0;
+  padding-right: 0;
+}
+.item-attachment img.page {
+  border: 1px solid #ccc;
 }
 /*scrollpane custom CSS*/
 .jspVerticalBar {

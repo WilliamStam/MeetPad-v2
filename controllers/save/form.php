@@ -15,10 +15,13 @@ class form extends _save {
 
 	}
 
-	function post($key, $required = false) {
+	function post($key, $required = false, $default="") {
 		$val = isset($_POST[$key]) ? $_POST[$key] : "";
 		if ($required && $val == "") {
 			$this->errors[$key] = $required === true ? "" : $required;
+		}
+		if ($default!="" && $val ==""){
+			$val = $default;
 		}
 		return $val;
 	}
@@ -268,6 +271,7 @@ class form extends _save {
 			"discussion_link" => $this->post("discussion_link"),
 			"meetingID"=>$mID,
 			"categoryID"=>$this->post("categoryID"),
+			"files"=>array()
 		);
 
 		if (isset($_POST['heading'])) {
@@ -277,6 +281,64 @@ class form extends _save {
 				$errors['groups'] = "You need to specify at least 1 group";
 			}
 		}
+		if (isset($_POST['poll'])) {
+			$values['poll'] = $this->post("poll");
+			$values['poll_options'] = array();
+			$poorderby = 0;
+			foreach($_POST as $key=>$value){
+				if (strpos($key,"poll-option-")>-1){
+					$poid = str_replace("poll-option-","",$key);
+					if (!is_numeric($poid)){
+						$poid = "";
+					}
+					
+					$po = array(
+						"ID"=>$poid,
+						"answer"=>$value,
+						"orderby"=>$poorderby
+					);
+					$poorderby = $poorderby + 1;
+					$values['poll_options'][] = $po;
+				}
+				
+				
+			}
+			$values['poll_show_result']=$this->post("poll_show_result",false,"0");
+			$values['poll_anonymous']=$this->post("poll_anonymous",false,"0");
+			
+			
+		}
+		
+		$filepath = $this->cfg['media'] . $cID . DIRECTORY_SEPARATOR . $mID . DIRECTORY_SEPARATOR;
+		//test_array($filepath); 
+		
+		foreach($_POST as $key=>$value){
+			if (strpos($key,"file-filename-")>-1){
+				$poid = str_replace("file-filename-","",$key);
+				$poidOrig = $poid;
+				if (!is_numeric($poid)){
+					$poid = "";
+				}
+				$store_filename = $_POST["file-store_filename-{$poidOrig}"];
+				$filesize = file_exists($filepath.$store_filename)?filesize($filepath.$store_filename):0;
+				$po = array(
+					"ID"=>$poid,
+					"filename"=>$value,
+					"filesize"=>$filesize,
+					"store_filename"=>$_POST["file-store_filename-{$poidOrig}"],
+					"description"=>$_POST["file-desc-{$poidOrig}"],
+				);
+				
+				$values['files'][] = $po;
+			}
+
+
+		}
+		
+		
+		
+	//	test_array(array($values,$_POST)); 
+		
 		if ($values['heading']==""){
 			$errors['heading'] = "";
 		}
@@ -306,6 +368,122 @@ class form extends _save {
 		
 
 		return $GLOBALS["output"]['data'] = $return;
+	}
+	function item_upload() {
+		$result = array();
+		$errors = $this->errors;
+
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$iID = isset($_GET['itemID']) ? $_GET['itemID'] : "";;
+		$mID = isset($_GET['mID']) ? $_GET['mID'] : "";;
+		$cID = isset($_GET['cID']) ? $_GET['cID'] : "";;
+
+		$cfg = $this->f3->get("cfg");
+		
+		
+
+		$return = array();
+
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+
+
+
+		/* 
+		// Support CORS
+		header("Access-Control-Allow-Origin: *");
+		// other CORS headers if any...
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+			exit; // finish preflight CORS requests here
+		}
+		*/
+
+// 5 minutes execution time
+		@set_time_limit(5 * 60);
+
+// Uncomment this one to fake upload time
+// usleep(5000);
+
+// Settings
+		
+		
+
+
+		$targetDir =  $cfg['media'] . $cID .DIRECTORY_SEPARATOR . $mID . DIRECTORY_SEPARATOR ;
+//$targetDir = 'uploads';
+	//	$cleanupTargetDir = true; // Remove old files
+		//$maxFileAge = 5 * 3600; // Temp file age in seconds
+
+
+// Create target dir
+		if (!file_exists($targetDir)) {
+			@mkdir($targetDir);
+		}
+
+// Get a file name
+		if (isset($_REQUEST["name"])) {
+			$fileName = $_REQUEST["name"];
+		} elseif (!empty($_FILES)) {
+			$fileName = $_FILES["file"]["name"];
+		} else {
+			$fileName = uniqid("file_");
+		}
+
+		$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+
+// Chunking might be enabled
+		$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+		$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+
+
+
+// Open temp file
+		if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+		}
+
+		if (!empty($_FILES)) {
+			if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
+				$return = ('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+			}
+
+			// Read binary input stream and append it to temp file
+			if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+				$return = ('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+			}
+		} else {
+			if (!$in = @fopen("php://input", "rb")) {
+				$return = ('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+			}
+		}
+
+		while ($buff = fread($in, 4096)) {
+			fwrite($out, $buff);
+		}
+
+		@fclose($out);
+		@fclose($in);
+
+// Check if file has been uploaded
+		if (!$chunks || $chunk == $chunks - 1) {
+			// Strip the temp .part suffix off 
+			rename("{$filePath}.part", $filePath);
+		}
+
+// Return Success JSON-RPC response
+		$return = ('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+
+		$return = array(
+			"itemID"=>$iID,
+			"meetingID"=>$mID,
+			"companyID"=>$cID,
+			"status"=>json_decode($return)
+		);
+
+		return $GLOBALS["output"]['data'] = ($return);
 	}
 	function usercompany() {
 		$result = array();

@@ -39,7 +39,7 @@ $f3->set('DEBUG',3);
 
 //$f3->set('QUIET', TRUE);
 
-$f3->set('UI', 'app/');
+$f3->set('UI', 'app/|media/');
 $f3->set('MEDIA', './media/');
 $f3->set('TZ', 'Africa/Johannesburg');
 
@@ -134,6 +134,12 @@ $f3->route('GET|POST /content/@ID/@url/meetings', 'controllers\company_meetings-
 
 $f3->route('GET|POST /content/@ID/@company/@url', 'controllers\meeting->page');
 $f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_users->page');
+
+
+
+//$f3->route('GET|POST /thumbnail/@ID/@width/@height/*', 'controllers\thumbnail->attachment');
+//$f3->route('GET|POST /thumbnail/@cID/@mID/@width/@height/@file', 'controllers\thumbnail->attachment');
+$f3->route('GET|POST /thumbnail/@ID/@cID/@mID/@width/@height/@filename', 'controllers\thumbnail->attachment');
 
 
 

@@ -45,8 +45,8 @@ class item extends _ {
 				"question"=>$return['poll'],
 				"options"=>$this->f3->get("DB")->exec("SELECT mp_content_poll_answers.*, count(mp_content_poll_voted.userID) AS voted FROM mp_content_poll_answers LEFT JOIN mp_content_poll_voted ON mp_content_poll_voted.answerID = mp_content_poll_answers.ID AND mp_content_poll_voted.userID = '{$this->user['ID']}'  WHERE mp_content_poll_answers.contentID = '{$return['ID']}' GROUP BY mp_content_poll_answers.ID ORDER BY orderby ASC")
 			);
-			
-			
+
+			$return['files']= item_file::getInstance()->getAll("contentID='{$return['ID']}'","datein DESC");
 			
 		} else {
 			$return = parent::dbStructure("mp_content");
@@ -162,28 +162,60 @@ class item extends _ {
 
 		if (isset($values['groups'])){
 			$f3->get("DB")->exec("DELETE FROM mp_content_group WHERE contentID = '{$ID}'");
-
-
-
-			//test_array($values['groups']); 
 			$n = array();
 			foreach ($values['groups'] as $item){
 				if ($item) $n[] = "('$ID','$item')";
 			}
-
-
 			if (count($n)){
 				$str = implode(",",$n);
 				$f3->get("DB")->exec("INSERT INTO mp_content_group (contentID,groupID) VALUES $str");
 			}
-
-
-
-
-			//	test_array(array($n,$r,$str)); 
-
 		}
+		if (isset($values['poll_options'])){
 
+			$pollO = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_poll_answers");
+			foreach($values['poll_options'] as $item){
+				$pollO->load("ID='{$item['ID']}'");
+				
+				if ($item['answer']==""){
+					$pollO->erase();
+				} else {
+					$pollO->contentID = $ID;
+					$pollO->answer = $item['answer'];
+					$pollO->orderby = $item['orderby'];
+					$pollO->save();
+				}
+				
+				
+				
+				$pollO->reset();
+				
+			}
+			
+			
+		}
+		if (isset($values['files'])){
+			$fileO = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_files");
+			foreach($values['files'] as $item){
+				$fileO->load("ID='{$item['ID']}'");
+
+				if ($item['filename']==""){
+					$fileO->erase();
+				} else {
+					$fileO->contentID = $ID;
+					$fileO->filename = $item['filename'];
+					$fileO->filesize = $item['filesize'];
+					$fileO->store_filename = $item['store_filename'];
+					$fileO->save();
+				}
+
+
+
+				$fileO->reset();
+
+			}
+			
+		}
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());

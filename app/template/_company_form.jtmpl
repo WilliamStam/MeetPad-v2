@@ -180,7 +180,7 @@
 			<button class="btn btn-default handle" type="button"><i class="fa fa-sort"></i>
 			</button>
 		</span>
-
+</div>
 		]]>
 </script>
 <script type="text/x-jqote-template" id="template-form-company-saved">

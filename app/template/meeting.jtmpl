@@ -109,8 +109,13 @@
 				</div>
 
 			</form>
-			
-			<div style="height: 1000px;"></div>
+
+			<hr/>
+			<% for(var i in this.item.files){ %>
+			<div class="attachment-item"><%= this.item.files[i].store_filename %>
+				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/200/200/<%= this.item.files[i].filename %>" alt=""/>
+			</div>
+			<% } %>
 			
 		</div>
 	</section>

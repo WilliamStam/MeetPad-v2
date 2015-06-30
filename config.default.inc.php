@@ -19,4 +19,5 @@ $cfg['git'] = array(
 );
 
 
-$cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/media/backups/";
+$cfg['media'] = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR. "media" . DIRECTORY_SEPARATOR;
+$cfg['backup'] = $cfg['media'] . "backups" . DIRECTORY_SEPARATOR;
