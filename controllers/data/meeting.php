@@ -92,7 +92,7 @@ class meeting extends _data {
 //test_array($result); 
 
 		$result['files']= models\item_file::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
-		$result['comments']= models\item_comment::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
+		$result['comments']= models\item_comment::getInstance()->getAll("contentID='{$result['ID']}'","datein ASC");
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}

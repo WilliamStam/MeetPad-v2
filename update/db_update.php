@@ -11,7 +11,9 @@ $sql = array(
 	"ALTER TABLE  `mp_users` ADD  `activated` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `tag`;",
 	"ALTER TABLE `mp_users`  DROP `landing_page`,  DROP `reset_password`;",
 	"ALTER TABLE  `mp_content_poll_answers` ADD  `orderby` INT( 3 ) NULL DEFAULT NULL;",
-	"ALTER TABLE  `mp_content_files` ADD  `description` TEXT NULL DEFAULT NULL AFTER  `filesize`;"
+	"ALTER TABLE  `mp_content_files` ADD  `description` TEXT NULL DEFAULT NULL AFTER  `filesize`;",
+	"ALTER TABLE  `mp_content_comments` ADD  `parentID` INT( 6 ) NULL DEFAULT NULL AFTER  `contentID` ,
+ADD INDEX (  `parentID` );"
 
 )
 

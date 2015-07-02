@@ -131,11 +131,47 @@ class item_comment extends _ {
 
 		foreach ($data as $item) {
 			$item['timeago'] = timesince($item['datein']);
+			$item['children'] = array();
 			$n[] = $item;
 		}
 
 		if ($single) $n = $n[0];
 
+		$records = $n;
+		if (count($records)){
+			$rows = array();
+
+			foreach ($records as $row) {
+				$row['children'] = array();
+				$rows[$row['ID']] = $row;
+			}
+
+
+
+			foreach ($rows as $k => &$v) {
+				if ($v['parentID'] == $v['ID']) continue;
+				if (isset($rows[$v['parentID']]))	{
+					$rows[$v['parentID']]['children'][] = & $v;
+				}
+			}
+
+			foreach ($rows as $item){
+				if ($item['parentID'])unset($rows[$item['ID']]);
+			}
+
+			//	array_splice($rows, 2);
+			//test_array($rows);
+
+			$n = $rows;
+			$nn = array();
+			foreach ($n as $key=>$item){
+				$nn[] = $item;
+			}
+			$n = $nn;
+		}
+		
+		
+		
 
 		//test_array($n); 
 

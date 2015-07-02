@@ -96,8 +96,8 @@ class form extends _data {
 		$object = models\item::getInstance();
 
 		$result = $object->get($ID,true);
-		
-		
+
+		$result['files']= models\item_file::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
 		//test_array($ID); 
 	
 		

@@ -145,33 +145,12 @@
 			<% } %>
 			<% if(this.item.comments[0]){ %>
 				<h3>Comments</h3>
-
-				<% for(var i in this.item.comments){ %>
-			<blockquote class="comment-item">
-				
-				<%= this.item.comments[i].comment %>
-				<div class="clearfix"></div>
-				<% if(this.userID=="{{ _user['ID'] }}"){ %>
-				<button class="btn btn-link btn-xs pull-left" type="button">Edit my comment</button>
-				<button class="btn btn-link btn-xs pull-left" type="button">Remove my comment</button>
-				<% } %>
-				<footer class="text-right">
-					<%= this.item.comments[i].name %> &nbsp;
-					<cite title="<%= this.item.comments[i].datein %>"><%= this.item.comments[i].timeago %></cite>
-				</footer>
 			
-					<input type="text" placeholder="Reply to <%= this.item.comments[i].name %>" style="width:100%; margin-top:10px;" class="form-control input-sm"/>
-					
+			<ul id="comments-list">
+				<%= $.jqote($("#template-comments"), this.item.comments) %>
+			</ul>
 			
-				
-					
-					
-					
-				
-			</blockquote>
 			
-				
-				<% } %>
 			<% } %>
 		</div>
 		<div class="clearfix"></div>
@@ -205,6 +184,45 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-comments">
+	<![CDATA[
+	<li>
+		<blockquote class="comment-item">
+			<%= this.comment %>
+			<div class="clearfix"></div>
+			<% if(this.userID=="{{ _user['ID'] }}"){ %>
+			<button class="btn btn-link btn-xs pull-left" type="button">Edit my comment</button>
+			<button class="btn btn-link btn-xs pull-left" type="button">Remove my comment</button>
+			<% } %>
+			<footer class="text-right">
+				<%= this.name %> &nbsp;
+				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
+			</footer>
+
+			
+			<div style="position:relative;">
+				<textarea name="test" id="" cols="30" rows="1" style="width:100%; height:30px;" placeholder="Reply to <%= this.name %>"  class="form-control input-sm"></textarea>
+				<div class="pull-right">
+					<button class="btn btn-link btn btn-sm">Cancel</button>
+					<button class="btn btn-primary btn-sm">Submit Comment</button>
+				</div>
+				<div class="clearfix"></div>
+				
+			</div>
+			
+
+		</blockquote>
+	
+	<ul>
+		<%= $.jqote($("#template-comments"), this.children) %>
+	</ul>
+	</li>
+	
+	]]>
+</script>
+
+
+
 <script type="text/x-jqote-template" id="template-meeting-home">
 	<![CDATA[
 

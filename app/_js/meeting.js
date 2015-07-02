@@ -11,6 +11,18 @@ $(document).ready(function () {
 		});
 	});
 
+
+	$(document).on("keyup","#comments-list textarea",function(e) {
+		while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+			$(this).height($(this).height()+1);
+			$.doTimeout('resize', 250, function () {
+				resize();
+			});
+		};
+	});
+	
+	
+
 	resize();
 
 	$(document).on('click', "#left-area .table .record", function () {
