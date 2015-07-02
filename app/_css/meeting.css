@@ -250,3 +250,6 @@ blockquote.comment-item {
 #comments-list textarea {
   overflow: hidden;
 }
+#comments-list .comment-btn-bar {
+  display: none;
+}

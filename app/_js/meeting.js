@@ -12,15 +12,22 @@ $(document).ready(function () {
 	});
 
 
-	$(document).on("keyup","#comments-list textarea",function(e) {
+	$(document).on("keyup change","#comments-list textarea",function(e) {
 		while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
 			$(this).height($(this).height()+1);
 			$.doTimeout('resize', 250, function () {
+				show_comment_button();
 				resize();
 			});
 		};
 	});
-	
+	$(document).on("reset",".comment-form",function(){
+		$(this).find("textarea").css("height",30);
+		$.doTimeout('resize', 250, function () {
+			show_comment_button();
+			resize();
+		});
+	})
 	
 
 	resize();
@@ -174,7 +181,20 @@ function resize() {
 
 
 }
-
+function show_comment_button(){
+	
+	$("#comments-list textarea").each(function(){
+		var $this = $(this);
+		var $btns = $this.closest("div").find(".comment-btn-bar");
+		if ($this.val()!=""){
+			$btns.show();
+		} else {
+			$btns.hide();
+		}
+	});
+	
+	
+}
 
 $(document).on('click', '#details-record-prev', function () {
 	prevRecord();
