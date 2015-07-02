@@ -93,7 +93,7 @@
 						<label for="note" class="control-label">Meeting Note / Description</label>
 
 						<div class="clearfix"></div>
-						<textarea name="note" id="note" cols="30" rows="10" placeholder="Meeting Note / Description"><%= this.note %></textarea>
+						<textarea name="note" id="note" cols="30" rows="10" placeholder="Meeting Note / Description"><%= this.note||'' %></textarea>
 					</div>
 
 
@@ -211,39 +211,7 @@
 			}).data("DateTimePicker").date(moment($("#timeEnd").val() || "d"));
 
 			if ($("#note").length) {
-				CKEDITOR.config.removeButtons = '';
-				CKEDITOR.config.toolbar = [
-					[
-						'Bold',
-						'Italic',
-						'Underline',
-						'StrikeThrough'
-					],
-					[
-						'Styles',
-						'Format',
-						'Font',
-						'FontSize'
-					],
-					[
-						'NumberedList',
-						'BulletedList'
-					],
-					[
-						'Outdent',
-						'Indent'
-					],
-					[
-						'Cut',
-						'Copy',
-						'Paste',
-						'Find',
-						'Replace'
-					],
-					['Source']
-				];
-				CKEDITOR.config.skin = 'bootstrapck,/app/_css/ckeditor/bootstrapck/';
-				CKEDITOR.replace('note');
+				CKEDITOR.replace('note',ckeditor_config);
 			}
 
 

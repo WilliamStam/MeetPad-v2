@@ -170,7 +170,7 @@
 			<div id="comment-input-open">
 				<form class="comment-form-input"  data-itemID="<%= this.item.ID %>" data-parentID="">
 				<div>
-					<textarea name="comment" id="comment" cols="30" rows="10" style="width:100%; margin-bottom:10px;"></textarea>
+					<textarea name="comment" id="comment" cols="30" rows="3" style="width:100%; margin-bottom:10px;"></textarea>
 					
 					<button class="btn btn-default" type="reset" style="margin-bottom:5px; ">Cancel</button>
 					<button class="btn btn-primary pull-right" type="submit" style="margin-bottom:5px;margin-left:10px;">Submit Comment</button>

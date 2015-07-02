@@ -1,6 +1,73 @@
 ;
 
 
+var toolbar = [
+	['Source'],
+	[
+		'Cut',
+		'Copy',
+		'Paste',
+		'Find',
+		'Replace'
+	],
+	[
+		'Bold',
+		'Italic',
+		'Underline',
+		'StrikeThrough'
+	],
+	[
+		'Styles',
+		'Format',
+		'Font',
+		'FontSize'
+	],
+	[
+		'NumberedList',
+		'BulletedList'
+	],
+	[
+		'Outdent',
+		'Indent'
+	]
+];
+var toolbar_small = [
+	['Source'],
+	[
+		'Cut',
+		'Copy',
+		'Paste',
+		'Find',
+		'Replace'
+	],
+	[
+		'Bold',
+		'Italic',
+		'Underline',
+		'StrikeThrough'
+	]
+];
+var ckeditor_config = {
+	height            : '150px',
+	toolbar           : toolbar,
+	extraPlugins      : 'autogrow',
+	autoGrow_minHeight: 150,
+	autoGrow_maxHeight: 0,
+	removePlugins     : 'elementspath',
+	resize_enabled    : false,
+	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+};
+var ckeditor_config_small = {
+	height            : '117px',
+	toolbar           : toolbar_small,
+	removePlugins     : 'elementspath',
+	resize_enabled    : false,
+	extraPlugins      : 'autogrow',
+	autoGrow_minHeight: 117,
+	autoGrow_maxHeight: 0,
+	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+};
+
 
 ;$(document).ready(function () {
 

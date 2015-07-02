@@ -43,6 +43,8 @@
 {%  include "_footer.twig" %}
 <script src="/app/javascript.{{ _v }}.js"></script>
 <script src="/vendor/ckeditor/ckeditor/ckeditor.js?v={{ _v }}"></script>
+<script type="text/javascript">CKEDITOR.env.isCompatible = true;</script>
+
 
 {% for row in page['js'] %}
 	<script src="{{row }}"></script>
