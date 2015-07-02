@@ -12,7 +12,7 @@ $(document).ready(function () {
 	});
 
 
-	$(document).on("keyup change","#comments-list textarea",function(e) {
+	$(document).on("keyup","#comments-list textarea",function(e) {
 		while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
 			$(this).height($(this).height()+1);
 			$.doTimeout('resize', 250, function () {
@@ -21,8 +21,30 @@ $(document).ready(function () {
 			});
 		};
 	});
+	$(document).on("keyup change","#comments-list textarea",function(e) {
+					
+			$.doTimeout('resize', 250, function () {
+				show_comment_button();
+				resize();
+			});
+		
+	});
+
+
+
 	$(document).on("reset",".comment-form",function(){
 		$(this).find("textarea").css("height",30);
+		$.doTimeout('resize', 250, function () {
+			show_comment_button();
+			resize();
+		});
+	});
+	$(document).on("submit",".comment-form",function(e){
+		e.preventDefault();
+		
+		
+		
+		
 		$.doTimeout('resize', 250, function () {
 			show_comment_button();
 			resize();

@@ -249,6 +249,8 @@ blockquote.comment-item {
 }
 #comments-list textarea {
   overflow: hidden;
+  resize: vertical ;
+  min-width: 30px;
 }
 #comments-list .comment-btn-bar {
   display: none;
