@@ -96,6 +96,14 @@ class meeting extends _data {
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
+	function item_comments() {
+		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
+
+		
+		$result['comments']= models\item_comment::getInstance()->getAll("contentID='{$itemID['ID']}'","datein ASC");
+		
+		return $GLOBALS["output"]['data'] = $result;
+	}
 
 	function company() {
 		$domain = $this->f3->get("domain");

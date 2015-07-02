@@ -249,9 +249,22 @@ blockquote.comment-item {
 }
 #comments-list textarea {
   overflow: hidden;
-  resize: vertical ;
+  resize: vertical;
   min-width: 30px;
 }
 #comments-list .comment-btn-bar {
   display: none;
+}
+#comment-input-open {
+  display: none;
+  background-color: #fff;
+  padding: 10px 10px 0 10px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10;
+}
+#comment-input-close {
+  display: block;
 }

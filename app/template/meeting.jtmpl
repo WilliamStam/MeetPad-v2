@@ -154,7 +154,7 @@
 			<% } %>
 		</div>
 		<div class="clearfix"></div>
-		<div style="height:50px;"></div>
+		<div style="height:20px;"></div>
 	</section>
 
 	<section class="content-footer">
@@ -167,9 +167,25 @@
 
 		</div>
 		
-		<div style="position: absolute;left:55px; right:155px;">
-			<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control"/>
-		</div>
+			<div id="comment-input-open">
+				<form class="comment-form-input"  data-itemID="<%= this.item.ID %>" data-parentID="">
+				<div>
+					<textarea name="comment" id="comment" cols="30" rows="10" style="width:100%; margin-bottom:10px;"></textarea>
+					
+					<button class="btn btn-default" type="reset" style="margin-bottom:5px; ">Cancel</button>
+					<button class="btn btn-primary pull-right" type="submit" style="margin-bottom:5px;margin-left:10px;">Submit Comment</button>
+				</div>	
+				</form>
+			</div>
+			<div id="comment-input-close" style="position: absolute;left:55px; right:155px;">
+				<div>
+					<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control" name="comment" id="comment" />
+				</div>
+			</div>
+			
+			
+			
+	
 		
 		<div class="pull-right btn-bar">
 			<button class="btn btn-default" type="button" id="details-record-prev" style="padding-left:32px;padding-right:32px;">
@@ -191,19 +207,26 @@
 			<%= this.comment %>
 			<div class="clearfix"></div>
 			<% if(this.userID=="{{ _user['ID'] }}"){ %>
-			<button class="btn btn-link btn-xs pull-left" type="button">Edit my comment</button>
-			<button class="btn btn-link btn-xs pull-left" type="button">Remove my comment</button>
+			<!--
+			<div class="pull-left" style="margin-top:5px;">
+				<button class="btn  btn-xs pull-right" type="button" style="width:100px;"><i class="fa fa-pencil" style="margin-right:10px;"></i> Edit</button>
+				<button class="btn  btn-xs pull-right" type="button" style="width:100px;margin-right:10px;"><i class="fa fa-trash" style="margin-right:10px;"></i> Delete</button>
+			</div>
+			-->
 			<% } %>
-			<footer class="text-right">
+			
+			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
+				
 				<%= this.name %> &nbsp;
 				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
 			</footer>
 
-			<form class="comment-form">
+			<div class="clearfix"></div>
+			<form class="comment-form"  data-itemID="<%= this.contentID %>" data-ID="<%= this.ID %>">
 				<div style="position:relative;">
-					<textarea name="test" id="" cols="30" rows="1" style="width:100%; height:30px;" placeholder="Reply to <%= this.name %>" class="form-control input-sm"></textarea>
+					<textarea name="comment" id="comment" cols="30" rows="1" style="width:100%; height:30px;" placeholder="Reply to <%= this.name %>" class="form-control input-sm"></textarea>
 
-					<div class="pull-right comment-btn-bar">
+					<div class="pull-right comment-btn-bar" style="margin-top:5px;">
 						<button class="btn btn-link btn btn-sm" type="reset">Cancel</button>
 						<button class="btn btn-primary btn-sm" type="submit">Submit Comment</button>
 					</div>
