@@ -61,10 +61,7 @@ $(document).ready(function () {
 			});
 		
 	});
-	$(document).on("submit","#form-modal .comment-form",function(e){
-		$("#form-modal").modal("hide");
-		
-	});
+
 
 
 	$(document).on("reset",".comment-form",function(){
@@ -99,6 +96,7 @@ $(document).ready(function () {
 			} else {
 				getData();
 			}
+			$("#form-modal").modal("hide");
 		});
 		
 		
