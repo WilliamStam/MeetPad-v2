@@ -101,7 +101,7 @@
     "components/bootstrap": "3.*",
     "components/bootstrap-datetimepicker": "dev-master",
     "twig/twig": "1.*",
-    "moxiecode/plupload": "2.*",
+    "moxiecode/plupload": "2.1.3",
     "components/modernizr": "*",
     "bcosca/fatfree": "3.*",
     "components/jquery-bbq": "dev-master",

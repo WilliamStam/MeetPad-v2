@@ -23,6 +23,8 @@ module.exports = function(grunt) {
 					'vendor/components/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
 					'vendor/moxiecode/plupload/js/plupload.full.min.js',
 					'vendor/moxiecode/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
+					//'vendor/plupload/js/plupload.full.js',
+					//'vendor/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
 					'vendor/ivaynberg/select2/select2.js',
 					'app/_js/plugins/jquery.getData.js',
 					'app/_js/plugins/jquery.ba-dotimeout.min.js',

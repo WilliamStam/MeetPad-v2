@@ -440,6 +440,9 @@
 	function uploader() {
 		var fileicons = {{ _cfg['file-icons']|json_encode()|raw() }};
 		var $form = $("form#form-item");
+
+		
+		
 		$("#item-uploader").pluploadQueue({
 			// General settings
 			runtimes: 'html5,gears,flash,silverlight',
