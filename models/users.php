@@ -153,7 +153,7 @@ class users extends _ {
 		$timer = new timer();
 
 		$companyGroups = $this->f3->get("DB")->exec("SELECT * FROM mp_groups WHERE companyID = '$companyID'");
-		$gid = [];
+		$gid = array();
 		foreach ($companyGroups as $item) {
 			$gid[] = $item['ID'];
 		}
