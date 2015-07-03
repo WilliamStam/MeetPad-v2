@@ -125,6 +125,24 @@ class form extends _data {
 
 		return $GLOBALS["output"]['data'] = $result;
 	}
+	function item_comment() {
+		$result = array();
+
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$itemID = isset($_GET['itemID']) ? $_GET['itemID'] : "";
+		
+		$object = models\item_comment::getInstance();
+
+		$result = $object->get($ID,true);
+		//test_array($result); 
+		
+		$result['itemID'] = $itemID;
+		$result['title'] = "Leave a comment";
+		
+
+
+		return $GLOBALS["output"]['data'] = $result;
+	}
 
 	function usercompany() {
 		$result = array();

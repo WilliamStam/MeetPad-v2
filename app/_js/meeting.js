@@ -4,18 +4,38 @@ $(document).ready(function () {
 	$(document).on('click', '[data-toggle="offcanvas"]', function () {
 		$('#right-area').toggleClass('active')
 	});
-	$(document).on('click', '#comment-input-close input', function () {
-		$("#comment-input-close").hide();
-		$("#comment-input-open").show();
-		$("#comment-input-open textarea").focus();
+	
+	
+	$(document).on('click', '.comment-button', function () {
+		var $this = $(this);
+		var ID = $this.attr("data-ID");
+		var itemID = $this.attr("data-itemID");
+		$.getData("/data/form/item_comment?ID=" + ID+"&itemID="+itemID, {}, function (data) {
+			$("#form-modal").jqotesub($("#template-item-comment-form"), data).modal("show");
+		//	console.log(ckeditor_config)
+			var on_ckeditor_config = ckeditor_config;
+			on_ckeditor_config['startupFocus'] = true;
+			on_ckeditor_config['on'] = {
+				'instanceReady': function(evt) {
+//Set the focus to your editor
+					//console.log("ready");
+					//CKEDITOR.instances['item-comment'].focus();
+				}
+			};
+			//console.log(on_ckeditor_config)
+			CKEDITOR.replace('item-comment',on_ckeditor_config);
+
+			CKEDITOR.instances['item-comment'].on('instanceReady', function (event) {
+				CKEDITOR.instances['item-comment'].focus();
+			});
+			
+			
+		});
+		
 	});
 	
 
-	$(document).on("reset",".comment-form-input",function(){
-		$("#comment-input-close").show();
-		$("#comment-input-open").hide();
-		
-	});
+	
 
 	$(window).resize(function () {
 		$.doTimeout('resize', 250, function () {
@@ -41,7 +61,10 @@ $(document).ready(function () {
 			});
 		
 	});
-
+	$(document).on("submit","#form-modal .comment-form",function(e){
+		$("#form-modal").modal("hide");
+		
+	});
 
 
 	$(document).on("reset",".comment-form",function(){
@@ -54,12 +77,15 @@ $(document).ready(function () {
 	$(document).on("submit",".comment-form, .comment-form-input",function(e){
 		e.preventDefault();
 		var $form = $(this);
-		var parentID = $form.attr("data-ID");
+		var ID = $form.attr("data-ID");
+		var parentID = $form.attr("data-parentID");
 		var itemID = $form.attr("data-itemID");
+		var html = $form.attr("data-html");
 		var data = $form.serialize();
 		
+		
 		$(".loadingmask").show();
-		$.post("/save/comment/item?itemID="+itemID+"&parentID="+parentID,data,function(d){
+		$.post("/save/comment/item?ID="+ID+"&itemID="+itemID+"&parentID="+parentID+"&html="+html,data,function(d){
 			if ($("#comments-list").length){
 				$("#comments-list").jqotesub($("#template-comments"), d.data.comments);
 				show_comment_button();
@@ -161,7 +187,7 @@ function getData() {
 		
 
 		$.doTimeout(400,function(){
-			//resize();
+			resize();
 			if (right_template == "#template-item"){
 				$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
 			}
@@ -226,7 +252,6 @@ function resize() {
 		
 
 	});
-	
 	
 	
 

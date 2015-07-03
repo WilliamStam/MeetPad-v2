@@ -76,27 +76,27 @@
 
 				<button class="btn btn-default item-form pull-right" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
-				
+
 				<%= this.item.heading %>
 			</h3>
 
-			
+
 
 
 			<div class="well" style="margin-bottom:0;margin-top:20px; padding-bottom:9px;">
 				<%= this.item.description %>
 			</div>
-			
-			
-			
+
+
+
 			<section class="groups-access">
 				<% for (var i in this.item.groups) { %>
 				<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
 				<% } %>
 			</section>
-			
-			
-			
+
+
+
 			<% if (this.item.resolution){ %>
 			<div class="alert alert-success">
 				<%= this.item.resolution||'' %>
@@ -104,9 +104,9 @@
 			<% } %>
 
 			<div class="clearfix"></div>
-			
+
 			<% if(this.item.poll.question){ %>
-			
+
 			<h4><%= this.item.poll.question||'' %></h4>
 
 
@@ -124,9 +124,9 @@
 
 					</div>
 				</div>
-<button class="btn btn-default btn-block" type="submit">Vote!</button>
+				<button class="btn btn-default btn-block" type="submit">Vote!</button>
 			</form>
-<% } %>
+			<% } %>
 			<% if(this.item.files[0]){ %>
 			<hr/>
 			<h3>Attachments</h3>
@@ -134,23 +134,23 @@
 			<div class="attachment-item">
 				<% if(this.item.files[i].icon=="thumbnail"){ %>
 				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/20/20/<%= this.item.files[i].filename %>" alt=""/>
-				
+
 				<% } else { %>
 				<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>"></i>
 				<% } %> &nbsp;
-				
+
 				<%= this.item.files[i].filename %>
 			</div>
 			<% } %>
 			<% } %>
 			<% if(this.item.comments[0]){ %>
-				<h3>Comments</h3>
-			
+			<h3>Comments</h3>
+
 			<ul id="comments-list">
 				<%= $.jqote($("#template-comments"), this.item.comments) %>
 			</ul>
-			
-			
+
+
 			<% } %>
 		</div>
 		<div class="clearfix"></div>
@@ -163,30 +163,21 @@
 				<i class="fa fa-list"></i>
 			</button>
 			<button class="btn btn-default  meeting-info-btn" type="button"><i class="fa fa-home"></i></button>
-			
+
 
 		</div>
-		
-			<div id="comment-input-open">
-				<form class="comment-form-input"  data-itemID="<%= this.item.ID %>" data-parentID="">
-				<div>
-					<textarea name="comment" id="comment" cols="30" rows="3" style="width:100%; margin-bottom:10px;"></textarea>
-					
-					<button class="btn btn-default" type="reset" style="margin-bottom:5px; ">Cancel</button>
-					<button class="btn btn-primary pull-right" type="submit" style="margin-bottom:5px;margin-left:10px;">Submit Comment</button>
-				</div>	
-				</form>
+
+
+		<div id="comment-input-close" style="position: absolute;left:55px; right:155px;">
+			<div>
+				<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control comment-button" data-itemID="<%= this.item.ID %>" data-ID="" name="comment" id="comment"/>
 			</div>
-			<div id="comment-input-close" style="position: absolute;left:55px; right:155px;">
-				<div>
-					<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control" name="comment" id="comment" />
-				</div>
-			</div>
-			
-			
-			
-	
-		
+		</div>
+
+
+
+
+
 		<div class="pull-right btn-bar">
 			<button class="btn btn-default" type="button" id="details-record-prev" style="padding-left:32px;padding-right:32px;">
 				<i class="fa fa-arrow-circle-left"></i>
@@ -207,28 +198,28 @@
 			<%= this.comment %>
 			<div class="clearfix"></div>
 			<% if(this.userID=="{{ _user['ID'] }}"){ %>
-			<!--
-			<div class="pull-left" style="margin-top:5px;">
-				<button class="btn  btn-xs pull-right" type="button" style="width:100px;"><i class="fa fa-pencil" style="margin-right:10px;"></i> Edit</button>
-				<button class="btn  btn-xs pull-right" type="button" style="width:100px;margin-right:10px;"><i class="fa fa-trash" style="margin-right:10px;"></i> Delete</button>
-			</div>
-			-->
-			<% } %>
 			
-			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
+			<div class="pull-left" style="margin-top:5px;">
+				<button class="btn btn-link btn-xs pull-right comment-button" data-ID="<%= this.ID %>" data-itemID="<%= this.contentID %>" type="button"><i class="fa fa-pencil"></i></button>
 				
+			</div>
+			
+			<% } %>
+
+			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
+
 				<%= this.name %> &nbsp;
 				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
 			</footer>
 
 			<div class="clearfix"></div>
-			<form class="comment-form"  data-itemID="<%= this.contentID %>" data-ID="<%= this.ID %>">
+			<form class="comment-form" data-itemID="<%= this.contentID %>" data-ID="" data-parentID="<%= this.ID %>" data-html="false" >
 				<div style="position:relative;">
 					<textarea name="comment" id="comment" cols="30" rows="1" style="width:100%; height:30px;" placeholder="Reply to <%= this.name %>" class="form-control input-sm"></textarea>
 
 					<div class="pull-right comment-btn-bar" style="margin-top:5px;">
 						<button class="btn btn-link btn btn-sm" type="reset">Cancel</button>
-						<button class="btn btn-primary btn-sm" type="submit">Submit Comment</button>
+						<button class="btn btn-primary btn-sm" type="submit">Save Reply</button>
 					</div>
 					<div class="clearfix"></div>
 
@@ -238,12 +229,12 @@
 
 
 		</blockquote>
-	
-	<ul>
-		<%= $.jqote($("#template-comments"), this.children) %>
-	</ul>
+
+		<ul>
+			<%= $.jqote($("#template-comments"), this.children) %>
+		</ul>
 	</li>
-	
+
 	]]>
 </script>
 
@@ -276,9 +267,10 @@
 
 		<h2>
 			<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
-				<i class="fa fa-pencil"></i></button><%= this.meeting.meeting %>
+				<i class="fa fa-pencil"></i></button>
+			<%= this.meeting.meeting %>
 		</h2>
-		
+
 		<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">
 			<div class="progress-bar <% if (this.meeting.percent > 90) { %>progress-bar-danger<% } else { %>progress-bar-info<% } %>" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
 
@@ -303,7 +295,7 @@
 			<button class="btn btn-default hidden-xl hidden-md " type="button" data-toggle="offcanvas">
 				<i class="fa fa-list"></i></button>
 
-		
+
 
 		</div>
 		<div class="pull-right btn-bar">
@@ -318,5 +310,27 @@
 
 
 
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-item-comment-form">
+	<![CDATA[
+	<form class="comment-form form-horizontal" data-itemID="<%= this.itemID %>" data-ID="<%= this.ID %>" data-parentID="<%= this.parentID %>" data-html="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"><% if(this.ID==''){ %>Leave a comment<% } else { %>Edit Comment<% } %></h4>
+				</div>
+				<div class="modal-body" style="padding:10px 20px;">
+					<textarea name="comment" id="item-comment" cols="30" rows="10" placeholder="<%= this.title %>"><%= this.comment||'' %></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-primary">Save Comment</button>
+				</div>
+			</div>
+		</div>
+	</form>
 	]]>
 </script>

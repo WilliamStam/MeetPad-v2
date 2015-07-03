@@ -41,6 +41,7 @@ class comment extends _save {
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
 		$itemID = isset($_GET['itemID']) ? $_GET['itemID'] : "";
 		$parentID = isset($_GET['parentID']) ? $_GET['parentID'] : "";
+		$html = isset($_GET['html']) && $_GET['html']=="false" ? false : true;
 		
 		
 		$values = array(
@@ -51,7 +52,11 @@ class comment extends _save {
 		if ($ID==""){
 			$values['userID'] = $this->user['ID'];
 		}
-		$values['comment'] = str_replace("\n", "</p>\n<p>", '<p>'.$values['comment'].'</p>');
+		if ($html===false){
+			$values['comment'] = str_replace("\n", "</p>\n<p>", '<p>'.$values['comment'].'</p>');
+			$values['comment'] = str_replace("<p>\r</p>", "<p>&nbsp;</p>", $values['comment']);
+		}
+		
 		
 		//test_array($values); 
 		

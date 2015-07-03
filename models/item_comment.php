@@ -19,7 +19,7 @@ class item_comment extends _ {
 	}
 
 
-	function get($ID, $userID = "") {
+	function get($ID) {
 		$timer = new timer();
 		$where = "mp_content_comments.ID = '$ID'";
 
@@ -137,8 +137,9 @@ class item_comment extends _ {
 
 		if ($single) $n = $n[0];
 
+		
 		$records = $n;
-		if (count($records)){
+		if (count($records)&&!isset($n['ID'])){
 			$rows = array();
 
 			foreach ($records as $row) {
