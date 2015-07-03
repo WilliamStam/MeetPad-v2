@@ -43,6 +43,9 @@
 
 
 				</td>
+				<td class="r">
+					<%= this.users_no_groups[i].lastActivity.timeago %>
+				</td>
 			</tr>
 			
 			<% } %>
@@ -102,8 +105,9 @@
 				<% if(this.users[i].users.length){ %>
 				<thead>
 				<tr>
-					<th><h3><%= this.users[i].group %></h3>
+					<th colspan="2"><h3><%= this.users[i].group %></h3>
 					</th>
+					
 				</tr>
 				</thead>
 				<tbody>
@@ -120,6 +124,9 @@
 						<% if(this.users[i].users[u].tag){ %>
 						 <small> (<%= this.users[i].users[u].tag||'' %>)</small>
 						<% } %>
+					</td>
+					<td class="r s g">
+						<%= this.users[i].users[u].lastActivity.timeago %>
 					</td>
 				</tr>
 				<% } %>

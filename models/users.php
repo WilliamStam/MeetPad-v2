@@ -252,12 +252,22 @@ class users extends _ {
 			unset($item['password']);
 			unset($item['reset_password']);
 			unset($item['global_admin']);
+			
+			$lastActivity = $item['lastActivity']?$item['lastActivity']:null;
+			if (!is_array($lastActivity)){
+				$item['lastActivity'] = array(
+					"raw"=>$lastActivity,
+					"timeago"=>timesince($lastActivity)
+				);
+			}; 
+			
+			
 			$n[] = $item;
 		}
 
 		if ($single) $n = $n[0];
 
-
+//test_array($n); 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 
