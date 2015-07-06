@@ -6,7 +6,7 @@ use models as models;
 class files extends _ {
 	function __construct() {
 		parent::__construct();
-		if ($this->user['ID'] == "") $this->f3->reroute("/login");
+	//	if ($this->user['ID'] == "") $this->f3->reroute("/login");
 	}
 
 	function thumbnail() {
