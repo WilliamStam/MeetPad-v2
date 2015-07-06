@@ -49,12 +49,12 @@ class template {
 
 
 		$this->vars['_isLocal'] = isLocal();
-		$this->vars['_version'] = $this->f3->get('version');
+		$this->vars['_version'] = $this->f3->get('_version');
 
 
 
 
-		$this->vars['_v'] = $this->f3->get('v');
+		$this->vars['_v'] = $this->f3->get('_v');
 		$this->vars['_cfg'] = $cfg;
 		$this->vars['_folder'] = $this->vars['folder'];
 

@@ -68,7 +68,8 @@ if (file_exists("./.git/refs/heads/" . $cfg['git']['branch'])) {
 }
 
 $minVersion = preg_replace("/[^0-9]/", "", $version);
-$f3->set('version', $version);
+$f3->set('_version', $version);
+$f3->set('_v', $minVersion);
 
 
 
@@ -114,7 +115,7 @@ $userO->setActivity($uID);
 $f3->set('user', $user);
 
 
-$f3->set('v', $minVersion);
+
 
 $f3->route('GET /txt', function ($f3) {
 	echo "Hallo World";
