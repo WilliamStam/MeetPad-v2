@@ -135,7 +135,10 @@
 				<div class="row">
 					<div class="col-sm-3 c thumb" style="min-width:150px;">
 						<% if(this.item.files[i].icon=="thumbnail"){ %>
-						<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/300/<%= this.item.files[i].filename %>" alt="" style="max-width:130px; max-height:300px;"/>
+						<div style="height: 170px;width:130px;">
+							<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" />
+						</div>
+						
 
 						<% } else { %>
 						<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
