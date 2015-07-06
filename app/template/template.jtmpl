@@ -184,7 +184,7 @@
 				{% if page['section']=="company" %}
 					{% if page['sub_section']=="users" %}
 						
-						<li class="hidden-sm">
+						<li class="icon-btn">
 							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form">
 								<span class="visible-xs">Add User</span>	
 								<i class="fa fa-plus"></i>
@@ -192,21 +192,21 @@
 						</li>
 	
 					{% else %}
-						<li class="hidden-sm">
-							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-plus"></i></a>
+						<li class="icon-btn">
+							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="meeting-form"><span class="visible-xs-inline">Add Meeting </span><i class="fa fa-plus"></i></a>
 						</li>
 					{% endif %}
 					
-					<li class="hidden-sm">
-						<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i></a>
+					<li class="icon-btn">
+						<a href="#" data-id="{{ data['ID'] }}" class="company-form"><span class="visible-xs-inline">Edit Company </span><i class="fa fa-pencil"></i></a>
 					</li>
 
 				{% endif %}
 				{% if page['section']=="meeting" %}
-					<li class="hidden-sm">
-						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form">a<i class="fa fa-plus"></i></a>
+					<li class="icon-btn">
+						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><span class="visible-xs-inline">Add Item </span><i class="fa fa-plus"></i></a>
 					</li>
-					<li class="hidden-sm">
+					<li class="icon-btn">
 						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><span class="visible-xs-inline">Edit Meeting </span><i class="fa fa-pencil"></i></a>
 					</li>
 
