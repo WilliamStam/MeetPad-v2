@@ -21,7 +21,7 @@ class meeting extends _ {
 		$where = "mp_meetings.ID = '$ID'";
 		if ($userID===true){
 			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
-			$userSQL = ($this->user['global_admin']=='1')?"":"(mp_users_group.userID='{$this->user['ID']}' OR mp_users_company.admin = '1') AND ";
+			$userSQL = ($this->user['global_admin']=='1')?"":"((mp_users_company.userID='{$this->user['ID']}')) AND ";
 		}
 		$sql = "
 			SELECT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active
@@ -30,15 +30,18 @@ class meeting extends _ {
 		";
 
 		if ($userID){
+			
+			if ($userID===true)$userID = $this->user['ID'];
+			
 			$sql = "
 			SELECT DISTINCT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
 			if(mp_users_group.userID,1,0) AS access
-			FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
+			FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID AND mp_users_group.userID= '$userID') INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
 			WHERE $userSQL mp_meetings.ID = '$ID' 
 		";
 		}
 		
-		
+	//	test_array($sql); 
 		$result = $this->f3->get("DB")->exec($sql);
 
 		//test_string($sql);
