@@ -4,7 +4,35 @@ $(document).ready(function () {
 	$(document).on('click', '[data-toggle="offcanvas"]', function () {
 		$('#right-area').toggleClass('active')
 	});
-	
+
+
+	$(document).on('click', '.view-file', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var href = $this.attr("href");
+		
+		var url = encodeURIComponent(_domain+href);
+		var src = "https://docs.google.com/viewer?url="+url+"&embedded=true";
+		
+		var $viewer = $("#document-viewer");
+
+		$viewer.find("iframe").attr("srs",src);
+		$viewer.show();
+
+		var $content = $("#content-area");
+		var ifw = $content.width();
+		var ifh = $content.height();
+
+		$("#document-viewer iframe").css({"width":ifw,"height":ifh});
+		
+		
+		
+	});
+
+	$(document).on('click', '#document-viewer', function (e) {
+		$("#document-viewer").hide();
+
+	});
 	
 	$(document).on('click', '.comment-button', function () {
 		var $this = $(this);
@@ -250,8 +278,12 @@ function resize() {
 		
 
 	});
+	var $content = $("#content-area");
+	var ifw = $content.width();
+	var ifh = $content.height();;
 	
 	
+	$("#document-viewer iframe").css({"width":ifw,"height":ifh});
 
 
 

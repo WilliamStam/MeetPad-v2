@@ -267,3 +267,13 @@ blockquote.comment-item {
   font-size: 100px;
   color: #ccc;
 }
+#document-viewer {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: rgba(250, 250, 250, 0.7);
+}
