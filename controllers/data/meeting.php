@@ -25,9 +25,10 @@ class meeting extends _data {
 
 		$result = array(
 			"meeting"=>$this->meeting(),
+			"company"=>$this->company(),
 			"agenda"=>$this->agenda(),
 			"item"=>$this->item(),
-			"company"=>$this->company()
+			
 		);
 
 		return $GLOBALS["output"]['data'] = $result;
@@ -49,7 +50,7 @@ class meeting extends _data {
 	}
 	function agenda() {
 
-		$userSQL = ($this->user['global_admin']=='1')?"":"AND mp_users_group.userID = '{$this->user['ID']}'";
+		$userSQL = ($this->user['global_admin']=='1')?"":"AND (mp_users_group.userID = '{$this->user['ID']}')";
 
 
 		$object = models\item::getInstance();
@@ -61,6 +62,14 @@ class meeting extends _data {
 		
 		$items = array();
 		foreach ($result as $item){
+			unset($item['description']);
+			unset($item['discussion_link']);
+			unset($item['resolution']);
+			unset($item['poll']);
+			unset($item['poll_allow_nr_votes']);
+			unset($item['poll_show_result']);
+			unset($item['poll_anonymous']);
+			
 			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
 			$items['catID'.$item['categoryID']]["category"] = $item['category'];
 			$items['catID'.$item['categoryID']]["items"][] = $item;
@@ -114,7 +123,7 @@ class meeting extends _data {
 		$result =  models\company::getInstance()->get($this->companyID,$userID);
 
 		
-	
+	//test_array($result); 
 		
 		
 		return $GLOBALS["output"]['data'] = $result;
