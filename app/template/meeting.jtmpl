@@ -155,8 +155,8 @@
 						<div class="pull-right" style="margin-top:20px;">
 								<div class="btn-group" role="group">
 									<button type="button" class="btn btn-default btn-sm" disabled style="cursor:default;"><%= this.item.files[i].filesize||'' %></button>
-									<button type="button" class="btn btn-default btn-sm"  style="min-width:150px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</button>
-									<button type="button" class="btn btn-default btn-sm" style="min-width:150px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</button>
+									<a href="/file/view/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm"  target="_blank" style="min-width:150px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</a>
+									<a href="/file/download/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm" style="min-width:150px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</a>
 								
 									
 							</div>

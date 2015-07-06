@@ -3,13 +3,13 @@ namespace controllers;
 
 use models as models;
 
-class thumbnail extends _ {
+class files extends _ {
 	function __construct() {
 		parent::__construct();
 		if ($this->user['ID'] == "") $this->f3->reroute("/login");
 	}
 
-	function attachment() {
+	function thumbnail() {
 		$this->f3->set("NOTIMERS",true);
 		$ID = $this->f3->get("PARAMS['ID']");
 		$data = models\item_file::getInstance()->get($ID, true);
@@ -69,6 +69,79 @@ class thumbnail extends _ {
 
 	
 
+		
+	}
+	function download(){
+		$this->f3->set("NOTIMERS",true);
+		$ID = $this->f3->get("PARAMS['ID']");
+		$data = models\item_file::getInstance()->get($ID, true);
+
+		if (!is_numeric($ID)){
+			$data['filename'] =  $this->f3->get("PARAMS['filename']");
+			$data['store_filename'] =  $this->f3->get("PARAMS['filename']");
+			$data['companyID'] =  $this->f3->get("PARAMS['cID']");
+			$data['meetingID'] =  $this->f3->get("PARAMS['mID']");
+		}
+
+		$cfg = $this->f3->get("cfg");
+
+
+		$filename = $data['store_filename'];
+		$folder = $cfg['media'] .  $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
+		$file = $folder . $filename;
+		$folder_stub = $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
+
+		if (file_exists($file)){
+			$o = new \Web();
+			header('Content-Type: '.$o->mime($file));
+			header('Content-Disposition: attachment; '.
+			       'filename='.basename($data['filename']));
+			header('Accept-Ranges: bytes');
+			header('Content-Length: '.$size=filesize($file));
+
+			echo readfile($file);
+
+
+			exit();
+		} else {
+			$this->f3->error(404);
+		}
+		
+	}
+	function view(){
+		$this->f3->set("NOTIMERS",true);
+		$ID = $this->f3->get("PARAMS['ID']");
+		$data = models\item_file::getInstance()->get($ID, true);
+
+		if (!is_numeric($ID)){
+			$data['filename'] =  $this->f3->get("PARAMS['filename']");
+			$data['store_filename'] =  $this->f3->get("PARAMS['filename']");
+			$data['companyID'] =  $this->f3->get("PARAMS['cID']");
+			$data['meetingID'] =  $this->f3->get("PARAMS['mID']");
+		}
+
+		$cfg = $this->f3->get("cfg");
+
+
+		$filename = $data['store_filename'];
+		$folder = $cfg['media'] .  $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
+		$file = $folder . $filename;
+		$folder_stub = $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
+
+		if (file_exists($file)){
+			$o = new \Web();
+			header('Content-Type: '.$o->mime($file));
+			
+			header('Accept-Ranges: bytes');
+			header('Content-Length: '.$size=filesize($file));
+
+			echo readfile($file);
+
+
+			exit();
+		} else {
+			$this->f3->error(404);
+		}
 		
 	}
 	public static function remove_white($thumb) {
