@@ -135,9 +135,9 @@
 				<div class="row">
 					<div class="col-sm-3 c thumb" style="min-width:150px;">
 						<% if(this.item.files[i].icon=="thumbnail"){ %>
-						<span style="height: 170px;width:130px;">
+						<div style="height: 170px;width:130px;" class="c">
 							<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" />
-						</span>
+						</div>
 						
 
 						<% } else { %>
