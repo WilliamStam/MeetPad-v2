@@ -87,7 +87,10 @@
 						<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
 						<% } %>
 						{{ dropdownLabel|default("Meeting / Company") }}
+						<% if(this.meetings.length){ %>
+						<% } else { %>
 						<span class="caret"></span>
+						<% } %>
 					</a>
 					<ul class="dropdown-menu " style="">
 						<% if (this.meetings.length){ %>
@@ -221,8 +224,10 @@
 						<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
 						<% } %>
 						{{ dropdownLabel|default("Meeting / Company") }}
-
+						<% if(this.meetings.length){ %>
+						<% } else { %>
 						<span class="caret"></span>
+						<% } %>
 					</a>
 					<ul class="dropdown-menu " style="">
 						<% if (this.meetings.length){ %>
