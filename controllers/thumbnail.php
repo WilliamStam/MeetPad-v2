@@ -10,7 +10,7 @@ class thumbnail extends _ {
 	}
 
 	function attachment() {
-		
+		$this->f3->set("NOTIMERS",true);
 		$ID = $this->f3->get("PARAMS['ID']");
 		$data = models\item_file::getInstance()->get($ID, true);
 		
@@ -63,6 +63,8 @@ class thumbnail extends _ {
 				$thumb->render();
 			}
 			exit();
+		} else {
+			$this->f3->error(404);
 		}
 
 	

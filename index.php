@@ -251,22 +251,21 @@ if ($f3->get("ERROR")){
 
 if (($f3->get("AJAX") && ($f3->get("__runTemplate")==false) || $f3->get("__runJSON"))) {
 	header("Content-Type: application/json");
-	
-	
-
 	echo json_encode($GLOBALS["output"]);
 } else {
 
-	//test_array($GLOBALS["output"]); 
+	//if (strpos())
+	if ($f3->get("NOTIMERS")){
+		exit();
+	}
+	
 
 	echo '
 					<script type="text/javascript">
 				      updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
 					</script>
 					</body>
-</html>
-
-				';
+</html>';
 
 }
 
