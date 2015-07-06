@@ -82,18 +82,18 @@
 
 
 
-
-			<div class="well" style="margin-bottom:0;margin-top:20px; padding-bottom:9px;">
-				<%= this.item.description %>
-			</div>
-
-
-
 			<section class="groups-access">
 				<% for (var i in this.item.groups) { %>
 				<span class="label label-default" style="margin-right:10px;"><%= this.item.groups[i].group %></span>
 				<% } %>
 			</section>
+
+			<div class="well" style="margin-top:10px; padding-bottom:9px;">
+				<%= this.item.description %>
+			</div>
+
+
+
 
 
 
@@ -129,17 +129,40 @@
 			<% } %>
 			<% if(this.item.files[0]){ %>
 			<hr/>
-			<h3>Attachments</h3>
+			<h3 style="margin-bottom:20px;">Attachments</h3>
 			<% for(var i in this.item.files){ %>
 			<div class="attachment-item">
-				<% if(this.item.files[i].icon=="thumbnail"){ %>
-				<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/20/20/<%= this.item.files[i].filename %>" alt=""/>
+				<div class="row">
+					<div class="col-sm-3 c thumb" style="min-width:150px;">
+						<% if(this.item.files[i].icon=="thumbnail"){ %>
+						<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/300/<%= this.item.files[i].filename %>" alt="" style="max-width:130px; max-height:300px;"/>
 
-				<% } else { %>
-				<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>"></i>
-				<% } %> &nbsp;
+						<% } else { %>
+						<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
+						<% } %>
+					</div>
+					<div style="margin-left:10px;">
+						<a href="">
+							<h5>
+								<%= this.item.files[i].filename %>
+							</h5>
+						</a>
+						<%= this.item.files[i].description %>
+						<div class="pull-right" style="margin-top:20px;">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default btn-sm"  style="min-width:150px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</button>
+									<button type="button" class="btn btn-default btn-sm" style="min-width:150px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</button>
+								
+									
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
 
-				<%= this.item.files[i].filename %>
+
+
+
 			</div>
 			<% } %>
 			<% } %>
@@ -170,7 +193,10 @@
 
 		<div id="comment-input-close" style="position: absolute;left:55px; right:155px;">
 			<div>
-				<input type="text" placeholder="Leave a comment" style="width:100%" class="form-control comment-button" data-itemID="<%= this.item.ID %>" data-ID="" name="comment" id="comment"/>
+				<div style="width:100%; padding:8px 12px; color:#999; border:1px solid #ccc; -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; background: #fff; cursor:pointer;" class="comment-button" data-itemID="<%= this.item.ID %>" data-ID="">
+					Leave a comment
+				</div>
+				
 			</div>
 		</div>
 
@@ -198,12 +224,13 @@
 			<%= this.comment %>
 			<div class="clearfix"></div>
 			<% if(this.userID=="{{ _user['ID'] }}"){ %>
-			
+
 			<div class="pull-left" style="margin-top:5px;">
-				<button class="btn btn-link btn-xs pull-right comment-button" data-ID="<%= this.ID %>" data-itemID="<%= this.contentID %>" type="button"><i class="fa fa-pencil"></i></button>
-				
+				<button class="btn btn-link btn-xs pull-right comment-button" data-ID="<%= this.ID %>" data-itemID="<%= this.contentID %>" type="button">
+					<i class="fa fa-pencil"></i></button>
+
 			</div>
-			
+
 			<% } %>
 
 			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
@@ -213,7 +240,7 @@
 			</footer>
 
 			<div class="clearfix"></div>
-			<form class="comment-form" data-itemID="<%= this.contentID %>" data-ID="" data-parentID="<%= this.ID %>" data-html="false" >
+			<form class="comment-form" data-itemID="<%= this.contentID %>" data-ID="" data-parentID="<%= this.ID %>" data-html="false">
 				<div style="position:relative;">
 					<textarea name="comment" id="comment" cols="30" rows="1" style="width:100%; height:30px;" placeholder="Reply to <%= this.name %>" class="form-control input-sm"></textarea>
 

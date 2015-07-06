@@ -254,3 +254,16 @@ blockquote.comment-item {
 #comments-list .comment-btn-bar {
   display: none;
 }
+.attachment-item {
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  padding-bottom: 20px;
+}
+.attachment-item .thumb img {
+  box-shadow: 0 0 10px #969696;
+}
+.attachment-item .thumb .fa {
+  font-size: 100px;
+  color: #ccc;
+}
