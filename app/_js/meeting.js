@@ -16,7 +16,7 @@ $(document).ready(function () {
 		
 		var $viewer = $("#document-viewer");
 
-		$viewer.find("iframe").attr("src",src);
+		$viewer.find("iframe").attr("src","/iframe/loading").attr("src",src);
 		$viewer.show();
 
 		var $content = $("#content-area");
@@ -30,8 +30,12 @@ $(document).ready(function () {
 	});
 
 	$(document).on('click', '#document-viewer', function (e) {
-		$("#document-viewer").hide();
+		
+		var $viewer = $("#document-viewer");
+		$viewer.hide();
 
+		$viewer.find("iframe").attr("src","/iframe/loading")
+		
 	});
 	
 	$(document).on('click', '.comment-button', function () {

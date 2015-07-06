@@ -153,6 +153,11 @@ $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	$f3->reroute("/login");
 });
 
+$f3->route('GET|POST /iframe/loading', function ($f3, $params) use ($user) {
+	echo 'loading...';
+	exit();
+});
+
 
 
 //test_array(md5(md5("meet")."123".md5("pad"))); 
