@@ -206,7 +206,7 @@
 					<li class="hidden-sm">
 						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i></a>
 					</li>
-					<li class="icon-btn">
+					<li class="hidden-sm">
 						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><span class="visible-xs-inline">Edit Meeting </span><i class="fa fa-pencil"></i></a>
 					</li>
 
