@@ -106,14 +106,17 @@ class template {
 				$tfile = explode(".", $tfile);
 				$tfile = $tfile[0];
 
+				$version = $this->f3->get('_v');
+				
+
 				foreach ($folders as $f) {
 
 					if (file_exists('' . $f . '' . $tfile . '.twig')) {
 						if (file_exists('' . $f . '_js/' . $tfile . '.js')) {
-							$this->vars['page']['template_js'] = '/' . $f . '_js/' . $tfile . '.js';
+							$this->vars['page']['template_js'] = '/' . $f . '_js/' . $tfile . '.'.$version. '.js';
 						}
 						if (file_exists('' . $f . '_css/' . $tfile . '.css')) {
-							$this->vars['page']['template_css'] = '/' . $f . '_css/' . $tfile . '.css';
+							$this->vars['page']['template_css'] = '/' . $f . '_css/' . $tfile . '.'.$version. '.css';
 						}
 						if (file_exists('' . $f . 'template/' . $tfile . '.jtmpl')) {
 							$this->vars['page']['template_jtmpl'] = '/' . 'template/' . $tfile . '.jtmpl';
