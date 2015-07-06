@@ -239,7 +239,12 @@ $models = $t;
 $pageTime = $GLOBALS['page_execute_timer']->stop("Page Execute");
 
 $GLOBALS["output"]['timer'] = $GLOBALS['timer'];
-$GLOBALS["output"]['models'] = $models;
+
+if ($user['global_admin']=='1'){
+	$GLOBALS["output"]['models'] = $models;
+}
+
+
 
 $GLOBALS["output"]['page'] = array(
 	"page" => $_SERVER['REQUEST_URI'],

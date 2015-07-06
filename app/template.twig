@@ -37,9 +37,11 @@
 <section class="container" id="page-content">
 	{%  include page['template'] %}
 </section>
-<div style="position: fixed; left:10px; bottom:10px; z-index:999999999;">
+{% if _user['global_admin']=='1' %}
+<div style="position: fixed; left:10px; bottom:3px; z-index:999999999;">
 	<a href="#systemTimers-container" data-toggle="modal" data-target="#systemTimers-container"><i class="fa fa-clock-o"></i></a>
 </div>
+{% endif %}
 {%  include "_footer.twig" %}
 <script src="/app/javascript.{{ _v }}.js"></script>
 <script src="/vendor/ckeditor/ckeditor/ckeditor.js?v={{ _v }}"></script>
@@ -66,7 +68,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Debug</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding:0 10px;">
 				<article>
 					<table id='systemTimers' class="table table-condensed">
 
@@ -77,25 +79,6 @@
 	</div>
 </div>
 
-<div class="modal fade" id="systemTimers-container" tabindex="-1" role="dialog" aria-labelledby="systemTimers-container" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
-				<h3>Debug</h3>
-			</div>
-			<div class='modal-body'>
-				<article>
-					<table id='systemTimers' class="table table-condensed">
-
-					</table>
-				</article>
-			</div>
-			<div class='modal-footer'>
-
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="form-modal" aria-hidden="true"></div>
 
