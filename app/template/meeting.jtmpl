@@ -132,7 +132,6 @@
 			<h3 style="margin-bottom:20px;">Attachments</h3>
 			<% for(var i in this.item.files){ %>
 			<div class="attachment-item">
-				<div class="row">
 					<div class="col-sm-3 c thumb" style="min-width:150px;">
 						<% if(this.item.files[i].icon=="thumbnail"){ %>
 						<div style="height: 170px;" class="c">
@@ -144,15 +143,18 @@
 						<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
 						<% } %>
 					</div>
-					<div style="margin-left:10px;">
+					<div>
 						<a href="">
 							<h5>
 								<%= this.item.files[i].filename %>
 							</h5>
 						</a>
 						<%= this.item.files[i].description||'' %>
+						
+						
 						<div class="pull-right" style="margin-top:20px;">
 								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default btn-sm" disabled style="cursor:default;"><%= this.item.files[i].filesize||'' %></button>
 									<button type="button" class="btn btn-default btn-sm"  style="min-width:150px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</button>
 									<button type="button" class="btn btn-default btn-sm" style="min-width:150px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</button>
 								
@@ -161,7 +163,6 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
-				</div>
 
 
 

@@ -135,7 +135,7 @@ class item_file extends _ {
 		foreach ($data as $item) {
 			$icon = "";
 			$ext = $ext = pathinfo($item['store_filename'], PATHINFO_EXTENSION);;
-			
+			$item['filesize'] = file_size($item['filesize']);
 			$item['icon'] = isset($fileIcons[$ext])?$fileIcons[$ext]:"";
 
 			$n[] = $item;
