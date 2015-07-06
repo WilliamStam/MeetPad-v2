@@ -14,9 +14,9 @@ $(document).ready(function () {
 		var url = encodeURIComponent(_domain+href);
 		var src = "https://docs.google.com/viewer?url="+url+"&embedded=true";
 		
-		var $viewer = $("#document-viewer");
+		var $viewer = $("#document-viewer").html();
 
-		$viewer.find("iframe").attr("srs",src);
+		$viewer.find("iframe").attr("src",src);
 		$viewer.show();
 
 		var $content = $("#content-area");
