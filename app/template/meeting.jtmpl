@@ -124,7 +124,7 @@
 
 					</div>
 				</div>
-				<button class="btn btn-default btn-block" type="submit">Vote!</button>
+				<button class="btn btn-default btn-block btn-sm" type="submit"><i class="fa fa-check-circle-o" style="margin-right:3px;"></i> Vote!</button>
 			</form>
 			<% } %>
 			<% if(this.item.files[0]){ %>
@@ -150,7 +150,7 @@
 								<%= this.item.files[i].filename %>
 							</h5>
 						</a>
-						<%= this.item.files[i].description %>
+						<%= this.item.files[i].description||'' %>
 						<div class="pull-right" style="margin-top:20px;">
 								<div class="btn-group" role="group">
 									<button type="button" class="btn btn-default btn-sm"  style="min-width:150px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</button>
