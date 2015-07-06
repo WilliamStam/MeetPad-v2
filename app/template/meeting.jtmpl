@@ -155,7 +155,9 @@
 						<div class="pull-right" style="margin-top:20px;">
 								<div class="btn-group" role="group">
 									<button type="button" class="btn btn-default btn-sm" disabled style="cursor:default;"><%= this.item.files[i].filesize||'' %></button>
-									<a href="/file/view/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm view-file"  target="_blank" style="min-width:120px;"><i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View</a>
+									<a href="/file/view/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm view-file"  target="_blank" style="min-width:120px;" data-ID="<%= this.item.files[i].ID %>">
+										<i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View
+									</a>
 									<a href="/file/download/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm" style="min-width:120px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</a>
 								
 									
@@ -363,5 +365,40 @@
 			</div>
 		</div>
 	</form>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-file-viewer">
+	<![CDATA[
+
+	<div class="c">
+		<iframe src="https://docs.google.com/viewer?embedded=true&url={{ _domain }}/file/view/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>" style="width:100%; height:500px;" frameborder="0"></iframe>
+	</div>
+	<section class="content-footer">
+		<div class="container">
+			<div class="pull-left ">
+				<div class="filename" >
+					<%= this.filename %>
+				</div>
+				
+			</div>
+			<div class="pull-right">
+					
+				
+				
+				<button type="button" class="btn btn-default comment-button" data-itemID="<%= this.contentID %>" data-ID="">
+					<i class="fa fa-comments"></i>
+					Comment
+				</button>
+				
+				
+				<a class="btn btn-default" href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>"><i class="fa fa-download"></i> Download</a>
+				
+				
+				
+				<button type="button" class="viewer-close btn btn-default"><i  class="fa fa-close"></i> Close File</button>
+			</div>
+
+		</div>
+	</section>
 	]]>
 </script>

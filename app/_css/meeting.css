@@ -277,3 +277,16 @@ blockquote.comment-item {
   z-index: 100;
   background-color: rgba(250, 250, 250, 0.7);
 }
+#document-viewer .content-footer .filename {
+  padding: 8px;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#document-viewer .content-footer .btn {
+  margin-left: 10px;
+}
+#document-viewer .content-footer .btn .fa {
+  margin-right: 10px;
+}

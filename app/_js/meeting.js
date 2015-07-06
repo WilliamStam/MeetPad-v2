@@ -9,27 +9,29 @@ $(document).ready(function () {
 	$(document).on('click', '.view-file', function (e) {
 		e.preventDefault();
 		var $this = $(this);
-		var href = $this.attr("href");
-		
-		var url = encodeURIComponent(_domain+href);
-		var src = "https://docs.google.com/viewer?url="+url+"&embedded=true";
-		
+		var fileID = $this.attr("data-ID");
 		var $viewer = $("#document-viewer");
+		$(".loading-mask").show();
+		$.getData("/data/files/view?ID=" + fileID, {}, function (data) {
+			$(".loading-mask").hide();
+			$viewer.jqotesub($("#template-file-viewer"), data).show();
+			
+			var $content = $("#content-area");
+			var ifw = $content.width();
+			var ifh = $content.height();
 
-		$viewer.find("iframe").attr("src","/iframe/loading").attr("src",src);
-		$viewer.show();
+			$("#document-viewer iframe").css({"width":ifw,"height":ifh-48});
+			$("#document-viewer .filename").css({"width":ifw - 380});
+		});
+		
 
-		var $content = $("#content-area");
-		var ifw = $content.width();
-		var ifh = $content.height();
-
-		$("#document-viewer iframe").css({"width":ifw,"height":ifh});
+		
 		
 		
 		
 	});
 
-	$(document).on('click', '#document-viewer', function (e) {
+	$(document).on('click', '.viewer-close', function (e) {
 		
 		var $viewer = $("#document-viewer");
 		$viewer.fadeOut(500);
@@ -284,10 +286,10 @@ function resize() {
 	});
 	var $content = $("#content-area");
 	var ifw = $content.width();
-	var ifh = $content.height();;
-	
-	
-	$("#document-viewer iframe").css({"width":ifw,"height":ifh});
+	var ifh = $content.height();
+
+	$("#document-viewer iframe").css({"width":ifw,"height":ifh-48});
+	$("#document-viewer .filename").css({"width":ifw - 380});
 
 
 
