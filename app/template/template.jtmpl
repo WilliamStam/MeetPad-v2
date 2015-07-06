@@ -207,7 +207,7 @@
 						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i></a>
 					</li>
 					<li>
-						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i></a>
+						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form">aaaaa<i class="fa fa-pencil"></i></a>
 					</li>
 
 				{% endif %}
