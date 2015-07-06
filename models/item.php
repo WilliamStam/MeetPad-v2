@@ -30,6 +30,7 @@ class item extends _ {
 		";
 
 		if ($userID) {
+			if ($userID===true)$userID = $this->user['ID'];
 			$sql = "
 			SELECT DISTINCT  mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
 			FROM ((mp_content INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID
