@@ -122,7 +122,7 @@ class meeting extends _data {
 
 		$result =  models\company::getInstance()->get($this->companyID,$userID);
 
-		
+		unset($result['invitecode']);
 	//test_array($result); 
 		
 		
