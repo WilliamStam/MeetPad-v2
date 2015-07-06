@@ -32,7 +32,7 @@ $(document).ready(function () {
 	$(document).on('click', '#document-viewer', function (e) {
 		
 		var $viewer = $("#document-viewer");
-		$viewer.hide();
+		$viewer.fadeOut(500);
 
 		$viewer.find("iframe").attr("src","/iframe/loading")
 		
