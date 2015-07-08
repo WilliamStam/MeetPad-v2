@@ -155,7 +155,7 @@ function page_resize() {
 
 	});
 
-};
+}
 
 function updatetimerlist(d, page_size) {
 	//d = jQuery.parseJSON(d);

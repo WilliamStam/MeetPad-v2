@@ -290,22 +290,22 @@ blockquote.comment-item {
 #document-viewer .content-footer .btn .fa {
   margin-right: 10px;
 }
-.label-as-badge {
+#poll-form .label-as-badge {
   border-radius: 1em;
 }
-.dropdown-lead {
+#poll-form .dropdown-lead {
   width: 100%;
 }
-.leadcontainer {
+#poll-form .leadcontainer {
   left: 0;
   position: absolute;
   right: 30px;
 }
-.dropdown-toggle {
+#poll-form .dropdown-toggle {
   width: 30px;
   float: right;
   box-sizing: border-box;
 }
-.fillsplit {
+#poll-form .fillsplit {
   position: relative;
 }
