@@ -6,16 +6,19 @@
 
 		<div style="margin-right:10px; margin-top:20px;">
 
-			<form class="form-inline" id="add-to-company">
-				<div class="form-group">
-					<div>
-						<input type="text" value="" style="margin-right:10px; width: 290px;;" placeholder="Company invite code" name="email" id="email" class="form-control">
-						<button data-text="Invite User" class="btn btn-default" type="submit">Submit</button>
-					</div>
+			<form  id="add-to-company">
+
+				<div class="input-group">
+					<input type="text" value=""  placeholder="Company invite code" name="invitecode" id="invitecode" class="form-control">
+				  <span class="input-group-btn">
+				    <button data-text="Invite User" class="btn btn-default" type="submit">Submit</button>
+				  </span>
+				</div>
+				
+				
 					<div class="inline-help s g">
 						If you have been given an invite code to join a company enter it in here
 					</div>
-				</div>
 			</form>
 
 

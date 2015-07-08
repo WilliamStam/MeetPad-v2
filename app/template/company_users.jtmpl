@@ -12,25 +12,27 @@
 	<section class="scroll-pane" style="left:10px;">
 
 
-		<form id="add-user" class="form-inline" data-companyID="{{ data['ID'] }}">
-			<div class="form-group">
+		<form id="add-user"  data-companyID="{{ data['ID'] }}" style="padding-right:10px;">
 
-				<div>
-					<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" style="margin-right:10px; width: 270px;;" value="">
-					<button type="submit" class="btn btn-default" data-text="Invite User">Invite User</button>
-					
-				</div>
+			<div class="input-group">
+				<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="">
+				  <span class="input-group-btn">
+				    <button type="submit" class="btn btn-default" data-text="Invite User">Invite User</button>
+				  </span>
+			</div>
+			
+
+
 				<div class="inline-help s g">
 					Enter a users email address here that you want to invite to the company. if the user doesnt exist you will be prompted to create a profile for them.
 				</div>
-			</div>
 		</form>
 		<% if( this.users_no_groups.length){ %>
 		<h4 style="margin-top:40px;">Users without Groups</h4>
 
 		<table class="table">
 			<% for (var i in this.users_no_groups) { %>
-			
+
 			<tr class="record user-form-company" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
 				<td>
 					<% if(this.users_no_groups[i].admin=='1'){ %>
@@ -47,7 +49,7 @@
 					<%= this.users_no_groups[i].lastActivity.timeago %>
 				</td>
 			</tr>
-			
+
 			<% } %>
 		</table>
 		<div class="alert alert-info" style="margin-right:10px;">
@@ -64,20 +66,21 @@
 	<![CDATA[
 
 	<div class="content-header" style="height:50px;">
-		<form class="form-inline pull-right" id="search-form" >
-			
-		
-			<div style="position:absolute; top:5px; bottom:0; left:10px; right:<% if(this.search.group=='' && this.search.search ==''){ %>90<% } else { %>140<% } %>px;" >
+		<form class="form-inline pull-right" id="search-form">
+
+
+			<div style="position:absolute; top:5px; bottom:0; left:10px; right:<% if(this.search.group=='' && this.search.search ==''){ %>90<% } else { %>140<% } %>px;">
 				<select name="search-group" id="search-group" class="form-control" style="width:50%; display: inline;">
 					<option value="" selected>< select group ></option>
 					<optgroup label="Groups">
 						<% for(var i in this.company.groups){ %>
-						<option value="<%= this.company.groups[i].ID %>" <% if(this.search.group){ %>selected<% } %>><%= this.company.groups[i].group %></option>
+						<option value="<%= this.company.groups[i].ID %>"
+						<% if(this.search.group){ %>selected<% } %>><%= this.company.groups[i].group %></option>
 						<% } %>
 					</optgroup>
 				</select>
 
-				<input type="text" class="form-control" id="search" name="search" value="<%= this.search.search %>"  placeholder="Search" style="width:48%; margin-left:2%; display: inline;">
+				<input type="text" class="form-control" id="search" name="search" value="<%= this.search.search %>" placeholder="Search" style="width:48%; margin-left:2%; display: inline;">
 			</div>
 
 				
@@ -85,15 +88,16 @@
 				<button type="submit" class="btn btn-default">Search</button>
 				<% if(this.search.group=='' && this.search.search ==''){ %>
 				<% } else { %>
-				<button type="button" class="btn btn-default" style="margin-left:10px;" id="search-clear-btn" ><i class="fa fa-close"></i></button>
+				<button type="button" class="btn btn-default" style="margin-left:10px;" id="search-clear-btn">
+					<i class="fa fa-close"></i></button>
 				<% } %>
 			</span>
-			
-			
+
+
 		</form>
 		<div class="clearfix"></div>
 	</div>
-	
+
 
 	<section class="scroll-pane" style="left:10px; top:52px; ">
 		<div style="padding-right:10px;">
@@ -107,7 +111,7 @@
 				<tr>
 					<th colspan="2"><h3><%= this.users[i].group %></h3>
 					</th>
-					
+
 				</tr>
 				</thead>
 				<tbody>
@@ -122,7 +126,7 @@
 						<%= this.users[i].users[u].name %>
 
 						<% if(this.users[i].users[u].tag){ %>
-						 <small> (<%= this.users[i].users[u].tag||'' %>)</small>
+						<small> (<%= this.users[i].users[u].tag||'' %>)</small>
 						<% } %>
 					</td>
 					<td class="r s g">
@@ -150,69 +154,70 @@
 	<![CDATA[
 
 	<form id="user-company-add-groups" class="form-horizontal" data-userID="<%= this.response.ID %>" data-companyID="<%= this.companyID %>">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Add user to company</h4>
-			</div>
-			<div class="modal-body">
-				<div class="form-group" style="margin-bottom:0;">
-					<label class="col-sm-3 control-label">Name</label>
-
-					<div class="col-sm-8">
-						<div style="padding:9px;"><%= this.response.name %></div>
-
-
-					</div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add user to company</h4>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Email</label>
+				<div class="modal-body">
+					<div class="form-group" style="margin-bottom:0;">
+						<label class="col-sm-3 control-label">Name</label>
 
-					<div class="col-sm-8">
-						<div style="padding:9px;">
-							<%= this.response.email %>
-						</div>
-						
+						<div class="col-sm-8">
+							<div style="padding:9px;"><%= this.response.name %></div>
 
-					</div>
-				</div>
-				<div class="form-group has-feedback">
-					<label for="tag" class="col-sm-3 control-label">Tag</label>
 
-					<div class="col-sm-8">
-						<input type="text" class="form-control" id="tag" name="tag" placeholder="Tag / User Badge / Description" value="<%= this.response.tag||'' %>">
-						<div class="help-block s g">
-							Use this field to add extra info to a user like for eg: Staff / Mr Ego
 						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="groups" class="col-sm-3 control-label">Groups</label>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Email</label>
 
-					<div class="col-sm-8">
-						<div id="groups" >
-							<% for (var i in this.groups) { %>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
-									<%= this.groups[i].group %>
-								</label>
+						<div class="col-sm-8">
+							<div style="padding:9px;">
+								<%= this.response.email %>
 							</div>
-							<% } %>
+
+
 						</div>
 					</div>
+					<div class="form-group has-feedback">
+						<label for="tag" class="col-sm-3 control-label">Tag</label>
+
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="tag" name="tag" placeholder="Tag / User Badge / Description" value="<%= this.response.tag||'' %>">
+
+							<div class="help-block s g">
+								Use this field to add extra info to a user like for eg: Staff / Mr Ego
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="groups" class="col-sm-3 control-label">Groups</label>
+
+						<div class="col-sm-8">
+							<div id="groups">
+								<% for (var i in this.groups) { %>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="groups[]" value="<%= this.groups[i].ID %>" <% if (this.groups[i].active=='1'){ %>checked<% } %>>
+										<%= this.groups[i].group %>
+									</label>
+								</div>
+								<% } %>
+							</div>
+						</div>
+					</div>
+
+
+
 				</div>
-				
-
-
-			</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Save</button>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
 			</div>
 		</div>
-	</div>
 	</form>
 
 	]]>
