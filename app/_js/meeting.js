@@ -10,27 +10,19 @@ $(document).ready(function () {
 		e.preventDefault();
 		var $this = $(this);
 		var fileID = $this.attr("data-ID");
-		var $viewer = $("#document-viewer");
-		$(".loading-mask").show();
-		$.getData("/data/files/view?ID=" + fileID, {}, function (data) {
-			$(".loading-mask").hide();
-			$viewer.jqotesub($("#template-file-viewer"), data).show();
-			
-			var $content = $("#content-area");
-			var ifw = $content.width();
-			var ifh = $content.height();
-
-			$("#document-viewer iframe").css({"width":ifw,"height":ifh-48});
-			$("#document-viewer .filename").css({"width":ifw - 380});
-		});
+		$.bbq.pushState({"file":fileID});
+		getFile();
 	});
+	
+	
 
 	$(document).on('click', '.viewer-close', function (e) {
 		
 		var $viewer = $("#document-viewer");
 		$viewer.fadeOut(500);
 
-		$viewer.find("iframe").attr("src","/iframe/loading")
+		$viewer.find("iframe").attr("src","/iframe/loading");
+		$.bbq.removeState("file");
 		// <i class="fa fa-check-circle-o" style="margin-right:3px;"></i> Vote!
 	});
 	
@@ -273,11 +265,35 @@ function getData() {
 		}
 		showContent_state();
 		
+		if ($.bbq.getState("file")!=''){
+			getFile()
+		}
+		
 	});
 
 
 }
+function getFile(){
+	var fileID = $.bbq.getState("ID") || '';
 
+	var $viewer = $("#document-viewer");
+
+	$.bbq.pushState({"file":fileID});
+
+	$(".loading-mask").show();
+	$.getData("/data/files/view?ID=" + fileID, {"t":"1"}, function (data) {
+		$(".loading-mask").hide();
+		$viewer.jqotesub($("#template-file-viewer"), data).show();
+
+		var $content = $("#content-area");
+		var ifw = $content.width();
+		var ifh = $content.height();
+
+		$("#document-viewer iframe").css({"width":ifw,"height":ifh-48});
+		$("#document-viewer .filename").css({"width":ifw - 380});
+	});
+
+}
 
 var settings = {
 	maintainPosition: true,
