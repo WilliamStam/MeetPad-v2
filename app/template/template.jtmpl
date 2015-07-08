@@ -176,7 +176,7 @@
 
 				{% endif %}
 				<li class="visible-xs" style="padding:0;">
-					<hr style="margin:0;">
+					<hr style="margin:5px 0;">
 				</li>
 
 			</ul>
@@ -346,7 +346,7 @@
 			</li>
 
 			<li class="visible-xs" style="padding:0;">
-				<hr style="margin:0;">
+				<hr style="margin:5px 0;">
 			</li>
 
 			<li class="icon-btn visible-xs">
