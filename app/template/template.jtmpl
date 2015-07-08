@@ -164,6 +164,7 @@
 						</a>
 					</li>
 					<% } %>
+					
 				{% endif %}
 				{% if page['section']=="meeting" %}
 					<li {% if page['sub_section']=="meeting" %}class="active"{% endif %}>
@@ -174,7 +175,9 @@
 
 
 				{% endif %}
-
+				<li class="visible-xs" style="padding:0;">
+					<hr style="margin:0;">
+				</li>
 
 			</ul>
 			
@@ -315,6 +318,8 @@
 					<a href="#" data-id="{{ data['ID'] }}" class="company-form"><i class="fa fa-pencil"></i> Company</a>
 				</li>
 
+
+					
 			{% endif %}
 			{% if page['section']=="meeting" %}
 
@@ -340,11 +345,17 @@
 				</ul>
 			</li>
 
+			<li class="visible-xs" style="padding:0;">
+				<hr style="margin:0;">
+			</li>
 
-
+			<li class="icon-btn visible-xs">
+				<a href="/"><span class="visible-xs-inline">Home </span><span class="fa fa-home"></span></a>
+			</li>
 			<li class="icon-btn">
 				<a href="/logout"><span class="visible-xs-inline">Logout </span><span class="fa fa-sign-out"></span></a>
 			</li>
+			
 			</ul>
 
 		</div>
