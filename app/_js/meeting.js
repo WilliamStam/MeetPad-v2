@@ -265,7 +265,7 @@ function getData() {
 		}
 		showContent_state();
 		
-		if ($.bbq.getState("file")!=''){
+		if ($.bbq.getState("file")){
 			getFile()
 		}
 		
@@ -274,11 +274,11 @@ function getData() {
 
 }
 function getFile(){
-	var fileID = $.bbq.getState("ID") || '';
+	var fileID = $.bbq.getState("file") || '';
 
 	var $viewer = $("#document-viewer");
 
-	$.bbq.pushState({"file":fileID});
+	
 
 	$(".loading-mask").show();
 	$.getData("/data/files/view?ID=" + fileID, {"t":"1"}, function (data) {
