@@ -32,11 +32,11 @@
 			<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
 				<td>
 					<% if(this.agenda[i].items[y].has_poll=='1'){ %>
-						<% if(this.agenda[i].items[y].voted!=''){ %>
-							<i class="fa fa-check-square"></i>
-						<% } else { %>
-							<i class="fa fa-check-square-o"></i>
-						<% } %>
+					<% if(this.agenda[i].items[y].voted!=''){ %>
+					<i class="fa fa-check-square"></i>
+					<% } else { %>
+					<i class="fa fa-check-square-o"></i>
+					<% } %>
 					<% } %>
 				</td>
 				<td><%= this.agenda[i].items[y].heading %></td>
@@ -44,15 +44,15 @@
 				<td style="padding:7px 0 0 0; " class="c"><% if(this.agenda[i].items[y].commentCount!=0){ %><%= this.agenda[i].items[y].commentCount %><% } %></td>
 				<td>
 					<% if(this.agenda[i].items[y].commentCount!=0){ %>
-						<% if(this.agenda[i].items[y].has_commented=='1'){ %>
-							<% if(this.agenda[i].items[y].last_commented=='1'){ %>
-								<i class="fa fa-comments"></i>
-							<% } else { %>
-								<i class="fa fa-comments-o"></i>
-							<% } %>
-						<% } else { %>
-							<i class="fa fa-comment-o"></i>
-						<% } %>
+					<% if(this.agenda[i].items[y].has_commented=='1'){ %>
+					<% if(this.agenda[i].items[y].last_commented=='1'){ %>
+					<i class="fa fa-comments"></i>
+					<% } else { %>
+					<i class="fa fa-comments-o"></i>
+					<% } %>
+					<% } else { %>
+					<i class="fa fa-comment-o"></i>
+					<% } %>
 					<% } %>
 				</td>
 			</tr>
@@ -131,70 +131,71 @@
 
 			<% if(this.item.poll.voted){ %>
 
-			
-				<form id="poll-form"  class="form-horizontal" data-itemID="<%= this.item.ID %>">
-					<div class="form-group">
-						<div id="poll-options">
-							<% for (var i in this.item.poll.options) { %>
-							<div class="radio">
-								<label style="margin-left:20px; display:block">
-									<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1'){ %>disabled='disabled'<% } %><% } %>>
-									<span<% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
-										<%= this.item.poll.options[i].answer %>
-									</span>
-									
-								</label>
-							</div>
-							<% } %>
-						</div>
-					</div>
 
-					<% if(this.item.poll_allow_edit=='1'){ %>
-
-					
-					<div class="btn-group btn-block fillsplit">
-						<div class="leadcontainer">
-							<button class="btn btn-default btn-block btn-sm " style="margin-right:200px;" type="submit" disabled data-state1="Change your vote" data-state2="Change your vote">
-								Change your vote
-							</button>
-						</div>
-						<button type="button" id="cancel-vote"  class="btn btn-default btn-sm pull-right" title="Cancel vote"><i class="fa fa-close"></i></button>
-					</div>
-					
-					
-					<div class="clearfix"></div>
-					
-					
-					
-					<% } %>
-				</form>
-			<% } else { %>
-			<form id="poll-form"  class="form-horizontal" data-itemID="<%= this.item.ID %>">
+			<form id="poll-form" class="form-horizontal" data-itemID="<%= this.item.ID %>">
 				<div class="form-group">
 					<div id="poll-options">
 						<% for (var i in this.item.poll.options) { %>
 						<div class="radio">
 							<label style="margin-left:20px; display:block">
-								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" >
-								
+								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1'){ %>disabled='disabled'<% } %><% } %>>
+								<span<% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
 								<%= this.item.poll.options[i].answer %>
-							
+								</span>
 
 							</label>
 						</div>
 						<% } %>
 					</div>
 				</div>
-				
+
+				<% if(this.item.poll_allow_edit=='1'){ %>
+
+
+				<div class="btn-group btn-block fillsplit">
+					<div class="leadcontainer">
+						<button class="btn btn-default btn-block btn-sm " style="margin-right:200px;" type="submit" disabled data-state1="Change your vote" data-state2="Change your vote">
+							Change your vote
+						</button>
+					</div>
+					<button type="button" id="cancel-vote" class="btn btn-default btn-sm pull-right" title="Cancel vote">
+						<i class="fa fa-close"></i></button>
+				</div>
+
+
+				<div class="clearfix"></div>
+
+
+
+				<% } %>
+			</form>
+			<% } else { %>
+			<form id="poll-form" class="form-horizontal" data-itemID="<%= this.item.ID %>">
+				<div class="form-group">
+					<div id="poll-options">
+						<% for (var i in this.item.poll.options) { %>
+						<div class="radio">
+							<label style="margin-left:20px; display:block">
+								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>">
+
+								<%= this.item.poll.options[i].answer %>
+
+
+							</label>
+						</div>
+						<% } %>
+					</div>
+				</div>
+
 				<button class="btn btn-default btn-block btn-sm" type="submit" disabled data-state1="Choose an option" data-state2="<i class='fa fa-check-circle-o' style='margin-right:3px;'></i> Vote!">
 					Choose an option
 				</button>
-				
-			
+
+
 			</form>
-			
+
 			<% } %>
-			
+
 			<% } %>
 			<% if(this.item.files[0]){ %>
 			<hr/>
@@ -448,29 +449,38 @@
 	</div>
 	<section class="content-footer">
 		<div class="container">
-			<div class="pull-left ">
-				<div class="filename">
-					<%= this.filename %>
+
+			<div class="hidden-xs">
+				<div class="pull-left ">
+					<div class="filename">
+						<%= this.filename %>
+					</div>
+
 				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-default comment-button" data-itemID="<%= this.contentID %>" data-ID="">
+						<i class="fa fa-comments"></i>
+						Comment
+					</button>
+					<a class="btn btn-default" href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">
+						<i class="fa fa-download"></i> Download
+					</a>
 
+					<button type="button" class="viewer-close btn btn-default"><i class="fa fa-close"></i> Close File
+					</button>
+				</div>
 			</div>
-			<div class="pull-right">
-
-
-
-				<button type="button" class="btn btn-default comment-button" data-itemID="<%= this.contentID %>" data-ID="">
-					<i class="fa fa-comments"></i>
-					Comment
-				</button>
-
-
-				<a class="btn btn-default" href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>"><i class="fa fa-download"></i> Download</a>
-
-
-
-				<button type="button" class="viewer-close btn btn-default"><i class="fa fa-close"></i> Close File
-				</button>
+			<div class="visible-xs">
+				<div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+					<a href="#" class="btn btn-default comment-button" role="button" data-itemID="<%= this.contentID %>" data-ID=""><i class="fa fa-comments"></i>Comment</a>
+					<a class="btn btn-default" href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>" role="button"><i class="fa fa-download"></i> Download</a>
+					<a href="#" class="btn btn-default viewer-close" role="button"><i class="fa fa-close"></i> Close File</a>
+				</div>
+				
+				
+				
 			</div>
+
 
 		</div>
 	</section>
