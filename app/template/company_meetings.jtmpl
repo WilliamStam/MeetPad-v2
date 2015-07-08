@@ -1,9 +1,6 @@
 <script type="text/x-jqote-template" id="template-left">
 	<![CDATA[
-	<section class="content-header">
-
-		<h1><%= this.company.company %> <small class="pull-right">Meetings: <%= this.meetings.count %></small></h1>
-	</section>
+	
 
 
 
@@ -12,9 +9,15 @@
 		<div style="margin-right:10px;" >
 
 
-			
 
-		Stats charts go here. same as the company ones
+			<div class="c" style="font-size: 40px; line-height:30px; font-weight: bold; margin-top:50px; color:#e1e1e1;">
+				Comming <br>soon!
+				<div>
+					<i class="fa fa-bullhorn" style="font-size: 100px;margin-top:30px;"></i>
+				</div>
+			</div>
+			<!--
+		Stats charts go here. same as the company ones -->
 
 
 		</div>
@@ -30,10 +33,14 @@
 <script type="text/x-jqote-template" id="template-right">
 	<![CDATA[
 
+	<section class="content-header">
 
-	<section class="scroll-pane" style="left:10px; <% if (this.meetings.pagination.pages.length) { %>bottom:50px; <% } %>  ">
+		<h1><%= this.company.company %> <small class="pull-right">Meetings: <%= this.meetings.count %></small></h1>
+	</section>
+	<section class="scroll-pane" style="left:10px; top:55px; <% if (this.meetings.pagination.pages.length) { %>bottom:50px; <% } %>  ">
 		<div style="padding-right:10px; padding-top:20px;">
 
+			
 			
 
 			<section>

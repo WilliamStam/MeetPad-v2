@@ -1,10 +1,6 @@
 <script type="text/x-jqote-template" id="template-left">
 	<![CDATA[
-	<section class="content-header">
-
-		<h1><%= this.company.company %></h1>
-	</section>
-
+	
 
 
 	<section class="scroll-pane" style="left:10px;">
@@ -13,8 +9,15 @@
 
 
 
+			<div class="c" style="font-size: 40px; line-height:30px; font-weight: bold; margin-top:50px; color:#e1e1e1;">
+				Comming <br>soon! 
+				<div>
+					<i class="fa fa-bullhorn" style="font-size: 100px;margin-top:30px;"></i>
+				</div>
+			</div>
+			<!--
 			charts on activity here. stats and charts are for the whole company
-
+-->
 
 		</div>
 
@@ -29,14 +32,22 @@
 <script type="text/x-jqote-template" id="template-right">
 	<![CDATA[
 
+	<section class="content-header">
 
-	<section class="scroll-pane" style="left:10px;  ">
+		<h1><%= this.company.company %></h1>
+	</section>
+
+	<section class="scroll-pane" style="left:10px; top:55px;  ">
 		<div style="padding-right:10px; padding-top:20px;">
 
+			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>/meetings" class="btn btn-default btn-lg" style="width:{% if data['user']['admin']=='1' %}260{% else %}530{% endif %}px;">All Meetings</a>
+			{% if data['user']['admin']=='1' %}
+			<a href="/content/<%= this.company.ID %>/<%= this.company.url %>/users" class="btn btn-default btn-lg" style="margin-left:10px;width:260px;">Users</a>
+			{% endif %}
 			
 
 
-			<% if (this.meetings.active.length) { %>
+		
 			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
 				<h3 style="margin:0; padding:0;">Active Meetings</h3>
 			</div>
@@ -79,6 +90,10 @@
 			</article>
 
 			<% } %>
+			<% if (this.meetings.active.length) { %>
+			<% } else { %>
+			<div class="c g" style="margin-top:30px;" >no active meetings</div.c>
+
 			<% } %>
 
 			<div class="clearfix"></div>

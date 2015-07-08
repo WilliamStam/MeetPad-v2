@@ -12,7 +12,9 @@ class company extends _ {
 		
 		
 		$data = models\company::getInstance()->get($this->f3->get("PARAMS['ID']"),true);
-		//test_array($menu); 
+		$user = models\users::getInstance()->get($user['ID'],$data['ID']);
+		$data['user'] = $user;
+		
 
 		$this->f3->set("company",$data);
 	
