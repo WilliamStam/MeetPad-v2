@@ -48,15 +48,17 @@ class item extends _ {
 			
 			$return['poll']= array(
 				"question"=>$return['poll'],
-				"options"=>$this->f3->get("DB")->exec("SELECT mp_content_poll_answers.*, count(mp_content_poll_voted.userID) AS voted FROM mp_content_poll_answers LEFT JOIN mp_content_poll_voted ON mp_content_poll_voted.answerID = mp_content_poll_answers.ID AND mp_content_poll_voted.userID = '{$this->user['ID']}'  WHERE mp_content_poll_answers.contentID = '{$return['ID']}' GROUP BY mp_content_poll_answers.ID ORDER BY orderby ASC")
+				"options"=>$this->f3->get("DB")->exec("SELECT mp_content_poll_answers.*, count(mp_content_poll_voted.userID) AS voted FROM mp_content_poll_answers LEFT JOIN mp_content_poll_voted ON mp_content_poll_voted.answerID = mp_content_poll_answers.ID AND mp_content_poll_voted.userID = '{$this->user['ID']}'  WHERE mp_content_poll_answers.contentID = '{$return['ID']}' GROUP BY mp_content_poll_answers.ID ORDER BY orderby ASC"),
+				"voted"=>($this->f3->get("DB")->exec("SELECT answerID FROM mp_content_poll_voted WHERE contentID='{$return['ID']}' AND userID='{$this->user['ID']}'"))
+				
 			);
-
+			$return['poll']['voted'] = $return['poll']['voted'][0]['answerID'];
 			
 			
 		} else {
 			$return = parent::dbStructure("mp_content");
 		}
-		//test_array($return);
+	//	test_array($return);
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return self::format($return);
 	}

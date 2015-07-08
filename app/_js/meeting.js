@@ -23,12 +23,6 @@ $(document).ready(function () {
 			$("#document-viewer iframe").css({"width":ifw,"height":ifh-48});
 			$("#document-viewer .filename").css({"width":ifw - 380});
 		});
-		
-
-		
-		
-		
-		
 	});
 
 	$(document).on('click', '.viewer-close', function (e) {
@@ -37,6 +31,54 @@ $(document).ready(function () {
 		$viewer.fadeOut(500);
 
 		$viewer.find("iframe").attr("src","/iframe/loading")
+		// <i class="fa fa-check-circle-o" style="margin-right:3px;"></i> Vote!
+	});
+	
+	
+	
+	
+	
+	
+	$(document).on('change', 'input[name="poll-answer"]', function (e) {
+		poll_btn()
+	});
+	
+	
+	
+	
+	
+	
+	
+	$(document).on('click', '#cancel-vote', function (e) {
+		e.preventDefault();
+	
+		if (confirm("Sure you want to clear your vote?")){
+			poll_btn();
+			$(".loadingmask").show();
+			$.post("/save/poll/vote?itemID="+$('#poll-form').attr("data-itemID"),{'poll-answer':''},function(data){
+				data = data.data;
+
+				getData();
+			})
+		}	
+		
+	});
+	
+	
+	$(document).on('submit', '#poll-form', function (e) {
+		e.preventDefault();
+		var data = $(this).serialize();
+		poll_btn();
+		$(".loadingmask").show();
+		if ($('input[name="poll-answer"]:checked').length){
+			$.post("/save/poll/vote?itemID="+$(this).attr("data-itemID"),data,function(data){
+				data = data.data;
+				
+				getData();
+			})
+		}
+		//console.log(data)
+		
 		
 	});
 	
@@ -216,7 +258,7 @@ function getData() {
 
 		$("#loading-mask").fadeOut();
 
-		
+		poll_btn()
 
 		$.doTimeout(400,function(){
 			resize();
@@ -350,4 +392,12 @@ function showContent_state() {
 	$('#' + tab + '', $details_modal).addClass("active");
 
 }
-
+function poll_btn(){
+	var $checked = $('input[name="poll-answer"]:checked');
+	var $submit = $("form#poll-form").find("button[type='submit']");
+	if ($checked.length){
+		$submit.html($submit.attr("data-state2")).removeAttr("disabled");
+	} else {
+		$submit.html($submit.attr("data-state1")).attr("disabled","disabled");
+	}
+}

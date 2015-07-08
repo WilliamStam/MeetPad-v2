@@ -55,13 +55,54 @@ class meeting extends _data {
 
 		$object = models\item::getInstance();
 		$result =  $object->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC");
+
+		$ids = array();
+		foreach ($result as $item) {
+			$ids[] = $item['ID'];
+		}
+		$voted = array();
+		$comments = array();
+		if (count($ids)){
+			$strids = implode(',',$ids);
+			
+			$voteds = $this->f3->get("DB")->exec("SELECT * FROM mp_content_poll_voted WHERE contentID in ($strids) AND userID = '{$this->user['ID']}'");
+			foreach ($voteds as $item){
+				$voted[$item['contentID']] = $item['answerID'];
+			}
+			
+			$voteds = $this->f3->get("DB")->exec("SELECT * FROM mp_content_comments WHERE contentID in ($strids) ORDER BY datein DESC");
+			foreach ($voteds as $item){
+				if ($item['userID']==$this->user['ID']){
+					$comments[$item['contentID']]['me'] = $item['userID'];
+				}
+				if (!isset($comments[$item['contentID']]['last'])){
+					$comments[$item['contentID']]['last']= $item['userID'];
+				}
+				
+				
+			}
+			
+			
+			
+			
+			
+		}
 		
 		
-		
-		
+	
 		
 		$items = array();
 		foreach ($result as $item){
+			
+			$item['voted'] = isset($voted[$item['ID']])?$voted[$item['ID']]:'';
+			$item['has_poll'] = $item['poll']?1:0;
+
+
+			$item['has_commented'] = isset($comments[$item['ID']]['me'])?1:0;
+			$item['last_commented'] = isset($comments[$item['ID']]['last'])&&$comments[$item['ID']]['last']==$this->user['ID']?1:0;
+			
+			
+			
 			unset($item['description']);
 			unset($item['discussion_link']);
 			unset($item['resolution']);
@@ -69,6 +110,7 @@ class meeting extends _data {
 			unset($item['poll_allow_nr_votes']);
 			unset($item['poll_show_result']);
 			unset($item['poll_anonymous']);
+			
 			
 			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
 			$items['catID'.$item['categoryID']]["category"] = $item['category'];

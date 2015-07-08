@@ -178,14 +178,29 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label for="poll_show_result" class="col-sm-3 control-label">Allow edit</label>
+
+						<div class="col-sm-8">
+							<div id="poll_allow_edit">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="poll_allow_edit" value="1" <% if (this.poll_allow_edit=='1' || this.ID==''){ %>checked<% } %>>
+										When checked the user will be allowed to edit their vote as long as the meeting is active
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="poll_show_result" class="col-sm-3 control-label">Show Result</label>
 
 						<div class="col-sm-8">
 							<div id="poll_show_result">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="poll_show_result" value="<%= this.poll_show_result %>" <% if (this.poll_show_result=='1'){ %>checked<% } %>>
-										When checked the result of the poll will be displayed
+										<input type="checkbox" name="poll_show_result" value="1" <% if (this.poll_show_result=='1'){ %>checked<% } %>>
+										When checked the result of the poll will be displayed when the user has voted
 									</label>
 								</div>
 							</div>
@@ -199,7 +214,7 @@
 							<div id="poll_anonymous">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="poll_anonymous" value="<%= this.poll_anonymous %>" <% if (this.poll_anonymous=='1'){ %>checked<% } %>>
+										<input type="checkbox" name="poll_anonymous" value="1" <% if (this.poll_anonymous=='1'){ %>checked<% } %>>
 										When checked the vote is anonymous, the list of who voted for what wont be available
 									</label>
 								</div>

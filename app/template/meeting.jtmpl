@@ -30,11 +30,31 @@
 			</tr>
 			<% for(var y in this.agenda[i].items) { %>
 			<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
-				<td></td>
+				<td>
+					<% if(this.agenda[i].items[y].has_poll=='1'){ %>
+						<% if(this.agenda[i].items[y].voted!=''){ %>
+							<i class="fa fa-check-square"></i>
+						<% } else { %>
+							<i class="fa fa-check-square-o"></i>
+						<% } %>
+					<% } %>
+				</td>
 				<td><%= this.agenda[i].items[y].heading %></td>
 				<td class="dg s" style="width:80px;"><%= this.agenda[i].items[y].date.short.date %></td>
-				<td><%= this.agenda[i].items[y].commentCount!=0?this.agenda[i].items[y].commentCount:'' %></td>
-				<td></td>
+				<td style="padding:7px 0 0 0; " class="c"><% if(this.agenda[i].items[y].commentCount!=0){ %><%= this.agenda[i].items[y].commentCount %><% } %></td>
+				<td>
+					<% if(this.agenda[i].items[y].commentCount!=0){ %>
+						<% if(this.agenda[i].items[y].has_commented=='1'){ %>
+							<% if(this.agenda[i].items[y].last_commented=='1'){ %>
+								<i class="fa fa-comments"></i>
+							<% } else { %>
+								<i class="fa fa-comments-o"></i>
+							<% } %>
+						<% } else { %>
+							<i class="fa fa-comment-o"></i>
+						<% } %>
+					<% } %>
+				</td>
 			</tr>
 			<% } %>
 
@@ -109,62 +129,111 @@
 
 			<h4><%= this.item.poll.question||'' %></h4>
 
+			<% if(this.item.poll.voted){ %>
 
-			<form action="" class="form-horizontal">
+			
+				<form id="poll-form"  class="form-horizontal" data-itemID="<%= this.item.ID %>">
+					<div class="form-group">
+						<div id="poll-options">
+							<% for (var i in this.item.poll.options) { %>
+							<div class="radio">
+								<label style="margin-left:20px; display:block">
+									<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1'){ %>disabled='disabled'<% } %><% } %>>
+									<span<% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
+										<%= this.item.poll.options[i].answer %>
+									</span>
+									
+								</label>
+							</div>
+							<% } %>
+						</div>
+					</div>
+
+					<% if(this.item.poll_allow_edit=='1'){ %>
+
+					
+					<div class="btn-group btn-block fillsplit">
+						<div class="leadcontainer">
+							<button class="btn btn-default btn-block btn-sm " style="margin-right:200px;" type="submit" disabled data-state1="Change your vote" data-state2="Change your vote">
+								Change your vote
+							</button>
+						</div>
+						<button type="button" id="cancel-vote"  class="btn btn-default btn-sm pull-right" title="Cancel vote"><i class="fa fa-close"></i></button>
+					</div>
+					
+					
+					<div class="clearfix"></div>
+					
+					
+					
+					<% } %>
+				</form>
+			<% } else { %>
+			<form id="poll-form"  class="form-horizontal" data-itemID="<%= this.item.ID %>">
 				<div class="form-group">
-					<div id="categoryID">
+					<div id="poll-options">
 						<% for (var i in this.item.poll.options) { %>
 						<div class="radio">
 							<label style="margin-left:20px; display:block">
-								<input type="radio" name="categoryID" value="<%= this.item.poll.options[i].ID %>">
+								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" >
+								
 								<%= this.item.poll.options[i].answer %>
+							
+
 							</label>
 						</div>
 						<% } %>
-
 					</div>
 				</div>
-				<button class="btn btn-default btn-block btn-sm" type="submit"><i class="fa fa-check-circle-o" style="margin-right:3px;"></i> Vote!</button>
+				
+				<button class="btn btn-default btn-block btn-sm" type="submit" disabled data-state1="Choose an option" data-state2="<i class='fa fa-check-circle-o' style='margin-right:3px;'></i> Vote!">
+					Choose an option
+				</button>
+				
+			
 			</form>
+			
+			<% } %>
+			
 			<% } %>
 			<% if(this.item.files[0]){ %>
 			<hr/>
 			<h3 style="margin-bottom:20px;">Attachments</h3>
 			<% for(var i in this.item.files){ %>
 			<div class="attachment-item">
-					<div class="col-sm-3 c thumb" style="min-width:150px;">
-						<% if(this.item.files[i].icon=="thumbnail"){ %>
-						<div style="height: 170px;" class="c">
-							<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" style="max-width:130px;" />
-						</div>
-						
+				<div class="col-sm-3 c thumb" style="min-width:150px;">
+					<% if(this.item.files[i].icon=="thumbnail"){ %>
+					<div style="height: 170px;" class="c">
+						<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" style="max-width:130px;"/>
+					</div>
 
-						<% } else { %>
-						<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
-						<% } %>
-					</div>
-					<div>
-						<a href="">
-							<h5>
-								<%= this.item.files[i].filename %>
-							</h5>
-						</a>
-						<%= this.item.files[i].description||'' %>
-						
-						
-						<div class="pull-right" style="margin-top:20px;">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-sm" disabled style="cursor:default;"><%= this.item.files[i].filesize||'' %></button>
-									<a href="/file/view/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm view-file"  target="_blank" style="min-width:120px;" data-ID="<%= this.item.files[i].ID %>">
-										<i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View
-									</a>
-									<a href="/file/download/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm" style="min-width:120px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</a>
-								
-									
-							</div>
+
+					<% } else { %>
+					<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
+					<% } %>
+				</div>
+				<div>
+					<a href="">
+						<h5>
+							<%= this.item.files[i].filename %>
+						</h5>
+					</a>
+					<%= this.item.files[i].description||'' %>
+
+
+					<div class="pull-right" style="margin-top:20px;">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-sm" disabled style="cursor:default;"><%= this.item.files[i].filesize||'' %></button>
+							<a href="/file/view/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm view-file" target="_blank" style="min-width:120px;" data-ID="<%= this.item.files[i].ID %>">
+								<i class="fa fa-external-link" style="margin-left:-10px; margin-right:10px;"></i> View
+							</a>
+							<a href="/file/download/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/<%= this.item.files[i].filename %>" class="btn btn-default btn-sm" style="min-width:120px;"><i class="fa fa-download" style="margin-left:-10px; margin-right:10px;"></i> Download</a>
+
+
 						</div>
-						<div class="clearfix"></div>
 					</div>
+					<div class="clearfix"></div>
+				</div>
 
 
 
@@ -202,7 +271,7 @@
 				<div style="width:100%; padding:8px 12px; color:#999; border:1px solid #ccc; -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; background: #fff; cursor:pointer;" class="comment-button" data-itemID="<%= this.item.ID %>" data-ID="">
 					Leave a comment
 				</div>
-				
+
 			</div>
 		</div>
 
@@ -211,10 +280,10 @@
 
 
 		<div class="pull-right btn-bar">
-			<button class="btn btn-default" type="button" id="details-record-prev" style="padding-left:32px;padding-right:32px;">
+			<button class="btn btn-default" type="button" id="details-record-prev" style="width:65px;">
 				<i class="fa fa-arrow-circle-left"></i>
 			</button>
-			<button class="btn btn-default" type="button" id="details-record-next" style="padding-left:32px;padding-right:32px;">
+			<button class="btn btn-default" type="button" id="details-record-next" style="width:65px;">
 				<i class="fa fa-arrow-circle-right"></i>
 			</button>
 		</div>
@@ -295,33 +364,37 @@
 	</div>
 
 
-	<section class="scroll-pane" style="left:10px;top:37px;">
+	<section class="scroll-pane" style="left:10px; top:37px;">
+		<div style="padding-right:10px;">
 
 
-		<h2>
-			<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
-				<i class="fa fa-pencil"></i></button>
-			<%= this.meeting.meeting %>
-		</h2>
 
-		<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">
-			<div class="progress-bar <% if (this.meeting.percent > 90) { %>progress-bar-danger<% } else { %>progress-bar-info<% } %>" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
+			<h2>
+				<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
+					<i class="fa fa-pencil"></i></button>
+				<%= this.meeting.meeting %>
+			</h2>
 
-			<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
-				<div class="pull-left"><%= this.meeting.timeStart.long.disp %></div>
-				<div class="pull-right"><%= this.meeting.timeEnd.long.disp %></div>
-				<div> -</div>
+			<div class="progress" style="margin:5px 0; border-radius:0; height:20px; position:relative; margin-bottom:0;">
+				<div class="progress-bar <% if (this.meeting.percent > 90) { %>progress-bar-danger<% } else { %>progress-bar-info<% } %>" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meeting.percent%>%; opacity: 0.2"></div>
+
+				<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
+					<div class="pull-left"><%= this.meeting.timeStart.long.disp %></div>
+					<div class="pull-right"><%= this.meeting.timeEnd.long.disp %></div>
+					<div> -</div>
+				</div>
 			</div>
+
+			<section class="groups-access">
+				<% for (var i in this.meeting.groups) { %>
+				<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
+				<% } %>
+			</section>
+			<div>
+				<%= this.meeting.note||'' %>
+			</div>
+
 		</div>
-
-		<section class="groups-access">
-			<% for (var i in this.meeting.groups) { %>
-			<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
-			<% } %>
-		</section>
-		<div style=" height:1000px;">meeting details</div>
-
-
 	</section>
 	<section class="content-footer">
 		<div class="pull-left btn-bar" style="margin-left:-10px;">
@@ -376,26 +449,27 @@
 	<section class="content-footer">
 		<div class="container">
 			<div class="pull-left ">
-				<div class="filename" >
+				<div class="filename">
 					<%= this.filename %>
 				</div>
-				
+
 			</div>
 			<div class="pull-right">
-					
-				
-				
+
+
+
 				<button type="button" class="btn btn-default comment-button" data-itemID="<%= this.contentID %>" data-ID="">
 					<i class="fa fa-comments"></i>
 					Comment
 				</button>
-				
-				
+
+
 				<a class="btn btn-default" href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>"><i class="fa fa-download"></i> Download</a>
-				
-				
-				
-				<button type="button" class="viewer-close btn btn-default"><i  class="fa fa-close"></i> Close File</button>
+
+
+
+				<button type="button" class="viewer-close btn btn-default"><i class="fa fa-close"></i> Close File
+				</button>
 			</div>
 
 		</div>

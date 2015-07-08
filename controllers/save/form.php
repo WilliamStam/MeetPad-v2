@@ -303,6 +303,7 @@ class form extends _save {
 				
 				
 			}
+			$values['poll_allow_edit']=$this->post("poll_allow_edit",false,"0");
 			$values['poll_show_result']=$this->post("poll_show_result",false,"0");
 			$values['poll_anonymous']=$this->post("poll_anonymous",false,"0");
 			
