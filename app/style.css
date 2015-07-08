@@ -8292,7 +8292,7 @@ form .admin-list-items:empty:before {
     float: right;
   }
   .collapse.in {
-    box-shadow: 0 10px 10px -10px #000000;
+    box-shadow: 0 15px 15px -15px #000000;
   }
 }
 .c {
