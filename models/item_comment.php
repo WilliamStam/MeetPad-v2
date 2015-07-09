@@ -47,15 +47,16 @@ class item_comment extends _ {
 		$timer = new timer();
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
+			"args" => isset($options['args']) ? $options['args'] : array(),
+			"companyID" => isset($options['companyID']) ? $options['companyID'] : false
 		);
 		$return = array();
-
+		//test_array($options);
 
 		if ($where) {
-			$where = "WHERE " . $where . "";
+			$where = " " . $where . "";
 		} else {
-			$where = " ";
+			$where = " 1 ";
 		}
 
 		if ($orderby) {
@@ -64,16 +65,30 @@ class item_comment extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
-		$result = $this->f3->get("DB")->exec("
+		
+		$sql = "
 			SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name
-			FROM ((mp_content_comments INNER JOIN mp_users ON mp_content_comments.userID = mp_users.ID) LEFT JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
-			$where
+			FROM ((mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
+			WHERE $where
 			$orderby
 			$limit
-		", $options['args'], $options['ttl']
-		);
+		";
+		if ($options['companyID']){
+			$sql = "
+				SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag
+				FROM ((mp_users_company INNER JOIN (mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) ON mp_users_company.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
+				WHERE $where AND mp_users_company.companyID = '{$options['companyID']}'
+				$orderby
+				$limit
+			";
+		}
+		
+		//test_string($sql); 
+		
+		$result = $this->f3->get("DB")->exec($sql, $options['args'], $options['ttl']);
 
 
+		//test_array($result); 
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return self::format($return);

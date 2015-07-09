@@ -299,6 +299,20 @@
 	<![CDATA[
 	<li>
 		<blockquote class="comment-item">
+			<% if(this.deleted){ %>
+			<div class="c">
+				<em class="c g ">Comment has been deleted</em>
+			</div>
+
+			<footer class="text-right" style="margin-top:5px;">
+
+				<%= this.name %> <% if(this.tag) { %><em>(<%= this.tag %></em>
+				) <% } %>&nbsp;
+				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
+			</footer>
+			
+			<% } else { %>
+			
 			<%= this.comment %>
 			<div class="clearfix"></div>
 			<% if(this.userID=="{{ _user['ID'] }}"){ %>
@@ -314,7 +328,8 @@
 
 			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
 
-				<%= this.name %> &nbsp;
+				<%= this.name %> <% if(this.tag) { %><em>(<%= this.tag %></em>
+				) <% } %>&nbsp;
 				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
 			</footer>
 
@@ -333,7 +348,7 @@
 			</form>
 
 
-
+			<% } %>
 		</blockquote>
 
 		<ul>
