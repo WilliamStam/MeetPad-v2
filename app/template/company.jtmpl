@@ -53,44 +53,7 @@
 				<h3 style="margin:0; padding:0;">Active Meetings</h3>
 			</div>
 
-			<% for (var i in this.meetings.active){ %>
-			<article class="meeting-block">
-				<h4><%= this.meetings.active[i].meeting %></h4>
-
-				<div style="margin-top:10px;">
-					<%= this.meetings.active[i].note||'' %>
-				</div>
-
-				<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
-					<div style="width:<%= this.meetings.active[i].percent %>%; opacity: 0.2" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= this.meetings.active[i].percent %>" role="progressbar" class="progress-bar progress-bar-info"></div>
-
-					<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
-						<em><%= this.meetings.active[i].timeStart.short.disp %> - <%= this.meetings.active[i].timeEnd.short.disp %></em>
-					</div>
-				</div>
-				<% if (this.meetings.active[i].groups) { %>
-				<div class="r">
-					<% for (var o in this.meetings.active[i].groups.split(", ")) { %>
-					<span class="label label-default" style="margin-right:5px;"><%= this.meetings.active[i].groups.split(", ")[o] %></span>
-					<% } %>
-				</div>
-				<% } %>
-				<div class="clearfix" style="height:10px;"></div>
-				<div class="pull-left" role="group">
-					<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.meetings.active[i].companyID %>" data-ID="<%= this.meetings.active[i].ID %>">
-						<i class="fa fa-pencil"></i> Edit
-					</button>
-
-				</div>
-				<% if(this.meetings.active[i].access=='1'){ %>
-				<div class="pull-right">
-					<a href="/content/<%= this.meetings.active[i].ID %>/<%= this.meetings.active[i].company %>/<%= this.meetings.active[i].url %>" class="btn btn-default"><i class="fa fa-eye"></i> View</a>
-				</div>
-				<% } %>
-				<div class="clearfix"></div>
-			</article>
-
-			<% } %>
+			<%= $.jqote($("#template-meeting-list-active"), this.meetings.active) %>
 			<% if (this.meetings.active.length) { %>
 			<% } else { %>
 			<div class="c g" style="margin-top:30px;" >no active meetings</div.c>

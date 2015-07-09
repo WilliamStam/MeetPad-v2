@@ -6,10 +6,11 @@
 		<span class="pull-right btn-bar">
 			<% if (this.item.ID!="") { %>
 				<button class="btn btn-default meeting-info-btn" type="button"><i class="fa fa-home"></i></button>
-			<% } %>
+				<% } %>
+			<% if (this.company.admin=="1") { %>
 			<button class="btn  btn-default item-form" data-ID="" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 				<i class="fa fa-plus"></i></button>
-			
+			<% } %>
 			
 		</span>
 
@@ -94,9 +95,10 @@
 
 			<h3>
 
+				<% if (this.company.admin=="1") { %>
 				<button class="btn btn-default item-form pull-right" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
-
+<% } %>
 				<%= this.item.heading %>
 			</h3>
 
@@ -302,9 +304,10 @@
 			<% if(this.userID=="{{ _user['ID'] }}"){ %>
 
 			<div class="pull-left" style="margin-top:5px;">
+			
 				<button class="btn btn-link btn-xs pull-right comment-button" data-ID="<%= this.ID %>" data-itemID="<%= this.contentID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
-
+				
 			</div>
 
 			<% } %>
@@ -371,8 +374,10 @@
 
 
 			<h2>
+				<% if (this.company.admin=="1") { %>
 				<button class="btn btn-default meeting-form pull-right" data-ID="<%= this.meeting.ID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
+				<% } %>
 				<%= this.meeting.meeting %>
 			</h2>
 

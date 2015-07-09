@@ -55,9 +55,8 @@ class company_meetings extends _data {
 
 	function meetings() {
 		$selectedpage = isset($_GET['page']) ? $_GET['page'] : "1";
-		$userSQL = ($this->user['global_admin']=='1')?"":"(mp_users_group.userID='{$this->user['ID']}' OR mp_users_company.admin = '1') AND ";
 		
-		$recordCount = count(models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}'"));
+		$recordCount = count(models\meeting::getInstance()->getAll("mp_meetings.companyID = '{$this->companyID}'","","",array("userID"=>$this->user['ID'])));
 
 		$pagination = new \pagination("page");
 		$pagination = $pagination->calculate_pages($recordCount, "10", $selectedpage, "10", "0");
@@ -68,7 +67,7 @@ class company_meetings extends _data {
 		
 		
 		
-		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}'", "timeEnd DESC", $pagination['limit'],array("groups"=>true));
+		$records = models\meeting::getInstance()->getAll("mp_meetings.companyID = '{$this->companyID}'", "timeEnd DESC", $pagination['limit'],array("groups"=>true,"userID"=>$this->user['ID']));
 
 		$result = array(
 			"active"=>array(),

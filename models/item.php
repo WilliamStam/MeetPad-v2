@@ -29,19 +29,27 @@ class item extends _ {
 			WHERE $where;
 		";
 		if ($userID===true){
-			$userID =  $this->user['global_admin']=='1'?false:$this->user['ID'];
+			$userID =  $this->user['ID'];
 		}
-		
+		if ($userID == $this->user['ID']){
+			$userDetails = $this->user;
+		} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
+		}
 
-		if ($userID) {
-			
+		if ($userID && $userDetails['global_admin']!='1') {
 			$sql = "
-			SELECT DISTINCT  mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
-			FROM (((mp_content INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID) INNER JOIN mp_users_company ON mp_users_group.userID = mp_users_company.userID
-			WHERE mp_content.ID = '$ID' AND mp_users_group.userID = '$userID' AND  mp_users_company.userID = '$userID'
-		";
+				SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
+				
+				FROM (((mp_content INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID) INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_users_company ON mp_categories.companyID = mp_users_company.companyID AND mp_users_company.userID = '$userID'
+				WHERE mp_content.ID = '$ID' AND (mp_users_company.admin='1' OR mp_users_group.userID='$userID')
+				GROUP BY mp_content.ID
+			";
+			
+		
 		}
 
+		//test_string($sql); 
 		$result = $this->f3->get("DB")->exec($sql);
 		if (count($result)) {
 			$return = $result[0];
@@ -67,7 +75,8 @@ class item extends _ {
 		$timer = new timer();
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
+			"args" => isset($options['args']) ? $options['args'] : array(),
+			"userID" => isset($options['userID'])&&$options['userID'] ? $options['userID'] : false,
 		);
 		$return = array();
 
@@ -84,14 +93,51 @@ class item extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
-		$result = $this->f3->get("DB")->exec("
-			SELECT DISTINCT  mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
-			FROM (((mp_content INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID) INNER JOIN mp_users_company ON mp_users_group.userID = mp_users_company.userID
+
+
+		if ($options['userID'] == $this->user['ID']){
+			$userDetails = $this->user;
+		} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
+		}
+		
+		$sql = "
+			SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
+			FROM mp_content INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID
 			$where
 			$orderby
 			$limit
-		", $options['args'], $options['ttl']
-		);
+		";
+
+		
+		if ($options['userID'] && $userDetails['global_admin']!='1'){
+			$where = $where . " AND (mp_users_company.admin='1' OR mp_users_group.userID='{$options['userID']}')";
+			$sql = "
+				SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
+			
+			FROM (((mp_content INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID) INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_users_company ON mp_categories.companyID = mp_users_company.companyID AND mp_users_company.userID = '{$options['userID']}'
+			
+			
+			
+			
+			
+				$where
+				GROUP BY mp_content.ID
+				$orderby
+				$limit
+			";
+		}
+
+	//	test_string($sql);
+
+		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
+		
+		
+	//	test_array($result); 
+		
+		
+		
+		
 
 
 		$return = $result;

@@ -41,6 +41,8 @@ class meeting extends _data {
 
 		$object = models\meeting::getInstance();
 		$result =  $object->get($meetingID,true);
+		
+		//test_array($result); 
 		$result['groups'] = $object->getGroups($meetingID);
 		
 		$this->meetingID = $result['ID'];
@@ -50,11 +52,10 @@ class meeting extends _data {
 	}
 	function agenda() {
 
-		$userSQL = ($this->user['global_admin']=='1')?"":"AND (mp_users_group.userID = '{$this->user['ID']}')";
 
-
+ 
 		$object = models\item::getInstance();
-		$result =  $object->getAll("meetingID ='{$this->meetingID}' {$userSQL}","mp_categories.orderby ASC, datein ASC");
+		$result =  $object->getAll("meetingID ='{$this->meetingID}'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
 
 		$ids = array();
 		foreach ($result as $item) {
@@ -159,10 +160,8 @@ class meeting extends _data {
 	function company() {
 		$domain = $this->f3->get("domain");
 		$result = array();
-		$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
-		$itemID = isset($_GET['itemID'])?$_GET['itemID']:"";
 
-		$result =  models\company::getInstance()->get($this->companyID,$userID);
+		$result =  models\company::getInstance()->get($this->companyID,true);
 
 		unset($result['invitecode']);
 	//test_array($result); 

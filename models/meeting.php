@@ -20,8 +20,13 @@ class meeting extends _ {
 		$timer = new timer();
 		$where = "mp_meetings.ID = '$ID'";
 		if ($userID===true){
-			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
-			$userSQL = ($this->user['global_admin']=='1')?"":"((mp_users_company.userID='{$this->user['ID']}')) AND ";
+			$userID = $this->user['ID'];
+		}
+		
+		if ($userID == $this->user['ID']){
+			$userDetails = $this->user;
+		} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
 		}
 		$sql = "
 			SELECT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active
@@ -29,21 +34,24 @@ class meeting extends _ {
 			WHERE $where;
 		";
 
-		if ($userID){
+		if ($userID && $userDetails['global_admin']!='1'){
+
 			
-			if ($userID===true)$userID = $this->user['ID'];
+			
 			
 			$sql = "
-			SELECT DISTINCT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
-			if(mp_users_group.userID,1,0) AS access
-			FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID AND mp_users_group.userID= '$userID') INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
-			WHERE $userSQL mp_meetings.ID = '$ID' 
+SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
+				if (mp_users.global_admin='1','1',mp_users_company.admin) as admin
+				FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) INNER JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) INNER JOIN (mp_users_company LEFT JOIN mp_users ON mp_users_company.userID = mp_users.ID AND mp_users_company.userID = '{$userID}') ON mp_meetings.companyID = mp_users_company.companyID
+				WHERE  mp_meetings.ID = '$ID'  AND mp_users.ID = '$userID' AND (mp_users_group.userID ='$userID' OR mp_users_company.admin='1')
+				GROUP BY mp_meetings.ID
 		";
 		}
-		
-	//	test_array($sql); 
+		//test_string($sql);
+	
 		$result = $this->f3->get("DB")->exec($sql);
 
+	//	test_array($result); 
 		//test_string($sql);
 		if (count($result)) {
 			$return = $result[0];
@@ -59,18 +67,21 @@ class meeting extends _ {
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
 			"args" => isset($options['args']) ? $options['args'] : array(),
-			"groups" => isset($options['groups']) ? $options['groups'] : false
+			"groups" => isset($options['groups'])&&$options['groups'] ? $options['groups'] : false,
+			"userID" => isset($options['userID'])&&$options['userID'] ? $options['userID'] : false,
 		);
 		$return = array();
 
 		
 
 		if ($where) {
-			$where = "WHERE " . $where . "";
+			$where = " WHERE " . $where . "";
 		} else {
 			$where = " ";
 		}
-
+		
+	//	test_array($where); 
+		
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
@@ -79,23 +90,50 @@ class meeting extends _ {
 		}
 		$groupSQL = "";
 		if ($options['groups']){
-			$groupSQL = "(SELECT GROUP_CONCAT(DISTINCT gg.group SEPARATOR ', ') FROM mp_groups gg INNER JOIN mp_meetings_group mm ON gg.ID = mm.groupID WHERE mm.meetingID = mp_meetings.ID) AS groups,";
+			$groupSQL = ", (SELECT GROUP_CONCAT(DISTINCT gg.group SEPARATOR ', ') FROM mp_groups gg INNER JOIN mp_meetings_group mm ON gg.ID = mm.groupID WHERE mm.meetingID = mp_meetings.ID) AS groups";
+		}
+
+
+		if ($options['userID'] == $this->user['ID']){
+			$userDetails = $this->user;
+			} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
 		}
 		
 		
-		$result = $this->f3->get("DB")->exec("
-		
-			SELECT DISTINCT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
+
+		$sql = "
+			SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active
 			$groupSQL
-			if(mp_users_group.userID,1,0) AS access
-			
-			
-			FROM ((((mp_meetings LEFT JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) LEFT JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID)
+			FROM (mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID
+		
 			$where
+			GROUP BY mp_meetings.ID
 			$orderby
 			$limit
-		", $options['args'],$options['ttl']);
+		";
+		
+		
+		if ($options['userID'] && $userDetails['global_admin']!='1'){
+			$where = $where . " AND mp_users.ID = '{$options['userID']}' AND (mp_users_group.userID ='{$options['userID']}' OR mp_users_company.admin='1')";
+			$sql = "
+				SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
+				if (mp_users.global_admin='1','1',mp_users_company.admin) as admin
+				$groupSQL
+				FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) INNER JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) INNER JOIN (mp_users_company LEFT JOIN mp_users ON mp_users_company.userID = mp_users.ID AND mp_users_company.userID = '{$options['userID']}') ON mp_meetings.companyID = mp_users_company.companyID
+				$where
+				GROUP BY mp_meetings.ID
+				$orderby
+				$limit
+			";
+		}
+		
+		
+		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
 		$return = $result;
+		
+		//test_array($return); 
+		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return self::format($return);
 		
@@ -202,6 +240,8 @@ class meeting extends _ {
 	static function format($data){
 		$timer = new timer();
 		$single = false;
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 	//	test_array($items); 
 		if (isset($data['ID'])) {
 			$single = true;
@@ -260,9 +300,12 @@ class meeting extends _ {
 			
 			$item['url'] = toAscii($item['meeting']);
 			
+			$item['admin'] = $user['global_admin']=='1'?'1':$item['admin'];
+			
 			$n[] = $item;
 		}
 
+	//	test_array($n); 
 		if ($single) $n = $n[0];
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $n;

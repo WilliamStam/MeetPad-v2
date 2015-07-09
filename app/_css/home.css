@@ -94,3 +94,22 @@
   margin-top: -5px;
   padding-bottom: 3px;
 }
+.ggg {
+  background-color: red;
+}
+.groups-access {
+  margin-bottom: 10px;
+}
+.groups-access .label-default {
+  background-color: #f1f1f1;
+  color: #ccc;
+}
+.meeting-block {
+  border-bottom: 3px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.meeting-block h4 {
+  border-bottom: 1px dotted #ccc;
+  padding: 5px 0;
+}

@@ -54,7 +54,18 @@
 	<section class="scroll-pane" style="left:10px; top:55px;">
 		<div style="padding-right:10px; padding-top:20px;">
 
+			<div class="well" style="padding:10px; margin:0; margin-top:30px;">
+				<h3 style="margin:0; padding:0;">Active Meetings</h3>
+			</div>
+			<%= $.jqote($("#template-meeting-list-active"), this.meetings.active) %>
+			
+			<% if (this.meetings.active.length) { %>
+			<% } else { %>
+			<div class="c g" style="margin-top:30px;" >no active meetings</div.c>
 
+				<% } %>
+
+				<div class="clearfix"></div>
 
 		</div>
 	</section>

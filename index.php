@@ -211,6 +211,7 @@ $f3->route("GET|POST /internal/emails/@class/@function", function ($app, $params
 
 
 
+
 $f3->route('GET /php', function () {
 	phpinfo();
 	exit();

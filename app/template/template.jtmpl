@@ -467,6 +467,84 @@
 	]]>
 </script>
 
+<script type="text/x-jqote-template" id="template-meeting-list-active">
+	<![CDATA[
+	<article class="meeting-block">
+		<h4><%= this.meeting %></h4>
+
+		<div style="margin-top:10px;">
+			<%= this.note||'' %>
+		</div>
+
+		<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
+			<div style="width:<%= this.percent %>%; opacity: 0.2" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= this.percent %>" role="progressbar" class="progress-bar progress-bar-info"></div>
+
+			<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
+				<em><%= this.timeStart.short.disp %> - <%= this.timeEnd.short.disp %></em>
+			</div>
+		</div>
+		<% if (this.groups) { %>
+		<div class="r">
+			<% for (var o in this.groups.split(", ")) { %>
+			<span class="label label-default" style="margin-right:5px;"><%= this.groups.split(", ")[o] %></span>
+			<% } %>
+		</div>
+		<% } %>
+		<div class="clearfix" style="height:10px;"></div>
+		<div class="pull-left" role="group">
+			<% if(this.admin=='1'){ %>
+			<button type="button" class="btn btn-default meeting-form" data-companyID="<%= this.companyID %>" data-ID="<%= this.ID %>">
+				<i class="fa fa-pencil"></i> Edit
+			</button>
+			<% } %>
+		</div>
+		<div class="pull-right">
+			<a href="/content/<%= this.ID %>/<%= this.company %>/<%= this.url %>" class="btn btn-default"><i class="fa fa-eye"></i> View</a>
+		</div>
+		<div class="clearfix"></div>
+	</article>
+	
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-meeting-list-past">
+	<![CDATA[
+	<article class="meeting-block">
+		<h4><%= this.meeting %></h4>
+
+		<div style="margin-top:10px;">
+			<%= this.note||'' %>
+		</div>
+
+		<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
+			
+
+			<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">
+				<em><%= this.timeStart.short.disp %> - <%= this.timeEnd.short.disp %></em>
+			</div>
+		</div>
+		<% if (this.groups) { %>
+		<div class="r">
+			<% for (var o in this.groups.split(", ")) { %>
+			<span class="label label-default" style="margin-right:5px;"><%= this.groups.split(", ")[o] %></span>
+			<% } %>
+		</div>
+		<% } %>
+		<div class="clearfix" style="height:10px;"></div>
+		<div class="pull-left" role="group">
+			<% if(this.admin=='1'){ %>
+			<button type="button" class="btn btn-default btn-xs meeting-form" data-companyID="<%= this.companyID %>" data-ID="<%= this.ID %>">
+				<i class="fa fa-pencil"></i> Edit
+			</button>
+			<% } %>
+		</div>
+		<div class="pull-right">
+			<a href="/content/<%= this.ID %>/<%= this.company %>/<%= this.url %>" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> View</a>
+		</div>
+		<div class="clearfix"></div>
+	</article>
+	
+	]]>
+</script>
 {% include "template/_company_form.jtmpl" %}
 {% include "template/_meeting_form.jtmpl" %}
 {% include "template/_item_form.jtmpl" %}

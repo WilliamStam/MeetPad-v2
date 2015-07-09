@@ -20,7 +20,13 @@ class company extends _ {
 		$timer = new timer();
 		$where = "mp_companies.ID = '$ID'";
 		if ($userID===true){
-			$userID = ($this->user['global_admin']=='1')?"":"{$this->user['ID']}";
+			$userID = $this->user['ID'];
+		}
+
+		if ($userID == $this->user['ID']){
+			$userDetails = $this->user;
+		} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
 		}
 		
 		
@@ -30,9 +36,9 @@ class company extends _ {
 			WHERE $where;
 			";
 		
-		if ($userID){
+		if ($userID && $userDetails['global_admin']!='1'){
 			$sql = "
-			SELECT DISTINCT mp_companies.*
+			SELECT DISTINCT mp_companies.*, mp_users_company.admin, mp_users_company.tag
 			FROM mp_companies INNER JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
 			WHERE mp_companies.ID='{$ID}' AND mp_users_company.userID = '{$userID}'
 			";
@@ -49,6 +55,7 @@ class company extends _ {
 		}
 
 		
+		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return  self::format($return);
 	}
@@ -56,7 +63,8 @@ class company extends _ {
 		$timer = new timer();
 		$options = array(
 			"ttl" => isset($options['ttl']) ? $options['ttl'] : "",
-			"args" => isset($options['args']) ? $options['args'] : array()
+			"args" => isset($options['args']) ? $options['args'] : array(),
+			"userID" => isset($options['userID'])&&$options['userID'] ? $options['userID'] : false,
 		);
 		$return = array();
 
@@ -74,13 +82,43 @@ class company extends _ {
 		if ($limit) {
 			$limit = " LIMIT " . $limit;
 		}
-		$result = $this->f3->get("DB")->exec("
-			SELECT DISTINCT mp_companies.*
-			FROM mp_companies LEFT JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
+		
+		
+		
+		
+		$sql = "
+			SELECT mp_companies.*
+			FROM mp_companies
 			$where
+			GROUP BY mp_companies.ID
 			$orderby
 			$limit
-		", $options['args'],$options['ttl']);
+		";
+
+		if ($options['userID'] == $this->user['ID']){
+			$userDetails = $this->user;
+		} else {
+			$userDetails = users::getInstance()->get($this->user['ID']);
+		}
+
+		if ($options['userID'] && $userDetails['global_admin']!='1'){
+			$where = $where . " AND mp_users_company.userID = '{$options['userID']}'";
+			$sql = "
+				SELECT mp_companies.*
+				FROM mp_companies INNER JOIN mp_users_company ON mp_companies.ID = mp_users_company.companyID
+				$where
+				GROUP BY mp_companies.ID
+				$orderby
+				$limit
+			";
+		}
+
+		
+
+		$result = $this->f3->get("DB")->exec($sql, $options['args'],$options['ttl']);
+		
+		
+		
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
@@ -267,7 +305,7 @@ class company extends _ {
 	static function format($data){
 		$timer = new timer();
 		$f3 = \base::instance();
-		
+		$user = $f3->get("user");
 		
 		
 		$single = false;
@@ -283,6 +321,7 @@ class company extends _ {
 
 		foreach ($data as $item){
 			$item['url'] = toAscii($item['company']);
+			$item['admin'] = $user['global_admin']=='1'?'1':$item['admin'];
 			$n[] = $item;
 		}
 

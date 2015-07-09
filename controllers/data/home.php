@@ -24,14 +24,35 @@ class home extends _data {
 		$result = array();
 
 		$result = array(
-			"user"=>$this->user
+			"user"=>$this->user,
+			"meetings" => $this->meetings()
 		);
 		
 
 		return $GLOBALS["output"]['data'] = $result;
 	}
-	
-	
+
+	function meetings() {
+
+		
+		$records = models\meeting::getInstance()->getAll("(timeEnd>= now() AND timeStart <= now())", "timeEnd DESC", "",array("groups"=>true,"userID"=>$this->user['ID']));
+
+		$result = array(
+			"active"=>array(),
+			"past"=>array()
+		);
+
+		foreach($records as $item){
+			$result[$item['active']=='1'?"active":"past"][] = $item;
+		}
+
+
+
+		//test_array($result); 
+
+		return $GLOBALS["output"]['data'] = $result;
+	}
+
 
 
 

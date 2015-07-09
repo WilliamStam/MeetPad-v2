@@ -27,6 +27,9 @@
 					Enter a users email address here that you want to invite to the company. if the user doesnt exist you will be prompted to create a profile for them.
 				</div>
 		</form>
+		
+		
+		
 		<% if( this.users_no_groups.length){ %>
 		<h4 style="margin-top:40px;">Users without Groups</h4>
 

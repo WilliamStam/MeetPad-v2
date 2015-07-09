@@ -8118,6 +8118,9 @@ form .admin-list-items:empty:before {
 .item-attachment img.page {
   border: 1px solid #ccc;
 }
+#form-user-company #admin-alert {
+  display: none;
+}
 /*scrollpane custom CSS*/
 .jspVerticalBar {
   width: 7px;

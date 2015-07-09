@@ -98,12 +98,10 @@ class user extends _ {
 			
 			if ($user['global_admin']=='1'){
 				$whereC = "1";
-				$whereM = "1";
 			} else {
 				$whereC = "userID='{$user['ID']}'";
-				$whereM = "mp_users_group.userID='{$user['ID']}'";
 			}
-			$meetings = meeting::getInstance()->getAll($whereM." AND ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC");
+			$meetings = meeting::getInstance()->getAll(" ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC",'',array("userID"=>$this->user['ID']));
 			
 			//test_array($whereM); 
 			$am = array();
@@ -116,9 +114,9 @@ class user extends _ {
 
 
 
-			$companies = company::getInstance()->getAll($whereC,"company ASC");
+			$companies = company::getInstance()->getAll('',"company ASC",'',array("userID"=>$user['ID']));
 
-			//test_array($meetings); 
+			//test_array($companies); 
 			$n = array();
 			foreach ($companies as $item){
 				$item['activeMeetings'] = isset($am[$item['ID']])?$am[$item['ID']] : 0;

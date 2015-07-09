@@ -85,6 +85,9 @@
 									<div class="help-block s g">
 										If ticked this user will have full admin privilages!
 									</div>
+									<div class="alert alert-warning " id="admin-alert" style="margin-top:-25px;" >
+										Admin users can view all content for this company. <br>Use with caution
+									</div>
 								</div>
 							</div>
 
@@ -164,6 +167,8 @@
 		if ($.bbq.getState("modal") && $.bbq.getState("modal").indexOf("userC-") > -1) {
 			formUserCo()
 		}
+		$(document).on("change","input[name='admin']",admin_alert_uc)
+		
 	});
 
 	function formUserCo(ID,email) {
@@ -176,7 +181,7 @@
 		$.getData("/data/form/usercompany?ID=" + ID, {}, function (data) {
 			data.email = email;
 			$("#form-modal").jqotesub($("#template-form-user-company"), data).modal("show");
-
+			admin_alert_uc()
 		}, "form")
 
 	}
@@ -225,6 +230,15 @@
 
 	});
 
+	function admin_alert_uc(){
+		var $block = $("#form-user-company #admin-alert");
+		if ($("input[name='admin']").is(":checked")){
+			$block.show();
+		} else {
+			$block.hide();
+		}
+		
+	}
 
 	
 

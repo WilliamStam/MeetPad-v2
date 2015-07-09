@@ -59,8 +59,7 @@ class company extends _data {
 
 	function meetings() {
 		
-		$userSQL = ($this->user['global_admin']=='1')?"":"(mp_users_group.userID='{$this->user['ID']}' OR mp_users_company.admin = '1') AND ";
-		$records = models\meeting::getInstance()->getAll(" $userSQL mp_meetings.companyID = '{$this->companyID}' AND (timeEnd>= now() AND timeStart <= now())", "timeEnd DESC", "",array("groups"=>true));
+		$records = models\meeting::getInstance()->getAll("mp_meetings.companyID = '{$this->companyID}' AND (timeEnd>= now() AND timeStart <= now())", "timeEnd DESC", "",array("groups"=>true,"userID"=>$this->user['ID']));
 
 		$result = array(
 			"active"=>array(),
