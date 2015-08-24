@@ -46,6 +46,7 @@ class files extends _ {
 
 					$str = "gs -dCOLORSCREEN -dNOPAUSE -box -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
 
+					test_string($str);
 					exec($str);
 
 					//self::remove_white($folder . $thumb);
