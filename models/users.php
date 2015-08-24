@@ -29,28 +29,38 @@ class users extends _ {
 			FROM (mp_users LEFT JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
-		if ($companyID) {
+		$userD = $this->f3->get("DB")->exec($sql);
+		$userDs = '0';
+		if (count($userD)) {
+			$userDs = $userD[0];
+		}
+		if ($companyID && $userDs['global_admin']!='1') {
 			$where = $where . " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "
 			SELECT mp_users.*, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, mp_users_company.tag as cotag, if(mp_users.global_admin='1','1',mp_users_company.admin) as admin
 			FROM (mp_users INNER JOIN mp_users_company ON mp_users.ID = mp_users_company.userID) LEFT JOIN mp_users_group ON mp_users.ID = mp_users_group.userID
 			WHERE $where;
 			";
+			$result = $this->f3->get("DB")->exec($sql);
+		} else {
+			$result = $userD;
+			
 		}
 
-
-
-
-		$result = $this->f3->get("DB")->exec($sql);
+		//$result = $this->f3->get("DB")->exec($sql);
+		
+		
 		if (count($result)) {
 			$return = $result[0];
-			
+			if ( $userDs['global_admin']=='1'){
+				$return['admin']='1';
+			}
 			
 		} else {
 			$return = parent::dbStructure("mp_users", array());
 		}
 
-		//	test_array($return); 
+			//test_array($return); 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return self::format($return);
