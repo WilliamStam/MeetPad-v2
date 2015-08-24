@@ -309,3 +309,26 @@ blockquote.comment-item {
 #poll-form .fillsplit {
   position: relative;
 }
+#poll-form .radio {
+  position: relative;
+  padding-bottom: 9px;
+}
+#poll-form .radio .percent-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #deebff;
+  z-index: 0;
+}
+#poll-form .radio .label {
+  position: relative;
+  z-index: 1;
+  margin-left: 7px;
+}
+#poll-form .radio label {
+  margin-left: 20px;
+  display: block;
+  z-index: 1;
+  position: relative;
+}

@@ -50,7 +50,8 @@ module.exports = function(grunt) {
 		less: {
 			style: {
 				files: {
-					"app/style.css": "app/less/style.less"
+					"app/style.css": "app/less/style.less",
+					"app/style-print.css": "app/less/style-print.less",
 				}
 			}
 		},
@@ -61,7 +62,8 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
-					'app/style.css': 'app/style.css'
+					'app/style.css': 'app/style.css',
+					'app/style-print.css': 'app/style-print.css',
 				}
 			}
 		},

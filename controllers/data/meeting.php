@@ -132,7 +132,29 @@ class meeting extends _data {
 		
 		
 		$result =  $object->get($itemID,true);
+		//$result['poll_show_result'] = '0';
 		
+		if ($result['poll_show_result']=='1'){
+			$n = array();
+			foreach ($result['poll']['options'] as $item){
+				$item['percent']= number_format($item['votes'] >0?($item['votes'] / $result['poll']['votes'])*100:0, 2, '.', '');
+				$n[] = $item;
+			}
+			
+			
+			
+			
+		} else {
+			$n = array();
+			if (isset($result['poll']['options'])){
+				foreach ($result['poll']['options'] as $item){
+					unset($item['votes']);
+					$n[] = $item;
+				}
+			}
+
+		}
+		$result['poll']['options'] = $n;
 		
 
 		//test_array($result); 
@@ -145,6 +167,10 @@ class meeting extends _data {
 
 		$result['files']= models\item_file::getInstance()->getAll("contentID='{$result['ID']}'","datein DESC");
 		$result['comments']= models\item_comment::getInstance()->getAll("contentID='{$result['ID']}'","datein ASC",'',array("companyID"=>$this->companyID));
+		
+		
+		
+	//	test_array($result); 
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}

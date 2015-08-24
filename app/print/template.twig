@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{{ page['meta']['title'] }}</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+	<link rel="stylesheet" href="/app/style-print.{{ _v }}.css">
+	{% if page['template_css'] %}
+		<link rel="stylesheet" href="{{ page['template_css'] }}">
+	{% endif %}
+	<script src="/vendor/components/modernizr/modernizr.{{ _v }}.js"></script>
+</head>
+<body>
+
+<section class="container" id="page-content">
+	{%  include page['template'] %}
+</section>
+

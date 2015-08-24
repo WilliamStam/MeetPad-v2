@@ -40,7 +40,7 @@ $f3->set('DEBUG',3);
 //$f3->set('QUIET', TRUE);
 
 $f3->set('UI', 'app/|media/');
-$f3->set('MEDIA', './media/');
+$f3->set('MEDIA', './media/|'.$cfg['media']);
 $f3->set('TZ', 'Africa/Johannesburg');
 
 $f3->set('TAGS', 'p,br,b,strong,i,italics,em,h1,h2,h3,h4,h5,h6,div,span,blockquote,pre,cite,ol,li,ul');
@@ -134,6 +134,7 @@ $f3->route('GET|POST /content/@ID/@url/users', 'controllers\company_users->page'
 $f3->route('GET|POST /content/@ID/@url/meetings', 'controllers\company_meetings->page');
 
 $f3->route('GET|POST /content/@ID/@company/@url', 'controllers\meeting->page');
+$f3->route('GET|POST /print/@ID/@company/@url', 'controllers\meeting->_print');
 $f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_users->page');
 
 

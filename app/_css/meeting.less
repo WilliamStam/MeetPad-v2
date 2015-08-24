@@ -344,37 +344,39 @@ blockquote.comment-item {
 	}
 
 }
+
 #document-viewer {
 	display: none;
 	position: absolute;
-	top:0;
+	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 100;
-	background : rgba(250, 250, 250, 0.8) url(/app/_images/loading-wide.gif) no-repeat center center;
+	background: rgba(250, 250, 250, 0.8) url(/app/_images/loading-wide.gif) no-repeat center center;
 	.content-footer {
 		.filename {
-			padding:8px;
-			width:100px;
+			padding: 8px;
+			width: 100px;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
 		}
 		.btn {
-			margin-left:10px;
+			margin-left: 10px;
 			.fa {
-				margin-right:10px;
+				margin-right: 10px;
 			}
 		}
 	}
 }
+
 #poll-form {
 	.label-as-badge {
 		border-radius: 1em;
 	}
 
-	.dropdown-lead{
+	.dropdown-lead {
 		width: 100%;
 	}
 	.leadcontainer {
@@ -382,7 +384,7 @@ blockquote.comment-item {
 		position: absolute;
 		right: 30px;
 	}
-	.dropdown-toggle{
+	.dropdown-toggle {
 		width: 30px;
 		float: right;
 		box-sizing: border-box;
@@ -390,4 +392,27 @@ blockquote.comment-item {
 	.fillsplit {
 		position: relative;
 	}
+
+	.radio {
+		position: relative;
+		padding-bottom: 9px;
+		.percent-bar {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			background-color: #deebff;
+			z-index: 0;
+		}
+		.label {
+			position: relative; z-index:1;
+			margin-left:7px;
+		}
+		label {
+			margin-left:20px; display:block; z-index:1; position: relative;
+		}
+		
+	}
+	
+	
 }

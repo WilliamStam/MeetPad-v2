@@ -139,13 +139,26 @@
 					<div id="poll-options">
 						<% for (var i in this.item.poll.options) { %>
 						<div class="radio">
-							<label style="margin-left:20px; display:block">
+							
+							
+							<% if(this.item.poll.options[i].percent){ %>
+							<div class="percent-bar" style="width:<%= this.item.poll.options[i].percent %>%;"></div>
+							<span class="label label-default pull-right"><%= this.item.poll.options[i].percent %>%</span>
+							<% } %>
+							
+							
+							<label>
 								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1'){ %>disabled='disabled'<% } %><% } %>>
-								<span<% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
+								<span <% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
 								<%= this.item.poll.options[i].answer %>
 								</span>
 
 							</label>
+
+
+
+							
+							
 						</div>
 						<% } %>
 					</div>
@@ -177,7 +190,7 @@
 					<div id="poll-options">
 						<% for (var i in this.item.poll.options) { %>
 						<div class="radio">
-							<label style="margin-left:20px; display:block">
+							<label >
 								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>">
 
 								<%= this.item.poll.options[i].answer %>
@@ -473,7 +486,9 @@
 			<div class="hidden-xs">
 				<div class="pull-left ">
 					<div class="filename">
-						<%= this.filename %>
+						<a href="/file/view/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">
+							<%= this.filename %>
+						</a>
 					</div>
 
 				</div>
