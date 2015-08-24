@@ -60,7 +60,7 @@ class files extends _ {
 
 		
 			if (file_exists($folder . $filename)) {
-				$thumb = new \Image($folder_stub . $filename);
+				$thumb = new \Image($folder_stub . $filename, FALSE, $cfg['media']);
 				$thumb->resize($width, $height, $crop);
 				$thumb->render();
 			}
