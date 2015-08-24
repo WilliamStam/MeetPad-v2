@@ -31,7 +31,7 @@ class files extends _ {
 		$file = $folder . $filename;
 		$folder_stub = $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
 		
-		test_string($file);
+		//test_string($file);
 		if (file_exists($file)){
 			$file_extension = strtolower(substr(strrchr($data['store_filename'], "."), 1));
 
