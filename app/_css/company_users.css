@@ -159,3 +159,9 @@
 .tggssgg {
   color: red;
 }
+.order-btn {
+  cursor: pointer;
+}
+.order-btn:hover {
+  background-color: #f1f1f1;
+}

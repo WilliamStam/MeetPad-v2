@@ -34,6 +34,8 @@
 		<h4 style="margin-top:40px;">Users without Groups</h4>
 
 		<table class="table">
+			
+			
 			<% for (var i in this.users_no_groups) { %>
 
 			<tr class="record user-form-company" data-ID="<%= this.users_no_groups[i].ID %>" data-companyID="{{ data['ID'] }}">
@@ -108,6 +110,8 @@
 
 			<% var n = 0; %>
 			<table class="table ">
+				
+				
 				<% for (var i in this.users) { %>
 				<% if(this.users[i].users.length){ %>
 				<thead>
@@ -115,6 +119,23 @@
 					<th colspan="2"><h3><%= this.users[i].group %></h3>
 					</th>
 
+				</tr><tr>
+					<th class="order-btn" data-column="name" >
+						Name 
+						<% if(this.order=='name-asc'){ %>
+						<i class="fa fa-sort-alpha-asc ordering-btn" data-order="desc"></i>
+						<% } else if(this.order=='name-desc') { %>
+						<i class="fa fa-sort-alpha-desc ordering-btn " data-order="asc"></i>
+						<% } %>
+					</th>
+					<th class="r order-btn" data-column="lastActivity">
+						Last Activity
+						<% if(this.order=='lastActivity-asc'){ %>
+						<i class="fa fa-sort-amount-asc ordering-btn" data-order="desc"></i>
+						<% } else if(this.order=='lastActivity-desc') { %>
+						<i class="fa fa-sort-amount-desc ordering-btn" data-order="asc"></i>
+						<% } %>
+					</th>
 				</tr>
 				</thead>
 				<tbody>

@@ -30,6 +30,7 @@ class company_users extends _data {
 
 		$search = isset($_REQUEST['search'])?$_REQUEST['search']:"";
 		$searchgroup = isset($_REQUEST['search-group'])?$_REQUEST['search-group']:"";
+		$order = isset($_REQUEST['order'])&&$_REQUEST['order']!=''?$_REQUEST['order']:"name-asc";
 
 
 		$where = "";
@@ -39,11 +40,23 @@ class company_users extends _data {
 		if ($searchgroup != ""){
 			$where = $where . " AND mp_users_group.groupID = '$searchgroup'";
 		}
-		
-		
-		
-		
-		$users = $this->users($where);
+
+		$ordering = "name ASC";
+		SWITCH ($order){
+			CASE "name-desc":
+				$ordering = "name DESC";
+				break;
+			CASE "lastActivity-asc":
+				$ordering = "lastActivity DESC";
+				break;
+			CASE "lastActivity-desc":
+				$ordering = "lastActivity ASC";
+				break;
+		}
+
+
+
+		$users = $this->users($where,$ordering);
 
 		$groups = $company['groups'];
 		$g = array();
@@ -52,8 +65,8 @@ class company_users extends _data {
 		}
 		
 		
-		
 
+		//test_array($ordering); 
 
 		$resultNoGroupsO = models\users::getInstance();
 		$resultNoGroups = $resultNoGroupsO->getAll("mp_users_group.groupID is null ","name ASC","",array("companyID"=>$this->companyID));
@@ -108,10 +121,12 @@ class company_users extends _data {
 	
 
 		$result = array(
+			"order"=>($order),
 			"company"=>$company,
 			"users_no_groups"=>$resultNoGroups,
 			"users"=>$result,
 			"userCount"=>count($users),
+			
 			"search"=>array(
 				"search"=>isset($_REQUEST['search'])?$_REQUEST['search']:"",
 				"group"=>isset($_REQUEST['search-group'])?$_REQUEST['search-group']:"",
@@ -148,12 +163,12 @@ class company_users extends _data {
 		return $GLOBALS["output"]['data'] = $result;
 	}
 
-	function users($where) {
+	function users($where,$order) {
 
 		$result = array();
 
 		$usersO = models\users::getInstance();
-		$result = $usersO->getAll("1 ".$where,"name ASC","",array("companyID"=>$this->companyID));
+		$result = $usersO->getAll("1 ".$where,$order,"",array("companyID"=>$this->companyID));
 		$result = $usersO->format($result);
 		
 		

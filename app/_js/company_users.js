@@ -48,6 +48,15 @@ $(document).ready(function () {
 		getData();
 		
 	});
+	$(document).on('click', '.order-btn', function (e) {
+		var $this = $(this);
+		var column = $this.attr("data-column");
+		var dir = $this.find(".ordering-btn").attr("data-order")||"asc";
+		var order = column + "-"+dir;
+		$.bbq.pushState({"order":order})
+		getData();
+		
+	});
 	
 	
 	
@@ -118,10 +127,11 @@ function getData() {
 	var ID = $.bbq.getState("ID") || '';
 	var search = $.bbq.getState("search") || '';
 	var searchgroup = $.bbq.getState("search-group") || '';
+	var order = $.bbq.getState("order") || '';
 
 	$(".loadingmask").show();
 	
-	$.getData("/data/company_users/data?companyID=" + _data['ID'], {"search":search,"search-group":searchgroup}, function (data) {
+	$.getData("/data/company_users/data?companyID=" + _data['ID'], {"order":order,"search":search,"search-group":searchgroup}, function (data) {
 
 		
 
