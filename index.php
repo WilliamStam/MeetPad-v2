@@ -14,9 +14,9 @@ if (!$SID) {
 }
 $GLOBALS["output"] = array();
 $GLOBALS["models"] = array();
-require_once('vendor/twig/Twig/lib/Twig/Autoloader.php');
-Twig_Autoloader::register();
-$f3 = require('vendor/bcosca/fatfree/lib/base.php');
+require_once('vendor/autoload.php');
+
+$f3 = \base::instance();
 require('inc/timer.php');
 require('inc/template.php');
 require('inc/functions.php');

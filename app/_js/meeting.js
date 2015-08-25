@@ -243,6 +243,11 @@ function getData() {
 			right_template = "#template-item";
 			
 		}
+		
+		
+		
+		var scrolld = $("#left-area-content .scroll-pane .jspPane").position();
+		//console.log(scrolld)
 
 		$("#right-area-content").jqotesub($(right_template), data);
 		$("#left-area-content").jqotesub($("#template-agenda"), data);
@@ -250,18 +255,30 @@ function getData() {
 
 		$("#loading-mask").fadeOut();
 
-		poll_btn()
+		poll_btn();
+		
+		
 
 		$.doTimeout(400,function(){
 			resize();
+			var $left = $("#left-area-content .scroll-pane").data("jsp");
 			if (right_template == "#template-item"){
-				$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
+				if (scrolld){
+					$left.scrollTo(Math.abs(scrolld.left),Math.abs(scrolld.top),false);
+				} 
+				$left.scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
 			}
 			
 		})
 		resize()
 		if (right_template == "#template-item"){
-			$("#left-area-content .scroll-pane").data("jsp").scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
+			var $left = $("#left-area-content .scroll-pane").data("jsp");
+			if (right_template == "#template-item"){
+				if (scrolld){
+					$left.scrollTo(Math.abs(scrolld.left),Math.abs(scrolld.top),false);
+				}
+				$left.scrollToElement("tr[data-id='"+data['item']['ID']+"']",false,false);
+			}
 		}
 		showContent_state();
 		

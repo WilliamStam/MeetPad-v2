@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "60f6e204eccc43e5e5a207f47bce79e5",
+    "hash": "3db9b5578690e1433208493b68c93335",
     "packages": [
         {
             "name": "bcosca/fatfree",
@@ -86,7 +86,8 @@
                 "url": "https://github.com/FortAwesome/Font-Awesome",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2015-04-18 01:01:18"
         },
         {
             "name": "components/TouchSwipe-Jquery-Plugin",
@@ -96,7 +97,8 @@
                 "url": "https://github.com/mattbryson/TouchSwipe-Jquery-Plugin",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2015-02-02 20:08:43"
         },
         {
             "name": "components/bootstrap",
@@ -174,7 +176,8 @@
                 "url": "https://github.com/Eonasdan/bootstrap-datetimepicker",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2015-04-02 22:01:45"
         },
         {
             "name": "components/jQote2",
@@ -184,7 +187,8 @@
                 "url": "https://github.com/aefxx/jQote2",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2012-05-04 07:35:41"
         },
         {
             "name": "components/jquery",
@@ -236,7 +240,8 @@
                 "url": "https://github.com/cowboy/jquery-bbq",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2010-09-07 12:08:02"
         },
         {
             "name": "components/jquery-cookie",
@@ -292,7 +297,8 @@
                 "url": "https://github.com/jeresig/jquery.hotkeys",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2015-03-27 12:00:39"
         },
         {
             "name": "components/jquery-jScrollPane",
@@ -302,7 +308,8 @@
                 "url": "https://github.com/vitch/jScrollPane",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2015-04-25 09:46:11"
         },
         {
             "name": "components/jquery-mousewheel",
@@ -312,7 +319,8 @@
                 "url": "https://github.com/jquery/jquery-mousewheel/",
                 "reference": "origin/master"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2014-10-25 13:33:45"
         },
         {
             "name": "components/jqueryui",
@@ -623,16 +631,16 @@
         },
         {
             "name": "robloach/component-installer",
-            "version": "0.2.1",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobLoach/component-installer.git",
-                "reference": "6f654095da6e364261093c2d9ca416e1027d0169"
+                "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/6f654095da6e364261093c2d9ca416e1027d0169",
-                "reference": "6f654095da6e364261093c2d9ca416e1027d0169",
+                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/908a859aa7c4949ba9ad67091e67bac10b66d3d7",
+                "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7",
                 "shasum": ""
             },
             "require": {
@@ -667,11 +675,11 @@
                 }
             ],
             "description": "Allows installation of Components via Composer.",
-            "time": "2015-06-18 13:02:30"
+            "time": "2015-08-10 12:35:38"
         },
         {
             "name": "symfony/process",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
@@ -774,25 +782,29 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.18.2",
+            "version": "v1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "e8e6575abf6102af53ec283f7f14b89e304fa602"
+                "reference": "913d282caca9ee0e8d05940c6caa486d58810dd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e8e6575abf6102af53ec283f7f14b89e304fa602",
-                "reference": "e8e6575abf6102af53ec283f7f14b89e304fa602",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/913d282caca9ee0e8d05940c6caa486d58810dd4",
+                "reference": "913d282caca9ee0e8d05940c6caa486d58810dd4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.7"
             },
+            "require-dev": {
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~2.7"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.18-dev"
+                    "dev-master": "1.21-dev"
                 }
             },
             "autoload": {
@@ -827,7 +839,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-06-06 23:31:24"
+            "time": "2015-08-24 09:51:18"
         }
     ],
     "packages-dev": [],

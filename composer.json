@@ -9,6 +9,9 @@
       "email": "william@impreshin.com.com"
     }
   ],
+  "config": {
+    "optimize-autoloader": true
+  },
   "repositories": [
     {
       "type": "package",
