@@ -159,6 +159,9 @@
 .tggssgg {
   color: red;
 }
+.ordering-btn {
+  margin-left: 5px;
+}
 .order-btn {
   cursor: pointer;
 }
