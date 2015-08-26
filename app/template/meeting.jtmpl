@@ -478,7 +478,14 @@
 	<![CDATA[
 
 	<div class="c">
+		<div class="c" id="taking-too-long" >
+			something seems to have gone wrong or opening the file is taking too long.. <p><em>the gremlins did it</em></p>
+			. try <a href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">download</a> the file instead
+		</div>
+		
+	
 		<iframe src="https://docs.google.com/viewer?embedded=true&url={{ _domain }}/file/view/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>" style="width:100%; height:500px;" frameborder="0"></iframe>
+	
 	</div>
 	<section class="content-footer">
 		<div class="container">

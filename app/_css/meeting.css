@@ -290,6 +290,10 @@ blockquote.comment-item {
 #document-viewer .content-footer .btn .fa {
   margin-right: 10px;
 }
+#document-viewer iframe {
+  position: relative;
+  z-index: 10;
+}
 #poll-form .label-as-badge {
   border-radius: 1em;
 }
@@ -331,4 +335,12 @@ blockquote.comment-item {
   display: block;
   z-index: 1;
   position: relative;
+}
+#taking-too-long {
+  display: none;
+  z-index: 0;
+  position: absolute;
+  bottom: 100px;
+  right: 0;
+  left: 0;
 }
