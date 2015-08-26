@@ -301,7 +301,7 @@ function getFile(){
 	$.getData("/data/files/view?ID=" + fileID, {"t":"1"}, function (data) {
 		$(".loading-mask").hide();
 		$viewer.jqotesub($("#template-file-viewer"), data).show();
-		$("#taking-too-long").delay(5000).fadeIn(500);
+		$("#taking-too-long").delay(7000).fadeIn(500);
 		var $content = $("#content-area");
 		var ifw = $content.width();
 		var ifh = $content.height();
