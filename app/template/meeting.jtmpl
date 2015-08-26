@@ -220,7 +220,7 @@
 				<div class="col-sm-3 c thumb" style="min-width:150px;">
 					<% if(this.item.files[i].icon=="thumbnail"){ %>
 					<div style="height: 170px;" class="c">
-						<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" style="max-width:130px;"/>
+						<img src="/thumbnail/<%= this.item.files[i].ID %>/<%= this.item.files[i].companyID %>/<%= this.item.files[i].meetingID %>/130/170/<%= this.item.files[i].filename %>" alt="" style="max-width:130px; cursor:pointer;" class="view-file" data-ID="<%= this.item.files[i].ID %>"/>
 					</div>
 
 

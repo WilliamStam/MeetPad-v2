@@ -340,7 +340,7 @@ blockquote.comment-item {
   display: none;
   z-index: 0;
   position: absolute;
-  bottom: 100px;
+  bottom: 90px;
   right: 0;
   left: 0;
 }
