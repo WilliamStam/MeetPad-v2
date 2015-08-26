@@ -184,8 +184,8 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 		$timer = new timer();
 
 			$sql = "
-				SELECT mp_users.*, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag,  mp_users_company.admin
-				FROM (((mp_users INNER JOIN mp_users_group ON mp_users.ID = mp_users_group.userID) INNER JOIN mp_meetings_group ON mp_users_group.groupID = mp_meetings_group.groupID) INNER JOIN mp_meetings ON mp_meetings_group.meetingID = mp_meetings.ID) LEFT JOIN mp_users_company ON (mp_users_company.companyID = mp_meetings.companyID) AND (mp_users.ID = mp_users_company.userID)
+				SELECT mp_users.*,  COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag,  mp_users_company.admin
+				FROM (((mp_users INNER JOIN mp_users_group ON mp_users.ID = mp_users_group.userID) INNER JOIN mp_meetings_group ON mp_users_group.groupID = mp_meetings_group.groupID) INNER JOIN mp_meetings ON mp_meetings_group.meetingID = mp_meetings.ID) INNER JOIN mp_users_company ON (mp_users_company.companyID = mp_meetings.companyID) AND (mp_users.ID = mp_users_company.userID)
 		
 				WHERE mp_meetings.ID = '{$meetingID}'
 				GROUP BY mp_users.ID
