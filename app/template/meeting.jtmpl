@@ -40,7 +40,15 @@
 					<% } %>
 					<% } %>
 				</td>
-				<td><%= this.agenda[i].items[y].heading %></td>
+				<td>
+					<% if(this.agenda[i].items[y].has_resolution=='1'){ %>
+					<i class="fa fa-check g" style="margin-right:5px;" title="Has a resolution, *slow claps* well done team!"></i>
+					
+					<% } %>
+					
+					<%= this.agenda[i].items[y].heading %>
+				
+				</td>
 				<td class="dg s" style="width:80px;"><%= this.agenda[i].items[y].date.short.date %></td>
 				<td style="padding:7px 0 0 0; " class="c"><% if(this.agenda[i].items[y].commentCount!=0){ %><%= this.agenda[i].items[y].commentCount %><% } %></td>
 				<td>

@@ -126,7 +126,7 @@ class meeting extends _data {
 
 			$item['has_commented'] = isset($comments[$item['ID']]['me'])?1:0;
 			$item['last_commented'] = isset($comments[$item['ID']]['last'])&&$comments[$item['ID']]['last']==$this->user['ID']?1:0;
-			
+			$item['has_resolution'] = $item['resolution']!=''?1:0;
 			
 			
 			unset($item['description']);
