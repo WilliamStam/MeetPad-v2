@@ -480,7 +480,7 @@
 	<div class="c">
 		<div class="c" id="taking-too-long" >
 			Something seems to have gone wrong or opening the file is taking too long.. <p><strike>the gremlins did it!</strike> <strong style="font-size: 15px; color:#ff0000; margin-left:10px;" >No we didn't!</strong></p>
-			Try <a href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">download</a> the file instead
+			Try <a href="javascript:window.location.reload(true)">refresh</a> the page or <a href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">download</a> the file instead
 		</div>
 		
 	
