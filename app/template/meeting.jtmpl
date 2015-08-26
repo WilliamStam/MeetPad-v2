@@ -424,9 +424,50 @@
 				<span class="label label-default" style="margin-right:10px;"><%= this.meeting.groups[i].group %></span>
 				<% } %>
 			</section>
-			<div>
+			<div class="well">
 				<%= this.meeting.note||'' %>
 			</div>
+
+
+			<table class="table s">
+
+
+				
+				<thead>
+				<tr>
+					<th class="order-btn" data-column="name" >
+						Name
+						
+					</th>
+					<th class="r order-btn" data-column="lastActivity">
+						Last Activity
+						
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<% for (var u in this.meeting.users){ %>
+				
+				<tr {% if data['admin']=='1' %} class="record user-form-company" data-ID="<%= this.meeting.users[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
+					<td>
+						<% if(this.meeting.users[u].admin=='1'){ %>
+						<span class="label label-danger" style="margin-right:10px;">Admin</span>
+						<% } %>
+
+						<%= this.meeting.users[u].name %>
+
+						<% if(this.meeting.users[u].tag){ %>
+						<small> (<%= this.meeting.users[u].tag||'' %>)</small>
+						<% } %>
+					</td>
+					<td class="r s g">
+						<%= this.meeting.users[u].lastActivity.timeago %>
+					</td>
+				</tr>
+				
+				<% } %>
+				</tbody>
+			</table>
 
 		</div>
 	</section>

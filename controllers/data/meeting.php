@@ -47,8 +47,9 @@ class meeting extends _data {
 		
 		$this->meetingID = $result['ID'];
 		$this->companyID = $result['companyID'];
-		
-		
+
+
+		$result['users'] = $object->getUsers($result['ID']);
 		
 		
 		
