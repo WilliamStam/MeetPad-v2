@@ -21,7 +21,7 @@
 
 
 	<section class="scroll-pane" style="left:10px;">
-		<table class="table table-condensed" id="record-list">
+		<table class="table table-condensed <% if(this.meeting.attending!='1'){ %>dg<% } %>" id="record-list">
 			<tbody><% for(var i in this.agenda) { %>
 
 			<tr>
@@ -30,7 +30,7 @@
 				</th>
 			</tr>
 			<% for(var y in this.agenda[i].items) { %>
-			<tr class="record<% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
+			<tr class="<% if(this.meeting.attending=='1'){ %>record<% } else { %>dg<% } %><% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
 				<td>
 					<% if(this.agenda[i].items[y].has_poll=='1'){ %>
 					<% if(this.agenda[i].items[y].voted!=''){ %>
@@ -433,11 +433,17 @@
 			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
 			<% } %>
 			
-			<hr>
 			
-			<h4>Participants</h4>
-			<table class="table s" id="participants-table">
+			<% if(this.meeting.attending=='1'){ %>
+			
+			<table class="table s" id="participants-table" style="margin-top:30px;">
+				<% if(this.meeting.users.yes.length){ %>
 				<thead>
+				<tr>
+					<th colspan="2">
+						<h4>Participants</h4>
+					</th>
+				</tr>
 				<tr>
 					<th class="order-btn" data-column="name" >
 						Name
@@ -450,29 +456,72 @@
 				</tr>
 				</thead>
 				<tbody>
-				<% for (var u in this.meeting.users){ %>
-				
-				<tr  class="<% if(this.meeting.users[u].attending=='1'){ %>attending <% } %>{% if data['admin']=='1' %}record user-form-company{% endif %}" {% if data['admin']=='1' %}data-ID="<%= this.meeting.users[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
+				<% for (var u in this.meeting.users.yes){ %>
+				<tr  class="attending {% if data['admin']=='1' %}record user-form-company{% endif %}" {% if data['admin']=='1' %}data-ID="<%= this.meeting.users.yes[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
 					<td>
-						<% if(this.meeting.users[u].admin=='1'){ %>
+						<% if(this.meeting.users.yes[u].admin=='1'){ %>
 						<span class="label label-danger" style="margin-right:10px;">Admin</span>
 						<% } %>
 
-						<%= this.meeting.users[u].name %>
+						<%= this.meeting.users.yes[u].name %>
 
-						<% if(this.meeting.users[u].tag){ %>
-						<small> (<%= this.meeting.users[u].tag||'' %>)</small>
+						<% if(this.meeting.users.yes[u].tag){ %>
+						<small> (<%= this.meeting.users.yes[u].tag||'' %>)</small>
 						<% } %>
 					</td>
 					<td class="r s g">
-						<%= this.meeting.users[u].lastActivity.timeago %>
+						<%= this.meeting.users.yes[u].lastActivity.timeago %>
 					</td>
 				</tr>
-				
 				<% } %>
 				</tbody>
-			</table>
+				<% } %>
+				<% if(this.meeting.users.no.length){ %>
+				<thead>
+				<tr>
+					<th colspan="2">
+						<h4>Not Participating</h4>
+					</th>
+				</tr>
+				<tr>
+					<th class="order-btn" data-column="name" >
+						Name
 
+					</th>
+					<th class="r order-btn" data-column="lastActivity">
+						Last Activity
+
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<% for (var u in this.meeting.users.no){ %>
+				<tr  class="{% if data['admin']=='1' %}record user-form-company{% endif %}" {% if data['admin']=='1' %}data-ID="<%= this.meeting.users.no[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
+					<td>
+						<% if(this.meeting.users.no[u].admin=='1'){ %>
+						<span class="label label-danger" style="margin-right:10px;">Admin</span>
+						<% } %>
+
+						<%= this.meeting.users.no[u].name %>
+
+						<% if(this.meeting.users.no[u].tag){ %>
+						<small> (<%= this.meeting.users.no[u].tag||'' %>)</small>
+						<% } %>
+					</td>
+					<td class="r s g">
+						<%= this.meeting.users.no[u].lastActivity.timeago %>
+					</td>
+				</tr>
+				<% } %>
+				</tbody>
+				<% } %>
+			</table>
+			<% } %>
+			
+			
+			
+			
+			
 		</div>
 	</section>
 	<section class="content-footer">

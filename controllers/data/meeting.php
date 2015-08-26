@@ -30,6 +30,10 @@ class meeting extends _data {
 			"item"=>$this->item(),
 			
 		);
+		
+		if ($result['meeting']['attending']!='1'){
+			$result['item'] = array();
+		}
 
 		return $GLOBALS["output"]['data'] = $result;
 	}
@@ -49,7 +53,23 @@ class meeting extends _data {
 		$this->companyID = $result['companyID'];
 
 
-		$result['users'] = $object->getUsers($result['ID']);
+		$users = $object->getUsers($result['ID']);
+		$u = array(
+			"yes"=>array(),
+			"no"=>array()
+		);
+		
+		foreach($users as $item){
+			if ($item['attending']=='1'){
+				$u['yes'][] = $item;
+			} else {
+				$u['no'][] = $item;
+			}
+		}
+		
+		
+		
+		$result['users'] = $u;
 		
 		
 		
