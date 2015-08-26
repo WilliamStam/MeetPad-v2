@@ -428,10 +428,7 @@
 				<%= this.meeting.note||'' %>
 			</div>
 
-			<button class="btn btn-primary btn-lg btn-block">Mark as "Attending"</button>
-			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
-
-			<hr>
+			
 			
 			<h4>Participants</h4>
 			<table class="table s" id="participants-table">
