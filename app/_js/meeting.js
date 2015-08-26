@@ -14,6 +14,19 @@ $(document).ready(function () {
 		getFile();
 	});
 	
+	$(document).on('click', '#attending-btn', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var userID = $this.attr("data-userID");
+		var meetingID = $this.attr("data-meetingID");
+		
+		$(".loadingmask").show();
+		
+		$.post("/save/meeting/attending?userID="+userID,{'meetingID':meetingID},function(){
+			getData();
+		});
+	});
+	
 	
 
 	$(document).on('click', '.viewer-close', function (e) {

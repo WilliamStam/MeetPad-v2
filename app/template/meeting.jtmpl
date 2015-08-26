@@ -428,7 +428,12 @@
 				<%= this.meeting.note||'' %>
 			</div>
 
+			<% if(this.meeting.attending!='1'){ %>
+			<button class="btn btn-primary btn-lg btn-block" id="attending-btn" data-userID="{{ _user['ID'] }}" data-meetingID="<%= this.meeting.ID %>" >Mark as "Attending"</button>
+			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
+			<% } %>
 			
+			<hr>
 			
 			<h4>Participants</h4>
 			<table class="table s" id="participants-table">
