@@ -479,8 +479,8 @@
 
 	<div class="c">
 		<div class="c" id="taking-too-long" >
-			something seems to have gone wrong or opening the file is taking too long.. <p><em>the gremlins did it</em></p>
-			. try <a href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">download</a> the file instead
+			Something seems to have gone wrong or opening the file is taking too long.. <p><strike>the gremlins did it!</strike> <strong style="font-size: 15px; color:#ff0000; margin-left:10px;" >No we didn't!</strong></p>
+			Try <a href="/file/download/<%= this.ID %>/<%= this.companyID %>/<%= this.meetingID %>/<%= this.filename %>">download</a> the file instead
 		</div>
 		
 	
