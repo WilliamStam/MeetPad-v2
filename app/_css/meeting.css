@@ -344,3 +344,11 @@ blockquote.comment-item {
   right: 0;
   left: 0;
 }
+#participants-table tr td {
+  background-color: #f1f1f1;
+  color: #b0b0b0;
+}
+#participants-table .attending td {
+  background-color: #ffffff;
+  color: #444444;
+}

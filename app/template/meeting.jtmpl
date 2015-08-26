@@ -428,11 +428,13 @@
 				<%= this.meeting.note||'' %>
 			</div>
 
+			<button class="btn btn-primary btn-lg btn-block">Mark as "Attending"</button>
+			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
 
-			<table class="table s">
-
-
-				
+			<hr>
+			
+			<h4>Participants</h4>
+			<table class="table s" id="participants-table">
 				<thead>
 				<tr>
 					<th class="order-btn" data-column="name" >
@@ -448,7 +450,7 @@
 				<tbody>
 				<% for (var u in this.meeting.users){ %>
 				
-				<tr {% if data['admin']=='1' %} class="record user-form-company" data-ID="<%= this.meeting.users[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
+				<tr  class="<% if(this.meeting.users[u].attending=='1'){ %>attending <% } %>{% if data['admin']=='1' %}record user-form-company{% endif %}" {% if data['admin']=='1' %}data-ID="<%= this.meeting.users[u].ID %>" data-companyID="{{ data['companyID'] }}"{% endif %}>
 					<td>
 						<% if(this.meeting.users[u].admin=='1'){ %>
 						<span class="label label-danger" style="margin-right:10px;">Admin</span>
