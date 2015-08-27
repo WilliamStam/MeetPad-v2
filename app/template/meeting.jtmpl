@@ -126,6 +126,7 @@
 
 
 
+			<h4>Resolution</h4>
 
 			<% if (this.item.resolution){ %>
 			<div class="alert alert-success">
