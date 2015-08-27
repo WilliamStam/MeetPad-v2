@@ -72,3 +72,66 @@ fieldset.content legend {
 		height: 30px;
 	}
 }
+
+
+blockquote.comment-item {
+	font-size: inherit;
+	font-weight: normal;
+
+	border-bottom: 1px solid #ddd;
+	border-left: none;
+	padding-bottom: 20px;
+
+}
+
+.comments-list {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+	blockquote {
+		padding-left: 10px;
+		padding-bottom: 5px;
+	}
+	ul {
+		list-style: none;
+		padding-left: 20px;
+
+	}
+	li {
+		border-left: 3px solid #eee;
+	}
+	textarea {
+
+		resize: vertical;
+		min-width: 30px;
+	}
+	.comment-btn-bar {
+		display: none;
+	}
+}
+h4 {
+	margin-top:30px;
+}
+.poll-options {
+	.radio {
+		position: relative;
+		padding-bottom: 9px;
+		padding-top: 9px;
+		.percent-bar {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			background-color: #deebff;
+			z-index: 0;
+		}
+		.label {
+			position: relative; z-index:1;
+			margin-left:7px;
+		}
+		label {
+			margin-left:20px; display:block; z-index:1; position: relative;
+		}
+
+	}
+}

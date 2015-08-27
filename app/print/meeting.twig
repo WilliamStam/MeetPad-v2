@@ -1,9 +1,56 @@
+{% macro comment(data) %}{% import _self as macro %}
+	<li>
+		<blockquote class="comment-item">
+			{% if data.deleted %}
+				<div class="c">
+					<em class="c g ">Comment has been deleted</em>
+				</div>
+
+				<footer class="text-right" style="margin-top:5px;">
+
+					{{ data.name }}
+					{% if data.tag %} <em>({{ data.tag }}</em>) {% endif %}&nbsp;
+					<cite title="{{ data.timeago }}">{{ data.datein }}</cite>
+				</footer>
+
+			{% else %}
+
+				{{ data.comment|raw }}
+				<div class="clearfix"></div>
+				<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
+					{{ data.name }}
+					{% if data.tag %} <em>({{ data.tag }}</em>) {% endif %}&nbsp;
+					<cite title="{{ data.timeago }}">{{ data.datein }} </cite>
+				</footer>
+
+				<div class="clearfix"></div>
+
+			{% endif %}
+		</blockquote>
+
+		<ul>
+			{% for row in data['children'] %}
+				{{ macro.comment(row) }}
+			{% endfor %}
+
+
+		</ul>
+	</li>
+
+{% endmacro %}
+
+{% import _self as macro %}
+
+
+
+
+
 
 <section id="content-area">
 	{% if data['ID'] %}
-	<section id="printpagepane" >
+		<section id="printpagepane">
 
-		
+
 			<div>
 				<table style="border-bottom: 1px double #ccc;" class="table">
 					<tr>
@@ -22,274 +69,304 @@
 				</table>
 
 			</div>
-		
-
-	
-	<div id="body">
-		<div class="clearfix" style="height: 100px;"></div>
-		<h1 class="c">{{ data['meeting'] }}</h1>
-
-		<div class="c s">
-			<hr style="width: 400px; margin-left: auto; margin-right: auto;">
-			{{ data['company'] }}<hr style="width: 400px; margin-left: auto; margin-right: auto;">
-			Start: {{ data['timeStart']['short']['disp'] }} - End: {{ data['timeEnd']['short']['disp'] }}</div>
-
-		<div class="clearfix" style="height: 100px;"></div>
-
-		<table style="margin-left: 7px;" id="statstable" class="table">
-			<tr>
-				<td class="r" width="60"><strong>{{data['totals']['attending'] }}</strong>
-				</td>
-				<td>
-					<small>Attending</small>
-				</td>
-				<td class="r" width="60"><strong>{{data['totals']['comments'] }}</strong>
-				</td>
-				<td>
-					<small>Comments</small>
-				</td>
-				<td class="r" width="60"><strong>{{data['totals']['resolution'] }}</strong></td>
-				<td>
-					<small>Resolutions</small>
-				</td>
-			</tr>
-			<tr>
-				<td class="r"><strong>{{data['totals']['items'] }}</strong></td>
-				<td>
-					<small>Items</small>
-				</td>
-				<td class="r"><strong>{{data['totals']['votes'] }}</strong>
-				</td>
-				<td>
-					<small>Votes</small>
-				</td>
-				<td class="r"><strong>{{data['totals']['discussion'] }}</strong></td>
-				<td>
-					<small>Discussion Links</small>
-				</td>
-			</tr>
-			<tr>
-				<td class="r"><strong>{{data['totals']['polls'] }}</strong></td>
-				<td>
-					<small>Polls</small>
-				</td>
-				<td class="r">
-					<strong class="g">{{data['totals']['av_votes'] }}</strong></td>
-
-				<td>
-					<small>Available Votes</small>
-				</td>
-				<td class="r"><strong>{{data['totals']['files'] }}</strong></td>
-				<td>
-					<small>Documents</small>
-				</td>
-
-			</tr>
-
-			<tr>
-				<td class="r"></td>
-				<td></td>
-				<td class="r"></td>
-				<td></td>
-				<td class="r">&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
-
-		</table>
-
-		<div class="clearfix" style="height: 50px;"></div>
-		
-		<div class="pagebreak"></div>
-		<h2>Attendees</h2>
-		| {% for row in data['groups'] %} {{ row['group'] }} | {% endfor %}
-		<table class="table">
-			<thead>
-			<tr>
-				<th></th>
-				<th width="170"></th>
-				<th class="c" width="60"><i class="fa fa-comments"></i></th>
-				<th class="c" width="60"><i class="fa fa-check-square-o"></i></th>
-			</tr>
-			</thead>
-			<tbody>
-			{% for row in data['attending'] %}
-				<tr>
-					<td>
-						{{ row['n'] }}
-					</td>
-
-					<td class="s dg">
-						{{ row['d'] }}
-					</td>
-					<td class="c">
-						{% if row['cc'] %}{{ row['cc'] }}{% endif %}
-					</td>
-
-					<td class="c">
-						{% if row['pc'] %}{{ row['pc'] }}{% endif %}
-					</td>
-
-				</tr>
-			{% endfor %}
-
-			</tbody>
-		</table>
-		<div class="pagebreak"></div>
 
 
-		{% for row in data['content'] %} {% for rowsub in row['records'] %}
-		<h3>
-			<small><span class="s">{{ rowsub['datein_short'] }}</span> - {{ row['heading'] }}</small>
-			<br> {{ rowsub['heading'] }}
-		</h3>
 
-		{% if rowsub['commentCount'] %}<em>Comments:</em>
-			<strong>{{ rowsub['commentCount'] }}</strong> {% endif %} {% if rowsub['commentCount'] and rowsub['poll'] %} | {% endif %} {% if rowsub['poll'] %}<em>Votes:</em>
-			<strong>{{ rowsub['poll']['votescount'] }}</strong> {% endif %}
+			<div id="body">
+				<div class="clearfix" style="height: 100px;"></div>
+				<h1 class="c">{{ data['meeting'] }}</h1>
 
+				<div class="c s">
+					<hr style="width: 400px; margin-left: auto; margin-right: auto;">
+					{{ data['company'] }}
+					<hr style="width: 400px; margin-left: auto; margin-right: auto;">
+					Start: {{ data['timeStart']['short']['disp'] }} - End: {{ data['timeEnd']['short']['disp'] }}</div>
 
-		<fieldset class="content">
-			<legend>Description</legend>
-			{{ rowsub['description'] }}
-		</fieldset>
-		{% if rowsub['resolution'] %}
-			<h5>Resolution</h5>
-			<fieldset class="content" style="background-color: #f1f1f1; border: 1px solid #ccc; margin-top: 0;">
-				{{ rowsub['resolution'] }}
-			</fieldset>
-		{% endif %}
+				<div class="clearfix" style="height: 100px;"></div>
 
-		{% if rowsub['poll'] %}
-			<fieldset class="content">
-				<legend>Poll</legend>
-				<div class="clearfix"></div>
-				<strong>{{ rowsub['poll']['question'] }}</strong>
-
-				<div class="clearfix"></div>
-				<ul class="bar">
-					{% for row_poll in rowsub['poll']['options'] %}
-
-						<li class="outerbar">
-							<img src="/ui/_images/poll_bg_print.gif" alt="" class="innerbar" style="height: 100%; width: {{ row_poll['percent'] }}%;">
-
-							<div class="labelbar">
-								<div>
-									<span class="dg">({{ row_poll['votes'] }}) -</span> {{ row_poll['answer'] }}
-								</div>
-
-							</div>
-							<div class="s g" style="margin-left: 30px;">
-
-
-								{% for row_poll_voted in row_poll['voted'] %} {{ row_poll_voted['name'] }}, {% endfor %}
-							</div>
-						</li>
-					{% endfor %}
-
-				</ul>
-
-			</fieldset>
-
-		{% endif %}
-
-		{% if rowsub['comments']['recordsCount']!='0' %}
-			<h5>Comments</h5>
-
-			<div class="commentlistarea">
-				{% for row_comment in rowsub['comments']['data'] %}
-
-					{% if row_comment['d_'] %}
-						<div class="comment-deleted-block s g">
-							<em>Comment deleted</em>
-							{% if row_comment['d_r'] %}
-								reason:
-								<strong>{{ row_comment['d_r'] }}</strong>
-							{% else %}
-							{% endif %}
-
-							<div class="s g">{{ row_comment['n'] }} -
-								<span class="date">{{ row_comment['d'] }}</span> {% if row_comment['d_b'] %}| Deleted by {{ row_comment['d_b'] }}{% endif %}
-							</div>
-						</div>
-					{% else %}
-
-						<blockquote>
-							{{ row_comment['c'] }}
-							<small>{{ row_comment['n'] }} -
-								<span class="date">{{ row_comment['d'] }}</span>
-							</small>
-						</blockquote>
-					{% endif %}
-				{% endfor %}
-			</div>
-		{% endif %}
-
-		{% if rowsub['files']['recordsCount'] %}
-			<fieldset class="content">
-
-				<table class="condensed-table">
-					<thead>
+				<table style="margin-left: 7px;" id="statstable" class="table">
 					<tr>
-						<th><h5>Files</h5></th>
-						<th width="70">Size</th>
-						<th width="100">Date</th>
-						<th width="100">User</th>
+						<td class="r" width="60"><strong>{{ data['totals']['attending'] }}</strong>
+						</td>
+						<td>
+							<small>Attending</small>
+						</td>
+						<td class="r" width="60"><strong>{{ data['totals']['comments'] }}</strong>
+						</td>
+						<td>
+							<small>Comments</small>
+						</td>
+						<td class="r" width="60"><strong>{{ data['totals']['resolution'] }}</strong></td>
+						<td>
+							<small>Resolutions</small>
+						</td>
+					</tr>
+					<tr>
+						<td class="r"><strong>{{ data['totals']['items'] }}</strong></td>
+						<td>
+							<small>Items</small>
+						</td>
+						<td class="r"><strong>{{ data['totals']['votes'] }}</strong>
+						</td>
+						<td>
+							<small>Votes</small>
+						</td>
+						<td class="r"><strong>{{ data['totals']['discussion'] }}</strong></td>
+						<td>
+							<small>Discussion Links</small>
+						</td>
+					</tr>
+					<tr>
+						<td class="r"><strong>{{ data['totals']['polls'] }}</strong></td>
+						<td>
+							<small>Polls</small>
+						</td>
+						<td class="r">
+							<strong class="g">{{ data['totals']['av_votes'] }}</strong></td>
+
+						<td>
+							<small>Available Votes</small>
+						</td>
+						<td class="r"><strong>{{ data['totals']['files'] }}</strong></td>
+						<td>
+							<small>Documents</small>
+						</td>
+
+					</tr>
+
+					<tr>
+						<td class="r"></td>
+						<td></td>
+						<td class="r"></td>
+						<td></td>
+						<td class="r">&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+
+				</table>
+
+				<div class="clearfix" style="height: 50px;"></div>
+
+				<div class="pagebreak"></div>
+				<h2>Attendees</h2>
+				| {% for row in data['groups'] %} {{ row['group'] }} | {% endfor %}
+				<table class="table" style="margin-top:30px;">
+					<thead>
+
+					<tr>
+						<th>Participants</th>
+						<th width="170"></th>
+						<th class="c" width="60"><i class="fa fa-comments"></i></th>
+						<th class="c" width="60"><i class="fa fa-check-square-o"></i></th>
 					</tr>
 					</thead>
 					<tbody>
-
-
-					{% for rowfiles in rowsub['files']['data'] %}
+					{% for row in data['attending']['yes'] %}
 						<tr>
 							<td>
-								{{ rowfiles['filename'] }}
-
+								{{ row['name'] }}
 							</td>
-							<td class="s g">{{ rowfiles['filesize'] }}</td>
-							<td class="s g">{{ rowfiles['datein'] }}</td>
-							<td class="s g">{{ rowfiles['name'] }}</td>
-						</tr>
-						<tr class="sub-item">
-							<td colspan="4" class="g s" style="padding-left: 30px;">
 
-
-								{% if rowfiles['seen'] %}
-									<div>
-										<strong>Seen: </strong> {% for rowfilesseen in rowfiles['seen'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
-									</div>
-								{% endif %}
-								{% if rowfiles['downloaded'] %}
-									<div>
-										<strong>Downloaded: </strong> {% for rowfilesseen in rowfiles['downloaded'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
-									</div>
-								{% endif %}
-
+							<td class="s dg">
+								{{ row['lastActivity']['timeago'] }}
 							</td>
-						</tr>
+							<td class="c">
+								{% if row['cc'] %}{{ row['cc'] }}{% endif %}
+							</td>
 
+							<td class="c">
+								{% if row['pc'] %}{{ row['pc'] }}{% endif %}
+							</td>
+
+						</tr>
 					{% endfor %}
+					<thead>
+					<tr>
+						<th colspan='4'>
+							<div style="height: 30px;;"></div>
+						</th>
+					</tr>
+					<tr>
+						<th>Not Participating</th>
+						<th width="170"></th>
+						<th class="c" width="60"><i class="fa fa-comments"></i></th>
+						<th class="c" width="60"><i class="fa fa-check-square-o"></i></th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for row in data['attending']['no'] %}
+						<tr>
+							<td>
+								{{ row['name'] }}
+							</td>
+
+							<td class="s dg">
+								{{ row['lastActivity']['timeago'] }}
+							</td>
+							<td class="c">
+								{% if row['cc'] %}{{ row['cc'] }}{% endif %}
+							</td>
+
+							<td class="c">
+								{% if row['pc'] %}{{ row['pc'] }}{% endif %}
+							</td>
+
+						</tr>
+					{% endfor %}
+
 					</tbody>
 				</table>
-			</fieldset>
-		{% endif %}
+				<div class="pagebreak"></div>
+
+
+				{% for row in data['content'] %}
+					{% for rowsub in row['items'] %}
+						<h3>
+							<small>{{ row['category'] }}</small>
+
+						</h3>
+						<h3>
+							{{ rowsub['heading'] }}
+
+						</h3>
+
+						{{ rowsub['date']['long']['date'] }} <em>{{ rowsub['date']['short']['time'] }}</em>
+						{% if rowsub['commentCount'] %} |
+							<em>Comments:</em> <strong>{{ rowsub['commentCount'] }}</strong> {% endif %}
+						{% if rowsub['poll'] %} |
+							<em>Votes:</em> <strong>{{ rowsub['poll']['votescount'] }}</strong>
+						{% endif %}
+
+
+
+						<h4>Description</h4>
+						<div class="well">
+							{{ rowsub['description']|raw }}
+						</div>
+
+						{% if rowsub['resolution'] %}
+							<h4>Resolution</h4>
+							<div class="alert alert-success">
+								{{ rowsub['resolution']|raw }}
+							</div>
+
+						{% endif %}
+
+						{% if rowsub['poll']['question'] %}
+							<h4>Poll</h4>
+							<strong>{{ rowsub['poll']['question'] }}</strong>
+
+
+
+							<div class="poll-options">
+								{% for row_poll in rowsub['poll']['options'] %}
+									
+								<div class="radio">
+									<div style="width:{{row_poll['percent']}}%;" class="percent-bar"></div>
+									<span class="label label-default pull-right">{{ row_poll['percent'] }}%</span>
+									<label>({{ row_poll['votes'] }}) - {{ row_poll['answer'] }}
+										<div class="s">{{ row_poll['voted'] }}</div>
+									</label>
+
+								</div>
+									
+
+									<div class="clearfix"></div>
+								{% endfor %}
+							</div>
+							
+
+
+
+							
 
 
 
 
 
-		<div class="pagebreak"></div>
-		{% endfor %} {% endfor %}
 
+						{% endif %}
 
-	</div>
-	<script>
-		//window.print();
-	</script>
+						{% if rowsub['comments'] %}
+							<h4>Comments</h4>
 
 
 
 
-</section>
+							<ul class="comments-list">
+								{% for row_comment in rowsub['comments'] %}
+
+									{{ macro.comment(row_comment) }}
+								{% endfor %}
+							</ul>
+						{% endif %}
+
+						{% if rowsub['files']['recordsCount'] %}
+							<fieldset class="content">
+
+								<table class="condensed-table">
+									<thead>
+									<tr>
+										<th><h5>Files</h5></th>
+										<th width="70">Size</th>
+										<th width="100">Date</th>
+										<th width="100">User</th>
+									</tr>
+									</thead>
+									<tbody>
+
+
+									{% for rowfiles in rowsub['files']['data'] %}
+										<tr>
+											<td>
+												{{ rowfiles['filename'] }}
+
+											</td>
+											<td class="s g">{{ rowfiles['filesize'] }}</td>
+											<td class="s g">{{ rowfiles['datein'] }}</td>
+											<td class="s g">{{ rowfiles['name'] }}</td>
+										</tr>
+										<tr class="sub-item">
+											<td colspan="4" class="g s" style="padding-left: 30px;">
+
+
+												{% if rowfiles['seen'] %}
+													<div>
+														<strong>Seen: </strong> {% for rowfilesseen in rowfiles['seen'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
+													</div>
+												{% endif %}
+												{% if rowfiles['downloaded'] %}
+													<div>
+														<strong>Downloaded: </strong> {% for rowfilesseen in rowfiles['downloaded'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
+													</div>
+												{% endif %}
+
+											</td>
+										</tr>
+
+									{% endfor %}
+									</tbody>
+								</table>
+							</fieldset>
+						{% endif %}
+
+
+
+
+
+						<div class="pagebreak"></div>
+					{% endfor %} {% endfor %}
+
+
+			</div>
+			<script>
+				//window.print();
+			</script>
+
+
+
+
+		</section>
 
 
 	{% else %}
@@ -297,6 +374,7 @@
 
 			<div class="c" style="position: relative;">
 				<i class="fa fa-frown-o" style="font-size: 120px; color:rgba(255, 0, 0, 0.3)"></i>
+
 				<div style="">
 					<h3 class="g">Sowwy!!</h3>
 				</div>
@@ -304,8 +382,8 @@
 		</div>
 		{% if get['new']=="true" %}
 			<div class="alert alert-danger c" role="alert">You created this meeting but you arent in any of the groups that have access to this meeting</div>
-			{% else %}
-		<div class="alert alert-danger c" role="alert">No meeting found or no permission to access it!</div>
-			{% endif %}
+		{% else %}
+			<div class="alert alert-danger c" role="alert">No meeting found or no permission to access it!</div>
+		{% endif %}
 	{% endif %}
 </section>

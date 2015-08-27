@@ -54,15 +54,11 @@ class item extends _ {
 		if (count($result)) {
 			$return = $result[0];
 			
-			$return['poll']= array(
-				"question"=>$return['poll'],
-				"options"=>$this->f3->get("DB")->exec("SELECT mp_content_poll_answers.*, count(mp_content_poll_voted.userID) AS votes FROM mp_content_poll_answers LEFT JOIN mp_content_poll_voted ON mp_content_poll_voted.answerID = mp_content_poll_answers.ID  WHERE mp_content_poll_answers.contentID = '{$return['ID']}' GROUP BY mp_content_poll_answers.ID ORDER BY orderby ASC"),
-				"voted"=>($this->f3->get("DB")->exec("SELECT answerID FROM mp_content_poll_voted WHERE contentID='{$return['ID']}' AND userID='{$this->user['ID']}'")),
-				"votes"=>($this->f3->get("DB")->exec("SELECT count(ID) as votes FROM mp_content_poll_voted WHERE contentID='{$return['ID']}' "))
+			$return['poll']= item_poll::getInstance()->get($return);
+			$return['poll']["voted"]=($this->f3->get("DB")->exec("SELECT answerID FROM mp_content_poll_voted WHERE contentID='{$return['ID']}' AND userID='{$this->user['ID']}'"));
 				
-			);
 			$return['poll']['voted'] = $return['poll']['voted'][0]['answerID'];
-			$return['poll']['votes'] = $return['poll']['votes'][0]['votes'];
+			
 			
 			
 		} else {

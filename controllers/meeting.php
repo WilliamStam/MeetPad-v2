@@ -43,9 +43,82 @@ class meeting extends _ {
 
 		//test_array($result); 
 		$data['groups'] =  models\meeting::getInstance()->getGroups($data['ID']);
-	
+
+		$users = models\meeting::getInstance()->getUsers($data['ID']);
+		$u = array(
+			"yes"=>array(),
+			"no"=>array()
+		);
+
+		foreach($users as $item){
+			if ($item['attending']=='1'){
+				$u['yes'][] = $item;
+			} else {
+				$u['no'][] = $item;
+			}
+		}
+		$data['attending'] = $u;
 		
-//test_array($data); 
+		
+		
+		
+		
+
+		$object = models\item::getInstance();
+		$result =  $object->getAll("meetingID ='{$data['ID']}'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
+
+
+
+		$ids = array();
+		foreach ($result as $item) {
+			$ids[] = $item['ID'];
+		}
+		$voted = array();
+		$comments = array();
+		
+
+//test_array($comments); 
+
+
+
+		$items = array();
+		foreach ($result as $item){
+
+			$item['voted'] = isset($voted[$item['ID']])?$voted[$item['ID']]:'';
+			$item['has_poll'] = $item['poll']?1:0;
+
+			$comments = models\item_comment::getInstance()->getAll("contentID='{$item['ID']}'","datein ASC",'',array("companyID"=>$data['companyID']));
+
+			$item['comments'] =  $comments;
+
+			$poll_options = models\item_poll::getInstance()->get($item);
+			
+
+			$item['poll'] =  models\item_poll::getInstance()->get($item);
+
+			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
+			$items['catID'.$item['categoryID']]["category"] = $item['category'];
+			$items['catID'.$item['categoryID']]["items"][] = $item;
+
+		}
+		$result = array();
+		foreach ($items as $item) $result[] = $item;
+		
+		
+		
+		
+		
+
+
+
+		$data['content'] = $result;
+
+
+		
+
+
+
+
 
 		$tmpl = new \template("template.twig","app/print/");
 		$tmpl->page = array(

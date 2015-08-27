@@ -6,8 +6,9 @@ class meeting extends _data {
 	private static $instance;
 	public $meetingID;
 	public $companyID;
-	function __construct() {
+	function __construct($meetingID='') {
 		parent::__construct();
+		if ($meetingID)$this->meetingID = $meetingID;
 
 	}
 
@@ -41,7 +42,7 @@ class meeting extends _data {
 	
 	function meeting() {
 		
-		$meetingID = isset($_GET['meetingID'])?$_GET['meetingID']:"";
+		$meetingID = isset($_GET['meetingID'])?$_GET['meetingID']:$this->meetingID;
 
 		$object = models\meeting::getInstance();
 		$result =  $object->get($meetingID,true);
