@@ -145,14 +145,20 @@ function page_resize() {
 
 	$(".selector-dropdown .dropdown-menu").css({maxHeight: $(window).height() - 60 + "px"});
 
+	var isMobile = window.matchMedia("only screen and (min-width: 992px)");
 	$.each($('.scroll-pane'), function () {
 		var api = $(this).data('jsp');
-		if (api) {
-			api.reinitialise();
+		if (isMobile.matches) {
+			if (api) {
+				api.reinitialise();
+			} else {
+				$(this).jScrollPane(settings);
+			}
 		} else {
-			$(this).jScrollPane(settings);
+			if (api) {
+				api.destroy();
+			}
 		}
-
 	});
 
 }

@@ -35,7 +35,8 @@ class meeting extends _data {
 		if ($result['meeting']['attending']!='1'){
 			$result['item'] = array();
 		}
-
+		$this->f3->set("meeting",$result['meeting']);
+		$this->f3->set("company",$result['company']);
 		return $GLOBALS["output"]['data'] = $result;
 	}
 	

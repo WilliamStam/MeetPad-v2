@@ -20,6 +20,9 @@
 	{% if page['template_css'] %}
 		<link rel="stylesheet" href="{{ page['template_css'] }}">
 	{% endif %}
+	{% if page['print'] %}
+	<link rel='alternate' media='print' href="{{ page['print'] }}">
+	{% endif %}
 	<script src="/vendor/components/modernizr/modernizr.{{ _v }}.js"></script>
 </head>
 <body>

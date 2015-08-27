@@ -92,6 +92,7 @@ class user extends _ {
 		$return = array();
 		$user = $this->f3->get("user");
 		
+		//test_array($data); 
 		
 		if ($user['ID']){
 			
@@ -132,11 +133,20 @@ class user extends _ {
 				"companies"=>$companies,
 				"meetings"=>$meetings
 			);
+			
+		
 
+			$companyID = "";
+			if (isset($data['meeting']['companyID'])){
+				$companyID = $data['meeting']['companyID'];
+			}
 			//test_array($data['company']['ID']); 
 			if (isset($data['company']['ID'])){
-				
-				
+				$companyID = $data['company']['ID'];
+			}
+			
+			
+			if ($companyID){
 				$u = $this->f3->get("user");
 				$u = users::getInstance()->get($u['ID'],$data['company']['ID']);
 
@@ -144,17 +154,14 @@ class user extends _ {
 
 				$return['company_admin'] =$u['admin'];
 				$return['company_users_no_groups'] = count(users::getInstance()->getAll("mp_users_group.groupID is null AND mp_users_company.companyID = '{$data['company']['ID']}'"));
-
-			//	test_array(array($data['company']['ID'],$return['company_users_no_groups'],"mp_users_group.groupID is null AND mp_users_company.companyID = '{$data['companyID']}'" ));
-
-
 			}
 
+			
 
 		}
 		
 		
-		//test_array($return); 
+		
 		
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
