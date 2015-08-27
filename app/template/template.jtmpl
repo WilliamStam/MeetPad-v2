@@ -216,7 +216,7 @@
 					{% if page['section']=="meeting" %}
 						
 						<li class="icon-btn">
-							<a href="/print/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}"><span class="visible-xs-inline">Print </span><i class="fa fa-print"></i></a>
+							<a href="/print/{{ data['ID'] }}/{{ data['company'] }}/{{ data['url'] }}" target="_blank"><span class="visible-xs-inline">Print </span><i class="fa fa-print"></i></a>
 						</li>
 						<% if(this.company_admin=='1'){ %>
 						<li class="icon-btn">
