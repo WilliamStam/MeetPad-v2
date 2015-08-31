@@ -77,8 +77,10 @@ class meeting extends _ {
 		$voted = array();
 		$comments = array();
 		
+		
+		
 
-//test_array($comments); 
+		
 
 
 
@@ -92,9 +94,10 @@ class meeting extends _ {
 
 			$item['comments'] =  $comments;
 
-			$poll_options = models\item_poll::getInstance()->get($item);
-			
+			$attachments = models\item_file::getInstance()->getAll("contentID='{$item['ID']}'","datein DESC");
 
+			$item['attachments'] =  $attachments;
+			
 			$item['poll'] =  models\item_poll::getInstance()->get($item);
 
 			$items['catID'.$item['categoryID']]["ID"] = $item['categoryID'];
@@ -117,7 +120,7 @@ class meeting extends _ {
 
 		
 
-
+//test_array($data); 
 
 
 

@@ -260,32 +260,62 @@
 
 							<div class="poll-options">
 								{% for row_poll in rowsub['poll']['options'] %}
-									
-								<div class="radio">
-									<div style="width:{{row_poll['percent']}}%;" class="percent-bar"></div>
-									<span class="label label-default pull-right">{{ row_poll['percent'] }}%</span>
-									<label>({{ row_poll['votes'] }}) - {{ row_poll['answer'] }}
-										<div class="s">{{ row_poll['voted'] }}</div>
-									</label>
 
-								</div>
-									
+									<div class="radio">
+										<div style="width:{{ row_poll['percent'] }}%;" class="percent-bar"></div>
+										<span class="label label-default pull-right">{{ row_poll['percent'] }}%</span>
+										<label>({{ row_poll['votes'] }}) - {{ row_poll['answer'] }}
+											<div class="s">{{ row_poll['voted'] }}</div>
+										</label>
+
+									</div>
+
 
 									<div class="clearfix"></div>
 								{% endfor %}
 							</div>
-							
-
-
-
-							
-
-
-
-
-
 
 						{% endif %}
+
+
+
+						{% if rowsub['attachments'] %}
+							<hr/>
+							<h4>Attachments</h4>
+							{% for row_file in rowsub['attachments'] %}
+								<div class="attachment-item">
+									<div class="col-sm-3 c thumb" style="min-width:150px;">
+										{% if row_file['icon']=='thumbnail' %}
+											<div style="height: 170px;" class="c">
+												<img src="/thumbnail/{{ row_file['ID'] }}/{{ row_file['companyID'] }}/{{ row_file['meetingID'] }}/130/170/{{ row_file['filename'] }}" alt="" style="max-width:130px; cursor:pointer; border:1px solid #999;"/>
+											</div>
+
+										{% else %}
+											<i class="fa <%= this.item.files[i].icon||'fa-file-o' %>" style=""></i>
+										{% endif %}
+									</div>
+									<div>
+										<h5>
+											{{ row_file['filename'] }} - {{ row_file['filesize'] }}
+										</h5>
+										{{ row_file['description'] }}
+
+										<strong>Seen:</strong> 
+										<br>
+										<strong>Downloaded:</strong> 
+
+										<div class="clearfix"></div>
+									</div>
+
+
+
+
+								</div>
+							{% endfor %}
+						{% endif %}
+
+
+
 
 						{% if rowsub['comments'] %}
 							<h4>Comments</h4>
@@ -300,57 +330,6 @@
 								{% endfor %}
 							</ul>
 						{% endif %}
-
-						{% if rowsub['files']['recordsCount'] %}
-							<fieldset class="content">
-
-								<table class="condensed-table">
-									<thead>
-									<tr>
-										<th><h5>Files</h5></th>
-										<th width="70">Size</th>
-										<th width="100">Date</th>
-										<th width="100">User</th>
-									</tr>
-									</thead>
-									<tbody>
-
-
-									{% for rowfiles in rowsub['files']['data'] %}
-										<tr>
-											<td>
-												{{ rowfiles['filename'] }}
-
-											</td>
-											<td class="s g">{{ rowfiles['filesize'] }}</td>
-											<td class="s g">{{ rowfiles['datein'] }}</td>
-											<td class="s g">{{ rowfiles['name'] }}</td>
-										</tr>
-										<tr class="sub-item">
-											<td colspan="4" class="g s" style="padding-left: 30px;">
-
-
-												{% if rowfiles['seen'] %}
-													<div>
-														<strong>Seen: </strong> {% for rowfilesseen in rowfiles['seen'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
-													</div>
-												{% endif %}
-												{% if rowfiles['downloaded'] %}
-													<div>
-														<strong>Downloaded: </strong> {% for rowfilesseen in rowfiles['downloaded'] %} {{ rowfilesseen['n'] }} ({{ rowfilesseen['c'] }}), {% endfor %}
-													</div>
-												{% endif %}
-
-											</td>
-										</tr>
-
-									{% endfor %}
-									</tbody>
-								</table>
-							</fieldset>
-						{% endif %}
-
-
 
 
 

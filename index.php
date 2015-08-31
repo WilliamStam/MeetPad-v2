@@ -143,7 +143,8 @@ $f3->route('GET|POST /content/@ID/@company/@url/users', 'controllers\meeting_use
 //$f3->route('GET|POST /thumbnail/@cID/@mID/@width/@height/@file', 'controllers\thumbnail->attachment');
 $f3->route('GET|POST /thumbnail/@ID/@cID/@mID/@width/@height/@filename', 'controllers\files->thumbnail');
 $f3->route('GET|POST /file/download/@ID/@cID/@mID/@filename', 'controllers\files->download');
-$f3->route('GET|POST /file/view/@ID/@cID/@mID/@filename', 'controllers\files->view');
+$f3->route('GET|POST /file/view/@ID/@cID/@mID/@filename', 'controllers\files->view_counter');
+$f3->route('GET|POST /viewer/view/@ID/@cID/@mID/@filename', 'controllers\files->view');
 
 
 

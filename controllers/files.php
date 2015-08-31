@@ -110,6 +110,12 @@ class files extends _ {
 		}
 		
 	}
+	function view_counter(){
+		$ID = $this->f3->get("PARAMS['ID']");
+		
+		
+		$this->view();
+	}
 	function view(){
 		$this->f3->set("NOTIMERS",true);
 		$ID = $this->f3->get("PARAMS['ID']");
@@ -121,30 +127,23 @@ class files extends _ {
 			$data['companyID'] =  $this->f3->get("PARAMS['cID']");
 			$data['meetingID'] =  $this->f3->get("PARAMS['mID']");
 		}
-
 		$cfg = $this->f3->get("cfg");
-
 
 		$filename = $data['store_filename'];
 		$folder = $cfg['media'] .  $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
 		$file = $folder . $filename;
 		$folder_stub = $data['companyID'] . DIRECTORY_SEPARATOR . $data['meetingID'] . DIRECTORY_SEPARATOR;
-
+		
 		if (file_exists($file)){
 			$o = new \Web();
 			header('Content-Type: '.$o->mime($file));
-			
 			header('Accept-Ranges: bytes');
 			header('Content-Length: '.$size=filesize($file));
-
 			echo readfile($file);
-
-
 			exit();
 		} else {
 			$this->f3->error(404);
 		}
-		
 	}
 	public static function remove_white($thumb) {
 		$img = imagecreatefrompng($thumb);

@@ -11,10 +11,10 @@
 
 
 			<div class="c" style="font-size: 40px; line-height:30px; font-weight: bold; margin-top:50px; color:#e1e1e1;">
-				Coming <br>soon!
 				<div>
-					<i class="fa fa-bullhorn" style="font-size: 100px;margin-top:30px;"></i>
-				</div>
+					<i class="fa fa-bullhorn" style="font-size: 100px;margin-top:30px;margin-bottom:30px;"></i>
+				</div>Coming <br>soon!
+				
 			</div>
 			<!--
 		Stats charts go here. same as the company ones -->
