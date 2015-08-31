@@ -55,7 +55,7 @@
 							<% } else { %>
 							<input type="text" class="form-control" id="email" name="email" placeholder="Email" value="<%= this.email||'' %>">
 							<div class="help-block s g">
-								The email address is used as the persons username. make sure you enter it correctly. We will be sending an email to the email address supplied with an activation link
+								The email address is used as the persons username. Make sure you enter it correctly. We will be sending an email to the email address supplied with an activation link
 							</div>
 							<% } %>
 						</div>
