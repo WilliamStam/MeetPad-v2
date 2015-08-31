@@ -81,16 +81,22 @@ class files extends _ {
 		$userID = isset($_GET['uID'])?$_GET['uID']:$this->user['ID'];
 		//test_array($userID);
 		//test_array($data);
-		$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
-		$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
+		
+		$user = models\user::getInstance()->get($userID);
+		
+		if ($user['global_admin']!='1'){
+			$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
+			$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
 
-		$counter->contentID = $data['contentID'];
-		$counter->fileID = $data['ID'];
-		$counter->userID = $userID;
-		$counter->level = '2';
-		$counter->viewed = $counter->viewed?$counter->viewed+1:1;
+			$counter->contentID = $data['contentID'];
+			$counter->fileID = $data['ID'];
+			$counter->userID = $userID;
+			$counter->userName = $user['name'];
+			$counter->level = '2';
+			$counter->viewed = $counter->viewed?$counter->viewed+1:1;
 
-		$counter->save();
+			$counter->save();
+		}
 		
 		
 		
@@ -137,16 +143,22 @@ class files extends _ {
 		$userID = isset($_GET['uID'])?$_GET['uID']:$this->user['ID'];
 		//test_array($userID);
 		//test_array($data);
-		$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
-		$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
 
-		$counter->contentID = $data['contentID'];
-		$counter->fileID = $data['ID'];
-		$counter->userID = $userID;
-		$counter->level = '1';
-		$counter->viewed = $counter->viewed?$counter->viewed+1:1;
+		$user = models\user::getInstance()->get($userID);
 
-		$counter->save();
+		if ($user['global_admin']!='1') {
+			$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
+			$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
+
+			$counter->contentID = $data['contentID'];
+			$counter->fileID = $data['ID'];
+			$counter->userID = $user['ID'];
+			$counter->userName = $user['name'];
+			$counter->level = '1';
+			$counter->viewed = $counter->viewed ? $counter->viewed + 1 : 1;
+
+			$counter->save();
+		}
 
 
 
