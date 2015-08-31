@@ -296,13 +296,22 @@
 									</div>
 									<div>
 										<h5>
-											{{ row_file['filename'] }} - {{ row_file['filesize'] }}
+											<strong>{{ row_file['filename'] }}</strong>
+											<small>- {{ row_file['filesize'] }}</small>
+
+
 										</h5>
 										{{ row_file['description'] }}
 
-										<strong>Seen:</strong> 
-										<br>
-										<strong>Downloaded:</strong> 
+										<em>
+											{% if row_file['seen'] %}
+											<strong>Seen:</strong> {{ row_file['seen'] }}<br>
+											{% endif %}
+											{% if row_file['downloaded'] %}
+											<strong>Downloaded:</strong> {{ row_file['downloaded'] }}
+											{% endif %}
+										</em>
+										
 
 										<div class="clearfix"></div>
 									</div>

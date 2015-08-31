@@ -65,7 +65,9 @@ class item_file extends _ {
 			$limit = " LIMIT " . $limit;
 		}
 		$result = $this->f3->get("DB")->exec("
-			SELECT DISTINCT  mp_content_files.*, mp_content.meetingID, mp_meetings.companyID
+			SELECT DISTINCT  mp_content_files.*, mp_content.meetingID, mp_meetings.companyID, 
+				(SELECT GROUP_CONCAT(CONCAT(mp_users.name,' (',mp_user_seen_content.viewed,')') SEPARATOR ', ') AS seen FROM mp_users INNER JOIN mp_user_seen_content ON mp_users.ID = mp_user_seen_content.userID WHERE fileID =  mp_content_files.ID AND mp_user_seen_content.`level` = '2' ) AS seen,
+				(SELECT GROUP_CONCAT(CONCAT(mp_users.name,' (',mp_user_seen_content.viewed,')') SEPARATOR ', ') AS seen FROM mp_users INNER JOIN mp_user_seen_content ON mp_users.ID = mp_user_seen_content.userID WHERE fileID =  mp_content_files.ID AND mp_user_seen_content.`level` = '3' ) AS downloaded
 			FROM (mp_content_files LEFT JOIN mp_content ON mp_content_files.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
 			$where
 			$orderby
@@ -73,6 +75,10 @@ class item_file extends _ {
 		", $options['args'], $options['ttl']
 		);
 
+		if (count($result)){
+			//test_array($result);
+		}
+		
 
 		$return = $result;
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());

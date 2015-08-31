@@ -17,7 +17,8 @@ ADD INDEX (  `parentID` );",
 	"ALTER TABLE  `mp_content_poll_voted` ADD  `ID` INT( 7 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
 	"ALTER TABLE  `mp_content` CHANGE  `poll_allow_nr_votes`  `poll_allow_edit` TINYINT( 1 ) NULL DEFAULT  '0';",
     "UPDATE  `mp_content` SET  `poll_allow_edit` =0 WHERE 1;",
-	"ALTER TABLE  `mp_user_attendance` ADD  `ID` INT( 7 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;"
+	"ALTER TABLE  `mp_user_attendance` ADD  `ID` INT( 7 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
+	"ALTER TABLE  `mp_user_seen_content` ADD  `ID` INT( 7 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;"
 
 )
 

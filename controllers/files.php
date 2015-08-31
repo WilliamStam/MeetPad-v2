@@ -78,6 +78,24 @@ class files extends _ {
 		$ID = $this->f3->get("PARAMS['ID']");
 		$data = models\item_file::getInstance()->get($ID, true);
 
+		$userID = isset($_GET['uID'])?$_GET['uID']:$this->user['ID'];
+		//test_array($userID);
+		//test_array($data);
+		$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
+		$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
+
+		$counter->contentID = $data['contentID'];
+		$counter->fileID = $data['ID'];
+		$counter->userID = $userID;
+		$counter->level = '2';
+		$counter->viewed = $counter->viewed?$counter->viewed+1:1;
+
+		$counter->save();
+		
+		
+		
+		
+
 		if (!is_numeric($ID)){
 			$data['filename'] =  $this->f3->get("PARAMS['filename']");
 			$data['store_filename'] =  $this->f3->get("PARAMS['filename']");
@@ -110,16 +128,27 @@ class files extends _ {
 		}
 		
 	}
-	function view_counter(){
-		$ID = $this->f3->get("PARAMS['ID']");
-		
-		
-		$this->view();
-	}
+	
 	function view(){
 		$this->f3->set("NOTIMERS",true);
 		$ID = $this->f3->get("PARAMS['ID']");
 		$data = models\item_file::getInstance()->get($ID, true);
+
+		$userID = isset($_GET['uID'])?$_GET['uID']:$this->user['ID'];
+		//test_array($userID);
+		//test_array($data);
+		$counter = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_user_seen_content");
+		$counter->load("contentID='{$data['contentID']}' AND fileID='{$data['ID']}' AND userID='{$userID}'");
+
+		$counter->contentID = $data['contentID'];
+		$counter->fileID = $data['ID'];
+		$counter->userID = $userID;
+		$counter->level = '1';
+		$counter->viewed = $counter->viewed?$counter->viewed+1:1;
+
+		$counter->save();
+
+
 
 		if (!is_numeric($ID)){
 			$data['filename'] =  $this->f3->get("PARAMS['filename']");
