@@ -25,6 +25,8 @@ class files extends _data {
 
 		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
 		$data = models\item_file::getInstance()->get($ID, true);
+		$meeting = models\meeting::getInstance()->get($data['meetingID']);
+		$data['locked'] = $meeting['locked'];
 		
 		$result =$data;
 

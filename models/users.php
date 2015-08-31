@@ -34,6 +34,10 @@ class users extends _ {
 		if (count($userD)) {
 			$userDs = $userD[0];
 		}
+		
+		
+		
+		
 		if ($companyID && $userDs['global_admin']!='1') {
 			$where = $where . " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "

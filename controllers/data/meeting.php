@@ -197,6 +197,8 @@ class meeting extends _data {
 		
 		
 		
+		
+		
 	//	test_array($result); 
 		
 		return $GLOBALS["output"]['data'] = $result;

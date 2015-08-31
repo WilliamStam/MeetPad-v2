@@ -29,7 +29,7 @@ class meeting extends _ {
 			$userDetails = users::getInstance()->get($this->user['ID']);
 		}
 		$sql = "
-			SELECT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active
+			SELECT mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active, if (mp_meetings.timeEnd<= now(),1,0) AS locked
 			FROM mp_meetings INNER JOIN mp_companies ON mp_companies.ID = mp_meetings.companyID
 			WHERE $where;
 		";
@@ -42,7 +42,7 @@ class meeting extends _ {
 			$sql = "
 SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() and mp_meetings.timeEnd<= now(),1,0) AS active,
 				if (mp_users.global_admin='1','1',mp_users_company.admin) as admin,
-				if((SELECT datein FROM mp_user_attendance WHERE meetingID =mp_meetings.ID AND userID ='{$userID}')is not null,1,0) AS attending
+				if((SELECT datein FROM mp_user_attendance WHERE meetingID =mp_meetings.ID AND userID ='{$userID}')is not null,1,0) AS attending, if (mp_meetings.timeEnd<= now(),1,0) AS locked
 				FROM (((mp_meetings INNER JOIN mp_meetings_group ON mp_meetings.ID = mp_meetings_group.meetingID) INNER JOIN mp_users_group ON mp_meetings_group.groupID = mp_users_group.groupID) INNER JOIN mp_companies ON mp_meetings.companyID = mp_companies.ID) INNER JOIN (mp_users_company LEFT JOIN mp_users ON mp_users_company.userID = mp_users.ID AND mp_users_company.userID = '{$userID}') ON mp_meetings.companyID = mp_users_company.companyID
 				WHERE  mp_meetings.ID = '$ID'  AND mp_users.ID = '$userID' AND (mp_users_group.userID ='$userID' OR mp_users_company.admin='1')
 				GROUP BY mp_meetings.ID
@@ -331,6 +331,7 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 			$item['future'] =  (strtotime("now") <= $timeStart ) ? 1: 0;
 			
 			$item['url'] = toAscii($item['meeting']);
+			$item['companyurl'] = toAscii($item['company']);
 			
 			$item['admin'] = $user['global_admin']=='1'?'1':$item['admin'];
 			

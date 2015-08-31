@@ -67,7 +67,7 @@ class item_comment extends _ {
 		}
 		
 		$sql = "
-			SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name
+			SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, if (mp_meetings.timeEnd<= now(),1,0) AS locked
 			FROM ((mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
 			WHERE $where
 			$orderby
@@ -75,7 +75,7 @@ class item_comment extends _ {
 		";
 		if ($options['companyID']){
 			$sql = "
-				SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag
+				SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, if (mp_meetings.timeEnd<= now(),1,0) AS locked
 				FROM ((mp_users_company INNER JOIN (mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) ON mp_users_company.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
 				WHERE $where AND mp_users_company.companyID = '{$options['companyID']}'
 				$orderby
