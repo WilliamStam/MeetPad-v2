@@ -32,7 +32,7 @@ class meeting extends _data {
 			
 		);
 		
-		if ($result['meeting']['attending']!='1'){
+		if ($result['meeting']['attending']!='1' && $result['company']['admin']!='1' ){
 			$result['item'] = array();
 		}
 		$this->f3->set("meeting",$result['meeting']);

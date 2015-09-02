@@ -30,7 +30,7 @@
 				</th>
 			</tr>
 			<% for(var y in this.agenda[i].items) { %>
-			<tr class="<% if(this.meeting.attending=='1'){ %>record<% } else { %>dg<% } %><% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
+			<tr class="<% if(this.meeting.attending=='1' || this.company.admin=='1'){ %>record<% } else { %>dg<% } %><% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
 				<td>
 					<% if(this.agenda[i].items[y].has_poll=='1'){ %>
 					<% if(this.agenda[i].items[y].voted!=''){ %>
@@ -451,7 +451,7 @@
 			<% } %>
 			
 			
-			<% if(this.meeting.attending=='1'){ %>
+			<% if(this.meeting.attending=='1' || this.company.admin=='1'){ %>
 			
 			<table class="table s" id="participants-table" style="margin-top:30px;">
 				<% if(this.meeting.users.yes.length){ %>
