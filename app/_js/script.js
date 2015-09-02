@@ -70,6 +70,8 @@ var ckeditor_config_small = {
 
 
 ;$(document).ready(function () {
+	
+	$.fn.keepAlive();
 
 	$('[data-toggle="tooltip"]').tooltip()
 	
@@ -125,6 +127,7 @@ var ckeditor_config_small = {
 	
 	
 });
+
 function page_resize() {
 
 	var $body = $("body");

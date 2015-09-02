@@ -109,7 +109,12 @@ if (isset($_GET['auID']) && $user['su']=='1'){
 	$_SESSION['uID'] = $_GET['auID'];
 	$user = $userO->get($_GET['auID']);
 }
-$userO->setActivity($uID);
+
+//test_array($_SERVER['REQUEST_URI']); 
+if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != '/keepalive'){
+	$userO->setActivity($uID);
+}
+
 
 
 $f3->set('user', $user);
@@ -201,6 +206,15 @@ $f3->route("GET|POST /internal/emails/@class/@function", function ($app, $params
 
 
 
+
+
+
+$f3->route("GET|POST /keepalive", function ($app, $params) {
+	$user = $app->get("user");
+	unset($user["password"]);
+	unset($user["global_admin"]);
+	test_array($user);	
+});
 
 
 

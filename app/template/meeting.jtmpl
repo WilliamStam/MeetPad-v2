@@ -103,7 +103,7 @@
 
 			<h3>
 
-				<% if (this.company.admin=="1") { %>
+				<% if (this.company.admin=="1" && this.meeting.locked=='0') { %>
 				<button class="btn btn-default item-form pull-right" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
 <% } %>
@@ -155,7 +155,7 @@
 							
 							
 							<label>
-								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1'){ %>disabled='disabled'<% } %><% } %>>
+								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.item.poll.voted ){ %><% if(this.item.poll.voted==this.item.poll.options[i].ID){ %>checked='checked'<% } %> <% if(this.item.poll_allow_edit!='1' || this.meeting.locked=='1'){ %>disabled='disabled'<% } %><% } %>>
 								<span <% if(this.item.poll.voted){ %><% if(this.item.poll.voted!=this.item.poll.options[i].ID){ %> class='g'<% } %><% } %>>
 								<%= this.item.poll.options[i].answer %>
 								</span>
@@ -198,7 +198,7 @@
 						<% for (var i in this.item.poll.options) { %>
 						<div class="radio">
 							<label >
-								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>">
+								<input type="radio" name="poll-answer" value="<%= this.item.poll.options[i].ID %>" <% if(this.meeting.locked=='1'){ %>disabled='disabled'<% } %>>
 
 								<%= this.item.poll.options[i].answer %>
 
