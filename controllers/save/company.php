@@ -101,7 +101,60 @@ class company extends _save {
 		
 		return $GLOBALS["output"]['data'] = $return;
 	}
-
-
+	
+	function invitecode() {
+		$result = array();
+		$user = $this->user;
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		$ID_orig = $ID;
+		
+		$values = array(
+				"invitecode" => $this->post("invitecode"),
+				"userID" => $user['ID'],
+		
+		);
+		$errors = $this->errors;
+		
+		
+		$data = array();
+		
+		
+		
+		
+		
+		if ($values['invitecode']==''){
+			$errors['invitecode'] = "Need to submit a valid invite code";
+		} else {
+			$companyO = models\company::getInstance();
+			
+			
+			$exists = $companyO->getAll("invitecode='{$values['invitecode']}'");
+			$exists = isset($exists[0])?$exists[0]:false;
+			if ($exists){
+				$data = $exists;
+				models\company::addUser($this->user["ID"],$data['ID'],false);
+				
+			} else {
+				$errors['invitecode'] = "No company with that invite code exists";
+			}
+			//test_array($errors); 
+		}
+		
+		
+		
+		
+		
+		$return = array(
+				"ID" => $ID,
+				"errors" => $errors,
+				"company"=>$data
+		);
+		
+		
+		if ($ID_orig!=$ID){
+			$return['new'] = toAscii($values['company']);;
+		}
+		return $GLOBALS["output"]['data'] = $return;
+	}
 
 }

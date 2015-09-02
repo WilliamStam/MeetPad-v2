@@ -223,7 +223,9 @@ function validationErrors(data, $form) {
 			var $block = $field.closest(".form-group");
 
 			$block.addClass("has-error");
+			if ($field.parent().hasClass("input-group")) $field = $field.parent();
 			if (v != "") {
+				
 				$field.after('<span class="help-block s form-validation">' + v + '</span>');
 			}
 			if ($block.hasClass("has-feedback")){

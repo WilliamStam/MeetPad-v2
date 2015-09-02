@@ -23,6 +23,24 @@ $(document).ready(function () {
 	$(document).on('hide.bs.modal', "#form-modal", function () {
 		getData();
 	});
+	$(document).on('submit', "#add-to-company", function (e) {
+		e.preventDefault();
+		
+		var $this = $(this);
+		var data = $this.serialize();
+		
+		$.post("/save/company/invitecode",data,function(r){
+			var data = r.data;
+			if (data.company.ID){
+				$.bbq.pushState({"invite":data.company.company});
+			}
+			validationErrors(data, $this);
+			if ($.isEmptyObject(data['errors'])) {
+				getData();
+			}
+		})
+		
+	});
 
 	$("#right-area").swipe({
 		//Generic swipe handler for all directions
@@ -65,6 +83,12 @@ function getData() {
 	
 	$(".loadingmask").show();
 	
+	var invitestr = "";
+	if ($.bbq.getState("invite")){
+		invitestr = "You have been added to <strong>"+$.bbq.getState("invite")+"</strong>. :)";
+		$.bbq.removeState("invite");
+	}
+	
 	$.getData("/data/home/data", {"page":page}, function (data) {
 
 		
@@ -73,6 +97,9 @@ function getData() {
 		$("#left-area-content").jqotesub($("#template-left"), data);
 		
 
+		if (invitestr){
+			$("#invitestr").html('<div class="alert alert-success" style="margin-bottom:20px;">'+invitestr+'</div>');
+		}
 
 		$("#loading-mask").fadeOut();
 
