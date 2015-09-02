@@ -586,6 +586,8 @@
 			<% } %>
 		</div>
 		<div class="pull-right">
+			<a href="/print/<%= this.ID %>/<%= this.company %>/<%= this.url %>" class="btn btn-xs btn-default" style="margin-right:10px;" target="_blank"><i class="fa fa-print"></i> Print</a>
+			
 			<a href="/content/<%= this.ID %>/<%= this.company %>/<%= this.url %>" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> View</a>
 		</div>
 		<div class="clearfix"></div>
