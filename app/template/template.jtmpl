@@ -371,13 +371,13 @@
 					
 					<li role="separator" class="divider"></li>
 					<li  {% if page['section']=="company" and page['sub_section']=="company"  %}class="active"{% endif %}>
-						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}" > Company</a>
+						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}" > - Company -</a>
 					</li>
 					<li  {% if page['section']=="company" and page['sub_section']=="meetings"  %}class="active"{% endif %}>
-						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}/meetings" > Meetings</a>
+						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}/meetings" > - Meetings -</a>
 					</li>
 					<li  {% if page['section']=="company" and page['sub_section']=="users"  %}class="active"{% endif %}>
-						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}/users" > Users</a>
+						<a href="/content/{{ data['companyID'] }}/{{ data['company'] }}/users" > - Users -</a>
 					</li>
 
 				{% endif %}
