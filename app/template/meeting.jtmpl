@@ -446,7 +446,7 @@
 			<% } %>
 
 			<% if(this.meeting.locked=='1'){ %>
-			<a href="/print/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>" class="btn btn-default btn-lg btn-block" >Print this meetings minutes</a>
+			<a href="/print/<%= this.meeting.ID %>/<%= this.company.url %>/<%= this.meeting.url %>" class="btn btn-default btn-lg btn-block" >Print this Meeting's minutes</a>
 			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
 			<% } %>
 			

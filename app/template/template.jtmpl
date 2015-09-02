@@ -218,7 +218,7 @@
 						<li class="icon-btn">
 							<a href="/print/{{ data['ID'] }}/{{ data['companyurl'] }}/{{ data['url'] }}" target="_blank"><span class="visible-xs-inline">Print </span><i class="fa fa-print"></i></a>
 						</li>
-						<% if(this.company_admin=='1'){ %>
+						<% if(this.company_admin=='1' && this.meeting.locked=='0'){ %>
 						<li class="icon-btn">
 							<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><span class="visible-xs-inline">Add Item </span><i class="fa fa-plus"></i></a>
 						</li>
@@ -355,9 +355,11 @@
 
 
 					<li role="separator" class="divider"></li>
+					<% if(this.meeting.locked=='0'){ %>
 					<li>
 						<a href="#" data-id="" data-companyID="{{ data['companyID'] }}" data-meetingID="{{ data['ID'] }}" class="item-form"><i class="fa fa-plus"></i> Item</a>
 					</li>
+					<% } %>
 					<li>
 						<a href="#" data-id="{{ data['ID'] }}" class="meeting-form"><i class="fa fa-pencil"></i> Meeting</a>
 					</li>

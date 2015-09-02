@@ -139,6 +139,7 @@ class user extends _ {
 			$companyID = "";
 			if (isset($data['meeting']['companyID'])){
 				$companyID = $data['meeting']['companyID'];
+				$return['meeting'] = $data['meeting'];
 			}
 			//test_array($data['company']['ID']); 
 			if (isset($data['company']['ID'])){
