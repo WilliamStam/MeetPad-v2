@@ -83,10 +83,14 @@
 						<!--- select list MOBILE -->
 
 						<a class="dropdown-toggle el" data-toggle="dropdown" href="#">
+							
+							<img src="/app/_images/icons/36x36white.png" alt="" style='width:20px; height:25px; position:absolute; top:7px; left:9px;'>
+							
 							<% if(this.meetings.length){ %>
 							<span class="badge badge-success" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Active Meetings"><%= this.meetings.length %></span>
 							<% } %>
-							{{ dropdownLabel|default("Meeting / Company") }}
+							<spam style="margin-left:20px;" >{{ dropdownLabel|default("Meeting / Company") }}</spam>
+							
 							<% if(this.meetings.length){ %>
 							<% } else { %>
 							<span class="caret"></span>
