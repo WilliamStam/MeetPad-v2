@@ -23,6 +23,15 @@
 	{% if page['print'] %}
 	<link rel='alternate' media='print' href="{{ page['print'] }}">
 	{% endif %}
+	<link rel="manifest" href="/manifest.json">
+	<meta name="mobile-web-app-capable" content="yes">
+	
+	<link rel="icon" sizes="192x192" href="/app/_images/icons/192x192.png">
+	<link rel="icon" sizes="128x128" href="/app/_images/icons/128x128.png">
+	<link rel="apple-touch-icon" sizes="128x128" href="/app/_images/icons/192x192.png">
+	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="/app/_images/icons/128x128.png">
+	
+	
 	<script src="/vendor/components/modernizr/modernizr.{{ _v }}.js"></script>
 </head>
 <body>
