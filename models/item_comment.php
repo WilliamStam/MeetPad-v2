@@ -102,13 +102,21 @@ class item_comment extends _ {
 		$timer = new timer();
 		$f3 = \base::instance();
 		//	test_array($values); 
-
+		$IDorig = $ID;$changes = array();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_comments");
 		$art->load("ID='$ID'");
 
 
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			if (isset($art->$key) && $art->$key != $value) {
+				$changes[] = array(
+						"f" => $key,
+						"w" => $art->$key,
+						"n" => $value
+				);
+			}
+			
 			if (isset($art->$key)) {
 				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
 			}
@@ -117,8 +125,15 @@ class item_comment extends _ {
 
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
-
 		
+		if (count($changes)) {
+			$heading = "Edited Comment";
+			if ($IDorig != $ID) {
+				$heading = "Added Comment";
+			}
+			
+			parent::getInstance()->_log(6, array('commentID' => $ID), $heading . '', $changes);
+		}
 
 
 

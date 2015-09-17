@@ -235,7 +235,7 @@ class users extends _ {
 		if (count($changes)) {
 			$heading = "Edited User - ";
 			if ($IDorig != $ID) {
-				$heading = "Added User -";
+				$heading = "Added User - ";
 			}
 			
 			parent::getInstance()->_log(5, array('userID' => $ID), $heading . '' . $art->name, $changes);
