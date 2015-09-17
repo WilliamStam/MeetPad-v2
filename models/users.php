@@ -204,6 +204,7 @@ class users extends _ {
 
 	public static function save($ID, $values) {
 		$timer = new timer();
+		$IDorig = $ID;$changes = array();
 		$f3 = \base::instance();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_users");
 		$art->load("ID='$ID'");
@@ -214,6 +215,13 @@ class users extends _ {
 
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			if (isset($art->$key) && $art->$key != $value) {
+				$changes[] = array(
+						"f" => $key,
+						"w" => $art->$key,
+						"n" => $value
+				);
+			}
 			if (isset($art->$key) && $key != "ID") {
 				$art->$key = $f3->scrub($value, $f3->get("TAGS"));
 			}
@@ -222,9 +230,16 @@ class users extends _ {
 
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
-
-
-
+		
+		
+		if (count($changes)) {
+			$heading = "Edited User - ";
+			if ($IDorig != $ID) {
+				$heading = "Added User -";
+			}
+			
+			parent::getInstance()->_log(5, array('userID' => $ID), $heading . '' . $art->name, $changes);
+		}
 
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
@@ -236,9 +251,14 @@ class users extends _ {
 		$timer = new timer();
 		$f3 = \base::instance();
 		$f3->get("DB")->exec("DELETE FROM mp_users_company WHERE userID = '{$ID}' AND companyID='{$companyID}'");
-
-
-
+		
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_users");
+		$art->load("ID='$ID'");
+		
+		$artC = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
+		$artC->load("ID='$companyID'");
+		
+		parent::getInstance()->_log(5, array('userID' => $ID), 'Removed ' . $art->name ." from ".$artC->company, array());
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return "done";
