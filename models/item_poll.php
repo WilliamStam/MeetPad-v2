@@ -58,7 +58,7 @@ class item_poll extends _ {
 			
 			$o = array();
 			foreach ($options as $item) {
-				$item['percent'] = ($item['votes'] / $votes)*100  ;
+				$item['percent'] = $item['votes']?($item['votes'] / $votes)*100:0  ;
 				$o[] = $item;
 				
 			}

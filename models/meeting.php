@@ -216,7 +216,7 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 		$timer = new timer();
 		$f3 = \base::instance();
 	//	test_array($values); 
-
+		$IDorig = $ID;$changes = array();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_meetings");
 		$art->load("ID='$ID'");
 
@@ -224,6 +224,15 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
 			if (isset($art->$key)) {
+				if ($art->$key != $value) {
+					$changes[] = array(
+							"f" => $key,
+							"w" => $art->$key,
+							"n" => $value
+					);
+				}
+				
+				
 				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
 			}
 
@@ -255,8 +264,15 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 		//	test_array(array($n,$r,$str)); 
 			
 		}
-
-
+		
+		if (count($changes)) {
+			$heading = "Edited Meeting - ";
+			if ($IDorig != $ID) {
+				$heading = "Added Meeting -";
+			}
+			
+			parent::getInstance()->_log(3, array('meetingID' => $ID), $heading . '' . $art->meeting, $changes);
+		}
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $ID;

@@ -162,6 +162,8 @@ class company extends _ {
 
 	public static function save($ID,$values){
 		$timer = new timer();
+		$IDorig = $ID;$changes = array();
+		
 		$f3 = \base::instance();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
 		$art->load("ID='$ID'");
@@ -169,6 +171,14 @@ class company extends _ {
 		
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			if ($art->$key != $value) {
+				$changes[] = array(
+						"f" => $key,
+						"w" => $art->$key,
+						"n" => $value
+				);
+			}
+			
 			if (isset($art->$key) && $key != "ID") {
 				$art->$key = $f3->scrub($value,$f3->get("TAGS"));
 			}
@@ -177,8 +187,16 @@ class company extends _ {
 
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
-
-
+		
+		
+		if (count($changes)) {
+			$heading = "Edited Company - ";
+			if ($IDorig != $ID) {
+				$heading = "Added Company -";
+			}
+			
+			parent::getInstance()->_log(4, array('companyID' => $ID), $heading . '' . $art->company, $changes);
+		}
 		
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());

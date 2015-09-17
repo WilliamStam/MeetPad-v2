@@ -274,6 +274,9 @@ class form extends _save {
 			"files"=>array()
 		);
 
+		if ($values['categoryID']==''){
+			$errors['categoryID'] = "You need to choose a category for this item";
+		}
 		if (isset($_POST['heading'])) {
 			$values['groups'] = isset($_POST['groups'])?$this->post("groups"):array();
 			//test_array($values['groups']); 
@@ -369,6 +372,15 @@ class form extends _save {
 		
 
 		return $GLOBALS["output"]['data'] = $return;
+	}
+	function item_delete() {
+		$result = array();
+		$errors = $this->errors;
+		
+		$ID = isset($_GET['ID']) ? $_GET['ID'] : "";
+		return models\item::remove($ID);
+		
+		
 	}
 	function item_upload() {
 		$result = array();

@@ -80,6 +80,10 @@ class user extends _ {
 			} else {
 				setcookie("username", $result['email'], time() + 31536000, "/");
 			}
+			
+			$this->_auth_logging($ID);
+		} else {
+			$this->_auth_logging(false);
 		}
 
 		$return = $ID;
@@ -210,6 +214,32 @@ class user extends _ {
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 
 		return $n;
+	}
+	function _auth_logging($uID){
+		$userID = $this->user['ID'];
+		
+		if ($uID)$userID = $uID;
+		
+		$proxyIP = "";
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$proxyIP = $_SERVER['HTTP_CLIENT_IP'];
+		} else if (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+			$proxyIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		
+		
+		
+		$art = new \DB\SQL\Mapper($this->f3->get("DB"), 'mp_sessions');
+		$art->userID = $userID;
+		$art->sessionID = session_id();
+		$art->HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
+		$art->IP = $_SERVER['REMOTE_ADDR'];
+		$art->proxyIP =$proxyIP;
+		
+		$art->save();
+		
+		
+		
 	}
 	
 

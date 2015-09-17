@@ -118,6 +118,7 @@ if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != '/keepalive'){
 
 
 $f3->set('user', $user);
+$f3->set('session', $SID);
 
 
 
@@ -156,7 +157,13 @@ $f3->route('GET|POST /viewer/view/@ID/@cID/@mID/@filename', 'controllers\files->
 
 
 $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
+	session_start();
 	session_unset();
+	session_destroy();
+	session_write_close();
+	setcookie(session_name(),'',0,'/');
+	session_regenerate_id(true);
+	
 	//session_destroy();
 	$f3->reroute("/login");
 });
@@ -214,6 +221,14 @@ $f3->route("GET|POST /keepalive", function ($app, $params) {
 	unset($user["password"]);
 	unset($user["global_admin"]);
 	test_array($user);	
+});
+
+
+
+$f3->route("GET|POST /test", function ($app, $params) {
+	$test = models\_::getInstance()->_log(2,array('contentID'=>812),'Edited item',array(array('f'=>'resolution','w'=>'old','n'=>'new')));
+	
+	test_array($test); 
 });
 
 

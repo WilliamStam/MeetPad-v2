@@ -293,7 +293,10 @@ function getData() {
 				if (scrolld) {
 					$left.scrollTo(Math.abs(scrolld.left), Math.abs(scrolld.top), false);
 				}
-				$left.scrollToElement("tr[data-id='" + data['item']['ID'] + "']", false, false);
+				if ($("tr[data-id='" + data['item']['ID'] + "']").length){
+					$left.scrollToElement("tr[data-id='" + data['item']['ID'] + "']", false, false);
+				}
+				
 			}
 		}
 		showContent_state();

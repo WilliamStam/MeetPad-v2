@@ -567,7 +567,7 @@
 			<%= this.note||'' %>
 		</div>
 
-		<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="progress">
+		<div style=" border-radius:0; height:18px; position:relative; margin-bottom:10px;" class="">
 
 
 			<div style="position: absolute; top:0;bottom:0;left:0;right:0;" class="s c dg">

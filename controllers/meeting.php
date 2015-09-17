@@ -66,7 +66,7 @@ class meeting extends _ {
 		
 
 		$object = models\item::getInstance();
-		$result =  $object->getAll("meetingID ='{$data['ID']}'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
+		$result =  $object->getAll("meetingID ='{$data['ID']}' AND deleted !='1'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
 
 
 

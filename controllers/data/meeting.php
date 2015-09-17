@@ -35,6 +35,9 @@ class meeting extends _data {
 		if ($result['meeting']['attending']!='1' && $result['company']['admin']!='1' ){
 			$result['item'] = array();
 		}
+		if ($result['item']['deleted']=='1'){
+			$result['item'] = array();
+		}
 		$this->f3->set("meeting",$result['meeting']);
 		$this->f3->set("company",$result['company']);
 		return $GLOBALS["output"]['data'] = $result;
@@ -82,7 +85,7 @@ class meeting extends _data {
 
  
 		$object = models\item::getInstance();
-		$result =  $object->getAll("meetingID ='{$this->meetingID}'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
+		$result =  $object->getAll("meetingID ='{$this->meetingID}' and deleted !='1'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
 
 		$ids = array();
 		foreach ($result as $item) {
