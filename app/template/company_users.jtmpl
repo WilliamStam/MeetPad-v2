@@ -1,5 +1,11 @@
 <script type="text/x-jqote-template" id="template-left">
 	<![CDATA[
+	
+	<section id="stats-area-activity">
+	
+	</section>
+	
+	
 	<section class="content-header" style="height:51px;">
 
 		<h1><%= this.company.company %>

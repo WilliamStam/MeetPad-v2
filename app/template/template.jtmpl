@@ -599,6 +599,29 @@
 
 	]]>
 </script>
+
+
+<script type="text/x-jqote-template" id="template-stats-activity">
+	<![CDATA[
+	<ul id="stats-activity">
+		<% for (var o in this.activity) { %>
+		
+		<li class='block-<%= this.activity[o] %>'> </li>
+		
+		<% } %>
+	</ul>
+	<div id="stats-activity-overlay">
+		
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-stats">
+	<![CDATA[
+		stats
+	
+	]]>
+</script>
+
 {% include "template/_company_form.jtmpl" %}
 {% include "template/_meeting_form.jtmpl" %}
 {% include "template/_item_form.jtmpl" %}

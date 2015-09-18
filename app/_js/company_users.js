@@ -131,13 +131,13 @@ function getData() {
 
 	$(".loadingmask").show();
 	
-	$.getData("/data/company_users/data?companyID=" + _data['ID'], {"order":order,"search":search,"search-group":searchgroup}, function (data) {
+	$.getData("/data/company_users/data?companyID=" + _data['ID'], {"order":order,"search":search,"search-group":searchgroup,'bgblocks':$("#page-content").height()/22}, function (data) {
 
 		
 
 		$("#right-area-content").jqotesub($("#template-right"), data);
 		$("#left-area-content").jqotesub($("#template-left"), data);
-
+		$("#stats-area-activity").jqotesub($("#template-stats-activity"), data['stats']);
 
 		$("#loading-mask").fadeOut();
 

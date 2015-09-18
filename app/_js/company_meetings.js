@@ -66,14 +66,13 @@ function getData() {
 	
 	$(".loadingmask").show();
 	
-	$.getData("/data/company_meetings/data?companyID=" + _data['ID'], {"page":page}, function (data) {
-
-		
+	$.getData("/data/company_meetings/data?companyID=" + _data['ID'], {"page":page,'bgblocks':$("#page-content").height()/22}, function (data) {
+	
 
 		$("#right-area-content").jqotesub($("#template-right"), data);
 		$("#left-area-content").jqotesub($("#template-left"), data);
 		$("#pagination").jqotesub($("#template-pagination"), data['meetings']['pagination']);
-
+		$("#stats-area-activity").jqotesub($("#template-stats-activity"), data['stats']);
 
 		$("#loading-mask").fadeOut();
 

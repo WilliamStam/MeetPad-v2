@@ -89,12 +89,16 @@ function getData() {
 		$.bbq.removeState("invite");
 	}
 	
-	$.getData("/data/home/data", {"page":page}, function (data) {
+	var height = $("#page-content").height();
+	var bgblocks = height / 22;
+	
+	$.getData("/data/home/data", {"page":page,'bgblocks':bgblocks}, function (data) {
 
 		
 
 		$("#right-area-content").jqotesub($("#template-right"), data);
 		$("#left-area-content").jqotesub($("#template-left"), data);
+		$("#stats-area-activity").jqotesub($("#template-stats-activity"), data['stats']);
 		
 
 		if (invitestr){

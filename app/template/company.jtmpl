@@ -1,8 +1,10 @@
 <script type="text/x-jqote-template" id="template-left">
 	<![CDATA[
 	
-
-
+	
+	<section id="stats-area-activity">
+	
+	</section>
 	<section class="scroll-pane" style="left:10px;">
 
 		<div style="margin-right:10px;" >

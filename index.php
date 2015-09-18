@@ -175,6 +175,7 @@ $f3->route('GET|POST /iframe/loading', function ($f3, $params) use ($user) {
 
 
 
+
 //test_array(md5(md5("meet")."123".md5("pad"))); 
 
 
@@ -225,16 +226,15 @@ $f3->route("GET|POST /keepalive", function ($app, $params) {
 
 
 
-$f3->route("GET|POST /test", function ($app, $params) {
-	$test = models\_::getInstance()->_log(2,array('contentID'=>812),'Edited item',array(array('f'=>'resolution','w'=>'old','n'=>'new')));
-	
-	test_array($test); 
+
+
+
+
+
+$f3->route('GET|POST /test', function ($f3, $params) use ($user) {
+	$stats = models\stats::getInstance()->get("userID='1'",12);
+	test_array($stats); 
 });
-
-
-
-
-
 
 
 

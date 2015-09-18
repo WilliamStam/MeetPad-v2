@@ -22,10 +22,13 @@ class home extends _data {
 	function data() {
 		$domain = $this->f3->get("domain");
 		$result = array();
-
+		$bgblocks = floor(isset($_GET['bgblocks']) ? $_GET['bgblocks'] : 10);
+		
+		
 		$result = array(
 			"user"=>$this->user,
-			"meetings" => $this->meetings()
+			"meetings" => $this->meetings(),
+			"stats"=>$stats = models\stats::getInstance()->get("userID='{$this->user['ID']}'",(18*$bgblocks))	
 		);
 		
 
