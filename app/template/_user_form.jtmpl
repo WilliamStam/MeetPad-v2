@@ -106,8 +106,8 @@
 					<i class="fa fa-smile-o" style="font-size: 120px; color:rgba(0, 255, 0, 0.3)"></i>
 	
 					<div style="" >
-						<h3 class="g"><small>An email has been sent to</small>
-							</br><%= this.email %></br> <small>with further instructions on how to activate</small>
+						<h3 class="g"><small>An email has been sent to you</small>
+							</br>with further instructions on how to activate</small>
 						</h3>
 					</div>
 					<% } else { %>
