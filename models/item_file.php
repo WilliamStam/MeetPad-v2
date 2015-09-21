@@ -93,31 +93,60 @@ class item_file extends _ {
 		$timer = new timer();
 		$f3 = \base::instance();
 		//	test_array($values); 
-
+		$IDorig = $ID;$changes = array();
+		
+		
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_files");
 		$art->load("ID='$ID'");
 
-
-		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			$value = $f3->scrub($value,$f3->get("TAGS"));
+			if ($art->$key != $value) {
+				$changes[] = array(
+						"f" => $key,
+						"w" => $art->$key,
+						"n" => $value
+				);
+			}
 			if (isset($art->$key)) {
-				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+				$art->$key =  $value;
 			}
 
 		}
 
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
-
 		
-
-
-
+		if (count($changes)) {
+			$heading = "Edited File - ";
+			if ($IDorig != $ID) {
+				$heading = "Added File - ";
+			}
+			
+			parent::getInstance()->_log(8, array('fileID' => $ID), $heading . '' . $art->filename, $changes);
+		}
+		
+		
+		
+		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $ID;
 	}
-
 	
+	static function remove($ID){
+		$timer = new timer();
+		$f3 = \base::instance();
+		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_files");
+		$art->load("ID='$ID'");
+		
+		parent::getInstance()->_log(8, array('fileID' => $ID), 'Removed File - ' . $art->filename, $art);
+		$art->erase();
+		$art->save();
+		
+		
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return "done";
+	}
 
 	
 	static function format($data) {

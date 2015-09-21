@@ -171,6 +171,7 @@ class company extends _ {
 		
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			$value = $f3->scrub($value,$f3->get("TAGS"));
 			if ($art->$key != $value) {
 				$changes[] = array(
 						"f" => $key,
@@ -180,7 +181,7 @@ class company extends _ {
 			}
 			
 			if (isset($art->$key) && $key != "ID") {
-				$art->$key = $f3->scrub($value,$f3->get("TAGS"));
+				$art->$key = $value;
 			}
 
 		}
@@ -192,7 +193,7 @@ class company extends _ {
 		if (count($changes)) {
 			$heading = "Edited Company - ";
 			if ($IDorig != $ID) {
-				$heading = "Added Company -";
+				$heading = "Added Company - ";
 			}
 			
 			parent::getInstance()->_log(4, array('companyID' => $ID), $heading . '' . $art->company, $changes);
@@ -271,6 +272,8 @@ class company extends _ {
 		$f3 = \base::instance();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
 		$art->load("ID='$ID'");
+		parent::getInstance()->_log(4, array('companyID' => $ID), 'Removed Company - ' . $art->company, $art);
+		
 		$art->erase();
 
 	

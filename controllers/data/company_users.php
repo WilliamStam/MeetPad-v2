@@ -126,7 +126,7 @@ class company_users extends _data {
 			"users_no_groups"=>$resultNoGroups,
 			"users"=>$result,
 			"userCount"=>count($users),
-				"stats" => $stats = models\stats::getInstance()->get("companyID='{$company['ID']}'", (18 * floor(isset($_GET['bgblocks']) ? $_GET['bgblocks'] : 10))),
+				"stats" => $stats = models\stats::getInstance()->get("companyID='{$company['ID']}'"),
 			"search"=>array(
 				"search"=>isset($_REQUEST['search'])?$_REQUEST['search']:"",
 				"group"=>isset($_REQUEST['search-group'])?$_REQUEST['search-group']:"",

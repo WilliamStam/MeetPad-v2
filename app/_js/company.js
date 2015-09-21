@@ -57,13 +57,12 @@ function getData() {
 	var ID = $.bbq.getState("ID") || '';
 
 	$(".loadingmask").show();
-	$.getData("/data/company/data?companyID=" + _data['ID'], {'bgblocks':$("#page-content").height()/22}, function (data) {
+	$.getData("/data/company/data?companyID=" + _data['ID'], {'t':'12'}, function (data) {
 
 		
 
 		$("#right-area-content").jqotesub($("#template-right"), data);
 		$("#left-area-content").jqotesub($("#template-left"), data);
-		$("#stats-area-activity").jqotesub($("#template-stats-activity"), data['stats']);
 
 		$("#loading-mask").fadeOut();
 

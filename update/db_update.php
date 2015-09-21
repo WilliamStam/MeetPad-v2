@@ -34,7 +34,10 @@ $sql = array(
 		"ALTER TABLE  `mp_users_login_log` ADD  `sessionID` VARCHAR( 50 ) NULL DEFAULT NULL AFTER  `userID` , ADD INDEX (  `sessionID` );",
 		"RENAME TABLE  `mp_users_login_log` TO  `mp_sessions` ;",
 		"ALTER TABLE  `mp_logs` ADD INDEX (  `sessionID` );",
-		"ALTER TABLE  `mp_content` ADD  `deleted` TINYINT( 1 ) NULL DEFAULT  '0';"
+		"ALTER TABLE  `mp_content` ADD  `deleted` TINYINT( 1 ) NULL DEFAULT  '0';",
+		"ALTER TABLE  `mp_logs` ADD  `fileID` INT( 6 ) NULL DEFAULT NULL AFTER  `optionID`;",
+		"INSERT INTO  `mp_logs_types` (`ID` ,`type`)VALUES (NULL ,  'Item File');",
+		
 		
 		
         

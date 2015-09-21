@@ -109,6 +109,7 @@ class item_comment extends _ {
 
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			$value = $f3->scrub($value,$f3->get("TAGS"));
 			if (isset($art->$key) && $art->$key != $value) {
 				$changes[] = array(
 						"f" => $key,
@@ -118,7 +119,7 @@ class item_comment extends _ {
 			}
 			
 			if (isset($art->$key)) {
-				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+				$art->$key =  $value;
 			}
 
 		}

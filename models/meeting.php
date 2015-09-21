@@ -223,6 +223,7 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			$value = $f3->scrub($value,$f3->get("TAGS"));
 			if (isset($art->$key)) {
 				if ($art->$key != $value) {
 					$changes[] = array(
@@ -233,7 +234,7 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 				}
 				
 				
-				$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+				$art->$key =  $value;;
 			}
 
 		}

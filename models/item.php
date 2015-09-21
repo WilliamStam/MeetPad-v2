@@ -181,7 +181,8 @@ class item extends _ {
 	
 	static function save($ID, $values) {
 		$timer = new timer();
-		$IDorig = $ID;$changes = array();
+		$IDorig = $ID;
+		$changes = array();
 		$f3 = \base::instance();
 		//	test_array($values); 
 		
@@ -191,6 +192,7 @@ class item extends _ {
 		
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
+			$value = $f3->scrub($value,$f3->get("TAGS"));
 			if (isset($art->$key)) {
 				if ($art->$key != $value) {
 					$changes[] = array(
@@ -199,7 +201,7 @@ class item extends _ {
 							"n" => $value
 					);
 				}
-				$art->$key = $f3->scrub($value, $f3->get("TAGS"));;
+				$art->$key = $value;
 				
 			}
 			
@@ -220,82 +222,7 @@ class item extends _ {
 				$f3->get("DB")->exec("INSERT INTO mp_content_group (contentID,groupID) VALUES $str");
 			}
 		}
-		if (isset($values['poll_options'])) {
-			
-			$pollO = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_poll_answers");
-			foreach ($values['poll_options'] as $item) {
-				$pollO->load("ID='{$item['ID']}'");
-				
-				if ($item['answer'] == "") {
-					
-					$changes[] = array(
-						"f"=>"answer",
-							"w"=>$pollO->answer,
-							"n"=>" - removed - "
-					);
-					$pollO->erase();
-				} else {
-					$changes[] = array(
-							"f"=>"answer",
-							"w"=>$pollO->answer,
-							"n"=> $item['answer']
-					);
-					$pollO->contentID = $ID;
-					$pollO->answer = $item['answer'];
-					$pollO->orderby = $item['orderby'];
-					$pollO->save();
-				}
-				
-				
-				$pollO->reset();
-				
-			}
-			
-			
-		}
-		if (isset($values['files'])) {
-			$fileO = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_files");
-			foreach ($values['files'] as $item) {
-				$fileO->load("ID='{$item['ID']}'");
-				
-				if ($item['filename'] == "") {
-					$changes[] = array(
-							"f"=>"files",
-							"w"=>$fileO->filename,
-							"n"=>" - removed - "
-					);
-					$fileO->erase();
-				} else {
-					if ($fileO->store_filename!=$item['store_filename']){
-						$changes[] = array(
-								"f"=>"filename",
-								"w"=>$fileO->filename,
-								"n"=> $item['filename']
-						);
-					}
-					if ($fileO->description!=$item['description']){
-						$changes[] = array(
-								"f"=>"filedescription",
-								"w"=>$fileO->description,
-								"n"=> $item['description']
-						);
-					}
-					
-					
-					$fileO->contentID = $ID;
-					$fileO->filename = $item['filename'];
-					$fileO->filesize = $item['filesize'];
-					$fileO->store_filename = $item['store_filename'];
-					$fileO->description = $item['description'];
-					$fileO->save();
-				}
-				
-				
-				$fileO->reset();
-				
-			}
-			
-		}
+		
 		
 		if (count($changes)) {
 			$heading = "Edited Item - ";
@@ -305,21 +232,58 @@ class item extends _ {
 			
 			parent::getInstance()->_log(2, array('contentID' => $ID), $heading . '' . $art->heading, $changes);
 		}
+		if (isset($values['poll_options'])) {
+			foreach ($values['poll_options'] as $item) {
+				$values_ = array(
+						"contentID" => $ID,
+						"answer" => $item['answer'],
+						"orderby" => $item['orderby'],
+				);
+				
+				if ($values_['answer']==''){
+					item_poll_options::remove($item['ID']);
+				} else {
+					item_poll_options::save($item['ID'], $values_);
+				}
+			}
+			
+		}
+		
+		if (isset($values['files'])) {
+			foreach ($values['files'] as $item) {
+				$values_ = array(
+						"contentID" => $ID,
+						"filename" => $item['filename'],
+						"filesize" => $item['filesize'],
+						"store_filename" => $item['store_filename'],
+						"description" => $item['description'],
+				);
+				
+				if ($values_['filename']==''){
+					item_file::remove($item['ID']);
+				} else {
+					item_file::save($item['ID'], $values_);
+				}
+			}
+			
+		}
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return $ID;
 	}
-	static function remove($ID){
+	
+	static function remove($ID) {
 		$timer = new timer();
 		$f3 = \base::instance();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_content");
 		$art->load("ID='$ID'");
+		parent::getInstance()->_log(2, array('contentID' => $ID), 'Removed Item - ' . $art->heading, $art);
 		$art->deleted = '1';
 		
 		
 		$art->save();
 		
-		parent::getInstance()->_log(2, array('contentID' => $ID), 'Deleted Item - ' . $art->heading, array());
+		
 		
 		
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());

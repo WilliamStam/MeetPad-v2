@@ -55,7 +55,19 @@ var ckeditor_config = {
 	autoGrow_maxHeight: 0,
 	removePlugins     : 'elementspath',
 	resize_enabled    : false,
-	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/',
+	on :{
+		instanceReady : function( ev ){
+			this.dataProcessor.writer.setRules( '*',
+					{
+						indent : false,
+						breakBeforeOpen : true,
+						breakAfterOpen : false,
+						breakBeforeClose : false,
+						breakAfterClose : true
+					});
+		}
+	}
 };
 var ckeditor_config_small = {
 	height            : '117px',
@@ -65,7 +77,19 @@ var ckeditor_config_small = {
 	extraPlugins      : 'autogrow',
 	autoGrow_minHeight: 117,
 	autoGrow_maxHeight: 0,
-	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/'
+	skin : 'bootstrapck,/app/_css/ckeditor/bootstrapck/',
+	on :{
+		instanceReady : function( ev ){
+			this.dataProcessor.writer.setRules( '*',
+					{
+						indent : false,
+						breakBeforeOpen : true,
+						breakAfterOpen : false,
+						breakBeforeClose : false,
+						breakAfterClose : true
+					});
+		}
+	}
 };
 
 

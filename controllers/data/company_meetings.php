@@ -27,7 +27,7 @@ class company_meetings extends _data {
 		$result = array(
 			"company" => $this->company(),
 			"meetings" => $this->meetings(),
-				"stats" => $stats = models\stats::getInstance()->get("companyID='{$this->companyID}'", (18 * floor(isset($_GET['bgblocks']) ? $_GET['bgblocks'] : 10))),
+				"stats" => $stats = models\stats::getInstance()->get("companyID='{$this->companyID}'"),
 
 		);
 		$this->f3->set("company",$result['company']);

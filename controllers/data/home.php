@@ -28,7 +28,7 @@ class home extends _data {
 		$result = array(
 			"user"=>$this->user,
 			"meetings" => $this->meetings(),
-			"stats"=>$stats = models\stats::getInstance()->get("userID='{$this->user['ID']}'",(18*$bgblocks))	
+			"stats"=>$stats = models\stats::getInstance()->get("userID='{$this->user['ID']}'")	
 		);
 		
 
