@@ -117,6 +117,7 @@
     "ivaynberg/select2": "3.*",
     "components/jquery-cookie": "*",
     "timrwood/moment": "2.*",
-    "ckeditor/ckeditor": "4.4.*"
+    "ckeditor/ckeditor": "4.4.*",
+    "cogpowered/finediff": "*"
   }
 }

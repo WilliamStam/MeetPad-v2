@@ -355,3 +355,9 @@ blockquote.comment-item {
 #comment-history-table tr:first-child th {
   border-top: none;
 }
+ins {
+  color: green;
+}
+del {
+  color: red;
+}

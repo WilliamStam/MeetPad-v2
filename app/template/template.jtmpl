@@ -198,7 +198,7 @@
 						{% if page['sub_section']=="users" %}
 							<% if(this.company_admin=='1'){ %>
 							<li class="icon-btn">
-								<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form">
+								<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form-company">
 									<span class="visible-xs">Add User</span>
 									<i class="fa fa-plus"></i>
 								</a>
@@ -325,7 +325,7 @@
 					{% if page['sub_section']=="users" %}
 
 						<li>
-							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form">
+							<a href="#" data-id="" data-companyID="{{ data['ID'] }}" class="user-form-company">
 								<i class="fa fa-plus"></i>Add User
 							</a>
 						</li>

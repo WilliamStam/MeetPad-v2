@@ -661,28 +661,24 @@
 				<table class='table table-condensed' id="comment-history-table"  >
 					<% for(var i in this.history){ %>
 					<tr>
-						<th class='dg s' style='width:22%;'>
-							<%= this.history[i].datein %><br>
-							<%= this.history[i].name %>
-						</th>
-						<th style='width:78%;' colspan='2'>
+						
+						<th style='width:48%;'>
 							<%= this.history[i].text %>
 						</th>
-						
+						<th class='s dg'>
+							<%= this.history[i].name %>
+						</th>
+						<th class='dg s' style='width:22%;'>
+							<%= this.history[i].datein %>
+						</th>
 					</tr>
-					<% for(var o in this.history[i].data){ %>
+					
 					<tr class='s'>
-						<td class='r'>
-							<%= this.history[i].data[o].f||'' %>
-						</td>
-						<td>
-							<%= this.history[i].data[o].w||'' %>
-						</td>
-						<td>
-							<%= this.history[i].data[o].n||'' %>
+						<td  colspan='3'>
+							<%= this.history[i].comment %>
 						</td>
 					</tr>
-					<% } %>
+					
 					<% } %>
 					
 					

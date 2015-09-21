@@ -66,9 +66,11 @@
 
 						<div class="col-sm-8">
 							<input type="password" class="form-control" id="password" name="password" placeholder="Password" value="">
+							<% if(this.ID!=''){ %>
 							<div class="help-block s g">
 								Leave it blank to keep old password
 							</div>
+							<% } %>
 						</div>
 						
 					</div>

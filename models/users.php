@@ -38,7 +38,7 @@ class users extends _ {
 		
 		
 		
-		if ($companyID && $userDs['global_admin']!='1') {
+		if ($companyID && isset($userDs['global_admin']) && $userDs['global_admin']!='1') {
 			$where = $where . " AND mp_users_company.companyID='{$companyID}'";
 			$sql = "
 			SELECT mp_users.*, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, mp_users_company.tag as cotag, if(mp_users.global_admin='1','1',mp_users_company.admin) as admin

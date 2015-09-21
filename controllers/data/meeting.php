@@ -220,7 +220,25 @@ class meeting extends _data {
 		$result = array();
 		
 		foreach($r as $item){
-			$item['data'] = json_decode($item['data']);
+			$data = json_decode($item['data']);
+			$commentN = "";
+			$commentW = "";
+			
+			unset($item['data']);
+			foreach ($data as $ii){
+				
+				if ($ii->f=='comment'){
+					$commentN = $ii->n;
+					$commentW = $ii->w;
+				}
+			}
+			
+			$granularity = new \cogpowered\FineDiff\Granularity\Character;
+			$diff = new \cogpowered\FineDiff\Diff($granularity);
+			$comment = $diff->render($commentW, $commentN);
+			$comment = html_entity_decode($comment);
+			
+			$item['comment'] = $comment;
 			$result[] = $item;
 		}
 		
