@@ -67,7 +67,8 @@ class item_comment extends _ {
 		}
 		
 		$sql = "
-			SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, if (mp_meetings.timeEnd<= now(),1,0) AS locked
+			SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, if (mp_meetings.timeEnd<= now(),1,0) AS locked,
+			if(mp_content_comments.edited_by,(SELECT name FROM mp_users where mp_users.ID = mp_content_comments.edited_by),null) as edited_name
 			FROM ((mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
 			WHERE $where
 			$orderby
@@ -75,7 +76,8 @@ class item_comment extends _ {
 		";
 		if ($options['companyID']){
 			$sql = "
-				SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, if (mp_meetings.timeEnd<= now(),1,0) AS locked
+				SELECT DISTINCT  mp_content_comments.*, mp_content.meetingID, mp_meetings.companyID, mp_users.name, COALESCE(NULLIF(mp_users_company.tag,''), mp_users.tag) as tag, if (mp_meetings.timeEnd<= now(),1,0) AS locked, 
+				if(mp_content_comments.edited_by,(SELECT name FROM mp_users where mp_users.ID = mp_content_comments.edited_by),null) as edited_name
 				FROM ((mp_users_company INNER JOIN (mp_content_comments LEFT JOIN mp_users ON mp_content_comments.userID = mp_users.ID) ON mp_users_company.userID = mp_users.ID) INNER JOIN mp_content ON mp_content_comments.contentID = mp_content.ID) INNER JOIN mp_meetings ON mp_content.meetingID = mp_meetings.ID
 				WHERE $where AND mp_users_company.companyID = '{$options['companyID']}'
 				$orderby
@@ -101,11 +103,16 @@ class item_comment extends _ {
 	static function save($ID,$values){
 		$timer = new timer();
 		$f3 = \base::instance();
+		$user = $f3->get("user");
 		//	test_array($values); 
 		$IDorig = $ID;$changes = array();
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_content_comments");
 		$art->load("ID='$ID'");
-
+	//	test_array(array($art->ID,$ID));
+		if ($ID){
+			$art->edited_by = $user['ID'];
+			$art->edited_date = date("Y-m-d H:i:s");
+		}
 
 		//test_array($this->get("14")); 
 		foreach ($values as $key => $value) {
@@ -123,7 +130,8 @@ class item_comment extends _ {
 			}
 
 		}
-
+		
+		
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
 		
@@ -132,8 +140,12 @@ class item_comment extends _ {
 			if ($IDorig != $ID) {
 				$heading = "Added Comment";
 			}
-			
-			parent::getInstance()->_log(6, array('commentID' => $ID), $heading . '', $changes);
+			if (isset($values['contentID']) && $values['contentID']){
+				$a = new \DB\SQL\Mapper($f3->get("DB"), "mp_content");
+				$a->load("ID='{$values['contentID']}'");
+				$heading = $heading . ' - ' . $a->heading;
+			}
+			parent::getInstance()->_log(6, array('commentID' => $ID), $heading, $changes);
 		}
 
 

@@ -226,12 +226,10 @@ class users extends _ {
 			if (isset($art->$key) && $key != "ID") {
 				$art->$key = $value;
 			}
-
 		}
 
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
-		
 		
 		if (count($changes)) {
 			$heading = "Edited User - ";

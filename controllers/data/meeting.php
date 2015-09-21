@@ -214,6 +214,18 @@ class meeting extends _data {
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
+	function comment_history() {
+		$ID = isset($_GET['ID'])?$_GET['ID']:"";
+		$r = $this->f3->get("DB")->exec("SELECT *, (SELECT name FROM mp_users WHERE ID = mp_logs.userID) as name FROM mp_logs WHERE commentID = '{$ID}' ORDER BY datein ASC");
+		$result = array();
+		
+		foreach($r as $item){
+			$item['data'] = json_decode($item['data']);
+			$result[] = $item;
+		}
+		
+		return $GLOBALS["output"]['data']['history'] = $result;
+	}
 
 	function company() {
 		$domain = $this->f3->get("domain");

@@ -84,6 +84,7 @@ class item_poll_options extends _ {
 	static function save($ID,$values){
 		$timer = new timer();
 		$f3 = \base::instance();
+		
 		//	test_array($values); 
 		$IDorig = $ID;$changes = array();
 		
@@ -106,8 +107,11 @@ class item_poll_options extends _ {
 			
 		}
 		
+		
+				
 		$art->save();
 		$ID = ($art->ID) ? $art->ID : $art->_id;
+		
 		
 		if (count($changes)) {
 			$heading = "Edited Poll Option";

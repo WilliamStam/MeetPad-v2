@@ -44,6 +44,18 @@ $(document).ready(function () {
 
 
 
+	$(document).on('click', '.comment-history', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var commentID = $this.attr("data-commentID");
+		$.getData("/data/meeting/comment_history?ID=" +commentID, {d:'3'}, function (data) {
+			//console.log(data);	
+			
+			$("#modal-window").jqotesub($('#template-item-comment-history'), data).modal("show");
+		});
+	});
+
+
 	$(document).on('change', 'input[name="poll-answer"]', function (e) {
 		poll_btn()
 	});

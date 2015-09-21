@@ -352,3 +352,6 @@ blockquote.comment-item {
   background-color: #ffffff;
   color: #444444;
 }
+#comment-history-table tr:first-child th {
+  border-top: none;
+}

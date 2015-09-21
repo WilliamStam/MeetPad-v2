@@ -350,9 +350,16 @@
 			<% } %>
 
 			<footer class="text-right" style="margin-top:5px; margin-bottom:10px;">
-
-				<%= this.name %> <% if(this.tag) { %><em>(<%= this.tag %></em>
-				) <% } %>&nbsp;
+				<% if(this.edited_by){ %>
+					<% if(this.edited_by!=this.userID){ %>
+						<%= this.name %>  (<a href='#' data-commentID='<%= this.ID %>' class='comment-history'>Edited by <%= this.edited_name %></a>) &nbsp; 
+					<% } else { %>
+						<%= this.name %>  (<a href='#' data-commentID='<%= this.ID %>' class='comment-history'>Edited</a>) &nbsp;
+					<% } %>
+				<% } else { %>
+					<%= this.name %> 
+				<% } %><% if(this.tag) { %><em>(<%= this.tag %></em>
+				) <% } %> &nbsp;
 				<cite title="<%= this.datein %>"><%= this.timeago %></cite>
 			</footer>
 
@@ -639,5 +646,49 @@
 
 		</div>
 	</section>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-item-comment-history">
+	<![CDATA[
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Comment History</h4>
+			</div>
+			<div class="modal-body">
+				<table class='table table-condensed' id="comment-history-table"  >
+					<% for(var i in this.history){ %>
+					<tr>
+						<th class='dg s' style='width:22%;'>
+							<%= this.history[i].datein %><br>
+							<%= this.history[i].name %>
+						</th>
+						<th style='width:78%;' colspan='2'>
+							<%= this.history[i].text %>
+						</th>
+						
+					</tr>
+					<% for(var o in this.history[i].data){ %>
+					<tr class='s'>
+						<td class='r'>
+							<%= this.history[i].data[o].f||'' %>
+						</td>
+						<td>
+							<%= this.history[i].data[o].w||'' %>
+						</td>
+						<td>
+							<%= this.history[i].data[o].n||'' %>
+						</td>
+					</tr>
+					<% } %>
+					<% } %>
+					
+					
+				</table>
+			</div>
+		</div>
+	</div>	
 	]]>
 </script>

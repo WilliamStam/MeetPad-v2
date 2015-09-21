@@ -52,6 +52,7 @@ class _ {
 				'commentID'=>(isset($id["commentID"])) ? $id["commentID"] : null,
 				'meetingID'=>(isset($id["meetingID"])) ? $id["meetingID"] : null,
 				'companyID'=>(isset($id["companyID"])) ? $id["companyID"] : null,
+				'optionID'=>(isset($id["optionID"])) ? $id["optionID"] : null,
 				'fileID'=>(isset($id["fileID"])) ? $id["fileID"] : null,
 				'text'=>$text,
 				'data'=>json_encode($data),
@@ -62,6 +63,10 @@ class _ {
 		
 		if ($values['fileID'] != null && $values['contentID'] == null) {
 			$values['contentID'] = $this->lookup($values['fileID'], 'mp_content_files')->contentID;
+		}
+		
+		if ($values['optionID'] != null && $values['contentID'] == null) {
+			$values['contentID'] = $this->lookup($values['optionID'], 'mp_content_poll_answers')->contentID;
 		}
 		
 		if ($values['commentID'] != null && $values['contentID'] == null) {

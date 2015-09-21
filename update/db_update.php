@@ -37,6 +37,16 @@ $sql = array(
 		"ALTER TABLE  `mp_content` ADD  `deleted` TINYINT( 1 ) NULL DEFAULT  '0';",
 		"ALTER TABLE  `mp_logs` ADD  `fileID` INT( 6 ) NULL DEFAULT NULL AFTER  `optionID`;",
 		"INSERT INTO  `mp_logs_types` (`ID` ,`type`)VALUES (NULL ,  'Item File');",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `userID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `contentID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `commentID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `meetingID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `companyID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `optionID` );",
+		"ALTER TABLE  `mp_logs` ADD INDEX (  `fileID` );",
+		"ALTER TABLE  `mp_content_comments` ADD  `edited_by` INT( 6 ) NULL DEFAULT NULL AFTER  `userName`;",
+		"ALTER TABLE  `mp_content_comments` ADD  `edited_date` TIMESTAMP NULL DEFAULT NULL AFTER  `edited_by`;",
+		
 		
 		
 		
