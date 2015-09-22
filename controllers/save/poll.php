@@ -53,6 +53,7 @@ class poll extends _save {
 
 		$logger = models\_::getInstance();
 	
+	//	test_array($return); 
 
 		if ($this->user['ID'] && $itemID!=""){
 			
@@ -76,11 +77,21 @@ class poll extends _save {
 					'n'=>'',
 			);
 			
+			$pollOptionN = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content_poll_answers");
+			$pollOptionN->load("ID='{$pollO->answerID}'");
+			
+			
 			if ($answerID==""){
 				$heading = 'Vote Removed - ';
 				$pollO->erase();
-				$ar['n'] = 'Removed';
-				$ar['w'] = $pollOption->answer;
+				
+				
+				
+				$ar['n'] = '';
+				$ar['w'] = $pollOptionN->answer;
+				
+				$return['answerID'] = $pollO->answerID;
+				
 			} else {
 				if ($pollO->dry()){
 					$heading = 'Vote Added - ';
@@ -88,9 +99,6 @@ class poll extends _save {
 					$ar['w'] = '';
 				} else {
 					$heading = 'Vote Changed - ';
-					
-					$pollOptionN = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content_poll_answers");
-					$pollOptionN->load("ID='{$pollO->answerID}'");
 					
 					$ar['n'] = $pollOption->answer;
 					$ar['w'] = $pollOptionN->answer;
@@ -101,7 +109,7 @@ class poll extends _save {
 				$pollO->userID = $this->user['ID'];
 				$pollO->save();
 			}
-			$logger->_log(7,array('optionID'=>$answerID),$heading.$g['heading'],$ar);
+			$logger->_log(7,array('optionID'=>$return['answerID']),$heading.$g['heading'],$ar);
 			
 			
 		}
