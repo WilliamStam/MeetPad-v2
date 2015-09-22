@@ -47,7 +47,7 @@ class _ {
 		
 		$values = array(
 				'typeID' => $typeID,
-				'userID' => (isset($id["userID"])) ? $id["userID"] : $userID,
+				'userID' => $userID,
 				'contentID'=>(isset($id["contentID"])) ? $id["contentID"] : null,
 				'commentID'=>(isset($id["commentID"])) ? $id["commentID"] : null,
 				'meetingID'=>(isset($id["meetingID"])) ? $id["meetingID"] : null,

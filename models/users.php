@@ -237,7 +237,7 @@ class users extends _ {
 				$heading = "Added User - ";
 			}
 			
-			parent::getInstance()->_log(5, array('userID' => $ID), $heading . '' . $art->name, $changes);
+			parent::getInstance()->_log(5, array(), $heading . '' . $art->name, $changes);
 		}
 
 
@@ -257,7 +257,7 @@ class users extends _ {
 		$artC = new \DB\SQL\Mapper($f3->get("DB"), "mp_companies");
 		$artC->load("ID='$companyID'");
 		
-		parent::getInstance()->_log(5, array('userID' => $ID), 'Removed ' . $art->name ." from ".$artC->company, array());
+		parent::getInstance()->_log(5, array(), 'Removed ' . $art->name ." from ".$artC->company, array());
 
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return "done";

@@ -207,23 +207,48 @@ class company extends _ {
 	public static function saveGroups($companyID,$values){
 		$timer = new timer();
 		$f3 = \base::instance();
-
-
+		
+		
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_groups");
 		foreach ($values as $item){
+			$IDorig = $item['ID'];
 			$art->load("ID='{$item['ID']}'");
 			$item['companyID'] = $companyID;
+			$changes = array();
+			
+			$group = $art->group;
 			foreach ($item as $key => $value) {
-				if (isset($art->$key) && $key != "ID") {
-					$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+				$value = $f3->scrub($value,$f3->get("TAGS"));
+				if ($art->$key != $value) {
+					$changes[] = array(
+							"f" => $key,
+							"w" => $art->$key,
+							"n" => $value
+					);
 				}
+				if (isset($art->$key) && $key != "ID") {
+					$art->$key =  $value;
+				}
+				
 
 			}
-
+			//test_array($item); 
+			 
 			if (isset($item['group'])&& $item['group']==""){
+				parent::getInstance()->_log(4, array('companyID' => $companyID), 'Group Deleted - '.$group, $changes);
 				$art->erase();
 			} else {
 				$art->save();
+				
+				if (count($changes)) {
+					$heading = "Edited Group - ";
+					if ($IDorig=='') {
+						$heading = "Added Group - ";
+					}
+										
+					parent::getInstance()->_log(4, array('companyID' => $companyID), $heading . '' . $art->group, $changes);
+				}
+				
 			}
 			
 			$art->reset();

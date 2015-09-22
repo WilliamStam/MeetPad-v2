@@ -207,7 +207,7 @@
 				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-link reload-modal">Continue Editing</button>
+				<button type="button" class="btn btn-link reload-modal-company">Continue Editing</button>
 				<% if (this.new) { %>
 				<a href="/content/<%= this.ID %>/<%= this.new %>" class="btn btn-primary">Close</a>
 				<% } else { %>
@@ -263,7 +263,7 @@
 		formCompany();
 
 	});
-	$(document).on("click", ".reload-modal", function (e) {
+	$(document).on("click", ".reload-modal-company", function (e) {
 		e.preventDefault();
 		formCompany();
 
