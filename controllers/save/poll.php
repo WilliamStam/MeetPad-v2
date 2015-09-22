@@ -51,20 +51,58 @@ class poll extends _save {
 			"answerID"=>$answerID
 		);
 
+		$logger = models\_::getInstance();
 	
 
 		if ($this->user['ID'] && $itemID!=""){
+			
+			$g = models\item::getInstance()->get($itemID);
+			
+			
+		
+			
 			$pollO = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content_poll_voted");
 			$pollO->load("userID='{$this->user['ID']}' AND contentID='{$itemID}'");
+			//test_array(array($pollOption->ID,$answerID)); 		
+			
+			
+			
+			
+			$pollOption = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content_poll_answers");
+			$pollOption->load("ID='$answerID'");
+			$ar = array(
+					"f"=>'answer',
+					'w'=>'',
+					'n'=>'',
+			);
+			
 			if ($answerID==""){
-				
+				$heading = 'Vote Removed - ';
 				$pollO->erase();
+				$ar['n'] = 'Removed';
+				$ar['w'] = $pollOption->answer;
 			} else {
+				if ($pollO->dry()){
+					$heading = 'Vote Added - ';
+					$ar['n'] = $pollOption->answer;
+					$ar['w'] = '';
+				} else {
+					$heading = 'Vote Changed - ';
+					
+					$pollOptionN = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content_poll_answers");
+					$pollOptionN->load("ID='{$pollO->answerID}'");
+					
+					$ar['n'] = $pollOption->answer;
+					$ar['w'] = $pollOptionN->answer;
+				}
+				
 				$pollO->contentID = $itemID;
 				$pollO->answerID = $answerID;
 				$pollO->userID = $this->user['ID'];
 				$pollO->save();
 			}
+			$logger->_log(7,array('optionID'=>$answerID),$heading.$g['heading'],$ar);
+			
 			
 		}
 		

@@ -44,7 +44,7 @@ class _ {
 		
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-		
+		//test_array($id);
 		$values = array(
 				'typeID' => $typeID,
 				'userID' => $userID,
@@ -59,7 +59,7 @@ class _ {
 				'sessionID'=>session_id()
 		);
 		
-		
+		//test_array($values);
 		
 		if ($values['fileID'] != null && $values['contentID'] == null) {
 			$values['contentID'] = $this->lookup($values['fileID'], 'mp_content_files')->contentID;

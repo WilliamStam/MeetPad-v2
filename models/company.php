@@ -268,18 +268,40 @@ class company extends _ {
 
 		$art = new \DB\SQL\Mapper($f3->get("DB"), "mp_categories");
 		foreach ($values as $item){
+			$IDorig = $item['ID'];
 			$art->load("ID='{$item['ID']}'");
 			$item['companyID'] = $companyID;
+			$changes = array();
+			
+			$category = $art->category;
 			foreach ($item as $key => $value) {
+				$value = $f3->scrub($value,$f3->get("TAGS"));
+				if ($art->$key != $value) {
+					$changes[] = array(
+							"f" => $key,
+							"w" => $art->$key,
+							"n" => $value
+					);
+				}
 				if (isset($art->$key) && $key != "ID") {
-					$art->$key =  $f3->scrub($value,$f3->get("TAGS"));;
+					$art->$key =  $value;
 				}
 
 			}
 			if (isset($item['category'])&& $item['category']==""){
+				parent::getInstance()->_log(4, array('companyID' => $companyID), 'Category Deleted - '.$category, $changes);
 				$art->erase();
 			} else {
 				$art->save();
+				
+				if (count($changes)) {
+					$heading = "Edited Category - ";
+					if ($IDorig=='') {
+						$heading = "Added Category - ";
+					}
+					
+					parent::getInstance()->_log(4, array('companyID' => $companyID), $heading . '' . $art->category, $changes);
+				}
 			}
 			$art->reset();
 			

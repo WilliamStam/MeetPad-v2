@@ -226,17 +226,20 @@ class meeting extends _data {
 			
 			unset($item['data']);
 			foreach ($data as $ii){
-				
 				if ($ii->f=='comment'){
 					$commentN = $ii->n;
 					$commentW = $ii->w;
 				}
 			}
+			if ($commentW){
+				$granularity = new \cogpowered\FineDiff\Granularity\Character;
+				$diff = new \cogpowered\FineDiff\Diff($granularity);
+				$comment = $diff->render($commentW, $commentN);
+				$comment = html_entity_decode($comment);
+			} else {
+				$comment = $commentN;
+			}
 			
-			$granularity = new \cogpowered\FineDiff\Granularity\Character;
-			$diff = new \cogpowered\FineDiff\Diff($granularity);
-			$comment = $diff->render($commentW, $commentN);
-			$comment = html_entity_decode($comment);
 			
 			$item['comment'] = $comment;
 			$result[] = $item;
@@ -250,10 +253,8 @@ class meeting extends _data {
 		$result = array();
 
 		$result =  models\company::getInstance()->get($this->companyID,true);
-
 		unset($result['invitecode']);
-	//test_array($result); 
-		
+	
 		
 		return $GLOBALS["output"]['data'] = $result;
 	}
