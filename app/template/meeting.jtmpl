@@ -465,16 +465,21 @@
 			<div class="clearfix"></div>
 			<table style="margin-top: 30px;" id="statstable" class="table">
 				<tr>
-					<td class="r" width="60"><strong><%= this.meeting.stats.attending %></strong>
+					<td class="r" width="60">
+						<strong><%= this.meeting.stats.attending %></strong>
 					</td>
 					<td>
 						<small>Attending</small>
-					</td><td class="r" width="60"><strong><%= this.meeting.stats.not_attending %></strong>
+					</td>
+					<td class="r" width="60">
+						<strong><%= this.meeting.stats.not_attending %></strong>
 					</td>
 					<td>
 						<small>Not Attending</small>
 					</td>
-					<td class="r"><strong><%= this.meeting.stats.items %></strong></td>
+					<td class="r" width="60" >
+						<strong><%= this.meeting.stats.items %></strong>
+					</td>
 					<td>
 						<small>Items</small>
 					</td>
@@ -482,15 +487,21 @@
 					
 				</tr>
 				<tr>
-					<td class="r" width="60"><strong><%= this.meeting.stats.resolutions %></strong></td>
+					<td class="r">
+						<strong><%= this.meeting.stats.resolutions %></strong>
+					</td>
 					<td>
 						<small>Resolutions</small>
 					</td>
-					<td class="r"><strong><%= this.meeting.stats.polls %></strong></td>
+					<td class="r">
+						<strong><%= this.meeting.stats.polls %></strong>
+					</td>
 					<td>
 						<small>Polls</small>
 					</td>
-					<td class="r"><strong><%= this.meeting.stats.files %></strong></td>
+					<td class="r">
+						<strong><%= this.meeting.stats.files %></strong>
+					</td>
 					<td>
 						<small>Files</small>
 					</td>
@@ -500,14 +511,16 @@
 					
 				</tr>
 				<tr>
-					<td class="r" width="60"><strong><%= this.meeting.stats.comments %></strong>
+					<td class="r">
+						<strong><%= this.meeting.stats.comments %></strong>
 					</td>
 					
 					<td>
 						<small>Comments</small>
 					</td>
 					
-					<td class="r"><strong><%= this.meeting.stats.voted %></strong>
+					<td class="r">
+						<strong><%= this.meeting.stats.voted %></strong>
 					</td>
 					<td>
 						<small>Voted <% if(this.meeting.stats.polls){ %><span class='g'>(of <%= this.meeting.stats.polls * this.meeting.stats.attending %>)<% } %></span>
@@ -517,15 +530,6 @@
 					
 					
 				
-				</tr>
-				
-				<tr>
-					<td class="r"></td>
-					<td></td>
-					<td class="r"></td>
-					<td></td>
-					<td class="r">&nbsp;</td>
-					<td>&nbsp;</td>
 				</tr>
 			
 			</table>
