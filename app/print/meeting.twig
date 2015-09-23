@@ -83,57 +83,63 @@
 					Start: {{ data['timeStart']['short']['disp'] }} - End: {{ data['timeEnd']['short']['disp'] }}</div>
 
 				<div class="clearfix" style="height: 100px;"></div>
-
+				
 				<table style="margin-left: 7px;" id="statstable" class="table">
 					<tr>
-						<td class="r" width="60"><strong>{{ data['totals']['attending'] }}</strong>
+						<td class="r" width="60"><strong>{{ data['stats']['attending'] }}</strong>
 						</td>
 						<td>
 							<small>Attending</small>
-						</td>
-						<td class="r" width="60"><strong>{{ data['totals']['comments'] }}</strong>
+						</td><td class="r" width="60"><strong>{{ data['stats']['not_attending'] }}</strong>
 						</td>
 						<td>
-							<small>Comments</small>
+							<small>Not Attending</small>
 						</td>
-						<td class="r" width="60"><strong>{{ data['totals']['resolution'] }}</strong></td>
-						<td>
-							<small>Resolutions</small>
-						</td>
-					</tr>
-					<tr>
-						<td class="r"><strong>{{ data['totals']['items'] }}</strong></td>
+						<td class="r"><strong>{{ data['stats']['items'] }}</strong></td>
 						<td>
 							<small>Items</small>
 						</td>
-						<td class="r"><strong>{{ data['totals']['votes'] }}</strong>
-						</td>
-						<td>
-							<small>Votes</small>
-						</td>
-						<td class="r"><strong>{{ data['totals']['discussion'] }}</strong></td>
-						<td>
-							<small>Discussion Links</small>
-						</td>
+					
+					
 					</tr>
 					<tr>
-						<td class="r"><strong>{{ data['totals']['polls'] }}</strong></td>
+						<td class="r" width="60"><strong>{{ data['stats']['resolutions'] }}</strong></td>
+						<td>
+							<small>Resolutions</small>
+						</td>
+						<td class="r"><strong>{{ data['stats']['polls'] }}</strong></td>
 						<td>
 							<small>Polls</small>
 						</td>
-						<td class="r">
-							<strong class="g">{{ data['totals']['av_votes'] }}</strong></td>
-
+						<td class="r"><strong>{{ data['stats']['files'] }}</strong></td>
 						<td>
-							<small>Available Votes</small>
+							<small>Files</small>
 						</td>
-						<td class="r"><strong>{{ data['totals']['files'] }}</strong></td>
-						<td>
-							<small>Documents</small>
-						</td>
-
+					
+					
+					
+					
 					</tr>
-
+					<tr>
+						<td class="r" width="60"><strong>{{ data['stats']['comments'] }}</strong>
+						</td>
+						
+						<td>
+							<small>Comments</small>
+						</td>
+						
+						<td class="r"><strong>{{ data['stats']['voted'] }}</strong>
+						</td>
+						<td>
+							<small>Voted {% if data['stats']['polls']!=0 %}<span class='g'>(of {{ data['stats']['attending'] * data['stats']['polls'] }}){% endif %}</span>
+							</small>
+						</td>
+					
+					
+					
+					
+					</tr>
+					
 					<tr>
 						<td class="r"></td>
 						<td></td>
@@ -142,8 +148,9 @@
 						<td class="r">&nbsp;</td>
 						<td>&nbsp;</td>
 					</tr>
-
+				
 				</table>
+				
 
 				<div class="clearfix" style="height: 50px;"></div>
 
@@ -261,8 +268,9 @@
 							<div class="poll-options">
 								{% for row_poll in rowsub['poll']['options'] %}
 
-									<div class="radio">
-										<div style="width:{{ row_poll['percent'] }}%;" class="percent-bar"></div>
+									<div class="radio" style='position: relative;'>
+										<img src="/app/_images/poll_bg_print.gif" alt="" class="percent-bar" style="height: 100%; width: {{ row_poll['percent'] }}%;">
+										
 										<span class="label label-default pull-right">{{ row_poll['percent'] }}%</span>
 										<label>({{ row_poll['votes'] }}) - {{ row_poll['answer'] }}
 											<div class="s">{{ row_poll['voted'] }}</div>

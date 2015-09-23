@@ -75,6 +75,7 @@ class meeting extends _data {
 		
 		
 		$result['users'] = $u;
+		$result['stats'] = models\stats::getInstance()->meeting($this->meetingID);
 		
 		
 		

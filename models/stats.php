@@ -18,7 +18,8 @@ class stats extends _ {
 		}
 		return self::$instance;
 	}
-	function get($where){
+	
+	function get($where) {
 		$timer = new timer();
 		$data = $this->data($where);
 		
@@ -26,7 +27,7 @@ class stats extends _ {
 		//test_array($data); 
 		
 		$return = array(
-			"activity"=>""
+				"activity" => ""
 		);
 		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
 		return ($return);
@@ -46,5 +47,63 @@ class stats extends _ {
 		return ($return);
 	}
 	
+	function meeting($ID) {
+		$timer = new timer();
+		$return = array();
+		$items = item::getInstance()->getAll("meetingID='{$ID}' AND deleted!='1'");
+		$attending = meeting::getInstance()->getUsers($ID);
+		$u = array(
+				"yes" => array(),
+				"no" => array()
+		);
+		foreach ($attending as $item) {
+			if ($item['attending'] == '1') {
+				$u['yes'][] = $item;
+			} else {
+				$u['no'][] = $item;
+			}
+		}
+		
+		
+		$return = array(
+				"attending" => count($u['yes']),
+				"not_attending" => count($u['no']),
+				"items" => count($items),
+				
+				"resolutions" => 0,
+				"polls" => 0,
+				"files" => 0,
+				
+				"comments" => 0,
+				"voted" => 0,
+				
+		
+		);
+		foreach ($items as $item) {
+			if ($item['resolution'] != '') {
+				$return['resolutions'] = $return['resolutions'] + 1;
+			}
+			if ($item['poll'] != '') {
+				$return['polls'] = $return['polls'] + 1;
+				
+				$p = item_poll::getInstance()->get($item);
+				$return['voted'] = $return['voted'] + $p['votes'];
+				
+				//test_array($p); 
+				
+				
+			}
+			
+			$return['comments'] = $return['comments'] + $item['commentCount'];
+			$return['files'] = $return['files'] + $item['filesCount'];
+			
+			
+			
+		}
+		
+		//test_array(array('return' => $return,'items' => $items));
+		$timer->_stop(__NAMESPACE__, __CLASS__, __FUNCTION__, func_get_args());
+		return ($return);
+	}
 	
 }

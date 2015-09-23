@@ -59,6 +59,7 @@ class meeting extends _ {
 			}
 		}
 		$data['attending'] = $u;
+		$data['stats'] = models\stats::getInstance()->meeting($data['ID']);
 		
 		
 		

@@ -29,5 +29,9 @@
 </section>
 
 <script type="text/javascript">
+	{% if _isLocal %}
+	
+	{% else %}
 	window.print();
+	{% endif %}
 </script>

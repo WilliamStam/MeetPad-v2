@@ -46,7 +46,7 @@ $sql = array(
 		"ALTER TABLE  `mp_logs` ADD INDEX (  `fileID` );",
 		"ALTER TABLE  `mp_content_comments` ADD  `edited_by` INT( 6 ) NULL DEFAULT NULL AFTER  `userName`;",
 		"ALTER TABLE  `mp_content_comments` ADD  `edited_date` TIMESTAMP NULL DEFAULT NULL AFTER  `edited_by`;",
-		
+		"ALTER TABLE  `mp_content_files` ADD  `deleted` TINYINT( 1 ) NULL DEFAULT  '0';"
 		
 		
 		

@@ -99,7 +99,9 @@ class item extends _ {
 		}
 		
 		$sql = "
-			SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
+			SELECT mp_content.*, mp_categories.category, 
+				(SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount,
+				(SELECT count(ID) FROM mp_content_files WHERE mp_content_files.contentID =mp_content.ID and mp_content_files.deleted !='1' ) as filesCount
 			FROM mp_content INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID
 			$where
 			$orderby
@@ -110,7 +112,8 @@ class item extends _ {
 		if ($options['userID'] && $userDetails['global_admin'] != '1') {
 			$where = $where . " AND (mp_users_company.admin='1' OR mp_users_group.userID='{$options['userID']}')";
 			$sql = "
-				SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount
+				SELECT mp_content.*, mp_categories.category, (SELECT count(ID) FROM mp_content_comments WHERE contentID = mp_content.ID AND mp_content_comments.deleted is null) AS commentCount,
+				(SELECT count(ID) FROM mp_content_files WHERE mp_content_files.contentID =mp_content.ID and mp_content_files.deleted !='1' ) as filesCount
 			
 			FROM (((mp_content INNER JOIN mp_categories ON mp_content.categoryID = mp_categories.ID) INNER JOIN mp_content_group ON mp_content.ID = mp_content_group.contentID) INNER JOIN mp_users_group ON mp_content_group.groupID = mp_users_group.groupID) INNER JOIN mp_users_company ON mp_categories.companyID = mp_users_company.companyID AND mp_users_company.userID = '{$options['userID']}'
 			
