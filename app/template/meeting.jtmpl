@@ -447,6 +447,10 @@
 				<%= this.meeting.note||'' %>
 			</div>
 
+			
+			
+			
+			
 			<% if(this.meeting.attending!='1' && this.meeting.locked=='0'){ %>
 			<button class="btn btn-primary btn-lg btn-block" id="attending-btn" data-userID="{{ _user['ID'] }}" data-meetingID="<%= this.meeting.ID %>" >Mark as "Attending"</button>
 			<div class="s g c">You need to mark yourself as attending before you can view any of the items</div>
@@ -458,8 +462,8 @@
 			<% } %>
 			
 			
-			
-			<table style="margin-left: 7px;" id="statstable" class="table">
+			<div class="clearfix"></div>
+			<table style="margin-top: 30px;" id="statstable" class="table">
 				<tr>
 					<td class="r" width="60"><strong><%= this.meeting.stats.attending %></strong>
 					</td>
