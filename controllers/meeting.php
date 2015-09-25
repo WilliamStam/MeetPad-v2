@@ -29,7 +29,7 @@ class meeting extends _ {
 			),
 			"css" => "",
 			"js" => "",
-			"print"=>"/print/{$data['ID']}/{$data['company']}/{$data['url']}"
+			"print"=>"/print/{$data['ID']}/{$data['company_url']}/{$data['url']}"
 		);
 		$tmpl->data = $data;
 		$tmpl->get = $_GET;

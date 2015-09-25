@@ -348,7 +348,7 @@ SELECT  mp_meetings.*, mp_companies.company, if (mp_meetings.timeStart>=now() an
 			$item['future'] =  (strtotime("now") <= $timeStart ) ? 1: 0;
 			
 			$item['url'] = toAscii($item['meeting']);
-			$item['companyurl'] = toAscii($item['company']);
+			$item['company_url'] = toAscii($item['company']);
 			
 			$item['admin'] = $user['global_admin']=='1'?'1':$item['admin'];
 			
