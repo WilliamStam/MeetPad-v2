@@ -106,9 +106,9 @@ class user extends _ {
 			} else {
 				$whereC = "userID='{$user['ID']}'";
 			}
-			$meetings = meeting::getInstance()->getAll(" ( DATE(mp_meetings.timeStart) <= DATE(NOW()) AND DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC",'',array("userID"=>$this->user['ID']));
+			$meetings = meeting::getInstance()->getAll(" ( DATE(mp_meetings.timeEnd) >= DATE(NOW()) )","timeEnd ASC",'',array("userID"=>$this->user['ID']));
 			
-			//test_array($whereM); 
+			//test_array($meetings); 
 			$am = array();
 			foreach ($meetings as $item){
 				$item['activeMeetings'] = 0;

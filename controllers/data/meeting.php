@@ -32,6 +32,10 @@ class meeting extends _data {
 			
 		);
 		
+		if ($result['meeting']['future']=='1' ){
+			$result['meeting']['locked'] = '1';
+			$result['meeting']['attending'] = '0';
+		}
 		if ($result['meeting']['attending']!='1' && $result['company']['admin']!='1' ){
 			$result['item'] = array();
 		}

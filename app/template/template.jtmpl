@@ -108,6 +108,9 @@
 									<strong><%= this.meetings[i].company %></strong>
 								</div>
 
+								<% if (this.meetings[i].future=='1'){ %>
+								Future
+								<% } else { %>
 								<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
 									<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
 
@@ -115,6 +118,7 @@
 										<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
 									</div>
 								</div>
+								<% } %>
 
 
 
@@ -261,14 +265,27 @@
 								<div class="s r g">
 									<strong><%= this.meetings[i].company %></strong>
 								</div>
-
+								
+								<% if (this.meetings[i].future=='1'){ %>
+								
+								<div class="s c">
+									<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em><br>
+									<span class='label label-warning'>Future Meeting</span> <span class="fa fa-lock pull-right"></span>
+								</div>
+								
+								<% } else { %>
 								<div class="progress" style="margin:5px -20px ; border-radius:0; height:15px; position:relative; margin-bottom:0;">
 									<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:<%= this.meetings[i].percent %>%; opacity: 0.2"></div>
-
+									
 									<div class="s c dg" style="position: absolute; top:0;bottom:0;left:0;right:0;">
 										<em><%= this.meetings[i].timeStart.short.disp %> - <%= this.meetings[i].timeEnd.short.disp %></em>
 									</div>
 								</div>
+								<% } %>
+								
+								
+								
+								
 
 
 
