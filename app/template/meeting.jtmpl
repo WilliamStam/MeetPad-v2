@@ -70,7 +70,7 @@
 					<% } %>
 				</td>
 				<% if(this.orderitems=='1'){ %>
-				<td style="padding:0;">
+				<td style="padding:0; width:20px;">
 					<button class="btn btn-default orderhandle-btn <% if(this.agenda[i].items.length>1){ %>orderhandle<% } else { %>disabled<% } %>" type="button"><i class="fa fa-sort"></i></button>
 				</td>
 				<% } %>
