@@ -8,6 +8,7 @@
 				<button class="btn btn-default meeting-info-btn" type="button"><i class="fa fa-home"></i></button>
 				<% } %>
 			<% if (this.company.admin=="1" && this.meeting.locked=='0') { %>
+			<button type="button" class="btn btn-default item-ordering-btn <% if(this.orderitems=='1'){ %>active<% } %>"><i class="fa fa-sort"></i>    </button>
 			<button class="btn  btn-default item-form" data-ID="" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 				<i class="fa fa-plus"></i></button>
 			<% } %>
@@ -22,15 +23,19 @@
 
 	<section class="scroll-pane" style="left:10px;">
 		<table class="table table-condensed <% if(this.meeting.attending!='1'){ %>dg<% } %>" id="record-list">
-			<tbody><% for(var i in this.agenda) { %>
-
+			
+			<% for(var i in this.agenda) { %>
+			<thead>
 			<tr>
 				<th colspan="5">
 					<%= this.agenda[i].category %>
 				</th>
 			</tr>
+			</thead>
+			
+			<tbody>
 			<% for(var y in this.agenda[i].items) { %>
-			<tr class="<% if(this.meeting.attending=='1' || this.company.admin=='1'){ %>record<% } else { %>dg<% } %><% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>">
+			<tr class="<% if(this.meeting.attending=='1' || this.company.admin=='1'){ %>record<% } else { %>dg<% } %><% if(this.item.ID == this.agenda[i].items[y].ID){ %> active<% } %><% if(this.orderitems=='1'){ %> orderitems<% } %>" data-ID="<%= this.agenda[i].items[y].ID %>" id="<%= this.agenda[i].items[y].ID %>">
 				<td>
 					<% if(this.agenda[i].items[y].has_poll=='1'){ %>
 					<% if(this.agenda[i].items[y].voted!=''){ %>
@@ -64,11 +69,16 @@
 					<% } %>
 					<% } %>
 				</td>
+				<% if(this.orderitems=='1'){ %>
+				<td style="padding:0;">
+					<button class="btn btn-default orderhandle-btn <% if(this.agenda[i].items.length>1){ %>orderhandle<% } else { %>disabled<% } %>" type="button"><i class="fa fa-sort"></i></button>
+				</td>
+				<% } %>
 			</tr>
 			<% } %>
-
-			<% } %>
 			</tbody>
+			<% } %>
+			
 
 		</table>
 	</section>
@@ -295,7 +305,7 @@
 		<div id="comment-input-close" style="position: absolute;left:55px; right:155px;">
 			<div>
 				<div style="width:100%; padding:8px 12px; color:#999; border:1px solid #ccc; -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; background: #fff; cursor:pointer;" class="comment-button" data-itemID="<%= this.item.ID %>" data-ID="">
-					Leave a comment
+					<% if(this.commentActive=='1'){ %>Continue with your comment<% } else { %>Leave a comment<% } %>
 				</div>
 
 			</div>
@@ -677,7 +687,7 @@
 					<textarea name="comment" id="item-comment" cols="30" rows="10" placeholder="<%= this.title %>"><%= this.comment||'' %></textarea>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-link comment-form-cancel">Cancel</button>
 					<button type="submit" class="btn btn-primary">Save Comment</button>
 				</div>
 			</div>

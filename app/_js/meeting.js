@@ -102,8 +102,25 @@ $(document).ready(function () {
 	$(document).on('click', '.comment-button', function () {
 		var $this = $(this);
 		var ID = $this.attr("data-ID");
-		var itemID = $this.attr("data-itemID");
-		$.getData("/data/form/item_comment?ID=" + ID + "&itemID=" + itemID, {}, function (data) {
+		var itemID = $.bbq.getState("ID");
+		var commentActive = 0;
+		var comment = "";
+		
+		if(typeof(Storage) !== "undefined") {
+			if (localStorage.getItem("comment-item-"+itemID)){
+				commentActive = 1;
+				comment = localStorage.getItem("comment-item-"+itemID);
+			}
+			
+		}
+		
+		
+		
+		$.getData("/data/form/item_comment?ID=" + ID + "&itemID=" + itemID, {commentActive:commentActive}, function (data) {
+			if (data.ID=="" && commentActive==1){
+				data.comment = comment;
+			}
+			
 			$("#form-modal").jqotesub($("#template-item-comment-form"), data).modal("show");
 			//	console.log(ckeditor_config)
 			var on_ckeditor_config = ckeditor_config;
@@ -113,6 +130,16 @@ $(document).ready(function () {
 //Set the focus to your editor
 					//console.log("ready");
 					//CKEDITOR.instances['item-comment'].focus();
+				},
+				'change':function(env){
+					if(typeof(Storage) !== "undefined") {
+						var text = this.getData();
+						localStorage.setItem("comment-item-"+itemID, text);
+						// Code for localStorage/sessionStorage.
+					}
+					
+					
+					
 				}
 			};
 			//console.log(on_ckeditor_config)
@@ -157,9 +184,20 @@ $(document).ready(function () {
 	});
 
 
+	
 
+	$(document).on("click", ".comment-form-cancel", function () {
+		var itemID = $.bbq.getState("ID");
+		localStorage.removeItem("comment-item-"+itemID);
+		$("#form-modal").modal("hide");
+		
+		
+	});
 	$(document).on("reset", ".comment-form", function () {
 		$(this).find("textarea").animate({"height": 30}, 500);
+	
+		
+		
 		$.doTimeout('resize', 250, function () {
 			show_comment_button();
 			resize();
@@ -190,6 +228,8 @@ $(document).ready(function () {
 			} else {
 				getData();
 			}
+			localStorage.removeItem("comment-item-"+itemID);
+			
 			$("#form-modal").modal("hide");
 		});
 
@@ -216,11 +256,28 @@ $(document).ready(function () {
 		$('#right-area').removeClass("active");
 		getData();
 	});
+	
+	$(document).on('click', ".item-ordering-btn", function (e) {
+		var ordering = $.bbq.getState("orderitems");
+		if (ordering=='1'){
+			$.bbq.removeState("orderitems")
+		} else {
+			$.bbq.pushState({"orderitems":1})
+		}
+		getData();
+	});
+	
+	
+	
+	
 	$(document).on('click', ".scroll-paneaaa", function () {
 		//getData();
 	});
 	$(document).on('hide.bs.modal', "#form-modal", function () {
-		getData();
+		if (!$.bbq.getState("file")){
+			getData();
+		}
+		
 	});
 
 	$("#right-area").swipe({
@@ -262,10 +319,26 @@ $(document).ready(function () {
 });
 function getData() {
 	var ID = $.bbq.getState("ID") || '';
-
+	var commentActive = 0;
+	
+	if(typeof(Storage) !== "undefined") {
+		if (localStorage.getItem("comment-item-"+ID)){
+			commentActive = 1;
+		}
+		
+	}
+	
+	
+	
 	$(".loadingmask").show();
 	$.getData("/data/meeting/data?meetingID=" + _data['ID'] + "&itemID=" + ID, {}, function (data) {
 
+		data.commentActive = commentActive;
+		if ($.bbq.getState("orderitems")=='1'){
+			data.orderitems = '1';
+		}
+		
+		
 		var right_template = "#template-meeting-home";
 		if (data['item']['ID']) {
 			right_template = "#template-item";
@@ -315,6 +388,35 @@ function getData() {
 
 		if ($.bbq.getState("file")) {
 			getFile()
+		}
+		
+		if (data.orderitems=='1'){
+			//console.log("woof")
+			$('#record-list > tbody').sortable({
+				handle: ".orderhandle-btn",
+				items: ".orderitems",
+				containment: "parent",
+				cancel: '',
+				tolerance: "pointer",
+				helper: function (e, ui) {
+					ui.children().each(function () {
+						$(this).width($(this).width());
+					});
+					return ui;
+				},
+				scroll: true,
+				stop: function (event, ui) {
+					//SAVE YOUR SORT ORDER      
+					var data = $(this).sortable('toArray' );
+					$.post("/save/meeting/itemordering?", {'sort': data}, function () {
+						
+					});
+					//console.log(data)
+				}
+				}).disableSelection();
+				
+				
+			
 		}
 
 	});

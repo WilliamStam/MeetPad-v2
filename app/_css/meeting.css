@@ -48,6 +48,9 @@
   position: fixed;
   margin-left: 2px;
 }
+.orderhandle-btn.disabled {
+  opacity: 0.3;
+}
 /*
  * Off Canvas
  * --------------------------------------------------

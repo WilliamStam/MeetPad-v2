@@ -73,6 +73,24 @@ class meeting extends _save {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
+	function itemordering(){
+		$ids = isset($_REQUEST['sort'])?$_REQUEST['sort']:array();
+		
+		if (is_array($ids)){
+			$obj = new \DB\SQL\Mapper($this->f3->get("DB"), "mp_content");
+			$i = 0;
+			foreach($ids as $id){
+				$i = $i + 1;
+				$obj->load("ID='{$id}'");
+				$obj->orderby = $i;
+				$obj->save();
+				$obj->reset();
+			}
+		}
+		
+		
+		return $GLOBALS["output"]['data'] = "done";
+	}
 
 
 }

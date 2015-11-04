@@ -90,7 +90,7 @@ class meeting extends _data {
 
  
 		$object = models\item::getInstance();
-		$result =  $object->getAll("meetingID ='{$this->meetingID}' and deleted !='1'","mp_categories.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
+		$result =  $object->getAll("meetingID ='{$this->meetingID}' and deleted !='1'","mp_categories.orderby ASC, mp_content.orderby ASC, datein ASC",'',array("userID"=>$this->user['ID']));
 
 		$ids = array();
 		foreach ($result as $item) {
