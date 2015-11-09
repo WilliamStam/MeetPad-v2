@@ -113,7 +113,7 @@
 
 			<h3>
 
-				<% if (this.company.admin=="1" && this.meeting.locked=='0') { %>
+				<% if (this.company.admin=="1" && (this.meeting.locked=='0' || this.meeting.future=='1')) { %>
 				<button class="btn btn-default item-form pull-right" data-ID="<%= this.item.ID %>" data-meetingID="<%= this.meeting.ID %>" data-companyID="<%= this.company.ID %>" type="button">
 					<i class="fa fa-pencil"></i></button>
 <% } %>
