@@ -348,15 +348,18 @@
 		}
 
 
-		$(document).on("click", "#btn-new-poll-option", function () {
+		$(document).on("click", "#form-item #btn-new-poll-option", function () {
 			var $input = $("#new-option");
 
+			
 			var data = {
-				"ID": $("#poll-options .new-item").length,
+				"ID": $("#form-item #poll-options .new-item").length,
 				"new": $input.val()
 			}
-			if (data.new) {
-				$("#poll-options").jqoteapp($("#template-form-poll-option-new"), data);
+			console.log(data.new)
+			
+			if (data.new!="") {
+				$("#form-item #poll-options").jqoteapp($("#template-form-poll-option-new"), data);
 
 				$input.val("");
 			}
