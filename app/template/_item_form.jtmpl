@@ -356,7 +356,7 @@
 				"ID": $("#form-item #poll-options .new-item").length,
 				"new": $input.val()
 			}
-			console.log(data.new)
+			//console.log(data.new)
 			
 			if (data.new!="") {
 				$("#form-item #poll-options").jqoteapp($("#template-form-poll-option-new"), data);
