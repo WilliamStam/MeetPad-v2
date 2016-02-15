@@ -162,7 +162,7 @@ $f3->route('GET|POST /logout', function ($f3, $params) use ($user) {
 	session_destroy();
 	session_write_close();
 	setcookie(session_name(),'',0,'/');
-	session_regenerate_id(true);
+	//session_regenerate_id(true);
 	
 	//session_destroy();
 	$f3->reroute("/login");
