@@ -116,6 +116,10 @@
 
 				</div>
 				<div class="modal-footer">
+					{% if _user['global_admin']--'1' %}
+						<a href="?auID=<%= this.ID %>" class="btn btn-warning pull-left"><i class="fa fa-eye"></i></a>
+					{% endif %}
+					
 					<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
 					<button type="submit" class="btn btn-primary">Save changes</button>
 				</div>
@@ -152,6 +156,8 @@
 				
 			</div>
 			<div class="modal-footer">
+				
+				
 				<button type="button" class="btn btn-link reload-modal-c">Continue Editing</button>
 				<% if (this.new) { %>
 				<a href="/content/<%= this.ID %>/<%= this.new %>" class="btn btn-primary">Close</a>

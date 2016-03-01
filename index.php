@@ -105,14 +105,20 @@ if ($username && $password) {
 	$f3->reroute($url);
 }
 $user = $userO->get($uID);
-if (isset($_GET['auID']) && $user['su']=='1'){
+if (isset($_GET['auID']) && $user['global_admin']=='1'){
 	$_SESSION['uID'] = $_GET['auID'];
+	$_SESSION['global_takeover'] =  $_GET['auID'];
 	$user = $userO->get($_GET['auID']);
 }
 
 //test_array($_SERVER['REQUEST_URI']); 
 if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != '/keepalive'){
-	$userO->setActivity($uID);
+	if (isset($_SESSION['global_takeover']) && $_SESSION['global_takeover']==$uID){
+		
+	} else {
+		$userO->setActivity($uID);
+	}
+	
 }
 
 
