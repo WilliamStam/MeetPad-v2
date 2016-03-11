@@ -169,9 +169,11 @@ class meeting extends _data {
 		$result =  $object->get($itemID,true);
 		//$result['poll_show_result'] = '0';
 		
+		//test_array($result['poll_show_result']); 
 		if ($result['poll_show_result']=='1'){
 			$n = array();
 			foreach ($result['poll']['options'] as $item){
+				
 				$item['percent']= number_format($item['votes'] >0?($item['votes'] / $result['poll']['votes'])*100:0, 2, '.', '');
 				$n[] = $item;
 			}
@@ -183,7 +185,7 @@ class meeting extends _data {
 			$n = array();
 			if (isset($result['poll']['options'])){
 				foreach ($result['poll']['options'] as $item){
-					unset($item['votes']);
+					//unset($item['votes']);
 					$n[] = $item;
 				}
 			}

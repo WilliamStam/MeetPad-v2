@@ -160,7 +160,9 @@
 							
 							<% if(this.item.poll.options[i].percent){ %>
 							<div class="percent-bar" style="width:<%= this.item.poll.options[i].percent %>%;"></div>
-							<span class="label label-default pull-right"><%= this.item.poll.options[i].percent %>%</span>
+							<span class="label label-default pull-right"><% if (this.item.poll.options[i].votes){ %><strong><%= this.item.poll.options[i].votes %></strong>
+							 - <% } %><em><%= this.item.poll.options[i].percent %>%</em>
+							 </span>
 							<% } %>
 							
 							
