@@ -172,11 +172,14 @@ class meeting extends _data {
 		//test_array($result['poll_show_result']); 
 		if ($result['poll_show_result']=='1'){
 			$n = array();
-			foreach ($result['poll']['options'] as $item){
-				
-				$item['percent']= number_format($item['votes'] >0?($item['votes'] / $result['poll']['votes'])*100:0, 2, '.', '');
-				$n[] = $item;
+			if (isset($result['poll']['options'])&&is_array($result['poll']['options'])){
+				foreach ($result['poll']['options'] as $item){
+					
+					$item['percent']= number_format($item['votes'] >0?($item['votes'] / $result['poll']['votes'])*100:0, 2, '.', '');
+					$n[] = $item;
+				}
 			}
+			
 			
 			
 			
