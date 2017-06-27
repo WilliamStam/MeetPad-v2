@@ -194,6 +194,9 @@ class meeting extends _data {
 			}
 
 		}
+
+		if (!is_array($result['poll']))$result['poll']=array();
+	//test_array($result);
 		$result['poll']['options'] = $n;
 		
 
